@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.bridgewinners.mobile" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <preference name="loglevel" value="DEBUG" />
+    <splash density="land-hdpi" src="res/drawable-hdpi/logo.9.png" />
+    <splash density="land-mdpi" src="res/drawable-mdpi/logo.9.png" />
+    <splash density="land-xhdpi" src="res/drawable-xhdpi/logo.9.png" />
+    <splash density="land-xhdpi" src="res/drawable-xxhdpi/logo.9.png" />
+    <splash density="port-hdpi" src="res/drawable-hdpi/logo.9.png" />
+    <splash density="port-mdpi" src="res/drawable-mdpi/logo.9.png" />
+    <splash density="port-xhdpi" src="res/drawable-xhdpi/logo.9.png" />
+    <splash density="port-xhdpi" src="res/drawable-xxhdpi/logo.9.png" />
+    <name>Bridge Winners</name>
+    <description>
+        A sample Apache Cordova application that responds to the deviceready event.
+    </description>
+    <author email="indianbridge@gmail.com" href="http://bridgewinners.com">
+        Bridge Winners Mobile app Team
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+    <icon src="res/icon.png" />
+</widget>

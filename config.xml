@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.bridgewinners.mobile" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Bridge Winners</name>
+    <description>
+        A sample Apache Cordova application that responds to the deviceready event.
+    </description>
+    <author email="indianbridge@gmail.com" href="http://bridgewinners.com">
+        Bridge Winners Mobile app Team
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+	<icon src="res/icon.png" />
+	<platform name="android">
+		<!-- you can use any density that exists in the Android project -->
+		<splash src="res/drawable-hdpi/logo.9.png" density="land-hdpi"/>
+		<splash src="res/drawable-mdpi/logo.9.png" density="land-mdpi"/>
+		<splash src="res/drawable-xhdpi/logo.9.png" density="land-xhdpi"/>
+		<splash src="res/drawable-xxhdpi/logo.9.png" density="land-xhdpi"/>
+
+		<splash src="res/drawable-hdpi/logo.9.png" density="port-hdpi"/>
+		<splash src="res/drawable-mdpi/logo.9.png" density="port-mdpi"/>
+		<splash src="res/drawable-xhdpi/logo.9.png" density="port-xhdpi"/>
+		<splash src="res/drawable-xxhdpi/logo.9.png" density="port-xhdpi"/>
+	</platform>	
+</widget>

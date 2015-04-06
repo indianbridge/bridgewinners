@@ -1,0 +1,21 @@
+table#auction-table tbody {
+	background-color: #9cc;
+}
+table#auction-table {
+	border: 2px solid green;
+    border-collapse: collapse;
+}
+table#auction-table th, table#auction-table td {
+    padding: 0;
+    width: 32px;
+    text-align: center;
+}
+
+table {
+border-collapse: collapse;
+}
+
+table th, table td {
+    padding: 0;
+    text-align: center;
+}
