@@ -47,13 +47,33 @@ BW.initialize = function() {
 	$( "#login-submit-button").click( BW.login );
 	$( "#logout-submit-button").click( BW.logout );
 	BW.updateLoginStatus();
-	BW.createCardDeck();
+	// This is created in loadOptions
+	//BW.createCardDeck();
 	BW.createBiddingBox();
 	
-	// Set theme
-	BW.theme = localStorage.getItem( "theme" );
-	if ( !BW.theme ) BW.theme = "css/themes/default/jquery.mobile-1.4.5.min.css";
-	$( "#jqm-stylesheet" ).attr( "href", BW.theme );
+	// All the options
+	var options = localStorage.getItem( "options" );
+	BW.options = ( options ? JSON.parse( options ) : {} );
+	_.defaults( BW.options, {
+		"theme" : "css/themes/default/jquery.mobile-1.4.5.min.css",
+		"collapsible" : false
+	});
+	BW.loadOptions( BW.options );
+	
+	// Enable card and bid clicks
+	BW.enableCardAndBidClicks();
+};
+
+/**
+ * Utility function to check if running in a browser as oppose to mobile app.
+ */
+BW.isBrowser = function() {
+	return !( window.cordova || window.PhoneGap );
+	// Older way for just chrome
+	/*if (navigator.userAgent.match(/chrome/i)) {	
+	}
+	else {
+	}*/
 	
 };
  
@@ -67,15 +87,65 @@ var jQueryMobileReady = $.Deferred();
 $( document ).bind( "pagecreate", jQueryMobileReady.resolve );
 
 // Both events have fired. 
-// Added a hack to check if running in chrome.
-// This hack is allow testing on Chrome browser where deviceready event will not fire
-// TODO: Remove the hack because it is only for testing on browsers.
-if (navigator.userAgent.match(/chrome/i)) {
+// Added a hack to check if running in browser and not mobile app
+// This hack is allow testing on browser where deviceready event will not fire
+if ( BW.isBrowser() ) {
 	$.when( jQueryMobileReady ).then( BW.initialize );
 }
 else {
 	$.when( cordovaReady, jQueryMobileReady ).then( BW.initialize );
 }
+
+
+
+/**
+ * Load the options
+ * @param {object} options - the set of options
+ * @param {string} [option] - optional specific option to load
+ */
+BW.loadOptions = function( options, option ) {
+	
+	if ( typeof option !== "undefined" ) {
+		var derivedOptions = {};
+		derivedOptions[ option ] = options[ option ];
+	}
+	else {
+		var derivedOptions = options;
+	}
+	for( var option in derivedOptions ) {
+		switch ( option ) {
+			case "theme" :
+				// Load the stylesheet
+				$( "#jqm-stylesheet" ).attr( "href", BW.options.theme );		
+				break;
+			case "collapsible" :
+				var value = derivedOptions[ option ];
+				BW.createCardDeck( value );
+				break;
+			default :
+				break;
+		}
+	}
+	
+};
+
+
+/**
+ * Set the options
+ * @param {object} options - the set of options
+ */
+BW.setOptions = function( options ) {
+	$( "#theme" ).val( options.theme );
+	$( "#make-card-deck-collapsible" ).prop( "checked", options.collapsible );
+};
+
+/**
+ * Save the options to local storage
+ * @param {object} options - the set of options
+ */
+BW.saveOptions = function( options ) {
+	localStorage.setItem( "options", JSON.stringify( options ) );
+};
 
 /**
  * An utility function to determine if page should be recreated/redrawn
@@ -129,18 +199,31 @@ BW.hashChangeHandler = function() {
 };
 
 /**
+ * Handler for option changes.
+ */
+BW.optionChanged = function() {
+	var name = $( this ).attr( "name" );
+	var type = $( this ).attr( "type" )
+	if ( type === "checkbox" ) {
+		var value = $( this ).prop( "checked" );
+	}
+	else {
+		var value = $( this ).val();
+	}
+	BW.options[ name ] = value;
+	BW.saveOptions( BW.options );
+	BW.loadOptions( BW.options, name );
+};
+
+/**
  * Actions after page is loaded.
  * Here we can add event handlers etc that are page dependent.
  */
 BW.pageLoaded = function( parameters ) {
 	if ( parameters.page === "options.html" ) {
+		BW.setOptions( BW.options );
 		$( "#index" ).trigger( "create" );
-		$( "#theme" ).val( BW.theme );
-		$( "#theme" ).change( function() {
-			var theme = $( this ).val();
-			$( "#jqm-stylesheet" ).attr( "href", theme );
-			localStorage.setItem( "theme", theme );
-		});
+		$( ".options" ).change( BW.optionChanged );
 	}
 	else if ( parameters.page === "create.html" ) {
 		BW.problemType = parameters.problem;
@@ -155,6 +238,7 @@ BW.pageLoaded = function( parameters ) {
 		$( "#index" ).trigger( "create" );
 	}
 };
+
 
 /**
  * Load a deal based on saved information
@@ -302,19 +386,31 @@ BW.updateCardDeck = function( deal ) {
 /**
  * Setup card deck for adding and removing cards to hand.
  */
-BW.createCardDeck = function() {
+BW.createCardDeck = function( collapsible ) {
+	if ( typeof collapsible === "undefined" ) collapsible = false;
 	var html = "";
-	html += '<div id="card-deck-set" data-role="collapsibleset">';
+	var dataRole = '"';
+	html += '<div class="card-deck" id="card-deck-set"';
+	if ( collapsible ) html += ' data-role="collapsibleset" ';
+	html += '>';
 	var open = true;
 	for( var i = 0; i < Bridge.suitOrder.length; ++i ) {
 		var suit = Bridge.suitOrder[i];
 		// By default spades cards are open
 		if ( suit === 's' ) open = true;
 		else open = false;
-		html += BW.createSuitPanel( suit, open );
+		html += BW.createSuitPanel( suit, open, collapsible );
 	}
 	html += '</div>';
-	$( "#card-deck" ).empty().append( html );	
+	$( "#card-deck" ).empty().append( html );		
+};
+
+/**
+ * Enable the click handlers for card deck when generating hand
+ * and bidding box when generating auction.
+ * This needs to be done only once since we don't recreate the container each time.
+ */
+BW.enableCardAndBidClicks = function() {
 	// Card deck click
 	$( "#card-deck" ).on( "click", ".card", function() {
 		var deal = BW.deal;
@@ -339,7 +435,40 @@ BW.createCardDeck = function() {
 			BW.saveDeal( deal );
 			BW.updateHand( deal );
 		}
-	});		
+	});
+	// Bidding box
+	$( "#bidding-box" ).on( "click", ".call", function() {
+		var deal = BW.deal;
+		var call = $( this ).attr( "call" ).toLowerCase();
+		try {
+			switch( call ) {
+				case "undo" :
+					deal.removeCall();
+					break;
+				case "pass" :
+					deal.addCall( 'p' );
+					break;
+				case "double" :
+					deal.addCall( 'x' );
+					break;
+				case "redouble" :
+					deal.addCall( 'r' );
+					break;
+				case "all pass" :
+					var auction = deal.getAuction();
+					auction.addAllPass();
+					break;
+				default:
+					deal.addCall( call );
+					break;
+			}
+			BW.saveDeal( deal );
+			BW.updateAuction( deal );
+		}
+		catch( err ) {
+			alert( err.message );
+		}	
+	});			
 }; 
 
 
@@ -349,10 +478,12 @@ BW.createCardDeck = function() {
  * @param {object} deal - the deal to get which cards have been assigned
  * @param {boolean} open - whether the collapsible should be open or not
  */
-BW.createSuitPanel = function( suit, open ) {
+BW.createSuitPanel = function( suit, open, collapsible ) {
 	var html = "";
-	html += '<div data-role="collapsible"' + (open ? ' data-collapsed="false"' : '') + '>';	
-    html += '<h2>' + Bridge.suits[ suit ].html + ' Cards</h2>';
+	html += '<div class="card-deck-suit"';
+	if ( collapsible ) html += ' data-role="collapsible" '
+	html += (open ? ' data-collapsed="false"' : '') + '>';	
+    if ( collapsible ) html += '<h2>' + Bridge.suits[ suit ].html + ' Cards</h2>';
     html += '<div>';
     for( var i = 0; i < Bridge.rankOrder.length; ++i ) {
 		var rank = Bridge.rankOrder[i];
@@ -411,6 +542,7 @@ BW.activateDealEventHandlers = function( deal ) {
 		deal.set( field, value );		
 		BW.saveDeal( deal );
 		BW.updateDealInfo( deal );
+		BW.updateAuction( deal );
 	});	
 	
 
@@ -418,14 +550,30 @@ BW.activateDealEventHandlers = function( deal ) {
 };
 
 /**
- * An utility function to generate html for a button.
+ * An utility function to generate html for a bidding button.
  * Used in generating buttons in bidding box
- * @param {string} text - the text/html that goes inside the button
+ * @param {number} level - the level of this bid
+ * @param {string} suit - the suit of this bid
+ * @param {boolean} disabled - whether the button should be disabled or not
+ */
+BW.makeBidButton = function( level, suit, disabled ) {
+	var id = "call-" + Bridge.makeIdentifier( level + suit );
+	var text = level + Bridge.calls[ suit ].html;
+	var call = level+suit;
+	var html = "<button id='" + id + "' call='" + call + "' class='ui-btn ui-btn-inline ui-mini ui-corner-all call'";
+	if ( disabled ) html += " disabled";
+	html += ">" + text + "</button>";
+	return html;
+};
+
+/**
+ * An utility function to generate html for a button.
+ * @param {string} text - the text that goes inside the button
  * @param {boolean} disabled - whether the button should be disabled or not
  */
 BW.makeButton = function( text, disabled ) {
-	var id = Bridge.makeIdentifier( text );
-	var html = "<button id='call-" + id + "' call='" + text + "' class='ui-btn ui-btn-inline ui-mini ui-corner-all call'";
+	var id = "call-" + Bridge.makeIdentifier( text );
+	var html = "<button id='" + id + "' call = '" + text + "' class='ui-btn ui-btn-inline ui-mini ui-corner-all call'";
 	if ( disabled ) html += " disabled";
 	html += ">" + text + "</button>";
 	return html;
@@ -447,8 +595,7 @@ BW.createBiddingBox = function() {
 		for( var j = 0; j < Bridge.callOrder.length; ++j ) {
 			var call = Bridge.callOrder[j];
 			if ( Bridge.calls[ call ].bid ) {
-				
-				html += "<td>" + BW.makeButton( i+call, disabled ) + "</td>";
+				html += "<td>" + BW.makeBidButton( i, call, disabled ) + "</td>";
 			}
 		}
 		html += "</tr>";
@@ -459,39 +606,7 @@ BW.createBiddingBox = function() {
 	html += "<th colspan='2'>" + BW.makeButton( "Undo", disabled ) + "</th>";
 	html += "</table>";
 	$( "#bidding-box" ).html( html );
-	// Bidding box
-	$( "#bidding-box" ).on( "click", ".call", function() {
-		var deal = BW.deal;
-		var call = $( this ).attr( "call" ).toLowerCase();
-		try {
-			switch( call ) {
-				case "undo" :
-					deal.removeCall();
-					break;
-				case "pass" :
-					deal.addCall( 'p' );
-					break;
-				case "double" :
-					deal.addCall( 'x' );
-					break;
-				case "redouble" :
-					deal.addCall( 'r' );
-					break;
-				case "all pass" :
-					var auction = deal.getAuction();
-					auction.addAllPass();
-					break;
-				default:
-					deal.addCall( call );
-					break;
-			}
-			BW.saveDeal( deal );
-			BW.updateAuction( deal );
-		}
-		catch( err ) {
-			alert( err.message );
-		}	
-	});		
+		
 };
 
 /**

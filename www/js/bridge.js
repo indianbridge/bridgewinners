@@ -445,6 +445,9 @@ Bridge.Deal.prototype.set = function( property, value, secondValue ) {
 			if ( vul === '0' ) vul = '-';
 			Bridge.checkVulnerability( vul );
 			this.vulnerability = vul;
+			for( var auctionName in this.auctions ) {
+				this.auctions[ auctionName ].vulnerability = vul;
+			}			
 			break;
 		case 'dealer' :
 			var direction = value.toLowerCase();
@@ -598,15 +601,17 @@ Bridge.Deal.prototype.getAuctionTable = function( name ) {
  * @throws name is duplicate
  * @throws dealer is not a valid direction
  */
-Bridge.Deal.prototype.addAuction = function( name, dealer ) {
+Bridge.Deal.prototype.addAuction = function( name, dealer, vulnerability ) {
 	dealer = Bridge.Utilities.assignDefault( dealer, this.dealer );
+	vulnerability = Bridge.Utilities.assignDefault( vulnerability, this.vulnerability );
 	var prefix = 'In Bridge.Deal.prototype.addAuction - ';
 	Bridge.Utilities.checkRequiredArgument( name, 'Name', prefix );
 	Bridge.checkDirection( dealer, prefix );
+	Bridge.checkVulnerability( vulnerability, prefix );
 	if ( _.has( this.auctions, name ) ) {
 		Bridge.Utilities.reportError( 'An auction with ' + name + ' already exists! Cannot create another with same name.', prefix );
 	}
-	this.auctions[ name ] = new Bridge.Auction( name, dealer );
+	this.auctions[ name ] = new Bridge.Auction( name, dealer, vulnerability );
 	this.currentAuction = this.auctions[ name ];
 	return true;
 };
@@ -1513,12 +1518,13 @@ Bridge.Call.prototype.toHTML = function( inStringFormat ) {
  * @memberof Bridge
  * @param {string} dealer - The direction indication who is dealer and will be first to call
  */
-Bridge.Auction = function( name, dealer ) {
+Bridge.Auction = function( name, dealer, vulnerability ) {
 	var prefix = 'In Bridge.Auction constructor - ';
 	Bridge.Utilities.checkRequiredArgument( name, 'Name', prefix );
 	Bridge.checkDirection( dealer );
 	this.name = name;
 	this.dealer = dealer;
+	this.vulnerability = vulnerability
 	this.clear();
 };
 
@@ -1595,6 +1601,10 @@ Bridge.Auction.prototype.set = function( property, value ) {
 		case 'dealer' :
 			Bridge.checkDirection( value );
 			this.dealer = value;
+			break;
+		case 'vulnerability' :
+			Bridge.checkVulnerability( vulnerability );
+			this.vulnerability = value;
 			break;
 		case 'contract' :
 			this._setContract( value );
@@ -1762,6 +1772,7 @@ Bridge.Auction.prototype.updateDealer = function( dealer ) {
 		this.calls[i].direction = direction;
 		direction = Bridge.getLHO( direction );
 	}
+	this.nextToCall = direction;
 };
 
 /**
@@ -1772,7 +1783,20 @@ Bridge.Auction.prototype.updateDealer = function( dealer ) {
 Bridge.Auction.prototype.toHTMLTable = function( tableID ) {
 	tableID = Bridge.Utilities.assignDefault( tableID, "auction-table" );
 	var html = "<table id='" + tableID + "'>";
-	html += "<thead id='auction-table-header'><tr><th>W</th><th>N</th><th>E</th><th>S</th></tr></thead>";
+	var ewClass = "";
+	var nsClass = "";
+	if ( this.vulnerability === 'n' || this.vulnerability === 'b' ) {
+		nsClass = " style='background-color:#cc0000;' ";
+	}
+	if ( this.vulnerability === 'e' || this.vulnerability === 'b' ) {
+		ewClass = " style='background-color:#cc0000;' ";
+	}	
+	html += "<thead id='auction-table-header'><tr>";
+	html += "<th" + ewClass + ">W</th>";
+	html += "<th" +nsClass + ">N</th>";
+	html += "<th" + ewClass + ">E</th>";
+	html += "<th" + nsClass + ">S</th>";
+	html += "</tr></thead>";
 	html += "<tbody id='auction-table-body'><tr>";
 	var direction = 'w';
 	var firstTime = true;

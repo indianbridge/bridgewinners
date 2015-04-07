@@ -1,9 +1,19 @@
-<div class="ui-field-contain">
-	<label for="thems">Change Theme</label>
-	<select id="theme" name="theme">
+<ul data-role="listview"> 
+<li data-icon="false">
+	<fieldset class="ui-field-contain">
+	<label for="theme">Change Theme</label>
+	<select class="options" id="theme" name="theme">
 		<option value="css/themes/default/jquery.mobile-1.4.5.min.css">Default</option>
 		<option value="css/themes/flat/jquery.mobile.flatui.min.css">Flat UI</option>
 		<option value="css/themes/square/jquery.mobile.squareui.css">Square UI</option>
 		<option value="css/themes/bootstrap/jquery.mobile.bootstrap.min.css">Bootstrap</option>
-	</select>	
-</div>
+	</select>		
+	</fieldset>
+</li>	
+<li data-icon="false">
+	<fieldset class="ui-field-contain">
+	<label for="collapsible">Make Card Deck Collapsible</label>
+	<input class="options" type="checkbox" name="collapsible" id="make-card-deck-collapsible">
+	</fieldset>
+</li>
+</ul>

@@ -1,0 +1,6 @@
+Features:
+Added instantaneous Auction changes when dealer or vul changes
+Changed isBrowser check to use window.cordova/window.PhoneGap
+Add option to make card deck display collapsible or not with default not collapsible
+Bugs:
+Fixed bug - next to call was not updated when dealer changed
