@@ -1772,6 +1772,7 @@ Bridge.Auction.prototype.updateDealer = function( dealer ) {
 		this.calls[i].direction = direction;
 		direction = Bridge.getLHO( direction );
 	}
+	this.nextToCall = direction;
 };
 
 /**

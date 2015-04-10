@@ -22,9 +22,6 @@ BW.initialize = function() {
 	// Assume that north is hand shown. It should not matter (famous last words)
 	BW.handDirection = 'n';
 	
-	// The auction name. Can use anything (see previous comment)
-	BW.auctionName = "Default";
-	
 	// Was the last state a ui dialog
 	BW.isUIStateDialog = false;
 	
@@ -69,12 +66,6 @@ BW.initialize = function() {
  */
 BW.isBrowser = function() {
 	return !( window.cordova || window.PhoneGap );
-	// Older way for just chrome
-	/*if (navigator.userAgent.match(/chrome/i)) {	
-	}
-	else {
-	}*/
-	
 };
  
 // Checking for cordova and jQM has to go after BW.initialize because they will call it
@@ -164,7 +155,7 @@ BW.recreatePage = function( isDialog, isLastDialog ) {
  */
 BW.hashChangeHandler = function() {
 	// Parse the hash parameters
-	var parameters = Bridge.readQueryParameters( location.hash, '#' );
+	var parameters = Bridge.getHash();
 	_.defaults( parameters, { action: "load", page: "home.html" } );
 	var action = parameters.action;
 	var uiState = parameters[ "ui-state" ];
@@ -248,15 +239,16 @@ BW.loadDeal = function() {
 	var dealString = localStorage.getItem( "deal" );
 	if ( !dealString ) dealString = "{}";
 	dealJSON = JSON.parse( dealString );
+	if ( !_.has( dealJSON, "version" ) || dealJSON.version !== "1.0" ) dealJSON = {};
 	
 	// Set default values if not specified
-	var auctionName = BW.auctionName // Does not allow to use BW.auctionName directly in object
+	/*var auctionName = BW.auctionName // Does not allow to use BW.auctionName directly in object
 	_.defaults( dealJSON, {
 		"dealer" : 'n',
 		"scoring" : "KO",
 		"vulnerability" : '-',
 		"auction" : { auctionName : "" }
-	});
+	});*/
 	
 	// Load the deal
 	BW.deal = new Bridge.Deal();
@@ -292,7 +284,7 @@ BW.updateDealInfo = function( deal ) {
  */
 BW.updatePublishButtonStatus = function( deal ) {
 	var id = "publish-button";
-	var count = deal.get( 'count', BW.handDirection );
+	var count = deal.getHand( BW.handDirection ).getCount();
 	if ( count !== 13 ) {
 		var disabled = true;
 		var text = "Not Enough Cards";
@@ -302,7 +294,7 @@ BW.updatePublishButtonStatus = function( deal ) {
 	var auction = deal.getAuction();
 	switch( BW.problemType ) {
 		case "bidding" :
-			if ( auction.contract && auction.contract.isComplete ) {
+			if ( auction.getContract().isComplete ) {
 				var disabled = true;
 				var text = "Auction is already complete";				
 				BW.updateButton( id, text, disabled );
@@ -310,7 +302,7 @@ BW.updatePublishButtonStatus = function( deal ) {
 			}
 			break;
 		case "lead" :
-			if ( auction.contract && !auction.contract.isComplete ) {
+			if ( !auction.getContract().isComplete ) {
 				var disabled = true;
 				var text = "Auction is not complete";				
 				BW.updateButton( id, text, disabled );
@@ -348,9 +340,10 @@ BW.updateButton = function( id, text, disabled ) {
  */
 BW.updateHand = function( deal ) {
 	var direction = BW.handDirection;
-	var count = deal.get( 'count', direction );
+	var hand = deal.getHand( direction );
+	var count = hand.getCount();
 	var countHTML = '<span class="ui-li-count">' + count + '</span>';
-	var handHTML = deal.hands[ direction ].toString( true );
+	var handHTML = hand.toHTML();
 	$( "#hand" ).html( handHTML + countHTML );	
 	var html = "";
 	html += "<button class='ui-btn ui-corner-all'>";
@@ -364,12 +357,13 @@ BW.updateHand = function( deal ) {
  * @param {object} deal - the deal to get which cards have been assigned 
  */
 BW.updateCardDeck = function( deal ) {
+	var hand = deal.getHand( BW.handDirection );
 	for( var i = 0; i < Bridge.suitOrder.length; ++i ) {
 		var suit = Bridge.suitOrder[i];
 		for( var j = 0; j < Bridge.rankOrder.length; ++j ) {
 			var rank = Bridge.rankOrder[j];
 			var card = suit + rank;
-			if ( deal._hasCard( suit, rank, BW.handDirection ) ) {
+			if ( hand.hasCard( suit, rank ) ) {
 				var status = "in-hand";
 				var src = "img/cards/cb_blue2.png"
 			}
@@ -414,11 +408,12 @@ BW.enableCardAndBidClicks = function() {
 	// Card deck click
 	$( "#card-deck" ).on( "click", ".card", function() {
 		var deal = BW.deal;
+		var hand = deal.getHand( BW.handDirection );
 		var status = $( this ).attr( "status" );
 		if ( status === "in-deck" ) {
 			var card = $( this ).attr( "card" );
 			try {
-				deal.addCard( card[0], card[1], 'n' );
+				hand.addCard( card[0], card[1] );
 				$( this ).attr( "src", "img/cards/cb_blue2.png" ).attr( "status", "in-hand" );
 				BW.saveDeal( deal );
 				BW.updateHand( deal  );
@@ -431,7 +426,7 @@ BW.enableCardAndBidClicks = function() {
 			var src = "img/cards/" + $( this ).attr( "card" ) + ".png";
 			var card = $( this ).attr( "card" );
 			$( this ).attr( "src", src ).attr( "status", "in-deck" );
-			deal.removeCard( card[0], card[1] ); 
+			hand.removeCard( card[0], card[1] ); 
 			BW.saveDeal( deal );
 			BW.updateHand( deal );
 		}
@@ -439,27 +434,27 @@ BW.enableCardAndBidClicks = function() {
 	// Bidding box
 	$( "#bidding-box" ).on( "click", ".call", function() {
 		var deal = BW.deal;
+		var auction = deal.getAuction();
 		var call = $( this ).attr( "call" ).toLowerCase();
 		try {
 			switch( call ) {
 				case "undo" :
-					deal.removeCall();
+					auction.removeCall();
 					break;
 				case "pass" :
-					deal.addCall( 'p' );
+					auction.addCall( 'p' );
 					break;
 				case "double" :
-					deal.addCall( 'x' );
+					auction.addCall( 'x' );
 					break;
 				case "redouble" :
-					deal.addCall( 'r' );
+					auction.addCall( 'r' );
 					break;
 				case "all pass" :
-					var auction = deal.getAuction();
 					auction.addAllPass();
 					break;
 				default:
-					deal.addCall( call );
+					auction.addCall( call );
 					break;
 			}
 			BW.saveDeal( deal );
@@ -502,14 +497,8 @@ BW.createSuitPanel = function( suit, open, collapsible ) {
  * @param {object} deal - instance of Deal class that contains the auction
  */
 BW.updateAuction = function( deal ) {
-	var auctionName = BW.auctionName;
 	// Get the auction
-	var auction = deal.getAuction( auctionName );
-	if ( !auction ) {
-		// For consistency check. Should not happen
-		alert( "Auction could not be found" );
-	}
-	
+	var auction = deal.getAuction();
 	// Setup auction as a styled table
 	var html = auction.toHTMLTable();
 	$( "#auction" ).html( html );
@@ -556,8 +545,7 @@ BW.activateDealEventHandlers = function( deal ) {
  * @param {string} suit - the suit of this bid
  * @param {boolean} disabled - whether the button should be disabled or not
  */
-BW.makeBidButton = function( level, suit, disabled ) {
-	var id = "call-" + Bridge.makeIdentifier( level + suit );
+BW.makeBidButton = function( level, suit, id, disabled ) {
 	var text = level + Bridge.calls[ suit ].html;
 	var call = level+suit;
 	var html = "<button id='" + id + "' call='" + call + "' class='ui-btn ui-btn-inline ui-mini ui-corner-all call'";
@@ -571,8 +559,7 @@ BW.makeBidButton = function( level, suit, disabled ) {
  * @param {string} text - the text that goes inside the button
  * @param {boolean} disabled - whether the button should be disabled or not
  */
-BW.makeButton = function( text, disabled ) {
-	var id = "call-" + Bridge.makeIdentifier( text );
+BW.makeButton = function( text, id, disabled ) {
 	var html = "<button id='" + id + "' call = '" + text + "' class='ui-btn ui-btn-inline ui-mini ui-corner-all call'";
 	if ( disabled ) html += " disabled";
 	html += ">" + text + "</button>";
@@ -586,24 +573,30 @@ BW.createBiddingBox = function() {
 	var disabled = true;
 	var html = "";
 	html += "<table><thead>";
-	html += "<tr><th colspan='2'>" + BW.makeButton( "Double", disabled ) + "</th>";
-	html += "<th>" + BW.makeButton( "Pass", disabled ) + "</th>";
-	html += "<th colspan='2'>" + BW.makeButton( "ReDouble", disabled ) + "</th></tr>";
+	var id = "call-x";
+	html += "<tr><th colspan='2'>" + BW.makeButton( "Double", id, disabled ) + "</th>";
+	id = "call-p";
+	html += "<th>" + BW.makeButton( "Pass", id, disabled ) + "</th>";
+	id = "call-r";
+	html += "<th colspan='2'>" + BW.makeButton( "ReDouble", id, disabled ) + "</th></tr>";
 	html += "</thead><tbody>";
 	for( var i = 1; i <= 7; ++i ) {
 		html += "<tr>";
 		for( var j = 0; j < Bridge.callOrder.length; ++j ) {
 			var call = Bridge.callOrder[j];
 			if ( Bridge.calls[ call ].bid ) {
-				html += "<td>" + BW.makeBidButton( i, call, disabled ) + "</td>";
+				var id = "call-" + i + call;
+				html += "<td>" + BW.makeBidButton( i, call, id, disabled ) + "</td>";
 			}
 		}
 		html += "</tr>";
 	}
 	html += "</tbody>";
-	html += "<tfoot><tr><th colspan='2'>" + BW.makeButton( "All Pass", disabled ) + "</th>";
+	id = "call-ap";
+	html += "<tfoot><tr><th colspan='2'>" + BW.makeButton( "All Pass", id, disabled ) + "</th>";
 	html += "<th></th>";
-	html += "<th colspan='2'>" + BW.makeButton( "Undo", disabled ) + "</th>";
+	id = "call-u";
+	html += "<th colspan='2'>" + BW.makeButton( "Undo", id, disabled ) + "</th>";
 	html += "</table>";
 	$( "#bidding-box" ).html( html );
 		
@@ -615,28 +608,25 @@ BW.createBiddingBox = function() {
  * @param {object} auction - the auction so far to enable appropriate buttons.
  */
 BW.updateBiddingBox = function( auction ) {
-	var current = auction.possibleCalls();
+	var allowedCalls = auction.getContract().allowedCalls( auction.nextToCall );
 	for( var i = 1; i <= 7; ++i ) {
-		for( var j = 0; j < Bridge.callOrder.length; ++j ) {
-			var call = Bridge.callOrder[j];
-			if ( Bridge.calls[ call ].bid ) {
-				var disabled = ( i < current.level || ( i ===  current.level && Bridge.calls[ call ].index >= Bridge.calls[ current.suit ].index ) );
+		for( var call in Bridge.calls ) {
+			if ( Bridge.isBid( call ) ) {
 				var text = i+call;
+				var disabled = !allowedCalls[ text ];
 				$( "#call-" + text ).prop( "disabled", disabled );
 			}
 		}
 	}
 	var otherCalls = { 
-		"Double" : "double", 
-		"Pass" : "pass",
-		"ReDouble" : "redouble",
-		"All Pass" : "pass",
-		"Undo" : "undo" 
+		"x" : "x", 
+		"p" : "p",
+		"r" : "r",
+		"ap" : "p",
+		"u" : "u" 
 	};
 	for( var call in otherCalls ) {
-		var id = Bridge.makeIdentifier( call );
-		var field = otherCalls[ call ];
-		$( "#call-" + id ).prop( "disabled", !current[ field ] );
+		$( "#call-" + call ).prop( "disabled", !allowedCalls[ otherCalls[ call ] ] );
 	}
 };
 
