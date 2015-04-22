@@ -1,21 +1,154 @@
-table#auction-table tbody {
-	background-color: #9cc;
-}
-table#auction-table {
-	border: 2px solid green;
-    border-collapse: collapse;
-}
-table#auction-table th, table#auction-table td {
-    padding: 0;
-    width: 32px;
-    text-align: center;
+.hand-diagram-column {
+	font-weight: bold;
+	font-family: arial; 
+	padding-left: 2px;
 }
 
-table {
-border-collapse: collapse;
+table.bbo.hand-diagram {
+	border: 2px solid #006600;
+	font-size: 20px;
+	font-weight: bold;
+	font-family: arial; 
+	border-collapse: collapse;   
+	margin-bottom:5px; 
 }
 
-table th, table td {
-    padding: 0;
-    text-align: center;
+table.bbo.auction-diagram {
+	border: 2px solid #006600;
+	font-size: 16px;
+	font-weight: bold;
+	font-family: arial; 
+	border-collapse: collapse;  
+	margin-bottom:5px; 
+}
+
+table.bbo tbody.hand-diagram-content {
+	background-color: #CBCBCB;
+}
+
+table.bbo tbody.auction-diagram-content {
+	background-color: #99cccc;
+}
+
+table.bbo tfoot.auction-diagram-footer {
+	background-color: #99cccc;
+}
+
+.vulnerable {
+	background-color: #cc0000;
+	color: #ffffff;
+}
+
+table.bbo span.auction-diagram-field {
+	display: inline-block;
+	width: 32px;
+	text-align:center;
+}
+
+table.bbo span.hand-diagram-field-direction {
+	display: inline-block;
+	width: 32px;
+	text-align:center;
+	background: #336799;
+	color: #FFFFFF;  
+}
+
+table.bbo span.hand-diagram-field-count {
+	padding-left: 2px;
+}
+
+table.bbo span.hand-diagram-field-suit {
+	display: inline-block;
+	width: 32px;
+	text-align:center;
+}
+
+table.bbo span.card-deck-field-cards {
+	display: inline-block;
+	width: 48px;
+	font-weight: bold;
+	font-size: 16px;
+	font-family: arial; 
+    text-align: center;	
+    border-radius:5px;
+    border: 1px solid gray;
+    cursor: pointer;
+    
+}
+
+table.bbo span.card-deck-field-cards.assigned {
+	background-color: #990000;
+	color: #FFFFFF;
+}
+
+table.bbo span.card-deck-field-cards.unassigned {
+	background-color: #99cccc;
+	color: #000000;	
+}
+
+table.bbo td.card-deck-column-title {
+	font-weight: bold;
+	font-size: 20px;
+	font-family: arial; 
+    text-align: center;	
+}
+
+table.bbo span.bidding-box-field-calls.disabled, table.bbo span.bidding-box-field-level.disabled {
+	opacity: 0.25;
+    filter: Alpha(opacity=25); /* IE8 and earlier */
+	cursor: not-allowed;
+}
+
+table.bbo span.bidding-box-field-calls.enabled, table.bbo span.bidding-box-field-level.enabled {
+	cursor: pointer;
+}
+
+table.bbo span.bidding-box-field-calls, table.bbo span.bidding-box-field-level {
+	background-color: #99cccc;
+	color: #000000;	
+}
+
+table.bbo span.bidding-box-field-level.selected {
+	background-color: #FFCE00;
+}
+
+table.bbo.bidding-box {
+	border: 2px solid #006600;
+	font-size: 20px;
+	font-weight: bold;
+	font-family: arial; 
+	border-collapse: collapse;   
+	margin-bottom:5px; 
+}
+
+table.bbo span.bidding-box-field-calls, table.bbo span.bidding-box-field-level {
+	display: inline-block;
+	width: 48px;
+	font-weight: bold;
+	font-size: 16px;
+	font-family: arial; 
+    text-align: center;	
+    border-radius:5px;
+    border: 1px solid gray;
+    cursor: pointer;  
+}
+
+table.bbo span.bidding-box-field-calls-p, table.bbo span.bidding-box-field-calls-allpass {
+	background-color: #006600;
+	color: #FFFFFF;
+}
+
+table.bbo span.bidding-box-field-calls-x {
+	background-color: #990000;
+	color: #FFFFFF;
+}
+
+table.bbo span.bidding-box-field-calls-r {
+	background-color: #000099;
+	color: #FFFFFF;
+}
+
+table.bbo span.bidding-box-field-calls-undo, table.bbo span.bidding-box-field-calls-reset {
+	background-color: #000000;
+	color: #FFFFFF;
 }

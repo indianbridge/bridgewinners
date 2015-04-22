@@ -10,6 +10,10 @@ var BW = {};
  * The initialize function. Called only once when the app starts.
  */
 BW.initialize = function() {
+	
+	// In order to respect data-enhanced=false attributes
+	$.mobile.ignoreContentEnabled = true;
+	
 	// The currently loaded deal
 	BW.deal = null;
 	
@@ -40,25 +44,29 @@ BW.initialize = function() {
 	// Trigger the hash change for the current page (first page)
 	$( window ).hashchange();
 	
+	// Handler for saving the deal
+	$( document ).on( "deal:changed", function( e ) {
+		BW.saveDeal( BW.deal );
+		BW.updatePublishButtonStatus( BW.deal );
+	});
+	
 	// Setup login and logout submit button handler
 	$( "#login-submit-button").click( BW.login );
 	$( "#logout-submit-button").click( BW.logout );
 	BW.updateLoginStatus();
-	// This is created in loadOptions
-	//BW.createCardDeck();
-	BW.createBiddingBox();
+	// Handler for login status change
+	$( document ).on( "loginStatus:changed", BW.updateLoginStatus );
 	
 	// All the options
 	var options = localStorage.getItem( "options" );
 	BW.options = ( options ? JSON.parse( options ) : {} );
 	_.defaults( BW.options, {
 		"theme" : "css/themes/default/jquery.mobile-1.4.5.min.css",
-		"collapsible" : false
+		"collapsible" : false,
+		"enableDebug": false
 	});
+	BW.options.enableDebug = true;
 	BW.loadOptions( BW.options );
-	
-	// Enable card and bid clicks
-	BW.enableCardAndBidClicks();
 };
 
 /**
@@ -96,6 +104,7 @@ else {
  */
 BW.loadOptions = function( options, option ) {
 	
+	// Check if a specific option has been specified
 	if ( typeof option !== "undefined" ) {
 		var derivedOptions = {};
 		derivedOptions[ option ] = options[ option ];
@@ -103,6 +112,8 @@ BW.loadOptions = function( options, option ) {
 	else {
 		var derivedOptions = options;
 	}
+	
+	// Process the options
 	for( var option in derivedOptions ) {
 		switch ( option ) {
 			case "theme" :
@@ -111,7 +122,6 @@ BW.loadOptions = function( options, option ) {
 				break;
 			case "collapsible" :
 				var value = derivedOptions[ option ];
-				BW.createCardDeck( value );
 				break;
 			default :
 				break;
@@ -221,9 +231,7 @@ BW.pageLoaded = function( parameters ) {
 		$( '#problem-title' ).html( "Create a " + BW.problemType + " problem" );
 		BW.loadDeal();
 		// Since we are loading the page we have to activate components
-		$( "#index" ).trigger( "create" );	
-		// Activate all click/change handlers
-		BW.activateDealEventHandlers( BW.deal );		
+		$( "#index" ).trigger( "create" );		
 	}
 	else {
 		$( "#index" ).trigger( "create" );
@@ -237,44 +245,149 @@ BW.pageLoaded = function( parameters ) {
 BW.loadDeal = function() {
 	// Get the saved information from local storage
 	var dealString = localStorage.getItem( "deal" );
+	if ( BW.options.enableDebug ) console.log( "Deal String is " + dealString );
 	if ( !dealString ) dealString = "{}";
 	dealJSON = JSON.parse( dealString );
 	if ( !_.has( dealJSON, "version" ) || dealJSON.version !== "1.0" ) dealJSON = {};
-	
-	// Set default values if not specified
-	/*var auctionName = BW.auctionName // Does not allow to use BW.auctionName directly in object
-	_.defaults( dealJSON, {
-		"dealer" : 'n',
-		"scoring" : "KO",
-		"vulnerability" : '-',
-		"auction" : { auctionName : "" }
-	});*/
 	
 	// Load the deal
 	BW.deal = new Bridge.Deal();
 	BW.deal.fromJSON( dealJSON );
 	
-	// Update all controls
-	BW.updateDealInfo( BW.deal );
-	BW.updateHand( BW.deal, BW.handDirection );
-	BW.updateAuction( BW.deal, BW.auctionName );	
-	BW.updatePublishButtonStatus( BW.deal );	
+	if ( BW.options.enableDebug ) console.log( "Loaded deal is " + BW.deal.toString() );
 	
-	// Update the card deck. This is done only once since click handler takes of subsequent changes.
-	BW.updateCardDeck( BW.deal );
+	// Setup all the controls
+	BW.setupDealInfo( BW.deal );
+	BW.setupHandAndCardDeck( BW.deal, BW.handDirection );
+	BW.setupAuctionAndBiddingBox( BW.deal );
+	
+	// Click for opening card deck 
+	$( "#hand" ).click( function() {
+		$( "#select-cards" ).popup( "open", { transition: "flow" } );
+	});
+	
+	// Click to open bidding box
+	$( "#auction" ).click( function() {
+		$( "#select-auction" ).popup( "open", { transition: "flow" } );
+	});		
+	
+	// Set the publish button status	
+	BW.updatePublishButtonStatus( BW.deal );	
 };
 
 /**
- * Update all controls to values from specified deal
+ * Load values for scoring, dealer, vul and notes from loaded deal
+ * Additionally add a handler callback for when a value is changed
  * @param {object} deal - the deal to get values from
  */
-BW.updateDealInfo = function( deal ) {
+BW.setupDealInfo = function( deal ) {
 	// Populate fields and controls
 	var fields = [ "scoring", "dealer", "vulnerability", "notes" ];
 	for( var i = 0; i < fields.length; ++i ) {
 		var field = fields[i];
 		$( '#' + field ).val( BW.deal.get( field ) );
 	}
+	
+	// Handler for change
+	$( ".deal-info" ).change( function() {
+		var field = $( this ).attr( "field" );
+		var value = $( this ).val();
+		// This is for notes
+		if ( value === null ) value = '';
+		deal.set( field, value );		
+	});		
+};
+
+/**
+ * Setup hand and card-deck to manage specification of hand.
+ * @param {object} deal - instance of Deal class that contains the hand
+ */
+BW.setupHandAndCardDeck = function( deal ) {
+	// Hand shown in main page and also repeated on card deck page for convenience
+	var hand = deal.getHand( BW.handDirection );
+	hand.toHTML( { containerID: "hand", idPrefix: "h", registerChangeHandler: true } );
+	hand.toHTML( { containerID: "hand-summary", idPrefix: "hs", registerChangeHandler: true } );
+
+	// Card Deck
+	deal.toCardDeck( { containerID: "card-deck", show: { title: true, activeHand: false, card: true, assignedTo: false }, idPrefix: "cd", classes: { "card-deck": ["bbo"] }, registerChangeHandler: true, } );	
+};
+
+/**
+ *Setup auction and bidding box to manage specification of auction.
+ * @param {object} deal - instance of Deal class that contains the auction
+ */
+BW.setupAuctionAndBiddingBox = function( deal ) {
+	// Get the auction
+	var auction = deal.getAuction();
+	auction.toBBODiagram( { containerID: "auction", idPrefix: "a", registerChangeHandler: true } );
+	auction.toBBODiagram( { containerID: "auction-summary", idPrefix: "as", registerChangeHandler: true } );
+	
+	// Setup bidding box
+	auction.toBiddingBox( { layout: "full", containerID: "bidding-box", idPrefix: "bb", classes: { "bidding-box": ["bbo"] }, registerChangeHandler: true } );
+};
+
+
+/**
+ * An utility to update the text and status of a button.
+ * @param {string} id - the id of button being updated
+ * @param {string} text - the text/html for the button
+ * @param {boolean} disabled - whether the button is disabled or enabled
+ */
+BW.updateButton = function( id, text, disabled ) {
+	$( '#' + id ).prop( "disabled", disabled ).html( text );
+}
+
+/**
+ * Handle login button click
+ */
+BW.login = function( event ) {
+	
+	var username = $( "#username" ).val();
+	var password = $( "#password" ).val();
+	if ( username !== "bridge" || password !== "winners" ) {
+		alert( "Invalid credentials" );
+	}
+	else {
+		BW.loggedIn = true;
+		$( "#login-dialog" ).popup( "close" );
+		$( document ).trigger( "loginStatus:changed",  [ BW.loggedIn ]);
+	}
+	event.preventDefault();
+	event.stopPropagation();
+	return false;	
+};
+
+/**
+ * Handle login button click
+ */
+BW.logout = function( event ) {
+	BW.loggedIn = false;
+	$( "#logout-dialog" ).popup( "close" );
+	$( document ).trigger( "loginStatus:changed",  [ BW.loggedIn ]);
+	event.preventDefault();
+	event.stopPropagation();
+	return false;	
+};
+
+/**
+ * Set the login and logout button and dialog
+ */
+BW.updateLoginStatus = function() {
+	var text = BW.loggedIn ? "Profile" : "Login";
+	var addClass = BW.loggedIn ? "ui-icon-user" : "ui-icon-power";
+	var removeClass = BW.loggedIn ? "ui-icon-power" : "ui-icon-user";
+	var href = BW.loggedIn ? "#logout-dialog" : "#login-dialog";
+	$( "#login-button" ).attr( "href", href ).addClass( addClass ).removeClass( removeClass ).html( text );
+	BW.updatePublishButtonStatus( BW.deal );
+};
+
+/**
+ * Information in deal has changed.
+ * Save to local storage and update all controls
+ * @param {object} deal - the deal that has all the information
+ */
+BW.saveDeal = function( deal ) {
+	localStorage.setItem( "deal", JSON.stringify( deal.toJSON() ) );
 };
 
 /**
@@ -283,6 +396,7 @@ BW.updateDealInfo = function( deal ) {
  * @param {object} deal - the deal to get values from
  */
 BW.updatePublishButtonStatus = function( deal ) {
+	if ( !deal ) return;
 	var id = "publish-button";
 	var count = deal.getHand( BW.handDirection ).getCount();
 	if ( count !== 13 ) {
@@ -322,366 +436,5 @@ BW.updatePublishButtonStatus = function( deal ) {
 		return;	
 	}
 	BW.updateButton( id, "Publish", false );
-};
-
-/**
- * An utility to update the text and status of a button.
- * @param {string} id - the id of button being updated
- * @param {string} text - the text/html for the button
- * @param {boolean} disabled - whether the button is disabled or enabled
- */
-BW.updateButton = function( id, text, disabled ) {
-	$( '#' + id ).prop( "disabled", disabled ).html( text );
-}
-
-/**
- * Load or update hand display in the create problem page.
- * @param {object} deal - instance of Deal class that contains the hand
- */
-BW.updateHand = function( deal ) {
-	var direction = BW.handDirection;
-	var hand = deal.getHand( direction );
-	var count = hand.getCount();
-	var countHTML = '<span class="ui-li-count">' + count + '</span>';
-	var handHTML = hand.toHTML();
-	$( "#hand" ).html( handHTML + countHTML );	
-	var html = "";
-	html += "<button class='ui-btn ui-corner-all'>";
-	html += "Hand : " + handHTML + countHTML;
-	html += "</button>";
-	$( "#hand-summary" ).html( html  );		
-};
-
-/**
- * Update card deck based on deal
- * @param {object} deal - the deal to get which cards have been assigned 
- */
-BW.updateCardDeck = function( deal ) {
-	var hand = deal.getHand( BW.handDirection );
-	for( var i = 0; i < Bridge.suitOrder.length; ++i ) {
-		var suit = Bridge.suitOrder[i];
-		for( var j = 0; j < Bridge.rankOrder.length; ++j ) {
-			var rank = Bridge.rankOrder[j];
-			var card = suit + rank;
-			if ( hand.hasCard( suit, rank ) ) {
-				var status = "in-hand";
-				var src = "img/cards/cb_blue2.png"
-			}
-			else {
-				var status = "in-deck";
-				var src = "img/cards/" + card + ".png";
-			}
-			$( "#card-" + card ).attr( "src", src ).attr( "status", status );
-		}
-	}
-
-};
-
-/**
- * Setup card deck for adding and removing cards to hand.
- */
-BW.createCardDeck = function( collapsible ) {
-	if ( typeof collapsible === "undefined" ) collapsible = false;
-	var html = "";
-	var dataRole = '"';
-	html += '<div class="card-deck" id="card-deck-set"';
-	if ( collapsible ) html += ' data-role="collapsibleset" ';
-	html += '>';
-	var open = true;
-	for( var i = 0; i < Bridge.suitOrder.length; ++i ) {
-		var suit = Bridge.suitOrder[i];
-		// By default spades cards are open
-		if ( suit === 's' ) open = true;
-		else open = false;
-		html += BW.createSuitPanel( suit, open, collapsible );
-	}
-	html += '</div>';
-	$( "#card-deck" ).empty().append( html );		
-};
-
-/**
- * Enable the click handlers for card deck when generating hand
- * and bidding box when generating auction.
- * This needs to be done only once since we don't recreate the container each time.
- */
-BW.enableCardAndBidClicks = function() {
-	// Card deck click
-	$( "#card-deck" ).on( "click", ".card", function() {
-		var deal = BW.deal;
-		var hand = deal.getHand( BW.handDirection );
-		var status = $( this ).attr( "status" );
-		if ( status === "in-deck" ) {
-			var card = $( this ).attr( "card" );
-			try {
-				hand.addCard( card[0], card[1] );
-				$( this ).attr( "src", "img/cards/cb_blue2.png" ).attr( "status", "in-hand" );
-				BW.saveDeal( deal );
-				BW.updateHand( deal  );
-			}
-			catch( err ) {
-				alert( err.message );
-			}
-		}
-		else {
-			var src = "img/cards/" + $( this ).attr( "card" ) + ".png";
-			var card = $( this ).attr( "card" );
-			$( this ).attr( "src", src ).attr( "status", "in-deck" );
-			hand.removeCard( card[0], card[1] ); 
-			BW.saveDeal( deal );
-			BW.updateHand( deal );
-		}
-	});
-	// Bidding box
-	$( "#bidding-box" ).on( "click", ".call", function() {
-		var deal = BW.deal;
-		var auction = deal.getAuction();
-		var call = $( this ).attr( "call" ).toLowerCase();
-		try {
-			switch( call ) {
-				case "undo" :
-					auction.removeCall();
-					break;
-				case "pass" :
-					auction.addCall( 'p' );
-					break;
-				case "double" :
-					auction.addCall( 'x' );
-					break;
-				case "redouble" :
-					auction.addCall( 'r' );
-					break;
-				case "all pass" :
-					auction.addAllPass();
-					break;
-				default:
-					auction.addCall( call );
-					break;
-			}
-			BW.saveDeal( deal );
-			BW.updateAuction( deal );
-		}
-		catch( err ) {
-			alert( err.message );
-		}	
-	});			
-}; 
-
-
-/**
- * An utility to setup clickable cards for any one suit
- * @param {string} suit - the suit to setup for
- * @param {object} deal - the deal to get which cards have been assigned
- * @param {boolean} open - whether the collapsible should be open or not
- */
-BW.createSuitPanel = function( suit, open, collapsible ) {
-	var html = "";
-	html += '<div class="card-deck-suit"';
-	if ( collapsible ) html += ' data-role="collapsible" '
-	html += (open ? ' data-collapsed="false"' : '') + '>';	
-    if ( collapsible ) html += '<h2>' + Bridge.suits[ suit ].html + ' Cards</h2>';
-    html += '<div>';
-    for( var i = 0; i < Bridge.rankOrder.length; ++i ) {
-		var rank = Bridge.rankOrder[i];
-		var card = suit + rank;
-		var status = "in-deck";
-		var src = "img/cards/" + card + ".png";
-		html += '<img id="card-' + card + '" status="' + status + '" card="' + card + '" class="card" height="50" src="' + src + '"/>';
-	}
-	html += '</div>';
-	html += '</div>	';
-	return html;
-}; 
-
-/**
- * Load or update auction display in the create problem page.
- * @param {object} deal - instance of Deal class that contains the auction
- */
-BW.updateAuction = function( deal ) {
-	// Get the auction
-	var auction = deal.getAuction();
-	// Setup auction as a styled table
-	var html = auction.toHTMLTable();
-	$( "#auction" ).html( html );
-	$( "#auction-summary" ).html( html );	
-	
-	// Setup bidding box as styled table
-	BW.updateBiddingBox( auction );
-};
-
-/**
- * Activate click/change handlers for hand and auction and other deal fields
- * @param {object} deal - instance of Deal class that contains the information
- */
-BW.activateDealEventHandlers = function( deal ) {
-	// Click on hand
-	$( "#hand" ).click( function() {
-		$( "#select-cards" ).popup( "open", { transition: "flow" } );
-	});
-	// Click on auction
-	$( "#auction" ).click( function() {
-		$( "#select-auction" ).popup( "open", { transition: "flow" } );
-	});	
-	
-	// Deal information controls
-	$( ".deal-info" ).change( function() {
-		var field = $( this ).attr( "field" );
-		var value = $( this ).val();
-		// This is for notes
-		if ( value === null ) value = '';
-		deal.set( field, value );		
-		BW.saveDeal( deal );
-		BW.updateDealInfo( deal );
-		BW.updateAuction( deal );
-	});	
-	
-
-
-};
-
-/**
- * An utility function to generate html for a bidding button.
- * Used in generating buttons in bidding box
- * @param {number} level - the level of this bid
- * @param {string} suit - the suit of this bid
- * @param {boolean} disabled - whether the button should be disabled or not
- */
-BW.makeBidButton = function( level, suit, id, disabled ) {
-	var text = level + Bridge.calls[ suit ].html;
-	var call = level+suit;
-	var html = "<button id='" + id + "' call='" + call + "' class='ui-btn ui-btn-inline ui-mini ui-corner-all call'";
-	if ( disabled ) html += " disabled";
-	html += ">" + text + "</button>";
-	return html;
-};
-
-/**
- * An utility function to generate html for a button.
- * @param {string} text - the text that goes inside the button
- * @param {boolean} disabled - whether the button should be disabled or not
- */
-BW.makeButton = function( text, id, disabled ) {
-	var html = "<button id='" + id + "' call = '" + text + "' class='ui-btn ui-btn-inline ui-mini ui-corner-all call'";
-	if ( disabled ) html += " disabled";
-	html += ">" + text + "</button>";
-	return html;
-};
-
-/**
- * Setup the bidding box for creating auction in bidding and lead problems.
- */
-BW.createBiddingBox = function() {
-	var disabled = true;
-	var html = "";
-	html += "<table><thead>";
-	var id = "call-x";
-	html += "<tr><th colspan='2'>" + BW.makeButton( "Double", id, disabled ) + "</th>";
-	id = "call-p";
-	html += "<th>" + BW.makeButton( "Pass", id, disabled ) + "</th>";
-	id = "call-r";
-	html += "<th colspan='2'>" + BW.makeButton( "ReDouble", id, disabled ) + "</th></tr>";
-	html += "</thead><tbody>";
-	for( var i = 1; i <= 7; ++i ) {
-		html += "<tr>";
-		for( var j = 0; j < Bridge.callOrder.length; ++j ) {
-			var call = Bridge.callOrder[j];
-			if ( Bridge.calls[ call ].bid ) {
-				var id = "call-" + i + call;
-				html += "<td>" + BW.makeBidButton( i, call, id, disabled ) + "</td>";
-			}
-		}
-		html += "</tr>";
-	}
-	html += "</tbody>";
-	id = "call-ap";
-	html += "<tfoot><tr><th colspan='2'>" + BW.makeButton( "All Pass", id, disabled ) + "</th>";
-	html += "<th></th>";
-	id = "call-u";
-	html += "<th colspan='2'>" + BW.makeButton( "Undo", id, disabled ) + "</th>";
-	html += "</table>";
-	$( "#bidding-box" ).html( html );
-		
-};
-
-/**
- * Update the bidding box in response to some change
- * @param {object} deal - the deal which has auction
- * @param {object} auction - the auction so far to enable appropriate buttons.
- */
-BW.updateBiddingBox = function( auction ) {
-	var allowedCalls = auction.getContract().allowedCalls( auction.nextToCall );
-	for( var i = 1; i <= 7; ++i ) {
-		for( var call in Bridge.calls ) {
-			if ( Bridge.isBid( call ) ) {
-				var text = i+call;
-				var disabled = !allowedCalls[ text ];
-				$( "#call-" + text ).prop( "disabled", disabled );
-			}
-		}
-	}
-	var otherCalls = { 
-		"x" : "x", 
-		"p" : "p",
-		"r" : "r",
-		"ap" : "p",
-		"u" : "u" 
-	};
-	for( var call in otherCalls ) {
-		$( "#call-" + call ).prop( "disabled", !allowedCalls[ otherCalls[ call ] ] );
-	}
-};
-
-/**
- * Handle login button click
- */
-BW.login = function( event ) {
-	
-	var username = $( "#username" ).val();
-	var password = $( "#password" ).val();
-	if ( username !== "bridge" || password !== "winners" ) {
-		alert( "Invalid credentials" );
-	}
-	else {
-		BW.loggedIn = true;
-		BW.updateLoginStatus();
-		BW.loginStatusChanged = true;
-		$( "#login-dialog" ).popup( "close" );
-	}
-	event.preventDefault();
-	event.stopPropagation();
-	return false;	
-};
-
-/**
- * Information in deal has changed.
- * Save to local storage and update all controls
- * @param {object} deal - the deal that has all the information
- */
-BW.saveDeal = function( deal ) {
-	localStorage.setItem( "deal", JSON.stringify( deal.toJSON() ) );
-	BW.updatePublishButtonStatus( deal );
-};
-
-/**
- * Handle login button click
- */
-BW.logout = function( event ) {
-	BW.loggedIn = false;
-	BW.updateLoginStatus();
-	BW.loginStatusChanged = true;
-	$( "#logout-dialog" ).popup( "close" );
-	event.preventDefault();
-	event.stopPropagation();
-	return false;	
-};
-
-/**
- * Set the login and logout button and dialog
- */
-BW.updateLoginStatus = function() {
-	var text = BW.loggedIn ? "Profile" : "Login";
-	var addClass = BW.loggedIn ? "ui-icon-user" : "ui-icon-power";
-	var removeClass = BW.loggedIn ? "ui-icon-power" : "ui-icon-user";
-	var href = BW.loggedIn ? "#logout-dialog" : "#login-dialog";
-	$( "#login-button" ).attr( "href", href ).addClass( addClass ).removeClass( removeClass ).html( text );
 };
 

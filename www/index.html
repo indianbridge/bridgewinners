@@ -22,7 +22,7 @@
 		
 		<div data-role="page" id="index">
 			<div id="myheader" data-role="header">
-				<a href="#action=load&page=home.html" data-ajax="false" class="ui-btn ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">Home</a>
+				<a href="#menu-panel" data-ajax="false" class="ui-btn ui-corner-all ui-shadow ui-icon-bars ui-btn-icon-left">Menu</a>
 				<h4>
 					<img style="vertical-align:middle;" height="25px" src="img/icon.png"/>Welcome to Bridge Winners App
 				</h4>
@@ -85,7 +85,16 @@
 			  <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
 			  <div id="auction-summary"></div>
 			  <div id="bidding-box"></div>
-			</div>											
+			</div>	
+			<div data-role="panel" id="menu-panel" data-display="overlay" data-swipe-close="true"> 
+				<h2>Menu</h2>
+				<a href="#action=load&page=home.html" data-ajax="false" class="ui-btn ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">Home</a>
+				<a href="#action=create&page=create.html&problem=bidding" data-ajax="false" class="ui-btn ui-icon-edit ui-btn-icon-left ui-corner-all ui-shadow">Create Bidding Problem</a>
+				<a href="#action=create&page=create.html&problem=lead" data-ajax="false" class="ui-btn ui-icon-edit ui-btn-icon-left ui-corner-all ui-shadow">Create Lead Problem</a>
+				<a href="#action=load&page=options.html" data-ajax="false" class="ui-btn ui-icon-gear ui-btn-icon-left ui-corner-all ui-shadow">Options</a>
+				<a href="#action=load&page=about.html" data-ajax="false" class="ui-btn ui-icon-info ui-btn-icon-left ui-corner-all ui-shadow">About Us</a>
+				<a href="#pageone" data-rel="close" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left">Close panel</a>
+			</div> 													
 		</div>	
 		<script type="text/javascript" src="cordova.js"></script>
 		<script type="text/javascript" src="js/lodash.min.js"></script>
