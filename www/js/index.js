@@ -305,11 +305,11 @@ BW.setupDealInfo = function( deal ) {
 BW.setupHandAndCardDeck = function( deal ) {
 	// Hand shown in main page and also repeated on card deck page for convenience
 	var hand = deal.getHand( BW.handDirection );
-	hand.toHTML( { containerID: "hand", idPrefix: "h", registerChangeHandler: true } );
-	hand.toHTML( { containerID: "hand-summary", idPrefix: "hs", registerChangeHandler: true } );
+	hand.toHTML( { containerID: "hand", show: { countInContent: true }, idPrefix: "h", registerChangeHandler: true } );
+	hand.toHTML( { containerID: "hand-summary", show: { countInContent: true }, idPrefix: "hs", registerChangeHandler: true } );
 
 	// Card Deck
-	deal.toCardDeck( { containerID: "card-deck", show: { title: true, activeHand: false, card: true, assignedTo: false }, idPrefix: "cd", classes: { "card-deck": ["bbo"] }, registerChangeHandler: true, } );	
+	deal.toCardDeck( { containerID: "card-deck", idPrefix: "cd", show: { text:false, title: false, activeHand: false, assignedTo: false }, classes: { "card-deck": ["images"] } } );
 };
 
 /**
