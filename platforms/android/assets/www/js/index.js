@@ -10,11 +10,29 @@ var BW = {};
  * The initialize function. Called only once when the app starts.
  */
 BW.initialize = function() {
-	// The currently loaded deal
-	BW.deal = null;
 	
-	// The status of user
-	BW.loggedIn = false;
+	// In order to respect data-enhanced=false attributes
+	$.mobile.ignoreContentEnabled = true;
+	$.mobile.buttonMarkup.hoverDelay = 0;
+	$.mobile.hoverDelay = 0;
+	BW.isInit = true;
+	
+	// enable fast click
+	var attachFastClick = Origami.fastclick;
+	attachFastClick(document.body);
+	
+	// The current user
+	BW.currentUser = new BW.User();
+	
+	// Load all the default, published and unpublished problems
+	BW.problems = new BW.Problems();
+	
+	// Load the current options
+	BW.currentOptions = new BW.Options();
+	
+	// Enable or Disable debug logging
+	BW.enableDebug = true;	
+	Bridge.options.enableDebug = true;
 
 	// The id of the main content
 	BW.contentID = "mycontent";	
@@ -22,17 +40,8 @@ BW.initialize = function() {
 	// Assume that north is hand shown. It should not matter (famous last words)
 	BW.handDirection = 'n';
 	
-	// The auction name. Can use anything (see previous comment)
-	BW.auctionName = "Default";
-	
 	// Was the last state a ui dialog
 	BW.isUIStateDialog = false;
-	
-	// Has the login status changed
-	BW.loginStatusChanged = false;
-	
-	// What is the problem type
-	BW.problemType = null;
 	
 	// A cache to store loaded html files
 	BW.pageCache = {};
@@ -42,26 +51,6 @@ BW.initialize = function() {
 	
 	// Trigger the hash change for the current page (first page)
 	$( window ).hashchange();
-	
-	// Setup login and logout submit button handler
-	$( "#login-submit-button").click( BW.login );
-	$( "#logout-submit-button").click( BW.logout );
-	BW.updateLoginStatus();
-	// This is created in loadOptions
-	//BW.createCardDeck();
-	BW.createBiddingBox();
-	
-	// All the options
-	var options = localStorage.getItem( "options" );
-	BW.options = ( options ? JSON.parse( options ) : {} );
-	_.defaults( BW.options, {
-		"theme" : "css/themes/default/jquery.mobile-1.4.5.min.css",
-		"collapsible" : false
-	});
-	BW.loadOptions( BW.options );
-	
-	// Enable card and bid clicks
-	BW.enableCardAndBidClicks();
 };
 
 /**
@@ -69,12 +58,6 @@ BW.initialize = function() {
  */
 BW.isBrowser = function() {
 	return !( window.cordova || window.PhoneGap );
-	// Older way for just chrome
-	/*if (navigator.userAgent.match(/chrome/i)) {	
-	}
-	else {
-	}*/
-	
 };
  
 // Checking for cordova and jQM has to go after BW.initialize because they will call it
@@ -96,87 +79,27 @@ else {
 	$.when( cordovaReady, jQueryMobileReady ).then( BW.initialize );
 }
 
-
-
-/**
- * Load the options
- * @param {object} options - the set of options
- * @param {string} [option] - optional specific option to load
- */
-BW.loadOptions = function( options, option ) {
-	
-	if ( typeof option !== "undefined" ) {
-		var derivedOptions = {};
-		derivedOptions[ option ] = options[ option ];
-	}
-	else {
-		var derivedOptions = options;
-	}
-	for( var option in derivedOptions ) {
-		switch ( option ) {
-			case "theme" :
-				// Load the stylesheet
-				$( "#jqm-stylesheet" ).attr( "href", BW.options.theme );		
-				break;
-			case "collapsible" :
-				var value = derivedOptions[ option ];
-				BW.createCardDeck( value );
-				break;
-			default :
-				break;
-		}
-	}
-	
-};
-
-
-/**
- * Set the options
- * @param {object} options - the set of options
- */
-BW.setOptions = function( options ) {
-	$( "#theme" ).val( options.theme );
-	$( "#make-card-deck-collapsible" ).prop( "checked", options.collapsible );
-};
-
-/**
- * Save the options to local storage
- * @param {object} options - the set of options
- */
-BW.saveOptions = function( options ) {
-	localStorage.setItem( "options", JSON.stringify( options ) );
-};
-
-/**
- * An utility function to determine if page should be recreated/redrawn
- * @param {boolean} isDialog - is the current page a dialog
- * @param {boolean} isLastDialog - was the last page a dialog
- */
-BW.recreatePage = function( isDialog, isLastDialog ) {
-	if ( isDialog ) return false;
-	if ( isLastDialog && !BW.loginStatusChanged ) return false;
-	return true;
-};
-
 /**
  * The hash change handler.
  * Dispatches to appropriate handler based on action and passes the hash parameters
  */
 BW.hashChangeHandler = function() {
 	// Parse the hash parameters
-	var parameters = Bridge.readQueryParameters( location.hash, '#' );
+	var init = BW.isInit;
+	BW.isInit = false;
+	var parameters = Bridge.getHash();
 	_.defaults( parameters, { action: "load", page: "home.html" } );
 	var action = parameters.action;
 	var uiState = parameters[ "ui-state" ];
-	if ( uiState && uiState === "dialog" ) isDialog = true;
+	if ( !init && uiState && uiState === "dialog" ) isDialog = true;
 	else isDialog = false;
-	var recreatePage = BW.recreatePage( isDialog, BW.isUIStateDialog );
+	var recreatePage = !(isDialog || BW.isUIStateDialog);
 	BW.isUIStateDialog = isDialog;
 	if ( !recreatePage ) return;
-	BW.loginStatusChanged = false;
 	switch ( action ) {
 		case "load" :
 		case "create" :
+		case "view" :
 			var page = parameters.page;
 			$.mobile.loading( "show" );
 			if ( _.has( BW.pageCache, page ) ) {
@@ -198,138 +121,40 @@ BW.hashChangeHandler = function() {
 	}
 };
 
-/**
- * Handler for option changes.
- */
-BW.optionChanged = function() {
-	var name = $( this ).attr( "name" );
-	var type = $( this ).attr( "type" )
-	if ( type === "checkbox" ) {
-		var value = $( this ).prop( "checked" );
-	}
-	else {
-		var value = $( this ).val();
-	}
-	BW.options[ name ] = value;
-	BW.saveOptions( BW.options );
-	BW.loadOptions( BW.options, name );
-};
 
 /**
  * Actions after page is loaded.
- * Here we can add event handlers etc that are page dependent.
+ * @param {object} parameters the associative array of hash parameters
  */
 BW.pageLoaded = function( parameters ) {
 	if ( parameters.page === "options.html" ) {
-		BW.setOptions( BW.options );
+		BW.currentOptions.initializeAll();
 		$( "#index" ).trigger( "create" );
-		$( ".options" ).change( BW.optionChanged );
+		$( ".options" ).change( function() {
+			var name = $( this ).attr( "name" );
+			var type = $( this ).attr( "type" )
+			if ( type === "checkbox" ) {
+				var value = $( this ).prop( "checked" );
+			}
+			else {
+				var value = $( this ).val();
+			}
+			BW.currentOptions.change( name, value );		
+		});
 	}
 	else if ( parameters.page === "create.html" ) {
-		BW.problemType = parameters.problem;
-		$( '#problem-title' ).html( "Create a " + BW.problemType + " problem" );
-		BW.loadDeal();
+		BW.problems.loadProblem( parameters.name );
+		// Since we are loading the page we have to activate components
+		$( "#index" ).trigger( "create" );		
+	}
+	else if ( parameters.page === "list.html" ) {
+		BW.problems.loadProblemList( parameters.type );
 		// Since we are loading the page we have to activate components
 		$( "#index" ).trigger( "create" );	
-		// Activate all click/change handlers
-		BW.activateDealEventHandlers( BW.deal );		
 	}
 	else {
 		$( "#index" ).trigger( "create" );
 	}
-};
-
-
-/**
- * Load a deal based on saved information
- */
-BW.loadDeal = function() {
-	// Get the saved information from local storage
-	var dealString = localStorage.getItem( "deal" );
-	if ( !dealString ) dealString = "{}";
-	dealJSON = JSON.parse( dealString );
-	
-	// Set default values if not specified
-	var auctionName = BW.auctionName // Does not allow to use BW.auctionName directly in object
-	_.defaults( dealJSON, {
-		"dealer" : 'n',
-		"scoring" : "KO",
-		"vulnerability" : '-',
-		"auction" : { auctionName : "" }
-	});
-	
-	// Load the deal
-	BW.deal = new Bridge.Deal();
-	BW.deal.fromJSON( dealJSON );
-	
-	// Update all controls
-	BW.updateDealInfo( BW.deal );
-	BW.updateHand( BW.deal, BW.handDirection );
-	BW.updateAuction( BW.deal, BW.auctionName );	
-	BW.updatePublishButtonStatus( BW.deal );	
-	
-	// Update the card deck. This is done only once since click handler takes of subsequent changes.
-	BW.updateCardDeck( BW.deal );
-};
-
-/**
- * Update all controls to values from specified deal
- * @param {object} deal - the deal to get values from
- */
-BW.updateDealInfo = function( deal ) {
-	// Populate fields and controls
-	var fields = [ "scoring", "dealer", "vulnerability", "notes" ];
-	for( var i = 0; i < fields.length; ++i ) {
-		var field = fields[i];
-		$( '#' + field ).val( BW.deal.get( field ) );
-	}
-};
-
-/**
- * Enable or Disable the Publish button based on status of hand, auction and login.
- * It will also depend on whether this is a bidding or lead problem
- * @param {object} deal - the deal to get values from
- */
-BW.updatePublishButtonStatus = function( deal ) {
-	var id = "publish-button";
-	var count = deal.get( 'count', BW.handDirection );
-	if ( count !== 13 ) {
-		var disabled = true;
-		var text = "Not Enough Cards";
-		BW.updateButton( id, text, disabled );
-		return;
-	}
-	var auction = deal.getAuction();
-	switch( BW.problemType ) {
-		case "bidding" :
-			if ( auction.contract && auction.contract.isComplete ) {
-				var disabled = true;
-				var text = "Auction is already complete";				
-				BW.updateButton( id, text, disabled );
-				return;
-			}
-			break;
-		case "lead" :
-			if ( auction.contract && !auction.contract.isComplete ) {
-				var disabled = true;
-				var text = "Auction is not complete";				
-				BW.updateButton( id, text, disabled );
-				return;
-			}
-			break;
-		default :
-			var disabled = true;
-			var text = "Unknown Problem Type";				
-			BW.updateButton( id, text, disabled );
-			return;		
-	}
-	if ( !BW.loggedIn ) {
-		var disabled = true;
-		var text = "Not Logged In";	
-		BW.updateButton( id, text, disabled );
-		return;	
-	}
-	BW.updateButton( id, "Publish", false );
 };
 
 /**
@@ -340,358 +165,711 @@ BW.updatePublishButtonStatus = function( deal ) {
  */
 BW.updateButton = function( id, text, disabled ) {
 	$( '#' + id ).prop( "disabled", disabled ).html( text );
+	if ( disabled ) $( '#' + id ).addClass('ui-disabled');
+	else $( '#' + id ).removeClass('ui-disabled');
 }
 
 /**
- * Load or update hand display in the create problem page.
- * @param {object} deal - instance of Deal class that contains the hand
+ * A class to manage all the problems.
+ * Problems can belong to defaults, published or unpublished lists.
  */
-BW.updateHand = function( deal ) {
-	var direction = BW.handDirection;
-	var count = deal.get( 'count', direction );
-	var countHTML = '<span class="ui-li-count">' + count + '</span>';
-	var handHTML = deal.hands[ direction ].toString( true );
-	$( "#hand" ).html( handHTML + countHTML );	
+BW.Problems = function() {
+	var defaultList = localStorage.getItem( "defaults" );
+	if ( !defaultList ) localStorage.setItem( "defaults", JSON.stringify( [ "bidding", "lead" ] ) );
+	this.lists = [ "defaults", "unpublished", "published" ];
+	this.names = {};
+	this.problems = {};
+	_.each( this.lists, function( listName ) {
+		this.names[ listName ] = [];
+		var names = localStorage.getItem( listName );
+		if ( names ) this.names[ listName ] = JSON.parse( names );
+		var newList = [];
+		_.each( this.names[ listName ], function( name ) {
+			var problem = BW.Problem.create( name, listName );
+			if ( problem !== null ) {
+				newList.push( name );
+				this.problems[ name ] = problem;
+			}
+		}, this );
+		this.names[ listName ] = newList;
+		localStorage.setItem( listName, JSON.stringify( this.names[ listName ] ) );
+	}, this );
+};
+
+/**
+ * Load a problem into the page.
+ * @param {string} name the unique identifier name of the problem.
+ */
+BW.Problems.prototype.loadProblem = function( name ) {
+	var problem = this.getProblem( name );
+	problem.loadDeal();
+};
+
+/**
+ * Load a problem list into the page.
+ * @param {string} list the list to load
+ */
+BW.Problems.prototype.loadProblemList = function ( list ) {
 	var html = "";
-	html += "<button class='ui-btn ui-corner-all'>";
-	html += "Hand : " + handHTML + countHTML;
-	html += "</button>";
-	$( "#hand-summary" ).html( html  );		
-};
-
-/**
- * Update card deck based on deal
- * @param {object} deal - the deal to get which cards have been assigned 
- */
-BW.updateCardDeck = function( deal ) {
-	for( var i = 0; i < Bridge.suitOrder.length; ++i ) {
-		var suit = Bridge.suitOrder[i];
-		for( var j = 0; j < Bridge.rankOrder.length; ++j ) {
-			var rank = Bridge.rankOrder[j];
-			var card = suit + rank;
-			if ( deal._hasCard( suit, rank, BW.handDirection ) ) {
-				var status = "in-hand";
-				var src = "img/cards/cb_blue2.png"
-			}
-			else {
-				var status = "in-deck";
-				var src = "img/cards/" + card + ".png";
-			}
-			$( "#card-" + card ).attr( "src", src ).attr( "status", status );
-		}
-	}
-
-};
-
-/**
- * Setup card deck for adding and removing cards to hand.
- */
-BW.createCardDeck = function( collapsible ) {
-	if ( typeof collapsible === "undefined" ) collapsible = false;
-	var html = "";
-	var dataRole = '"';
-	html += '<div class="card-deck" id="card-deck-set"';
-	if ( collapsible ) html += ' data-role="collapsibleset" ';
-	html += '>';
-	var open = true;
-	for( var i = 0; i < Bridge.suitOrder.length; ++i ) {
-		var suit = Bridge.suitOrder[i];
-		// By default spades cards are open
-		if ( suit === 's' ) open = true;
-		else open = false;
-		html += BW.createSuitPanel( suit, open, collapsible );
-	}
-	html += '</div>';
-	$( "#card-deck" ).empty().append( html );		
-};
-
-/**
- * Enable the click handlers for card deck when generating hand
- * and bidding box when generating auction.
- * This needs to be done only once since we don't recreate the container each time.
- */
-BW.enableCardAndBidClicks = function() {
-	// Card deck click
-	$( "#card-deck" ).on( "click", ".card", function() {
-		var deal = BW.deal;
-		var status = $( this ).attr( "status" );
-		if ( status === "in-deck" ) {
-			var card = $( this ).attr( "card" );
-			try {
-				deal.addCard( card[0], card[1], 'n' );
-				$( this ).attr( "src", "img/cards/cb_blue2.png" ).attr( "status", "in-hand" );
-				BW.saveDeal( deal );
-				BW.updateHand( deal  );
-			}
-			catch( err ) {
-				alert( err.message );
-			}
-		}
-		else {
-			var src = "img/cards/" + $( this ).attr( "card" ) + ".png";
-			var card = $( this ).attr( "card" );
-			$( this ).attr( "src", src ).attr( "status", "in-deck" );
-			deal.removeCard( card[0], card[1] ); 
-			BW.saveDeal( deal );
-			BW.updateHand( deal );
-		}
-	});
-	// Bidding box
-	$( "#bidding-box" ).on( "click", ".call", function() {
-		var deal = BW.deal;
-		var call = $( this ).attr( "call" ).toLowerCase();
-		try {
-			switch( call ) {
-				case "undo" :
-					deal.removeCall();
-					break;
-				case "pass" :
-					deal.addCall( 'p' );
-					break;
-				case "double" :
-					deal.addCall( 'x' );
-					break;
-				case "redouble" :
-					deal.addCall( 'r' );
-					break;
-				case "all pass" :
-					var auction = deal.getAuction();
-					auction.addAllPass();
-					break;
-				default:
-					deal.addCall( call );
-					break;
-			}
-			BW.saveDeal( deal );
-			BW.updateAuction( deal );
-		}
-		catch( err ) {
-			alert( err.message );
-		}	
-	});			
-}; 
-
-
-/**
- * An utility to setup clickable cards for any one suit
- * @param {string} suit - the suit to setup for
- * @param {object} deal - the deal to get which cards have been assigned
- * @param {boolean} open - whether the collapsible should be open or not
- */
-BW.createSuitPanel = function( suit, open, collapsible ) {
-	var html = "";
-	html += '<div class="card-deck-suit"';
-	if ( collapsible ) html += ' data-role="collapsible" '
-	html += (open ? ' data-collapsed="false"' : '') + '>';	
-    if ( collapsible ) html += '<h2>' + Bridge.suits[ suit ].html + ' Cards</h2>';
-    html += '<div>';
-    for( var i = 0; i < Bridge.rankOrder.length; ++i ) {
-		var rank = Bridge.rankOrder[i];
-		var card = suit + rank;
-		var status = "in-deck";
-		var src = "img/cards/" + card + ".png";
-		html += '<img id="card-' + card + '" status="' + status + '" card="' + card + '" class="card" height="50" src="' + src + '"/>';
-	}
-	html += '</div>';
-	html += '</div>	';
-	return html;
-}; 
-
-/**
- * Load or update auction display in the create problem page.
- * @param {object} deal - instance of Deal class that contains the auction
- */
-BW.updateAuction = function( deal ) {
-	var auctionName = BW.auctionName;
-	// Get the auction
-	var auction = deal.getAuction( auctionName );
-	if ( !auction ) {
-		// For consistency check. Should not happen
-		alert( "Auction could not be found" );
-	}
-	
-	// Setup auction as a styled table
-	var html = auction.toHTMLTable();
-	$( "#auction" ).html( html );
-	$( "#auction-summary" ).html( html );	
-	
-	// Setup bidding box as styled table
-	BW.updateBiddingBox( auction );
-};
-
-/**
- * Activate click/change handlers for hand and auction and other deal fields
- * @param {object} deal - instance of Deal class that contains the information
- */
-BW.activateDealEventHandlers = function( deal ) {
-	// Click on hand
-	$( "#hand" ).click( function() {
-		$( "#select-cards" ).popup( "open", { transition: "flow" } );
-	});
-	// Click on auction
-	$( "#auction" ).click( function() {
-		$( "#select-auction" ).popup( "open", { transition: "flow" } );
-	});	
-	
-	// Deal information controls
-	$( ".deal-info" ).change( function() {
-		var field = $( this ).attr( "field" );
-		var value = $( this ).val();
-		// This is for notes
-		if ( value === null ) value = '';
-		deal.set( field, value );		
-		BW.saveDeal( deal );
-		BW.updateDealInfo( deal );
-		BW.updateAuction( deal );
-	});	
-	
-
-
-};
-
-/**
- * An utility function to generate html for a bidding button.
- * Used in generating buttons in bidding box
- * @param {number} level - the level of this bid
- * @param {string} suit - the suit of this bid
- * @param {boolean} disabled - whether the button should be disabled or not
- */
-BW.makeBidButton = function( level, suit, disabled ) {
-	var id = "call-" + Bridge.makeIdentifier( level + suit );
-	var text = level + Bridge.calls[ suit ].html;
-	var call = level+suit;
-	var html = "<button id='" + id + "' call='" + call + "' class='ui-btn ui-btn-inline ui-mini ui-corner-all call'";
-	if ( disabled ) html += " disabled";
-	html += ">" + text + "</button>";
-	return html;
-};
-
-/**
- * An utility function to generate html for a button.
- * @param {string} text - the text that goes inside the button
- * @param {boolean} disabled - whether the button should be disabled or not
- */
-BW.makeButton = function( text, disabled ) {
-	var id = "call-" + Bridge.makeIdentifier( text );
-	var html = "<button id='" + id + "' call = '" + text + "' class='ui-btn ui-btn-inline ui-mini ui-corner-all call'";
-	if ( disabled ) html += " disabled";
-	html += ">" + text + "</button>";
-	return html;
-};
-
-/**
- * Setup the bidding box for creating auction in bidding and lead problems.
- */
-BW.createBiddingBox = function() {
-	var disabled = true;
-	var html = "";
-	html += "<table><thead>";
-	html += "<tr><th colspan='2'>" + BW.makeButton( "Double", disabled ) + "</th>";
-	html += "<th>" + BW.makeButton( "Pass", disabled ) + "</th>";
-	html += "<th colspan='2'>" + BW.makeButton( "ReDouble", disabled ) + "</th></tr>";
-	html += "</thead><tbody>";
-	for( var i = 1; i <= 7; ++i ) {
-		html += "<tr>";
-		for( var j = 0; j < Bridge.callOrder.length; ++j ) {
-			var call = Bridge.callOrder[j];
-			if ( Bridge.calls[ call ].bid ) {
-				html += "<td>" + BW.makeBidButton( i, call, disabled ) + "</td>";
-			}
-		}
-		html += "</tr>";
-	}
-	html += "</tbody>";
-	html += "<tfoot><tr><th colspan='2'>" + BW.makeButton( "All Pass", disabled ) + "</th>";
-	html += "<th></th>";
-	html += "<th colspan='2'>" + BW.makeButton( "Undo", disabled ) + "</th>";
-	html += "</table>";
-	$( "#bidding-box" ).html( html );
-		
-};
-
-/**
- * Update the bidding box in response to some change
- * @param {object} deal - the deal which has auction
- * @param {object} auction - the auction so far to enable appropriate buttons.
- */
-BW.updateBiddingBox = function( auction ) {
-	var current = auction.possibleCalls();
-	for( var i = 1; i <= 7; ++i ) {
-		for( var j = 0; j < Bridge.callOrder.length; ++j ) {
-			var call = Bridge.callOrder[j];
-			if ( Bridge.calls[ call ].bid ) {
-				var disabled = ( i < current.level || ( i ===  current.level && Bridge.calls[ call ].index >= Bridge.calls[ current.suit ].index ) );
-				var text = i+call;
-				$( "#call-" + text ).prop( "disabled", disabled );
-			}
-		}
-	}
-	var otherCalls = { 
-		"Double" : "double", 
-		"Pass" : "pass",
-		"ReDouble" : "redouble",
-		"All Pass" : "pass",
-		"Undo" : "undo" 
-	};
-	for( var call in otherCalls ) {
-		var id = Bridge.makeIdentifier( call );
-		var field = otherCalls[ call ];
-		$( "#call-" + id ).prop( "disabled", !current[ field ] );
-	}
-};
-
-/**
- * Handle login button click
- */
-BW.login = function( event ) {
-	
-	var username = $( "#username" ).val();
-	var password = $( "#password" ).val();
-	if ( username !== "bridge" || password !== "winners" ) {
-		alert( "Invalid credentials" );
+	if ( this.names[ list ].length <= 0 ) {
+		html += "<h4>You don't seem to have any problems in the " + list + " list.</h4>";	
 	}
 	else {
-		BW.loggedIn = true;
-		BW.updateLoginStatus();
-		BW.loginStatusChanged = true;
-		$( "#login-dialog" ).popup( "close" );
+		html += "<ul data-role='listview' data-inset='true'>";
+		for ( var i = 0;i < this.names[ list ].length; ++i ) {
+			var name = this.names[ list ][i];
+			html += this.getProblem( name ).toHTML();				}
+		html += "</ul>";
+	}	
+	$( "#problem-list-title" ).empty().html( list + " problem list" );
+	$( "#problem-list" ).empty().html( html );	
+};
+
+/**
+ * Retrieve a problem by name.
+ * @param {string} name the unique identifier name of the problem.
+ * @return {object} the problem object with specified name.
+ */
+BW.Problems.prototype.getProblem = function( name ) {
+	return this.problems[ name ];
+};
+
+
+/**
+ * Add a newly created problem to the problems list.
+ * @param {object} problem the newly created problem
+ */
+BW.Problems.prototype.addProblem = function( problem ) {
+	var list = problem.list;
+	var name = problem.name;
+	this.names[ list ].unshift( name );
+	localStorage.setItem( list, JSON.stringify( this.names[ list ] ) );
+	this.problems[ name ] = problem;
+	problem.save();
+};
+
+
+/**
+ * Publish a problem to BW server
+ * @param {string} name the unique identifier name of the problem.
+ */
+BW.Problems.prototype.publishProblem = function( name ) {
+	var problem = this.getProblem( name );
+	var deal = problem.deal;	
+	var type = problem.type;
+	var list = problem.list;
+	var count = deal.getHand( BW.handDirection ).getCount();
+	if ( count !== 13 ) {
+		alert( "Publish Error: Hand does not have 13 cards." );
+		return;
 	}
-	event.preventDefault();
-	event.stopPropagation();
-	return false;	
+	var auction = deal.getAuction();
+	var isComplete = auction.getContract().isComplete;
+	if ( type === "bidding" && isComplete ) {
+		alert( "Publish Error: This is a bidding problem and Auction is already completed" );
+		return;
+	}
+	if ( type === "lead" && !isComplete ) {
+		alert( "Publish Error: This is a lead problem and Auction is not complete" );
+		return;		
+	}
+	var user = BW.currentUser;
+	if ( !user.isLoggedIn ) {
+		alert( "Publish Error: Not logged in to BW server" );
+		return;		
+	}
+	
+	// Everything looks good use Whatever process to publish
+	
+	// This would actually be in a call back from publish process
+	var newList = "published";
+	var index = $.inArray( name, this.names[ list ] );
+	if ( index === -1 ) {
+		alert( "An error occurred. Unable to move problem : " + problem.name );
+	}
+	else {
+		if ( list === "defaults" ) {
+			var newProblem = this.duplicateProblem( problem.name, newList );	
+			alert( "Published Problem successfully" );	
+			return;
+		}
+		else if ( list === "unpublished" ) {
+			this.names[ list ].splice( index, 1 );
+			localStorage.setItem( list, JSON.stringify( this.names[ list ] ) );
+			problem.list = newList;
+			this.names[ newList ].unshift( name );
+			localStorage.setItem( newList, JSON.stringify( this.names[ newList ] ) );
+			alert( "Published Problem successfully" );	
+			var url = "#action=view&page=list.html&type="+list;
+			$.mobile.navigate( url );						
+		}
+		else {
+			alert( "Cannot publish problem from " + list + " list!" );
+			return;
+		}
+	}	
+};
+
+
+/**
+ * Delete a problem from the problems list ( and change the page so that delete problem is not shown)
+ * @param {string} name the unique identifier name of the problem.
+ */
+BW.Problems.prototype.deleteProblem = function( name ) {
+	var problem = this.getProblem( name );
+	var list = problem.list;
+	var index = $.inArray( name, this.names[ list ] );
+	if ( index === -1 ) {
+		alert( "An error occurred. Unable to delete problem : " + problem.name );
+		return false;
+	}
+	else {
+		this.names[ list ].splice( index, 1 );
+		localStorage.setItem( list, JSON.stringify( this.names[ list ] ) );
+		localStorage.removeItem( name );
+		return true;		
+	}
 };
 
 /**
- * Information in deal has changed.
- * Save to local storage and update all controls
- * @param {object} deal - the deal that has all the information
+ * Move a problem from one list to another.
+ * @param {string} name the unique identifier name of the problem.
  */
-BW.saveDeal = function( deal ) {
-	localStorage.setItem( "deal", JSON.stringify( deal.toJSON() ) );
-	BW.updatePublishButtonStatus( deal );
+BW.Problems.prototype.moveProblem = function( name, newList ) {
+	var problem = this.getProblem( name );
+	var index = $.inArray( name, this.names[ list ] );
+	if ( index === -1 ) {
+		alert( "An error occurred. Unable to move problem : " + problem.name );
+	}
+	else {
+		if ( list !== "defaults" ) {
+			this.names[ list ].splice( index, 1 );
+			localStorage.setItem( list, JSON.stringify( this.names[ list ] ) );
+		}
+		else {
+		}
+		this.names[ newList ].unshift( name );
+		localStorage.setItem( newList, JSON.stringify( this.names[ newList ] ) );
+	}	
 };
 
 /**
- * Handle login button click
+ * Duplicate an existing problem and place it in specified list.
+ * @param {string} name the unique identifier name of the problem to duplicate
+ * @param {string} list the list to the place the newly duplicated problem
  */
-BW.logout = function( event ) {
-	BW.loggedIn = false;
-	BW.updateLoginStatus();
-	BW.loginStatusChanged = true;
+BW.Problems.prototype.duplicateProblem = function( name, list ) {
+	var problem = this.getProblem( name );
+	var newProblem = problem.duplicate( list );
+	this.addProblem( newProblem );
+	return newProblem;
+};
+
+/**
+ * A class to represent a single problem
+ */
+BW.Problem = function( name, list, type, dealJSON ) {
+	// Name
+	this.name = name;
+	this.list = list;
+	this.type = type;
+	this.deal = new Bridge.Deal();
+	this.deal.disableEventTrigger();
+	this.deal.fromJSON( dealJSON );	
+	this.deal.enableEventTrigger();
+};
+
+/**
+ * Load the the deal information associated with this problem into page.
+ */
+BW.Problem.prototype.loadDeal = function() {
+	var status = ( this.list === "published" ? "Published" : "Unpublished" );
+	var title = "Create a " + this.type + " problem ( Status : " + status + " )";
+	$( '#problem-title' ).html( title );
+	// Setup all the controls
+	
+	this.setupDealInfo();
+	this.setupHandAndCardDeck();
+	this.setupAuctionAndBiddingBox();
+	this.setupClickHandlers();
+	this.setupButtons();
+	var user = BW.currentUser;
+	$( document ).trigger( "loginStatus:changed",  [ user, user.isLoggedIn ]);
+};
+	
+
+/**
+ * Setup the click handlers on the loaded problem page.
+ */
+BW.Problem.prototype.setupClickHandlers = function() {
+	if ( this.list !== "published" ) {
+		// Click for opening card deck 
+		$( "#hand" ).click( function() {
+			$( "#select-cards" ).off( "popupbeforeposition" );
+			$( "#select-cards" ).on( "popupbeforeposition", function( event, ui ) {
+				var width = $(window).width() / 15.5;
+				if ( width < 37 ) width = 37;
+				var height = width * 1.35;
+				$( "div.images span.card-deck-field-cards" ).width( width ).height( height );
+			});
+			$( "#select-cards" ).popup( "open" );
+		});
+		
+		// Click to open bidding box
+		$( "#auction" ).click( function() {
+			$( "#select-auction" ).popup( "open" );
+		});	
+	}
+	var event = "deal:changed.problem"
+	$( document ).off( event );
+	if ( this.list !== "published" ) {
+		// Handler for saving the deal
+		$( document ).on( event, { problem: this }, function( e, deal ) {
+			var problem = e.data.problem;
+			if ( problem.deal !== deal ) return;
+			problem.save();
+			problem.updatePublishButtonStatus( BW.currentUser);
+		});	
+	}
+	
+	event = "loginStatus:changed.problem";
+	$( document ).off( event );
+	if ( this.list !== "published" ) {
+		// Handler for login status changed
+		$( document ).on( event, { problem: this }, function( e, user ) {
+			var problem = e.data.problem;
+			problem.updatePublishButtonStatus( user );
+		});	
+	}
+};
+
+
+/**
+ * Setup the status and click handlers for all buttons in the loaded problem page.
+ */
+BW.Problem.prototype.setupButtons = function() {	
+	var buttonName = "delete-button";
+	if ( this.list === "defaults" ) {
+		BW.updateButton( buttonName, "Delete Draft", true );
+		$( "#" + buttonName ).hide();
+	}
+	else {
+		BW.updateButton( buttonName, "Delete", false );
+		$( "#" + buttonName ).show();
+		$( "#" + buttonName ).click( { problem: this }, function( e ) {
+			var problem = e.data.problem;
+			$( "#confirm-dialog" ).popup();
+			$( "#confirm-dialog" ).popup( "open" );
+			$( "#yes-button" ).on( "click", { problem: problem }, function( e ) {
+				$( "#yes-button" ).off( "click" );
+				$( "#no-button" ).off( "click" );
+				var problem = e.data.problem;
+				var list = problem.list;
+				BW.problems.deleteProblem( problem.name );
+				$( "#confirm-dialog" ).one( "popupafterclose", { list: list }, function ( e ) {
+					var url = "#action=view&page=list.html&type="+e.data.list;
+					$.mobile.navigate( url );	
+				});
+				$( "#confirm-dialog" ).popup( "close" );
+				
+			});
+			$( "#no-button" ).on( "click", { problem: this }, function( e ) {
+				$( "#yes-button" ).off( "click" );
+				$( "#no-button" ).off( "click" );
+				$( "#confirm-dialog" ).popup( "close" );
+			});			
+		});
+	}
+	
+	buttonName = "save-button";
+	if ( this.list === "defaults" || this.list === "published" ) {
+		var text = ( this.list === "defaults" ? "Save to Unpublished" : "Duplicate to Unpublished" );
+		BW.updateButton( buttonName, text, false );	
+		$( "#" + buttonName ).show();	
+		$( "#" + buttonName ).click( { problem: this }, function( e ) {
+			var problem = e.data.problem;
+			var newProblem = BW.problems.duplicateProblem( problem.name, "unpublished" );
+			var url = "#action=create&page=create.html&problem=" + newProblem.type + "&name="+newProblem.name;
+			$.mobile.navigate( url );			
+		});
+	}
+	else {
+		BW.updateButton( buttonName, "Save", true );
+		$( "#" + buttonName ).hide();
+	}	
+	
+	buttonName = "publish-button";
+	if ( this.list === "published" ) {
+		$( "#" + buttonName ).hide();
+	}
+	else {
+		$( "#" + buttonName ).click( { problem: this }, function ( e ) {
+			var problem = e.data.problem;
+			BW.problems.publishProblem( problem.name );
+		});
+		$( "#" + buttonName ).show();
+	}
+};
+
+
+/**
+ * Enable or Disable the Publish button based on status of hand, auction and login.
+ * It will also depend on whether this is a bidding or lead problem
+ * @param {object} user the current user object which has information about login status.
+ */
+BW.Problem.prototype.updatePublishButtonStatus = function( user ) {
+	var id = "publish-button";
+	if ( $( "#" + id ).length <= 0 ) return;
+	var text = "Publish";
+	var disabled = true;
+	var deal = this.deal;	
+	var type = this.type;
+	var count = deal.getHand( BW.handDirection ).getCount();
+	var auction = deal.getAuction();
+	var isComplete = auction.getContract().isComplete;
+	if ( count !== 13 ) text = "Not Enough Cards"
+	else if ( type === "bidding" && isComplete ) text = "Auction is already completed";
+	else if ( type === "lead" && !isComplete ) text = "Auction is not complete";	
+	else if ( !user.isLoggedIn ) text = "Not Logged In";
+	else disabled = false;
+	BW.updateButton( id, text, disabled );
+};
+
+
+/**
+ * Load values for scoring, dealer, vul and notes from loaded deal
+ * Additionally add a handler callback for when a value is changed
+ */
+BW.Problem.prototype.setupDealInfo = function() {
+	var disabled = ( this.list === "published" ? true : false );
+	// Populate fields and controls
+	var fields = [ "scoring", "dealer", "vulnerability", "notes" ];
+	for( var i = 0; i < fields.length; ++i ) {
+		var field = fields[i];
+		$( '#' + field ).val( this.deal.get( field ) );
+		if ( disabled ) $( '#' + field ).prop( "disabled", true );
+	}
+	
+	if ( !disabled ) {
+		// Handler for change
+		$( ".deal-info" ).change( { deal: this.deal }, function( e ) {
+			var field = $( this ).attr( "field" );
+			var value = $( this ).val();
+			// This is for notes
+			if ( value === null ) value = '';
+			e.data.deal.set( field, value );		
+		});	
+	}	
+};
+
+/**
+ * Setup hand and card-deck to manage specification of hand.
+ */
+BW.Problem.prototype.setupHandAndCardDeck = function() {
+	// Hand shown in main page and also repeated on card deck page for convenience
+	var hand = this.deal.getHand( BW.handDirection );
+	hand.toHTML( { containerID: "hand", show: { countInContent: true }, idPrefix: "h", registerChangeHandler: true } );
+	hand.toHTML( { containerID: "hand-summary", show: { countInContent: true }, idPrefix: "hs", registerChangeHandler: true } );
+
+	// Card Deck
+	var config = {
+		containerID: "card-deck", 
+		idPrefix: "cd", 
+		show: { reset: true, text:false, title: false, activeHand: false, assignedTo: false }, 
+		classes: { "card-deck": ["images"] },
+		tags: {}
+	};
+	var prefix = "card-deck";
+	config.tags[ prefix ] = "div";
+	config.tags[ prefix + "-header" ] = "div";
+	config.tags[ prefix + "-content" ] = "div";
+	config.tags[ prefix + "-footer" ] = "div";
+	config.tags[ prefix + "-row" ] = "span";
+	config.tags[ prefix + "-column" ] = "span";
+	config.tags[ prefix + "-field" ] = "span";	
+	this.deal.toCardDeck( config );
+};
+
+/**
+ * Setup auction and bidding box to manage specification of auction.
+ */
+BW.Problem.prototype.setupAuctionAndBiddingBox = function() {
+	// Get the auction
+	var auction = this.deal.getAuction();
+	auction.toBBODiagram( { containerID: "auction", idPrefix: "a", registerChangeHandler: true } );
+	auction.toBBODiagram( { containerID: "auction-summary", idPrefix: "as", registerChangeHandler: true } );
+	
+	// Setup bidding box
+	auction.toBiddingBox( { layout: "full", containerID: "bidding-box", idPrefix: "bb", classes: { "bidding-box": ["bbo"] }, registerChangeHandler: true } );
+};
+
+/**
+ * Create a new problem object.
+ * If the specified name exists in local storage then that information is used.
+ * If not then default information is used.
+ * @param {string} name the unique identifier name of the problem
+ * @param {string} listName the list to place the problem in
+ * @return {object} the create problem object - null if info cannot be found.
+ */
+BW.Problem.create = function( name, listName ) {
+	var info = localStorage.getItem( name );
+	if ( info ) {
+		var infoJSON = JSON.parse( info );
+		type = infoJSON.type;
+		var dealJSON = infoJSON.deal;
+	}	
+	else if ( listName === "defaults" ) {
+		type = name;
+		var dealJSON = {};
+	}
+	else {
+		return null;
+	}
+	return new BW.Problem( name, listName, type, dealJSON );
+}
+
+/**
+ * Duplicate this problem and add it to the specified list.
+ * @param {string} newList the list to place the duplicated problem
+ * @return {object} the newly duplicated problem object
+ */
+BW.Problem.prototype.duplicate =  function( newList ) {
+	var d = new Date();
+	var name = "" + d.getTime();
+	var type = this.type;
+	var list = newList;
+	var dealJSON = this.deal.toJSON();
+	return new BW.Problem( name, list, type, dealJSON );
+};
+
+/**
+ * Save this problem to local storage.
+ */
+BW.Problem.prototype.save = function() {
+	var info = {
+		type: this.type,
+		list: this.list,
+		deal: this.deal.toJSON()
+	};
+	localStorage.setItem( this.name, JSON.stringify( info ) );
+};
+
+/**
+ * Create a summary html of this problem to be shown in the problem list page.
+ * @return {string} the html representation of this problem
+ */
+BW.Problem.prototype.toHTML = function() {
+	var name = this.name;
+	var deal = this.deal;
+	var type = this.type;
+	var hand = deal.getHand( BW.handDirection );
+	var icon = ( type === "bidding" ? "img/Box-Red.png" : "img/cardback.png" );	
+	var html = "";
+	html += "<li>";
+	html += "<a data-ajax='false' href='#action=create&page=create.html&problem=" + type + "&name=" + name + "'>";
+	html += "<img src='" + icon + "' alt='" + type + "' class='ui-li-icon'>"
+	html += "<div>" + hand.toHTML( { registerChangeHandler: false } ) + "</div>";
+	var secondLine = "<span class='highlight-box'>" + deal.get( "scoring" ) + "</span><span class='highlight-box'>" + " Dealer: " + Bridge.directions[ deal.get( "dealer" ) ].name + "</span><span class='highlight-box'>" + " Vul: " + Bridge.vulnerabilities[ deal.get( "vulnerability" ) ].name + "</span>";	
+	html += "<div>" + secondLine + "</div></a></li>";			
+	return html;	
+};
+
+
+/**
+ * A class to represent user related activities including login and logout.
+ */
+BW.User = function() {
+	this.isLoggedIn = false;
+	this.username = null;
+	this.password = null;
+	
+	// Setup login and logout submit button handler
+	$( "#login-submit-button").click( function() {
+		var username = $( "#username" ).val();
+		var password = $( "#password" ).val();		
+		BW.currentUser.login( username, password );
+		event.preventDefault();
+		event.stopPropagation();
+		return false;		
+	});
+	$( "#logout-submit-button").click( function() {
+		BW.currentUser.logout();
+		event.preventDefault();
+		event.stopPropagation();
+		return false;			
+	});
+	this.updateLoginStatus();
+	$( document ).on( "loginStatus:changed", function( e, user ) {
+		user.updateLoginStatus();
+	});	
+};
+
+/**
+ * Try to login to BW server.
+ * @param {string} username the username to use to login
+ * @param {string} password the password to use to login
+ */
+BW.User.prototype.login = function( username, password ) {
+	$( "#login-submit-button" ).prop( "disabled", true );
+	this.username = username;
+	this.password = password;
+	if ( this.username !== "bridge" || this.password !== "winners" ) {
+		alert( "Invalid credentials" );
+		$( "#login-submit-button" ).prop( "disabled", false );
+	}
+	else {
+		// Do whatever is necessary to login to server
+		/*if( this.username != "" && this.password !== "" ) {
+			$.post("bw.server?method=login&returnformat=json", { username:this.username, password: this.password }, function(res) {
+				if(res == true) {
+					// Finish login
+				} else {
+					alert( "Login failed" );
+				}
+			 $( "#login-submit-button" ).prop( "disabled", false );
+			},"json");
+		} else {
+			alert( "You must enter a username and password" );
+			$( "#login-submit-button" ).prop( "disabled", false );
+		}	*/	
+		this.isLoggedIn = true;
+		var userInfo = {
+			name: "Bridge Winners",
+			photo: "img/logo.png"
+		};
+		this.loadProfile( userInfo );
+		$( "#login-submit-button" ).prop( "disabled", false );
+		$( "#login-dialog" ).popup( "close" );
+		$( document ).trigger( "loginStatus:changed",  [ this, this.isLoggedIn ]);
+	}	
+};
+
+/**
+ * Logout from BW server
+ */
+BW.User.prototype.logout = function() {
+	this.isLoggedIn = false;
 	$( "#logout-dialog" ).popup( "close" );
-	event.preventDefault();
-	event.stopPropagation();
-	return false;	
+	$( document ).trigger( "loginStatus:changed",  [ this, this.isLoggedIn ]);
+};
+
+BW.User.prototype.loadProfile = function( userInfo ) {
+	var html = "";
+	html += "<img style='vertical-align:middle;' height='25px' src='" + userInfo.photo + "'/>Welcome " + userInfo.name;
+	$( "#profile-content" ).empty().html( html );
+};
+
+
+/**
+ * Update the login and logout button and dialog based on login status.
+ */
+BW.User.prototype.updateLoginStatus = function() {
+	var text = this.isLoggedIn ? "Profile" : "Login";
+	var addClass = this.isLoggedIn ? "ui-icon-user" : "ui-icon-power";
+	var removeClass = this.isLoggedIn ? "ui-icon-power" : "ui-icon-user";
+	var href = this.isLoggedIn ? "#logout-dialog" : "#login-dialog";
+	$( "#login-button" ).attr( "href", href ).addClass( addClass ).removeClass( removeClass ).html( text );
+};
+
+/** 
+ * Class to handle options setting, loading, saving etc. 
+ */
+BW.Options = function() {
+	this.itemName = "options";
+	var options = localStorage.getItem( this.itemName );
+	this.values = ( options ? JSON.parse( options ) : {} );
+	_.defaults( this.values, {
+		"theme" : "css/themes/default/jquery.mobile-1.4.5.min.css",
+		"enableDebug": false
+	});
+	this.loadAll();	
 };
 
 /**
- * Set the login and logout button and dialog
+ * Get the value of an option.
+ * @param {string} name the name of the option whose value is requested.
+ * @return {mixed} the value of the requested option
  */
-BW.updateLoginStatus = function() {
-	var text = BW.loggedIn ? "Profile" : "Login";
-	var addClass = BW.loggedIn ? "ui-icon-user" : "ui-icon-power";
-	var removeClass = BW.loggedIn ? "ui-icon-power" : "ui-icon-user";
-	var href = BW.loggedIn ? "#logout-dialog" : "#login-dialog";
-	$( "#login-button" ).attr( "href", href ).addClass( addClass ).removeClass( removeClass ).html( text );
+BW.Options.prototype.get = function( name ) {
+	if ( ! _.has( this.values, name ) ) {
+		alert( "Cannot find " + name + " in options" );
+		return null;
+	}	
+	return this.values[ name ];
+};
+
+/**
+ * Load/Propagate the value for the specified option.
+ * @param {string} name the name of the option whose value is propagated.
+ */
+BW.Options.prototype.load = function ( name ) {
+	if ( ! _.has( this.values, name ) ) {
+		alert( "Cannot find " + name + " in options" );
+		return;
+	}
+	// only one option for now
+	switch ( name ) {
+		case "theme" :
+			// Load the stylesheet
+			$( "#jqm-stylesheet" ).attr( "href", this.values[ name ] );		
+			break;
+		default :
+			break;
+	}	
+};
+
+/**
+ * Load/Propagate all the options.
+ */
+BW.Options.prototype.loadAll = function() {
+	for( var option in this.values ) {
+		this.load( option );
+	}
+};
+
+/**
+ * Initialize the field value that the user will be using to change the options.
+ * @param {string} name the name of the option whose value is initialized.
+ */
+BW.Options.prototype.initialize = function( name ) {
+	if ( ! _.has( this.values, name ) ) {
+		alert( "Cannot find " + name + " in options" );
+		return;
+	}	
+	// Only one option for now
+	switch ( name ) {
+		case "theme" :
+			$( "#theme" ).val( this.values[ name ] );	
+			break;
+		default :
+			break;
+	}	
+};
+
+/**
+ * Initialize all the field values that the user will be using to change the options.
+ */
+BW.Options.prototype.initializeAll = function( options ) {
+	for( var option in this.values ) {
+		this.initialize( option );
+	}
+};
+
+/**
+ * Save all the options to local storage.
+ */
+BW.Options.prototype.save = function( options ) {
+	localStorage.setItem( this.itemName, JSON.stringify( this.values ) );
+};
+
+/**
+ * The callback handler function whenever an option value is changed by the user.
+ * @param {string} name the name of the option that has changed
+ * @param {mixed} value the new value of the changed option
+ */
+BW.Options.prototype.change = function( name, value ) {
+	this.values[ name ] = value;
+	this.save();
+	this.load( name );
 };
 

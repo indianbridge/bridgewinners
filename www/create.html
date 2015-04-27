@@ -1,63 +1,74 @@
 <h4 id="problem-title"></h4>
+
 <ul id="problem-parameters" data-role="listview"> 
-<li data-icon="false">
-	<fieldset class="ui-field-contain">
-		<label for="hand">Hand:</label>
-		<a href="#" class="ui-btn ui-corner-all" id="hand"></a>
-	</fieldset>
-</li>	
-<li data-icon="false">	
-	<fieldset class="ui-field-contain">
-		<label for="scoring">Form of Scoring:</label>
-		<select field="scoring" class="deal-info" id="scoring" name="scoring">
-			<option value="KO">IMPs (Knockout)</option>
-			<option value="Matchpoints">Matchpoints</option>
-			<option value="20VP">IMPs (20 Victory Point Scale)</option>
-			<option value="30VP">IMPs (30 Victory Point Scale)</option>
-			<option value="WL">IMPs (Win/Loss Swiss)</option>
-			<option value="CrossImps">Cross-Imps</option>
-			<option value="BAM">Board-a-Match</option>
-			<option value="TP">Total Points</option>
-			<option value="Money">Money</option>
-			<option value="Any">Any</option>
-		</select>
-	</fieldset>
-</li>
-<li data-icon="false">
-	<fieldset class="ui-field-contain">
-		<label for="vul">Vulnerability:</label>
-		<select field="vulnerability" class="deal-info" id="vulnerability" name="vul">
-			<option value="-">None</option>
-			<option value="n">N/S</option>
-			<option value="e">E/W</option>
-			<option value="b">Both</option>
-		</select>	
-	</fieldset>		
-</li>
-<li data-icon="false">
-	<fieldset class="ui-field-contain">
-		<label for="dealer">Dealer:</label>			
-		<select field="dealer" class="deal-info" id="dealer" name="dealer">
-		<option value="n">North</option>
-		<option value="e">East</option>
-		<option value="s">South</option>
-		<option value="w">West</option>
-		</select>		
-	</fieldset>	
-</li>
-<li data-icon="false">
-	<fieldset class="ui-field-contain">
-		<label for="auction">Auction:</label>
-		<div id="auction"></div>
-	</fieldset>	
-</li>
-<li data-icon="false">
-	<fieldset class="ui-field-contain">
-		<label for="description">Additional Information:</label>
-		<textarea field="notes" class="deal-info" id="notes" name="description"></textarea>	
-	</fieldset>			
-</li>
-<li data-icon="false"><button id="publish-button" class="ui-btn" disabled>Publish</button></li>
+    <div class="ui-grid-a">
+		<div class="ui-block-a">
+			<a id="save-button" data-action="save" class="ui-btn ui-corner-all ui-shadow ui-icon-check ui-btn-icon-left">Save as Draft</a>
+		</div>
+
+		<div class="ui-block-b">
+			<a id="delete-button" data-action="delete" class="ui-btn ui-corner-all ui-shadow ui-icon-delete ui-btn-icon-left">Delete</a><br>
+		</div>
+    </div>
+
+	<li data-icon="false">
+		<fieldset class="ui-field-contain">
+			<label for="hand">Hand:</label>
+			<a href="#" class="ui-btn ui-corner-all" id="hand"></a>
+		</fieldset>
+	</li>	
+	<li data-icon="false">	
+		<fieldset class="ui-field-contain">
+			<label for="scoring">Form of Scoring:</label>
+			<select field="scoring" class="deal-info" id="scoring" name="scoring">
+				<option value="KO">IMPs (Knockout)</option>
+				<option value="Matchpoints">Matchpoints</option>
+				<option value="20VP">IMPs (20 Victory Point Scale)</option>
+				<option value="30VP">IMPs (30 Victory Point Scale)</option>
+				<option value="WL">IMPs (Win/Loss Swiss)</option>
+				<option value="CrossImps">Cross-Imps</option>
+				<option value="BAM">Board-a-Match</option>
+				<option value="TP">Total Points</option>
+				<option value="Money">Money</option>
+				<option value="Any">Any</option>
+			</select>
+		</fieldset>
+	</li>
+	<li data-icon="false">
+		<fieldset class="ui-field-contain">
+			<label for="vul">Vulnerability:</label>
+			<select field="vulnerability" class="deal-info" id="vulnerability" name="vul">
+				<option value="-">None</option>
+				<option value="n">N/S</option>
+				<option value="e">E/W</option>
+				<option value="b">Both</option>
+			</select>	
+		</fieldset>		
+	</li>
+	<li data-icon="false">
+		<fieldset class="ui-field-contain">
+			<label for="dealer">Dealer:</label>			
+			<select field="dealer" class="deal-info" id="dealer" name="dealer">
+			<option value="n">North</option>
+			<option value="e">East</option>
+			<option value="s">South</option>
+			<option value="w">West</option>
+			</select>		
+		</fieldset>	
+	</li>
+	<li data-icon="false">
+		<fieldset class="ui-field-contain">
+			<label for="auction">Auction:</label>
+			<div id="auction"></div>
+		</fieldset>	
+	</li>
+	<li data-icon="false">
+		<fieldset class="ui-field-contain">
+			<label for="description">Additional Information:</label>
+			<textarea field="notes" class="deal-info" id="notes" name="description"></textarea>	
+		</fieldset>			
+	</li>
+	<li data-icon="false"><button id="publish-button" data-action="publish" class="ui-btn" disabled>Publish</button></li>
 </ul>	
 			
 

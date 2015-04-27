@@ -16,6 +16,7 @@
         <link rel="stylesheet" type="text/css" href="css/index.css">
 		<script src="js/jquery.min.js"></script>
 		<script src="js/jquery.mobile-1.4.5.min.js"></script>        
+		<script src="js/fastclick.min.js"></script>        
         <title>BridgeWinners Mobile App Login Page</title>
     </head>
     <body>
@@ -66,16 +67,34 @@
 					</ul>
 				</div>			
 			</div>
+			
 			<div data-role="popup" id="logout-dialog">
 				<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
 				<div data-role="header">
-					<h4>Welcome</h4>
+					<h4>Profile</h4>
 				</div>
 				<div data-role="main" class="ui-content">
-					<img style="vertical-align:middle;" height="25px" src="img/icon.png"/>Welcome BridgeWinners
-					<input type="submit" value="LOG OUT" id="logout-submit-button">
+					<div id="profile-content">Welcome</div>
+					<a class="ui-btn ui-btn-b ui-corner-all ui-shadow ui-icon-action ui-btn-icon-left" id="logout-submit-button">LOG OUT</a>
+				</div>				
+			</div>			
+			<div data-role="popup" id="confirm-dialog" data-dismissible="false" data-overlay-theme="b">
+				<div data-role="header">
+					<h4>Are you sure?</h4>
+				</div>
+				<div data-role="main" class="ui-content">					
+					<img style="display: block; margin:auto; text-align:center; vertical-align:middle;" src="img/alert_card.png"/>
+					<div>All the information about this Problem will be lost. Are you sure you want to delete?</div>
+					<div class="ui-grid-a">
+						<div class="ui-block-a">
+							<a class="ui-btn ui-corner-all ui-shadow ui-icon-forbidden ui-btn-icon-left" id="no-button">Do not Delete</a>
+						</div>
+						<div class="ui-block-b">
+							<a class="ui-btn ui-btn-b ui-corner-all ui-shadow ui-icon-check ui-btn-icon-left" id="yes-button">Delete</a>
+						</div>
+					</div>									
 				</div>			
-			</div>	
+			</div>				
 			<div data-role="popup" id="select-cards" class="ui-content">
 			  <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
 			  <div id="hand-summary"></div>
@@ -89,8 +108,10 @@
 			<div data-role="panel" id="menu-panel" data-display="overlay" data-swipe-close="true"> 
 				<h2>Menu</h2>
 				<a href="#action=load&page=home.html" data-ajax="false" class="ui-btn ui-corner-all ui-shadow ui-icon-home ui-btn-icon-left">Home</a>
-				<a href="#action=create&page=create.html&problem=bidding" data-ajax="false" class="ui-btn ui-icon-edit ui-btn-icon-left ui-corner-all ui-shadow">Create Bidding Problem</a>
-				<a href="#action=create&page=create.html&problem=lead" data-ajax="false" class="ui-btn ui-icon-edit ui-btn-icon-left ui-corner-all ui-shadow">Create Lead Problem</a>
+				<a href="#action=create&page=create.html&problem=bidding&name=bidding" data-ajax="false" class="ui-btn ui-icon-edit ui-btn-icon-left ui-corner-all ui-shadow">Create Bidding Problem</a>
+				<a href="#action=create&page=create.html&problem=lead&name=lead" data-ajax="false" class="ui-btn ui-icon-edit ui-btn-icon-left ui-corner-all ui-shadow">Create Lead Problem</a>
+				<a href="#action=view&page=list.html&type=unpublished" data-ajax="false" class="ui-btn ui-icon-bullets ui-btn-icon-left ui-corner-all ui-shadow">View Unpublished Problems</a>
+				<a href="#action=view&page=list.html&type=published" data-ajax="false" class="ui-btn ui-icon-bullets ui-btn-icon-left ui-corner-all ui-shadow">View Published Problems</a>
 				<a href="#action=load&page=options.html" data-ajax="false" class="ui-btn ui-icon-gear ui-btn-icon-left ui-corner-all ui-shadow">Options</a>
 				<a href="#action=load&page=about.html" data-ajax="false" class="ui-btn ui-icon-info ui-btn-icon-left ui-corner-all ui-shadow">About Us</a>
 				<a href="#pageone" data-rel="close" class="ui-btn ui-btn-inline ui-shadow ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-left">Close panel</a>
