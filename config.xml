@@ -21,6 +21,16 @@
 		<icon src="res/android/drawable-xhdpi/Icon.png" density="xhdpi" />
 		<icon src="res/android/drawable-xxhdpi/Icon.png" density="xxhdpi" />
 		<icon src="res/android/drawable-xxxhdpi/Icon.png" density="xxxhdpi" />
+		<!-- you can use any density that exists in the Android project -->
+		<splash src="res/android/drawable-hdpi/splash.png" density="land-hdpi"/>
+		<splash src="res/android/drawable-ldpi/splash.png" density="land-ldpi"/>
+		<splash src="res/android/drawable-mdpi/splash.png" density="land-mdpi"/>
+		<splash src="res/android/drawable-xhdpi/splash.png" density="land-xhdpi"/>
+
+		<splash src="res/android/drawable-hdpi/splash.png" density="port-hdpi"/>
+		<splash src="res/android/drawable-ldpi/splash.png" density="port-ldpi"/>
+		<splash src="res/android/drawable-mdpi/splash.png" density="port-mdpi"/>
+		<splash src="res/android/drawable-xhdpi/splash.png" density="port-xhdpi"/>		
 	</platform>
 	<platform name="ios">
 		<!-- iOS 8.0+ -->
