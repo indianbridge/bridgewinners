@@ -52,7 +52,6 @@ BW.User.prototype.load = function() {
 		var info = JSON.parse( user );
 		this.username = info.username;
 		this.accessToken = info.accessToken;
-		alert( this.accessToken );
 	}
 	
 };
@@ -137,18 +136,8 @@ BW.User.prototype.login = function( username, password ) {
 	$( "#login-submit-button" ).prop( "disabled", true );
 	this.username = username;
 	if ( username !== "bridge" || password !== "winners" ) {
-		if ( BW.isWebApp ) {
-			alert( 'Invalid Credentials!' );
-			$( "#login-submit-button" ).prop( "disabled", false );
-		}
-		else {
-			navigator.notification.alert(
-				'Invalid Credentials!',  // message
-				function() { $( "#login-submit-button" ).prop( "disabled", false ); },         // callback
-				'Login Failed',            // title
-				'OK'                  // buttonName
-			);		
-		}
+		alert( 'Invalid Credentials!' );
+		$( "#login-submit-button" ).prop( "disabled", false );
 	}
 	else {
 		// Do whatever is necessary to login to server
@@ -204,13 +193,11 @@ BW.User.prototype.loadProfile = function( userInfo ) {
 BW.User.prototype.updateLoginStatus = function() {
 	this.save();
 	if ( this.isLoggedIn ) {
-		alert("logged in" );
 		$( "#profile-button" ).removeClass( "ui-disabled" );
 		$( "a[role='page']" ).removeClass( "ui-disabled" );
 		BW.loadPage( "vote.html" );
 	}
 	else {
-		alert("show login");
 		$( "#profile-button" ).addClass( "ui-disabled" );
 		$( "a[role='page']" ).addClass( "ui-disabled" );
 		this.showLoginForm();

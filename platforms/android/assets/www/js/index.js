@@ -54,8 +54,8 @@ BW.votingProblems = [
  */
 BW.initialize = function() {
 	
-	BW.isWebApp = BW.isBrowser();
-	if ( !BW.isWebApp ) navigator.splashscreen.hide();
+	if ( navigator && navigator.splashscreen ) navigator.splashscreen.hide();
+	
 	// In order to respect data-enhanced=false attributes
 	$.mobile.ignoreContentEnabled = true;
 	$.mobile.buttonMarkup.hoverDelay = 0;
