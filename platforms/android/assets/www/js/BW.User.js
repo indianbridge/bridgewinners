@@ -9,7 +9,10 @@ BW.User = function( containerID ) {
 	this.containerID = containerID;
 	this.isLoggedIn = false;
 	this.username = null;
+	this.password = null;
 	this.accessToken = null;
+	this.userInfo = null;
+	this.initialize = true;
 	
 	// load from local storage
 	this.load();
@@ -27,7 +30,18 @@ BW.User = function( containerID ) {
 	});	
 	
 	this.authenticateAccessToken();
+	this.initialize = false;
 };
+
+/**
+ * Get name of this user
+ */
+BW.User.prototype.getName = function() { return this.userInfo ? this.userInfo.name : ""; }
+
+/**
+ * Get the image of this user
+ */
+BW.User.prototype.getImage = function() { return this.userInfo ? this.userInfo.image : ""; }
 
 /**
  * Save the user info to local storage
@@ -36,6 +50,7 @@ BW.User = function( containerID ) {
 BW.User.prototype.save = function() {
 	var userInfo = {
 		username: this.username,
+		password: this.password,
 		accessToken: this.accessToken
 	};
 	localStorage.setItem( this.localStorageVariableName, JSON.stringify( userInfo ) );
@@ -46,12 +61,13 @@ BW.User.prototype.save = function() {
  * Load current user info if any from local storage
  */
 BW.User.prototype.load = function() {
-	localStorage.removeItem( this.localStorageVariableName );
 	var user = localStorage.getItem( this.localStorageVariableName );
 	if ( user ) {
 		var info = JSON.parse( user );
 		this.username = info.username;
+		this.password = info.password;
 		this.accessToken = info.accessToken;
+		this.userInfo = BW.users[ this.username + " " + this.password ];
 	}
 	
 };
@@ -67,12 +83,9 @@ BW.User.prototype.authenticateAccessToken = function() {
 		  textVisible: true
 		});
 		// Connect and reset should go in callback
-		var userInfo = {
-			name: "Bridge Winners",
-			photo: "img/logo.png"
-		};
+		this.userInfo = BW.users[ this.username + " " + this.password ];
 		this.isLoggedIn = true;
-		this.loadProfile( userInfo );
+		this.loadProfile( this.userInfo );
 		$( "#login-submit-button" ).prop( "disabled", false );
 		$.mobile.loading( "hide" );
 	}
@@ -135,7 +148,8 @@ BW.User.prototype.showLoginForm = function() {
 BW.User.prototype.login = function( username, password ) {
 	$( "#login-submit-button" ).prop( "disabled", true );
 	this.username = username;
-	if ( username !== "bridge" || password !== "winners" ) {
+	this.password = password;
+	if ( !_.has( BW.users, username + " " + password ) ) {
 		alert( 'Invalid Credentials!' );
 		$( "#login-submit-button" ).prop( "disabled", false );
 	}
@@ -155,13 +169,9 @@ BW.User.prototype.login = function( username, password ) {
 			$( "#login-submit-button" ).prop( "disabled", false );
 		}	*/	
 		this.isLoggedIn = true;
-		var userInfo = {
-			name: "Bridge Winners",
-			photo: "img/logo.png",
-			accessToken: "random_access_token"
-		};
-		this.accessToken = userInfo.accessToken;
-		this.loadProfile( userInfo );
+		this.userInfo = BW.users[ this.username + " " + this.password ];
+		this.accessToken = "random_access_token";
+		this.loadProfile( this.userInfo );
 		$( "#login-submit-button" ).prop( "disabled", false );
 		$( document ).trigger( "loginStatus:changed",  [ this, this.isLoggedIn ]);
 	}	
@@ -173,6 +183,7 @@ BW.User.prototype.login = function( username, password ) {
 BW.User.prototype.logout = function() {
 	this.isLoggedIn = false;
 	this.accessToken = null;
+	this.userInfo = null;
 	$( document ).trigger( "loginStatus:changed",  [ this, this.isLoggedIn ]);
 	$( "#logout-dialog" ).popup( "close" );
 };
@@ -183,7 +194,7 @@ BW.User.prototype.logout = function() {
  */
 BW.User.prototype.loadProfile = function( userInfo ) {
 	var html = "";
-	html += "<img style='vertical-align:middle;' height='25px' src='" + userInfo.photo + "'/>Welcome " + userInfo.name;
+	html += "<img style='vertical-align:middle;' height='25px' src='" + userInfo.image + "'/>Welcome " + userInfo.name;
 	$( "#profile-content" ).empty().html( html );
 };
 
@@ -195,7 +206,8 @@ BW.User.prototype.updateLoginStatus = function() {
 	if ( this.isLoggedIn ) {
 		$( "#profile-button" ).removeClass( "ui-disabled" );
 		$( "a[role='page']" ).removeClass( "ui-disabled" );
-		BW.loadPage( "vote.html" );
+		if ( this.initialize ) BW.loadPage( "vote.html" );
+		else $( "#home-tab" ).trigger( "click" );
 	}
 	else {
 		$( "#profile-button" ).addClass( "ui-disabled" );

@@ -6,6 +6,46 @@
 /** Define a BridgeWinners namespace */
 if ( typeof BW === "undefined" ) BW = {};
 
+BW.androidSwipeFix = function() {
+	// Touchmove events are cancelled on Android KitKat when scrolling is possible on the touched element.  
+	// Scrolling is always vertical in our app. Cancel the event when a touchmove is horizontal,  
+	// so that all following touchmove events will be raised normally.  
+	var startLoc = null;  
+	$( "body" ).on( "touchstart", function( e ) {  
+	  if( e.originalEvent.touches.length == 1 ) { // one finger touch  
+		// Remember start location.  
+		var touch = e.originalEvent.touches[ 0 ];  
+		startLoc = { x : touch.pageX, y : touch.pageY };  
+	  }  
+	} );  
+	  
+	  
+	$( "body" ).on( "touchmove", function( e ) {  
+	  // Only check first move after the touchstart.  
+	  if( startLoc ) {  
+		var touch = e.originalEvent.touches[ 0 ];  
+		// Check if the horizontal movement is bigger than the vertical movement.  
+		if( Math.abs( startLoc.x - touch.pageX ) >  
+		  Math.abs( startLoc.y - touch.pageY ) ) {  
+		  // Prevent default, like scrolling.  
+		  e.preventDefault();  
+		}  
+		startLoc = null;  
+	  }  
+	} );  	
+};
+
+BW.users = {
+	"bridge winners" : {
+		name: "Bridge Winners",
+		image: "http://media.bridgewinners.com/images/icons/banner_logo_cropped.png"
+	},
+	"gavin wolpert" : {
+		name: "Gavin Wolpert",
+		image: "http://media.bridgewinners.com/cache/b5/a5/b5a537ff5d712573d506aa9501356caa.png"
+	}
+};
+
 BW.votingProblems = [
 	{
 		number: 5816,
@@ -60,6 +100,10 @@ BW.initialize = function() {
 	$.mobile.ignoreContentEnabled = true;
 	$.mobile.buttonMarkup.hoverDelay = 0;
 	$.mobile.hoverDelay = 0;
+	
+	BW.androidSwipeFix();
+	
+	// Hack to always have 2 voting problems.
 	//var problems = localStorage.getItem( "BW::votingproblems" );
 	//if ( !problems ) localStorage.setItem( "BW::votingproblems", JSON.stringify( BW.votingProblems ) );
 	localStorage.setItem( "BW::votingproblems", JSON.stringify( BW.votingProblems ) );
@@ -85,10 +129,10 @@ BW.initialize = function() {
 	BW.currentOptions = new BW.Options();	
 	
 	// Setup voting problem
-	BW.votingProblem = new BW.VotingProblem( "voting-problem" );
+	BW.votingProblem = new BW.VotingProblem( "bw-voting-problem" );
 	
 	// Setup create problem
-	BW.createProblem = new BW.CreateProblem( "create-problem" );
+	BW.createProblem = new BW.CreateProblem( "bw-create-problem" );
 	
 	// Load the different pages from menu
 	$( "a[role='page']" ).click( function() {
@@ -170,19 +214,18 @@ BW.pageLoaded = function( page ) {
 			}
 			BW.currentOptions.change( name, value );		
 		});
-		$( '#' + BW.contentID ).trigger( "create" );
 	}
 	else if ( page === "vote.html" ) {
-		BW.votingProblem.load();
+		BW.votingProblem.initialize();
 	}
 	else if ( page === "create.html" ) {
-		BW.createProblem.show();
+		BW.createProblem.initialize();
 	}
 	else {
 		alert( "Unknown page : " + page );
 		return;
 	}
-	
+	$( '#' + BW.contentID ).trigger( "create" );
 };
 
 

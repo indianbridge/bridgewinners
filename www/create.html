@@ -1,11 +1,105 @@
 <div id="create-problem-panel" class="ui-popup ui-body-inherit ui-overlay-shadow ui-corner-all">
 	<div data-role="header" role="banner" class="ui-header ui-bar-inherit">
 		<a id="previous-stage-button" class="ui-disabled ui-btn ui-btn-left ui-corner-all ui-shadow ui-icon-forward ui-btn-icon-left">Previous</a>				
-		<h1 class="ui-title" role="heading" aria-level="1">Create Bridge Problem</h1>
+		<h1 class="ui-title" role="heading" aria-level="1">Create</h1>
 		<a id="next-stage-button" class="ui-btn ui-btn-right ui-corner-all ui-shadow ui-icon-forward ui-btn-icon-right">Next</a>				
 	</div>
 	<div data-role="main" class="ui-content">	
-		<div id="create-problem">			
+		<div id="bw-create-problem">		
+			<div id="bw-create-problem-loading">
+				<img class="center" src="img/ajax-loader.gif"/>
+			</div>
+			<div data-stage="type" id="bw-create-problem-type" class="ui-field-contain">
+				<fieldset data-role="controlgroup" data-type="horizontal">
+					<legend>Choose Problem Type:</legend>
+					<label for="bw-create-problem-type-bidding">Bidding</label>
+					<input data-type="bidding" class="bw-create-problem-type" type="radio" name="bw-create-problem-type" id="bw-create-problem-type-bidding">
+					<label for="bw-create-problem-type-lead">Lead</label>
+					<input data-type="lead" class="bw-create-problem-type" type="radio" name="bw-create-problem-type" id="bw-create-problem-type-lead">	
+				</fieldset>
+			</div>		
+			<div data-stage="hand" id="bw-create-problem-hand" class="ui-field-contain">
+				<legend>Set Hand:</legend>
+				<div id="bw-create-problem-hand-diagram" class="bw-create-problem-row bw-create-problem-hand-diagram"></div>
+				<div id="bw-create-problem-card-deck" class="bw-create-problem-row bw-create-problem-card-deck"></div>	
+			</div>
+			<div data-stage="scoring" id="bw-create-problem-scoring" class="ui-field-contain">
+				<fieldset>
+					<label for="scoring">Form of Scoring:</label>
+					<select field="scoring" class="deal-info" id="scoring" name="scoring">
+						<option value="KO">IMPs (Knockout)</option>
+						<option value="Matchpoints">Matchpoints</option>
+						<option value="20VP">IMPs (20 Victory Point Scale)</option>
+						<option value="30VP">IMPs (30 Victory Point Scale)</option>
+						<option value="WL">IMPs (Win/Loss Swiss)</option>
+						<option value="CrossImps">Cross-Imps</option>
+						<option value="BAM">Board-a-Match</option>
+						<option value="TP">Total Points</option>
+						<option value="Money">Money</option>
+						<option value="Any">Any</option>
+					</select>
+				</fieldset>
+				<fieldset>
+					<label for="vul">Vulnerability:</label>
+					<select field="vulnerability" class="deal-info" id="vulnerability" name="vul">
+						<option value="-">None</option>
+						<option value="n">N/S</option>
+						<option value="e">E/W</option>
+						<option value="b">Both</option>
+					</select>	
+				</fieldset>		
+				<fieldset>
+					<label for="dealer">Dealer:</label>			
+					<select field="dealer" class="deal-info" id="dealer" name="dealer">
+					<option value="n">North</option>
+					<option value="e">East</option>
+					<option value="s">South</option>
+					<option value="w">West</option>
+					</select>		
+				</fieldset>	
+			</div>	
+			<div data-stage="auction" id="bw-create-problem-auction" class="ui-field-contain">
+				<legend>Set Auction:</legend>
+				<div id="bw-create-problem-auction-diagram" class="bw-create-problem-row bw-create-problem-auction-diagram"></div>
+				<div id="bw-create-problem-bidding-box" class="bw-create-problem-row bw-create-problem-bidding-box"></div>	
+			</div>		
+			<div data-stage="text" id="bw-create-problem-text" class="ui-field-contain">
+				<fieldset>
+					<label for="description">Additional Information:</label>
+					<textarea field="notes" class="deal-info" id="notes" name="description"></textarea>	
+				</fieldset>	
+			</div>		
+			<div data-stage="preview" id="bw-create-problem-auction" class="ui-field-contain">
+				<legend>Preview:</legend>
+				<div id="bw-create-problem-preview" class="bw-create-problem-row bw-create-problem-preview">
+					<ul class="bw-voting-problem" data-role="listview" data-inset="true">
+						<li data-icon="false"><button id="bw-create-problem-publish-button" data-action="publish" class="ui-btn" disabled>Publish</button></li>
+						<li>
+							<img id="bw-voting-problem-author-image" class="bw-voting-problem-author-image"/>
+							<div id="bw-voting-problem-author-name" class="bw-voting-problem-row bw-voting-problem-author-name">
+							</div>
+							<div class="bw-voting-problem-row bw-voting-problem-information">
+								<span id="bw-voting-problem-dealer" class="bw-voting-problem-row bw-voting-problem-information-field">
+								</span>
+								<span id="bw-voting-problem-scoring" class="bw-voting-problem-row bw-voting-problem-information-field">
+								</span>
+								<span id="bw-voting-problem-vulnerability" class="bw-voting-problem-row bw-voting-problem-information-field">
+								</span>						
+							</div>
+						</li>
+						<li>
+							<div id="bw-voting-problem-auction" class="bw-voting-problem-auction"></div>
+							<div id="bw-voting-problem-hand" class="bw-voting-problem-hand"></div>		
+						</li>
+						<li>
+							<div id="bw-voting-problem-description" class="bw-voting-problem-row bw-voting-problem-description"></div>
+						</li>
+						<li>
+							<div id="bw-voting-problem-question" class="bw-voting-problem-row bw-voting-problem-question"></div>						
+						</li>
+					</ul>
+				</div>
+			</div>					
 		</div>
 	</div>
 </div>	
