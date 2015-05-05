@@ -21,32 +21,21 @@
 		
 		<div data-role="page" id="index">
 			<div id="myheader" data-role="header">
-				<h4><img style="vertical-align:middle;" height="25px" src="img/icon.png"/>Welcome to Bridge Winners App</h4>
-				<a id="profile-button" href="#logout-dialog" data-rel="popup" class="ui-btn ui-btn-right ui-corner-all ui-shadow ui-icon-user ui-btn-icon-right">Profile</a>				
+				<span class="center"><img style="vertical-align:middle;" height="25px" src="img/icon.png"/>Bridge Winners</span>	
+			</div>		
+			<div id="bw-voting-problem-recent-container" class="center ui-bar-b bw-voting-problem-recent1"><span id="bw-voting-problem-recent"></span></div>
+			<div data-role="content" id="mycontent" class="ui-content">
+			</div>
+			
+			<div id="myfooter" data-role="footer" data-position="fixed" style="text-align:center;">
 				<div data-role="navbar">
 				  <ul>
 					<li><a id="home-tab" class="ui-btn-active" role="page" data-page="vote.html" data-icon="check">Vote</a></li>
 					<li><a role="page" data-page="create.html" data-icon="edit">Create</a></li>
 					<li><a role="page" data-page="options.html" data-icon="gear">Options</a></li>
+					<li><a role="page" data-page="profile.html" data-icon="user">Profile</a></li>
 				  </ul>
-				</div>				
-			</div>
-			
-			<div data-role="content" id="mycontent" class="ui-content">
-			</div>
-			
-			<div id="myfooter" data-role="footer" data-position="fixed" style="text-align:center;">
-				<h4>© 2009—2015 Bridge Winners</h4>
-			</div>	
-			<div data-role="popup" id="logout-dialog">
-				<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
-				<div data-role="header">
-					<h4>Profile</h4>
-				</div>
-				<div data-role="main" class="ui-content">
-					<div id="profile-content">Welcome</div>
-					<a class="ui-btn ui-btn-b ui-corner-all ui-shadow ui-icon-action ui-btn-icon-left" id="logout-submit-button">LOG OUT</a>
-				</div>				
+				</div>	
 			</div>			
 		</div>
 		<script type="text/javascript" src="cordova.js"></script>
