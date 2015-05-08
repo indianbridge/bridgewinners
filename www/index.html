@@ -19,11 +19,11 @@
     </head>
     <body>
 		
-		<div data-role="page" id="index">
+		<div data-role="page" id="index">		
 			<div id="myheader" data-role="header">
 				<span class="center"><img style="vertical-align:middle;" height="25px" src="img/icon.png"/>Bridge Winners</span>	
 			</div>		
-			<div id="bw-voting-problem-recent-container" class="center ui-bar-b bw-voting-problem-recent1"><span id="bw-voting-problem-recent"></span></div>
+			<div id="bw-voting-problem-recent-container" class="center ui-corner-all ui-overlay-shadow"><span id="bw-voting-problem-recent"></span></div>
 			<div data-role="content" id="mycontent" class="ui-content">
 			</div>
 			
@@ -32,12 +32,13 @@
 				  <ul>
 					<li><a id="home-tab" class="ui-btn-active" role="page" data-page="vote.html" data-icon="check">Vote</a></li>
 					<li><a role="page" data-page="create.html" data-icon="edit">Create</a></li>
-					<li><a role="page" data-page="options.html" data-icon="gear">Options</a></li>
 					<li><a role="page" data-page="profile.html" data-icon="user">Profile</a></li>
-				  </ul>
+					<li><a role="page" data-page="options.html" data-icon="gear">Options</a></li>
+					<li><a role="page" data-page="about.html" data-icon="info">About Us</a></li>
 				</div>	
 			</div>			
 		</div>
+		
 		<script type="text/javascript" src="cordova.js"></script>
 		<script type="text/javascript" src="js/lodash.min.js"></script>
 		<script type="text/javascript" src="js/bridge.min.js"></script>

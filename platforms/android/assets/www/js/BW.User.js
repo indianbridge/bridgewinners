@@ -19,7 +19,7 @@ BW.User = function( containerID ) {
 	
 	// Setup login and logout submit button handler
 
-	$( "#logout-submit-button").click( { user: this }, function( e ) {
+	$( document ).on( "click", "#logout-submit-button", { user: this }, function( e ) {
 		e.data.user.logout();
 		event.preventDefault();
 		event.stopPropagation();
@@ -85,8 +85,8 @@ BW.User.prototype.authenticateAccessToken = function() {
 		// Connect and reset should go in callback
 		this.userInfo = BW.users[ this.username + " " + this.password ];
 		this.isLoggedIn = true;
-		this.loadProfile( this.userInfo );
-		$( "#login-submit-button" ).prop( "disabled", false );
+		//this.loadProfile( this.userInfo );
+		//$( "#login-submit-button" ).prop( "disabled", false );
 		$.mobile.loading( "hide" );
 	}
 	else {
@@ -171,8 +171,8 @@ BW.User.prototype.login = function( username, password ) {
 		this.isLoggedIn = true;
 		this.userInfo = BW.users[ this.username + " " + this.password ];
 		this.accessToken = "random_access_token";
-		this.loadProfile( this.userInfo );
-		$( "#login-submit-button" ).prop( "disabled", false );
+		//this.loadProfile( this.userInfo );
+		//$( "#login-submit-button" ).prop( "disabled", false );
 		$( document ).trigger( "loginStatus:changed",  [ this, this.isLoggedIn ]);
 	}	
 };
@@ -185,14 +185,15 @@ BW.User.prototype.logout = function() {
 	this.accessToken = null;
 	this.userInfo = null;
 	$( document ).trigger( "loginStatus:changed",  [ this, this.isLoggedIn ]);
-	$( "#logout-dialog" ).popup( "close" );
+	//$( "#logout-dialog" ).popup( "close" );
 };
 
 /**
  * Load the user profile information.
  * @param {object} userInfo json object containing user information to be displayed.
  */
-BW.User.prototype.loadProfile = function( userInfo ) {
+BW.User.prototype.loadProfile = function() {
+	var userInfo = this.userInfo;
 	var html = "";
 	html += "<img style='vertical-align:middle;' height='25px' src='" + userInfo.image + "'/>Welcome " + userInfo.name;
 	$( "#profile-content" ).empty().html( html );
@@ -204,13 +205,13 @@ BW.User.prototype.loadProfile = function( userInfo ) {
 BW.User.prototype.updateLoginStatus = function() {
 	this.save();
 	if ( this.isLoggedIn ) {
-		$( "#profile-button" ).removeClass( "ui-disabled" );
+		//$( "#profile-button" ).removeClass( "ui-disabled" );
 		$( "a[role='page']" ).removeClass( "ui-disabled" );
 		if ( this.initialize ) BW.loadPage( "vote.html" );
 		else $( "#home-tab" ).trigger( "click" );
 	}
 	else {
-		$( "#profile-button" ).addClass( "ui-disabled" );
+		//$( "#profile-button" ).addClass( "ui-disabled" );
 		$( "a[role='page']" ).addClass( "ui-disabled" );
 		this.showLoginForm();
 	}

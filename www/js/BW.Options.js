@@ -5,11 +5,13 @@ if ( typeof BW === "undefined" ) BW = {};
  * Class to handle options setting, loading, saving etc. 
  */
 BW.Options = function() {
+	this.prefix = "bw-option-";
 	this.localStorageVariableName = "bw_options";
 	var options = localStorage.getItem( this.localStorageVariableName );
 	this.values = ( options ? JSON.parse( options ) : {} );
 	_.defaults( this.values, {
-		"theme" : "css/themes/bootstrap/jquery.mobile.bootstrap.min.css",
+		"bw-option-theme" : "css/themes/bootstrap/jquery.mobile.bootstrap.min.css",
+		"bw-option-answerPublicly" : true,
 		"enableDebug": false
 	});
 	this.loadAll();	
@@ -22,8 +24,12 @@ BW.Options = function() {
  */
 BW.Options.prototype.get = function( name ) {
 	if ( ! _.has( this.values, name ) ) {
-		alert( "Cannot find " + name + " in options" );
-		return null;
+		// Try with prefix 
+		name = this.prefix + name;
+		if ( ! _.has( this.values, name ) ) {
+			alert( "Cannot find " + name + " in options" );
+			return null;
+		}
 	}	
 	return this.values[ name ];
 };
@@ -39,7 +45,7 @@ BW.Options.prototype.load = function ( name ) {
 	}
 	// only one option for now
 	switch ( name ) {
-		case "theme" :
+		case this.prefix + "theme" :
 			// Load the stylesheet
 			$( "#jqm-stylesheet" ).attr( "href", this.values[ name ] );		
 			break;
@@ -68,8 +74,11 @@ BW.Options.prototype.initialize = function( name ) {
 	}	
 	// Only one option for now
 	switch ( name ) {
-		case "theme" :
-			$( "#theme" ).val( this.values[ name ] );	
+		case this.prefix + "theme" :
+			$( "#" + name ).val( this.values[ name ] );	
+			break;
+		case this.prefix + "answerPublicly" :
+			$( "#" + name ).prop( "checked", this.values[ name ] );
 			break;
 		default :
 			break;

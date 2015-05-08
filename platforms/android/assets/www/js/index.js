@@ -89,6 +89,29 @@ BW.votingProblems = [
 	}	
 ];
 
+BW.recentProblem = 	{
+	number: 7889,
+	type: "bidding",
+	name: "Tom Allan",
+	image: "http://media.bridgewinners.com/cache/12/35/1235fce905f79a73be5d674a5be7e829.png",
+	deal: {
+		dealer: 'w',
+		vulnerability: 'b',
+		scoring: "Matchpoints",
+		hands : {
+			n: {
+				direction:"n",
+				name:"North",
+				hand:"saqj5ha7dkj942ca3"
+			}				
+		},
+		auction: "p",
+		notes: "<p>Common game  Monday 4 May. Your partnership is as good as any in the field. </p><p>you play a vanilla 2/1 with 15-17 1nt and 2nt = 20-21<br>Do you upgrade to 2nt or just start with 1<span class='bw_diams'>♦</span>?</p>"
+	},
+	vote: "1<span class='bw_diams'>♦</span>",
+	percent: 78
+};
+
 /**
  * The initialize function. Called only once when the app starts.
  */
@@ -176,7 +199,7 @@ else {
  */
 BW.loadPage = function( page ) {
 	$.mobile.loading( "show" );
-	var pages = [ "vote.html", "options.html", "create.html" ];
+	var pages = [ "vote.html", "options.html", "create.html", "profile.html" ];
 	if ( !_.indexOf( pages, page ) === -1 ) {
 		alert( "Unknown page : " + page );
 		return;
@@ -220,6 +243,9 @@ BW.pageLoaded = function( page ) {
 	}
 	else if ( page === "create.html" ) {
 		BW.createProblem.initialize();
+	}
+	else if ( page === "profile.html" ) {
+		BW.currentUser.loadProfile();
 	}
 	else {
 		alert( "Unknown page : " + page );

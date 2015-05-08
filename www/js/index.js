@@ -52,14 +52,15 @@ BW.votingProblems = [
 		type: "bidding",
 		name: "Greg Humphreys",
 		image: "http://media.bridgewinners.com/cache/47/a8/47a8a90973610fdf86881ccacdbe3cd1.png",
+		direction: 's',
 		deal: {
 			dealer: 'n',
 			vulnerability: 'e',
-			scoring: "IMPs (20 Victory Point Scale)",
+			scoring: "20VP",
 			hands : {
-				n: {
-					direction:"n",
-					name:"North",
+				s: {
+					direction:"s",
+					name:"South",
 					hand:"sKJT32hJ32dKcAKQJ"
 				}				
 			},
@@ -72,14 +73,15 @@ BW.votingProblems = [
 		type: "lead",
 		name: "Gavin Wolpert",
 		image: "http://media.bridgewinners.com/cache/b5/a5/b5a537ff5d712573d506aa9501356caa.png",
+		direction: 's',
 		deal: {
 			dealer: 's',
 			vulnerability: 'b',
-			scoring: "IMPs (Knockout)",
+			scoring: "KO",
 			hands : {
-				n: {
-					direction:"n",
-					name:"North",
+				s: {
+					direction:"s",
+					name:"South",
 					hand:"sq32haq432ckj32d2"
 				}				
 			},
@@ -89,27 +91,19 @@ BW.votingProblems = [
 	}	
 ];
 
-BW.recentProblem = 	{
-	number: 7889,
-	type: "bidding",
-	name: "Tom Allan",
-	image: "http://media.bridgewinners.com/cache/12/35/1235fce905f79a73be5d674a5be7e829.png",
-	deal: {
-		dealer: 'w',
-		vulnerability: 'b',
-		scoring: "Matchpoints",
-		hands : {
-			n: {
-				direction:"n",
-				name:"North",
-				hand:"saqj5ha7dkj942ca3"
-			}				
-		},
-		auction: "p",
-		notes: "<p>Common game  Monday 4 May. Your partnership is as good as any in the field. </p><p>you play a vanilla 2/1 with 15-17 1nt and 2nt = 20-21<br>Do you upgrade to 2nt or just start with 1<span class='bw_diams'>♦</span>?</p>"
-	},
-	vote: "1<span class='bw_diams'>♦</span>",
-	percent: 78
+BW.recentProblem = null;
+
+BW.scoringTypes = {
+	"KO": "IMPs (Knockout)",
+	"Matchpoints": "Matchpoints",
+	"20VP": "IMPs (20 Victory Point Scale)",
+	"30VP": "IMPs (30 Victory Point Scale)",
+	"WL": "IMPs (Win/Loss Swiss)",
+	"CrossImps": "Cross-Imps",
+	"BAM": "Board-a-Match",
+	"TP": "Total Points",
+	"Money": "Money",
+	"Any": "Any"
 };
 
 /**
@@ -142,7 +136,7 @@ BW.initialize = function() {
 	BW.contentID = "mycontent";	
 	
 	// Assume that north is hand shown. It should not matter (famous last words)
-	BW.handDirection = 'n';
+	BW.handDirection = 's';
 	
 	
 	// A cache to store loaded html files
@@ -197,9 +191,10 @@ else {
  * The hash change handler.
  * Dispatches to appropriate handler based on action and passes the hash parameters
  */
-BW.loadPage = function( page ) {
+BW.loadPage = function( page ) {	
 	$.mobile.loading( "show" );
-	var pages = [ "vote.html", "options.html", "create.html", "profile.html" ];
+	$( "#bw-voting-problem-recent" ).hide();
+	var pages = [ "vote.html", "options.html", "create.html", "profile.html", "about.html" ];
 	if ( !_.indexOf( pages, page ) === -1 ) {
 		alert( "Unknown page : " + page );
 		return;
@@ -226,7 +221,7 @@ BW.loadPage = function( page ) {
 BW.pageLoaded = function( page ) {
 	if ( page === "options.html" ) {
 		BW.currentOptions.initializeAll();
-		$( ".options" ).change( function() {
+		$( ".bw-options" ).change( function() {
 			var name = $( this ).attr( "name" );
 			var type = $( this ).attr( "type" )
 			if ( type === "checkbox" ) {
@@ -246,6 +241,8 @@ BW.pageLoaded = function( page ) {
 	}
 	else if ( page === "profile.html" ) {
 		BW.currentUser.loadProfile();
+	}
+	else if ( page === "about.html" ) {
 	}
 	else {
 		alert( "Unknown page : " + page );

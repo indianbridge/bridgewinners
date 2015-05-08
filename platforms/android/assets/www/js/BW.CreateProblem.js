@@ -116,7 +116,8 @@ BW.CreateProblem.prototype.initializeData = function() {
 		prefix: "bw-hand-diagram",
 		show: {
 			direction: false,
-			name: false
+			name: true,
+			countInHeader: true
 		},
 		tags: Bridge.getDivConfig( "bw-hand-diagram" ),
 		data: {},

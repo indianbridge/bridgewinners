@@ -5,11 +5,11 @@ if ( typeof BW === "undefined" ) BW = {};
  * Class to handle options setting, loading, saving etc. 
  */
 BW.Options = function() {
-	this.itemName = "options";
-	var options = localStorage.getItem( this.itemName );
+	this.localStorageVariableName = "bw_options";
+	var options = localStorage.getItem( this.localStorageVariableName );
 	this.values = ( options ? JSON.parse( options ) : {} );
 	_.defaults( this.values, {
-		"theme" : "css/themes/default/jquery.mobile-1.4.5.min.css",
+		"theme" : "css/themes/bootstrap/jquery.mobile.bootstrap.min.css",
 		"enableDebug": false
 	});
 	this.loadAll();	
@@ -89,7 +89,7 @@ BW.Options.prototype.initializeAll = function( options ) {
  * Save all the options to local storage.
  */
 BW.Options.prototype.save = function( options ) {
-	localStorage.setItem( this.itemName, JSON.stringify( this.values ) );
+	localStorage.setItem( this.localStorageVariableName, JSON.stringify( this.values ) );
 };
 
 /**

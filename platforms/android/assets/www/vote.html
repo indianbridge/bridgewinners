@@ -1,57 +1,45 @@
-<div id="voting-problem-panel" class="ui-popup ui-body-inherit ui-overlay-shadow ui-corner-all">
-	<div data-role="header" role="banner" class="ui-header ui-bar-inherit">
-		<h1 class="ui-title" role="heading" aria-level="1">Vote</h1>
-		<a id="skip-button" class="ui-btn ui-btn-right ui-corner-all ui-shadow ui-icon-forward ui-btn-icon-right">Skip</a>				
+<div id="bw-voting-problem">		
+	<div id="bw-voting-problem-loading" data-section="loading">
+		<img class="center" src="img/ajax-loader.gif"/>
+	</div>	
+	<div id="bw-voting-problem-empty" data-section="empty">
+		<p class="center">
+			Wow, you've answered every single bridge problem on the site!  Thanks for being such an active participant!
+		</p>		
 	</div>
-	<div data-role="main" class="ui-content">				
-		<div id="bw-voting-problem">		
-			<div id="bw-voting-problem-loading" data-section="loading">
-				<img class="center" src="img/ajax-loader.gif"/>
-			</div>	
-			<div id="bw-voting-problem-empty" data-section="empty">
-				<p class="center">
-					Wow, you've answered every single bridge problem on the site!  Thanks for being such an active participant!
-				</p>		
-			</div>
-			<div id="bw-voting-problem-data" data-section="data">
-				<ul class="bw-voting-problem" data-role="listview" data-inset="true">
-					<li>
-						<img id="bw-voting-problem-author-image" class="bw-voting-problem-author-image"/>
-						<div id="bw-voting-problem-author-name" class="bw-voting-problem-row bw-voting-problem-author-name">
-						</div>
-						<div class="bw-voting-problem-row bw-voting-problem-information">
-							<span id="bw-voting-problem-dealer" class="bw-voting-problem-row bw-voting-problem-information-field">
-							</span>
-							<span id="bw-voting-problem-scoring" class="bw-voting-problem-row bw-voting-problem-information-field">
-							</span>
-							<span id="bw-voting-problem-vulnerability" class="bw-voting-problem-row bw-voting-problem-information-field">
-							</span>						
-						</div>
-					</li>
-					<li>
-						<div id="bw-voting-problem-auction" class="bw-voting-problem-auction"></div>
-						<div id="bw-voting-problem-hand" class="bw-voting-problem-hand"></div>		
-					</li>
-					<li>
-						<div id="bw-voting-problem-description" class="bw-voting-problem-row bw-voting-problem-description"></div>
-					</li>
-					<li>
-						<div id="bw-voting-problem-question" class="bw-voting-problem-row bw-voting-problem-question"></div>
-						<div id="bw-voting-problem-lead" class="bw-voting-problem-row bw-voting-problem-lead"></div>	
-						<div id="bw-voting-problem-call" class="bw-voting-problem-row bw-voting-problem-call"></div>	
-						<div class="bw-voting-problem-buttons">
-							<a id="bw-voting-problem-button-abstain" class="ui-btn ui-shadow ui-corner-all ui-btn-inline">Abstain</a>
-							<a id="bw-voting-problem-button-vote" class="ui-btn ui-shadow ui-corner-all ui-btn-inline ui-disabled">Vote</a>	
-						</div>		
-						<div class="bw-voting-problem-public">
-							<fieldset>
-								<input type="checkbox" name="bw-voting-problem-public" id="bw-voting-problem-public" checked>	
-								<label for="bw-voting-problem-public">Answer publicly</label>
-							</fieldset>	
-						</div>	
-					</li>
-				</ul>
-			</div>	
+	<div id="bw-voting-problem-data" data-section="data">
+		<div class="clearfix margin-bottom">	
+		<img id="bw-voting-problem-author-image" class="float-left bw-voting-problem-author-image"/>
+		<div id="bw-voting-problem-author-name" class="bw-voting-problem-row bw-voting-problem-author-name"></div>
+		<div class="bw-voting-problem-row bw-voting-problem-information">
+			<span id="bw-voting-problem-dealer" class="bw-voting-problem-row bw-voting-problem-information-field">
+			</span>, 
+			<span id="bw-voting-problem-scoring" class="bw-voting-problem-row bw-voting-problem-information-field">
+			</span>, 
+			<span id="bw-voting-problem-vulnerability" class="bw-voting-problem-row bw-voting-problem-information-field">
+			</span>						
+		</div>	
 		</div>
-	</div>
+		<div class="clearfix margin-bottom">
+		<div class="float-left" >		
+		<div id="bw-voting-problem-auction" class="bw-voting-problem-auction"></div>
+		<div id="bw-voting-problem-hand" class="bw-voting-problem-hand"></div>		
+		</div>
+		<div id="bw-voting-problem-description" class="bw-voting-problem-row bw-voting-problem-description"></div>
+		</div>						
+		<div id="bw-voting-problem-question" class="bw-voting-problem-row bw-voting-problem-question"></div>
+		<div id="bw-voting-problem-lead" class="bw-voting-problem-row bw-voting-problem-lead"></div>	
+		<div id="bw-voting-problem-call" class="bw-voting-problem-row bw-voting-problem-call"></div>	
+		<div class="bw-voting-problem-buttons">
+			<a id="skip-button" class="ui-btn ui-mini ui-shadow ui-corner-all ui-btn-inline">Skip</a>
+			<a id="bw-voting-problem-button-abstain" class="ui-btn ui-mini ui-shadow ui-corner-all ui-btn-inline">Abstain</a>
+			<a id="bw-voting-problem-button-vote" class="ui-btn ui-mini ui-shadow ui-corner-all ui-btn-inline ui-disabled">Vote</a>	
+		</div>		
+		<div class="bw-voting-problem-public">
+			<fieldset>
+				<input type="checkbox" name="bw-voting-problem-public" id="bw-voting-problem-public" checked>	
+				<label for="bw-voting-problem-public">Answer publicly</label>
+			</fieldset>	
+		</div>	
+	</div>	
 </div>

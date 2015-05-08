@@ -31,6 +31,17 @@ BW.VotingProblem = function( containerID ) {
 		tags: Bridge.getDivConfig( prefix ),
 		registerChangeHandler: false
 	};
+	this.showRecentProblem();
+};
+
+BW.VotingProblem.prototype.showRecentProblem = function() {
+	var problem = BW.recentProblem;
+	var deal = new Bridge.Deal();
+	deal.fromJSON( problem.deal );
+	var html = deal.getHand( BW.handDirection ).toHTML();
+	html += " " + problem.vote;
+	html += " " + problem.percent + '%';
+	$( "#bw-voting-problem-recent" ).empty().append( html );
 };
 
 /**
@@ -287,6 +298,7 @@ BW.VotingProblem.prototype.show = function() {
 			idPrefix: "cd",
 			show: { suit: false, emptySuit: false, text: false, cards: true, countInContent: false },
 			tags: Bridge.getSpanConfig( prefix ),
+			alternateSuitColor: true,
 			registerChangeHandler: false
 		};
 		hand.toHTML( config );					
