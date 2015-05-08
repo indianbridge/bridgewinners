@@ -31,17 +31,21 @@ BW.VotingProblem = function( containerID ) {
 		tags: Bridge.getDivConfig( prefix ),
 		registerChangeHandler: false
 	};
-	this.showRecentProblem();
 };
 
 BW.VotingProblem.prototype.showRecentProblem = function() {
 	var problem = BW.recentProblem;
-	var deal = new Bridge.Deal();
-	deal.fromJSON( problem.deal );
-	var html = deal.getHand( BW.handDirection ).toHTML();
-	html += " " + problem.vote;
-	html += " " + problem.percent + '%';
-	$( "#bw-voting-problem-recent" ).empty().append( html );
+	if ( problem ) {
+		var deal = new Bridge.Deal();
+		deal.fromJSON( problem.deal );
+		var html = deal.getHand( problem.direction ).toHTML();
+		html += " " + ( problem.type === "bidding" ? Bridge.getCallHTML( problem.vote ) : Bridge.getCardHTML( problem.vote ) );
+		if ( problem.vote !== "abstain" ) html += " " + problem.percent + '%';
+	}
+	else {
+		var html = "You have not voted on any problems yet!";
+	}
+	$( "#bw-voting-problem-recent" ).empty().append( html ).show();
 };
 
 /**
@@ -72,6 +76,7 @@ BW.VotingProblem.prototype.initialize = function() {
  */
 BW.VotingProblem.prototype.load = function() {
 	this.showOneSection( "loading" );	
+	this.showRecentProblem();
 	if ( this.currentProblem ) {
 		this.show();
 	}
@@ -99,7 +104,7 @@ BW.VotingProblem.prototype.enableClicksAndSwipes = function() {
 		if ( e.data.problem.currentProblem.type === "bidding" ) {
 			var answerPublic = $( "#bw-voting-problem-public" ).prop( "checked" );
 			alert( "Thanks for you vote. Abstain selected. Answer is " + ( answerPublic ? "Public" : "Not Public" ) );
-			e.data.problem.vote();
+			e.data.problem.vote( "abstain" );
 		}
 		else {
 			alert( "Cannot abstain on lead problem." );
@@ -145,11 +150,11 @@ BW.VotingProblem.prototype.enableClicksAndSwipes = function() {
 				return;
 			}
 			alert( "Thanks for Voting for " + call + ". Answer is " + ( answerPublic ? "Public" : "Not Public" ) );
-			e.data.problem.vote();
+			e.data.problem.vote( call );
 		}
 		else {
 			alert( "Thanks for Voting for " + e.data.problem.selectedCard + ". Answer is " + ( answerPublic ? "Public" : "Not Public" ) );
-			e.data.problem.vote();
+			e.data.problem.vote( e.data.problem.selectedCard );
 		}
 	});	
 	
@@ -158,8 +163,12 @@ BW.VotingProblem.prototype.enableClicksAndSwipes = function() {
 /**
  * Send a vote for this problem to BW server
  */
-BW.VotingProblem.prototype.vote = function() {
+BW.VotingProblem.prototype.vote = function( answer ) {
 	// Do whatever is necesary to vote
+	BW.recentProblem = JSON.parse( JSON.stringify( this.currentProblem ) );
+	BW.recentProblem.vote = answer;
+	BW.recentProblem.percent = Math.floor((Math.random() * 100) + 1);
+	this.showRecentProblem();
 	this.currentProblem = null;		
 	this.load();
 };
@@ -227,7 +236,7 @@ BW.VotingProblem.prototype.show = function() {
 	var fields = {
 		"author-name": this.currentProblem.name + " asks...",
 		"dealer": "Dealer " + Bridge.directions[ deal.getDealer() ].name,
-		"scoring": deal.getScoring(),
+		"scoring": BW.scoringTypes[ deal.getScoring() ],
 		"vulnerability": Bridge.vulnerabilities[ deal.getVulnerability() ].name + " Vul",
 		"description": deal.getNotes()
 	};
@@ -237,6 +246,7 @@ BW.VotingProblem.prototype.show = function() {
 	}
 	var question = "What's your " + ( this.currentProblem.type === "bidding" ? "Call" : "Lead" ) + "?";
 	$( "#bw-voting-problem-question" ).empty().append( question );
+	$( "#bw-voting-problem-public" ).prop( "checked", BW.currentOptions.get( "bw-option-answerPublicly" ) );
 	
 	$( "#skip-button" ).removeClass( "ui-disabled" );
 	$( "#skip-button" ).off( "click" );
@@ -259,7 +269,7 @@ BW.VotingProblem.prototype.show = function() {
 	};	
 	var aID = config.idPrefix + "-" + config.prefix;	
 	auction.toHTML( config );
-	var hand = deal.getHand( BW.handDirection );
+	var hand = deal.getHand( this.currentProblem.direction );
 	config = {
 		prefix: "bw-hand-diagram",
 		show: {

@@ -5,16 +5,43 @@ if ( typeof BW === "undefined" ) BW = {};
  * A class to represent a bidding or lead problem to be voted on
  */
 BW.CreateProblem = function( containerID ) {
-	this.stages = [ "type", "hand", "scoring", "auction", "text", "preview" ];
+	this.stages = [
+		{ name: "type", next: "Hand", previous: "Nothing back there" },
+		{ name: "hand", next: "Scoring/Vul/Dealer", previous: "Type" },
+		{ name: "scoring", next: "Auction", previous: "Hand" },
+		{ name: "auction", next: "Extra Info", previous: "Scoring/Vul/Dealer" },
+		{ name: "text", next: "Preview", previous: "Auction" },
+		{ name: "preview", next: "Publish", previous: "Extra Information" }
+	];
 	this.containerID = containerID;
 	this.itemName = "BW::currentCreateProblem";	
 	this.loadProblem();
 };
 
+
+/**
+ * Mimicking an enum for stages
+ */
+BW.CreateProblem.Stages = {
+	TYPE: 0,
+	HANDS: 1,
+	SCORING: 2,
+	AUCTION: 3,
+	TEXT: 4,
+	PREVIEW: 5
+};
+
+/**
+ * Load the problem saved in local storage.
+ */
 BW.CreateProblem.prototype.loadProblem = function() {
+	this.handDirection = 's';
 	this.type = "bidding";
 	this.stage = BW.CreateProblem.Stages.TYPE;
 	this.deal = new Bridge.Deal();
+	this.deal.disableEventTrigger();
+	this.deal.setScoring( "Matchpoints" );
+	this.deal.enableEventTrigger();	
 	var problem = localStorage.getItem( this.itemName );
 	if ( problem ) {
 		problemJSON = JSON.parse( problem );
@@ -27,10 +54,35 @@ BW.CreateProblem.prototype.loadProblem = function() {
 };
 
 /**
+ * Initializing create page
+ */
+BW.CreateProblem.prototype.initialize = function() {
+	$( "#bw-create-problem-loading" ).show();
+	$( "div[data-stage]" ).hide();
+	$( "#next-stage-button" ).click( { problem: this }, function( e ) {
+		e.data.problem.nextStage();
+	});
+	$( "#previous-stage-button" ).click( { problem: this }, function( e ) {
+		e.data.problem.previousStage();
+	});					
+	this.initializeData();
+	this.setupEventHandlers();
+	this.loadStage();
+};
+
+/**
  * Go to the next stage if allowed
  */
 BW.CreateProblem.prototype.nextStage = function() {
-	if ( this.stage === BW.CreateProblem.Stages.PREVIEW ) return;
+	if ( this.stage === BW.CreateProblem.Stages.PREVIEW ) {
+		var problem = this;
+		alert( "Your problem has been published." );
+		localStorage.removeItem( problem.itemName );
+		problem.loadProblem();
+		problem.initializeData();
+		problem.loadStage();	
+		return;	
+	}
 	this.stage++;
 	this.save();
 	this.loadStage();
@@ -47,75 +99,24 @@ BW.CreateProblem.prototype.previousStage = function() {
 };
 
 /**
- * Enable/Disable previous/next clicks and swipes
- */
-BW.CreateProblem.prototype.enableClicksAndSwipes = function() {
-	$( '#' + this.containerID ).off( "swipeleft" );
-	$( '#' + this.containerID ).off( "swiperight" );
-	if ( this.stage === BW.CreateProblem.Stages.TYPE ) $( "#previous-stage-button" ).addClass( "ui-disabled" );
-	else {
-		$( "#previous-stage-button" ).removeClass( "ui-disabled" );
-		$( '#' + this.containerID ).on( "swiperight", { problem: this }, function( e ) {
-			e.data.problem.previousStage();
-		});			
-	}
-	if ( this.stage === BW.CreateProblem.Stages.PREVIEW ) $( "#next-stage-button" ).addClass( "ui-disabled" );
-	else {
-		$( "#next-stage-button" ).removeClass( "ui-disabled" );	
-		$( '#' + this.containerID ).on( "swipeleft", { problem: this }, function( e ) {
-			e.data.problem.nextStage();
-		});		
-	}
-};
-
-
-BW.CreateProblem.prototype.setupEventHandlers = function() {
-	var selector = ".bw-create-problem-type";
-	$( selector ).change( { problem: this }, function ( e ) {
-		e.data.problem.type = $( this ).data( "type" );
-		e.data.problem.save();
-	});	
-	$( ".deal-info" ).change( { deal: this.deal }, function( e ) {
-		var field = $( this ).attr( "field" );
-		var value = $( this ).val();
-		// This is for notes
-		if ( value === null ) value = '';
-		e.data.deal.set( field, value );		
-	});	
-	var event = "deal:changed.create_problem";
-	$( document ).off( event );
-	$( document ).on( event, { problem: this }, function( e, deal ) {
-		if ( e.data.problem.deal === deal )	e.data.problem.save();
-	});	
-	
-	// Preview
-	$( "#bw-create-problem-publish-button" ).click( { problem: this }, function( e ) {
-		var problem = e.data.problem;
-		alert( "Your problem has been published." );
-		localStorage.removeItem( problem.itemName );
-		problem.loadProblem();
-		problem.initializeData();
-		problem.loadStage();
-	});	
-};
-/**
  * Initialize data in all fields,
  * Setup change handlers
  */
 BW.CreateProblem.prototype.initializeData = function() {
 	// type
-	var selector = ".bw-create-problem-type";
-	$( selector ).prop( "checked", false );	
-	selector = "#bw-create-problem-type-" + this.type;
-	$( selector ).prop( "checked", true );
-	$( "#bw-create-problem-type" ).trigger( "create" );	
+	var field = "type";
+	var value = this.type;
+	var fieldClass = "bw-create-problem-" + field
+	$( '.' + fieldClass ).prop( "checked", false );	
+	$( '#' + fieldClass + '-' + value ).prop( "checked", true );
+	$( '#' + fieldClass ).trigger( "create" );			
 	
 	//hand
-	var hand = this.deal.getHand( BW.handDirection );
+	var hand = this.deal.getHand( this.handDirection );
 	config = {
 		prefix: "bw-hand-diagram",
 		show: {
-			direction: false,
+			direction: true,
 			name: true,
 			countInHeader: true
 		},
@@ -127,7 +128,7 @@ BW.CreateProblem.prototype.initializeData = function() {
 		registerChangeHandler: true
 	};		
 	hand.toHTML( config );	
-	this.deal.setActiveHand( BW.handDirection );
+	this.deal.setActiveHand( this.handDirection );
 	// Card Deck
 	var width = $( window ).width();
 	var height = $( window ).height();
@@ -150,11 +151,22 @@ BW.CreateProblem.prototype.initializeData = function() {
 	this.deal.toCardDeck( config );		
 	
 	// Scoring and Info
-	var fields = [ "scoring", "dealer", "vulnerability" ];
+	var fields = [ "scoring", "notes" ];
 	for( var i = 0; i < fields.length; ++i ) {
 		var field = fields[i];
-		$( '#' + field ).val( this.deal.get( field ) );
+		var fieldClass = "bw-create-problem-" + field;
+		$( '#' + fieldClass ).val( this.deal.get( field ) );
 	}
+	
+	// Dealer and Vul
+	var fields = [ "dealer", "vulnerability" ];
+	_.each ( fields, function( field ) {
+		var value = this.deal.get( field );
+		var fieldClass = "bw-create-problem-" + field;
+		$( '.' + fieldClass ).prop( "checked", false );	
+		$( '#' + fieldClass + '-' + value ).prop( "checked", true );
+		$( '#' + fieldClass ).trigger( "create" );						
+	}, this );
 	
 	
 	// Auction
@@ -187,9 +199,56 @@ BW.CreateProblem.prototype.initializeData = function() {
 	// Text
 	var field = "notes";
 	$( '#' + field ).val( this.deal.get( field ) );
-	
+};
 
-		
+
+BW.CreateProblem.prototype.setupEventHandlers = function() {
+	var selector = ".bw-create-problem-type";
+	$( selector ).change( { problem: this }, function ( e ) {
+		e.data.problem.type = $( this ).data( "type" );
+		e.data.problem.save();
+	});	
+	$( ".bw-create-problem-field" ).change( { deal: this.deal }, function( e ) {
+		var field = $( this ).data( "field" );
+		if ( field === "notes" || field === "scoring" ) {
+			var value = $( this ).val();
+			// This is for notes
+			if ( value === null ) value = '';
+		}
+		else if ( field === "dealer" || field === "vulnerability" ) {
+			var value = $( this ).data( field );
+		}
+		e.data.deal.set( field, value );		
+	});	
+	var event = "deal:changed.create_problem";
+	$( document ).off( event );
+	$( document ).on( event, { problem: this }, function( e, deal ) {
+		if ( e.data.problem.deal === deal )	{
+			e.data.problem.enableClicksAndSwipes();
+			e.data.problem.save();
+		}
+	});	
+};
+
+/**
+ * Load current stage
+ */
+BW.CreateProblem.prototype.loadStage = function() {
+	$( "div[data-stage]" ).hide();
+	var selector = "div[data-stage='" + this.stages[ this.stage].name + "']";
+	$( selector ).show();	
+	if ( this.stage === BW.CreateProblem.Stages.TYPE || this.stage === BW.CreateProblem.Stages.PREVIEW ) $( "#bw-create-problem-hand-diagram-container" ).hide();
+	else $( "#bw-create-problem-hand-diagram-container" ).show();
+	if ( this.stage === BW.CreateProblem.Stages.PREVIEW ) this.loadPreview();
+	$( "#bw-create-problem-loading" ).hide();	
+	this.enableClicksAndSwipes();			
+};
+
+BW.CreateProblem.prototype.updateButton = function( id, text, disabled ) {
+	var selector = '#' + id;
+	$( selector ).empty().append( text );
+	if ( disabled ) $( selector ).addClass( "ui-disabled" );
+	else $( selector ).removeClass( "ui-disabled" );
 };
 
 /**
@@ -201,7 +260,7 @@ BW.CreateProblem.prototype.loadPreview = function() {
 	var fields = {
 		"author-name": BW.currentUser.getName() + " asks...",
 		"dealer": "Dealer " + Bridge.directions[ deal.getDealer() ].name,
-		"scoring": deal.getScoring(),
+		"scoring": BW.scoringTypes[ deal.getScoring() ],
 		"vulnerability": Bridge.vulnerabilities[ deal.getVulnerability() ].name + " Vul",
 		"description": deal.getNotes()
 	};
@@ -229,12 +288,12 @@ BW.CreateProblem.prototype.loadPreview = function() {
 	};	
 	var aID = config.idPrefix + "-" + config.prefix;	
 	auction.toHTML( config );
-	var hand = deal.getHand( BW.handDirection );
+	var hand = deal.getHand( this.handDirection );
 	config = {
 		prefix: "bw-hand-diagram",
 		show: {
-			direction: false,
-			name: false
+			direction: true,
+			name: true
 		},
 		tags: Bridge.getDivConfig( "bw-hand-diagram" ),
 		data: {},
@@ -250,52 +309,66 @@ BW.CreateProblem.prototype.loadPreview = function() {
 	var width = ( aWidth > hWidth ? aWidth : hWidth );
 	$( "#" + hID ).width( width );
 	$( "#" + aID ).width( width );	
+};
+
+/**
+ * Enable/Disable previous/next clicks and swipes
+ */
+BW.CreateProblem.prototype.enableClicksAndSwipes = function() {
+	// Turn off Swipes to be updated based on state
+	$( '#' + this.containerID ).off( "swipeleft" );
+	$( '#' + this.containerID ).off( "swiperight" );	
 	
-	var publishButtonDisabled = true;
-	var publishButtonText = "Publish";
-	if ( hand.getCount() !== 13 ) {
-		publishButtonText = "Hand does not have 13 cards";
+	// Clicks
+	// Previous
+	var text = this.stages[ this.stage].previous;
+	var disabled = ( this.stage === BW.CreateProblem.Stages.TYPE );
+	var id = "previous-stage-button";
+	this.updateButton( id, text, disabled );
+	if ( !disabled ) {
+		$( '#' + this.containerID ).on( "swiperight", { problem: this }, function( e ) {
+			e.data.problem.previousStage();
+		});			
 	}
-	else {
-		if ( this.type === "bidding" && auction.getContract().isComplete ) {
-			publishButtonText = "Auction cannot be complete for bidding problem";
-		}
-		else if ( this.type === "lead" && !auction.getContract().isComplete ) {
-			publishButtonText = "Auction has to be complete for lead problem";
-		}
-		else publishButtonDisabled = false;
+	
+	// Next
+	text = this.stages[ this.stage].next;
+	disabled = false;
+	id = "next-stage-button";
+	if ( this.stage === BW.CreateProblem.Stages.HANDS && this.deal.getHand( this.handDirection ).getCount() !== 13 ) {
+		disabled = true;
+		text = "Not enough cards!";
 	}
-	$( "#bw-create-problem-publish-button" ).prop( "disabled", publishButtonDisabled );
-	$( "#bw-create-problem-publish-button" ).empty().append( publishButtonText );
-};
-
-/**
- * Initializing create page
- */
-BW.CreateProblem.prototype.initialize = function() {
-	$( "#bw-create-problem-loading" ).show();
-	$( "div[data-stage]" ).hide();
-	$( "#next-stage-button" ).click( { problem: this }, function( e ) {
-		e.data.problem.nextStage();
-	});
-	$( "#previous-stage-button" ).click( { problem: this }, function( e ) {
-		e.data.problem.previousStage();
-	});					
-	this.initializeData();
-	this.setupEventHandlers();
-	this.loadStage();
-};
-
-/**
- * Load current stage
- */
-BW.CreateProblem.prototype.loadStage = function() {
-	$( "div[data-stage]" ).hide();
-	var selector = "div[data-stage='" + this.stages[ this.stage] + "']";
-	$( selector ).show();	
-	if ( this.stage === BW.CreateProblem.Stages.PREVIEW ) this.loadPreview();
-	$( "#bw-create-problem-loading" ).hide();	
-	this.enableClicksAndSwipes();			
+	else if ( this.stage === BW.CreateProblem.Stages.AUCTION ) {
+		if ( this.type === "bidding" ) {
+			var auction = this.deal.getAuction();
+			if ( auction.getContract().isComplete ) {
+				disabled = true;
+				text = "Auction complete!";		
+			}
+			else if ( auction.getNextToCall() !== this.handDirection ) {
+				disabled = true;
+				text = Bridge.directions[ this.handDirection ].name + " is not next to call";						
+			}
+		}
+		else if ( this.type === "lead" ) {
+			var contract = this.deal.getAuction().getContract();
+			if ( !contract.isComplete ) {
+				disabled = true;
+				text = "Auction incomplete!";		
+			}
+			else if ( contract.getLeader() !== this.handDirection ) {
+				disabled = true;
+				text = Bridge.directions[ this.handDirection ].name + " is not on lead";					
+			}				
+		}		
+	}
+	this.updateButton( id, text, disabled );
+	if ( !disabled ) {
+		$( '#' + this.containerID ).on( "swipeleft", { problem: this }, function( e ) {
+			e.data.problem.nextStage();
+		});			
+	}
 };
 
 /**
@@ -310,14 +383,3 @@ BW.CreateProblem.prototype.save = function() {
 	localStorage.setItem( this.itemName, JSON.stringify( problemJSON ) );
 };
 
-/**
- * Mimicking an enum for stages
- */
-BW.CreateProblem.Stages = {
-	TYPE: 0,
-	HANDS: 1,
-	SCORING: 2,
-	AUCTION: 3,
-	TEXT: 4,
-	PREVIEW: 5
-};
