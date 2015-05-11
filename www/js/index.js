@@ -91,7 +91,8 @@ BW.votingProblems = [
 	}	
 ];
 
-BW.recentProblem = null;
+
+BW.recentProblem = {};
 
 BW.scoringTypes = {
 	"KO": "IMPs (Knockout)",
@@ -123,7 +124,11 @@ BW.initialize = function() {
 	// Hack to always have 2 voting problems.
 	//var problems = localStorage.getItem( "BW::votingproblems" );
 	//if ( !problems ) localStorage.setItem( "BW::votingproblems", JSON.stringify( BW.votingProblems ) );
-	localStorage.setItem( "BW::votingproblems", JSON.stringify( BW.votingProblems ) );
+	"BW::bridge_votingProblems"
+	localStorage.setItem( "BW::gavin_votingProblems", JSON.stringify( BW.votingProblems ) );
+	localStorage.setItem( "BW::bridge_votingProblems", JSON.stringify( BW.votingProblems ) );
+	localStorage.removeItem( "BW::bridge_currentVotingProblem" );
+	localStorage.removeItem( "BW::gavin_currentVotingProblem" );
 	
 	// enable fast click
 	var attachFastClick = Origami.fastclick;
@@ -140,16 +145,7 @@ BW.initialize = function() {
 	
 	
 	// A cache to store loaded html files
-	BW.pageCache = {};	
-	
-	// Load the current options
-	BW.currentOptions = new BW.Options();	
-	
-	// Setup voting problem
-	BW.votingProblem = new BW.VotingProblem( "bw-voting-problem" );
-	
-	// Setup create problem
-	BW.createProblem = new BW.CreateProblem( "bw-create-problem" );
+	BW.pageCache = {};		
 	
 	// Load the different pages from menu
 	$( "a[role='page']" ).click( function() {
@@ -159,6 +155,7 @@ BW.initialize = function() {
 	
 	// Load the current user
 	BW.currentUser = new BW.User( BW.contentID );
+	BW.currentUser.initialize();
 };
 
 /**

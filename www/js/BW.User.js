@@ -12,13 +12,11 @@ BW.User = function( containerID ) {
 	this.password = null;
 	this.accessToken = null;
 	this.userInfo = null;
-	this.initialize = true;
 	
 	// load from local storage
 	this.load();
 	
 	// Setup login and logout submit button handler
-
 	$( document ).on( "click", "#logout-submit-button", { user: this }, function( e ) {
 		e.data.user.logout();
 		event.preventDefault();
@@ -29,9 +27,31 @@ BW.User = function( containerID ) {
 		user.updateLoginStatus();
 	});	
 	
-	this.authenticateAccessToken();
-	this.initialize = false;
+
 };
+
+/**
+ * Initialize the user
+ */
+BW.User.prototype.initialize = function() {
+	this.initializing = true;
+	this.authenticateAccessToken();
+	this.initializing = false;	
+};
+
+
+/**
+ * Get the locat storage variable name
+ */
+BW.User.prototype.getLocalStorageVariableName = function( itemName ) {
+	return "BW::" + this.username + "_" + itemName;
+};
+
+
+/**
+ * Get the username of this user
+ */
+BW.User.prototype.getUsername = function() { return this.username; }
 
 /**
  * Get name of this user
@@ -197,6 +217,36 @@ BW.User.prototype.loadProfile = function() {
 	var html = "";
 	html += "<img style='vertical-align:middle;' height='25px' src='" + userInfo.image + "'/>Welcome " + userInfo.name;
 	$( "#profile-content" ).empty().html( html );
+	this.loadPublishedProblems();
+};
+
+BW.User.prototype.loadPublishedProblems = function() {
+	var publishedItemsName = "BW::" + BW.currentUser.getUsername() + "_publishedProblems";
+	var publishedProblems = localStorage.getItem( publishedItemsName );	
+	if ( !publishedProblems ) publishedProblems = [];
+	else publishedProblems = JSON.parse( publishedProblems );
+	var html = "";
+	if ( publishedProblems.length <= 0 ) {
+		html += "<h4>You have not published any problems. Live a lttle. Publish some bidding and lead problems.</h4>";	
+	}
+	else {
+		html += "<ul data-role='listview' data-inset='false'>";
+		_.each( publishedProblems, function( problem ) {
+			var deal = new Bridge.Deal();
+			deal.fromJSON( problem.deal );
+			var type = problem.type;
+			var hand = deal.getHand( problem.handDirection );
+			var icon = ( type === "bidding" ? "img/Box-Red.png" : "img/cardback.png" );	
+			html += "<li>";
+			html += "<img src='" + icon + "' alt='" + type + "' class='ui-li-icon'>"
+			html += "<div>" + hand.toHTML( { registerChangeHandler: false } ) + "</div>";
+			var spanClass = "bw-published-problem-information";
+			var secondLine = "<span class='" + spanClass + "'>" + BW.scoringTypes[ deal.get( "scoring" ) ] + "</span>, <span class='" + spanClass + "'>" + " Dealer: " + Bridge.directions[ deal.get( "dealer" ) ].name + "</span>, <span class='" + spanClass + "'>" + " Vul: " + Bridge.vulnerabilities[ deal.get( "vulnerability" ) ].name + "</span>";	
+			html += "<div>" + secondLine + "</div></li>";					
+		}, this );			
+		html += "</ul>";
+	}		
+	$( "#bw-published-problems" ).empty().append( html );
 };
 
 /**
@@ -206,9 +256,17 @@ BW.User.prototype.updateLoginStatus = function() {
 	this.save();
 	if ( this.isLoggedIn ) {
 		//$( "#profile-button" ).removeClass( "ui-disabled" );
-		$( "a[role='page']" ).removeClass( "ui-disabled" );
-		if ( this.initialize ) BW.loadPage( "vote.html" );
-		else $( "#home-tab" ).trigger( "click" );
+		$( "a[role='page']" ).removeClass( "ui-disabled" );	
+		//if ( this.initialize ) BW.loadPage( "vote.html" );
+		// Load the current options
+		BW.currentOptions = new BW.Options();	
+		
+		// Setup voting problem
+		BW.votingProblem = new BW.VotingProblem( "bw-voting-problem" );
+		
+		// Setup create problem
+		BW.createProblem = new BW.CreateProblem( "bw-create-problem" );			
+		$( "#home-tab" ).trigger( "click" );
 	}
 	else {
 		//$( "#profile-button" ).addClass( "ui-disabled" );

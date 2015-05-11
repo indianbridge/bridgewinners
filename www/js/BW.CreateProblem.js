@@ -14,7 +14,7 @@ BW.CreateProblem = function( containerID ) {
 		{ name: "preview", next: "Publish", previous: "Extra Information" }
 	];
 	this.containerID = containerID;
-	this.itemName = "BW::currentCreateProblem";	
+	this.itemName = BW.currentUser.getLocalStorageVariableName( "currentCreateProblem" );
 	this.loadProblem();
 };
 
@@ -78,6 +78,17 @@ BW.CreateProblem.prototype.nextStage = function() {
 		var problem = this;
 		alert( "Your problem has been published." );
 		localStorage.removeItem( problem.itemName );
+		var publishedItemsName = BW.currentUser.getLocalStorageVariableName( "publishedProblems" );
+		var publishedProblems = localStorage.getItem( publishedItemsName );
+		if ( !publishedProblems ) publishedProblems = [];
+		else publishedProblems = JSON.parse( publishedProblems );
+		var newProblem = {
+			handDirection: problem.handDirection,
+			type: problem.type,
+			deal: problem.deal.toJSON()
+		};
+		publishedProblems.unshift( newProblem );
+		localStorage.setItem( publishedItemsName, JSON.stringify( publishedProblems ) );
 		problem.loadProblem();
 		problem.initializeData();
 		problem.loadStage();	

@@ -68,6 +68,10 @@
 	white-space : normal;
 }
 
+.bw-published-problem-information { 
+	white-space: normal;
+}
+
 .bw-create-problem-notes {
 	min-height: 100px;
 }

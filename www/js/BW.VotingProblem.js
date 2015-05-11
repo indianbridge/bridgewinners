@@ -6,9 +6,7 @@ if ( typeof BW === "undefined" ) BW = {};
  */
 BW.VotingProblem = function( containerID ) {
 	this.containerID = containerID;
-	this.itemName = "BW::currentVotingProblem";
-	//This is for testing
-	localStorage.removeItem( this.itemName );
+	this.itemName = BW.currentUser.getLocalStorageVariableName( "currentVotingProblem" );
 	var problem = localStorage.getItem( this.itemName );
 	if ( problem ) {
 		this.currentProblem = JSON.parse( problem );		
@@ -34,8 +32,9 @@ BW.VotingProblem = function( containerID ) {
 };
 
 BW.VotingProblem.prototype.showRecentProblem = function() {
-	var problem = BW.recentProblem;
-	if ( problem ) {
+	var username = BW.currentUser.getUsername();
+	if ( _.has( BW.recentProblem, username ) && BW.recentProblem[ username ] ) {
+		var problem = BW.recentProblem[ username ];
 		var deal = new Bridge.Deal();
 		deal.fromJSON( problem.deal );
 		var html = deal.getHand( problem.direction ).toHTML();
@@ -165,9 +164,11 @@ BW.VotingProblem.prototype.enableClicksAndSwipes = function() {
  */
 BW.VotingProblem.prototype.vote = function( answer ) {
 	// Do whatever is necesary to vote
-	BW.recentProblem = JSON.parse( JSON.stringify( this.currentProblem ) );
-	BW.recentProblem.vote = answer;
-	BW.recentProblem.percent = Math.floor((Math.random() * 100) + 1);
+	var username = BW.currentUser.getUsername();
+	var problem = JSON.parse( JSON.stringify( this.currentProblem ) );
+	problem.vote = answer;
+	problem.percent = Math.floor((Math.random() * 100) + 1);
+	BW.recentProblem[ username ] = problem;
 	this.showRecentProblem();
 	this.currentProblem = null;		
 	this.load();
@@ -178,7 +179,8 @@ BW.VotingProblem.prototype.vote = function( answer ) {
  */
 BW.VotingProblem.prototype.skip = function() {
 	this.showOneSection( "loading" );
-	var problems = localStorage.getItem( "BW::votingproblems" );
+	var itemName = BW.currentUser.getLocalStorageVariableName( "votingProblems" );
+	var problems = localStorage.getItem( itemName );
 	if ( !problems ) problems = "[]";
 	var problemsJSON = JSON.parse( problems );
 	if ( problemsJSON.length === 0 ) {
@@ -190,7 +192,7 @@ BW.VotingProblem.prototype.skip = function() {
 	problemsJSON.splice( 0, 1, this.currentProblem );
 	this.currentProblem = newProblem;
 	localStorage.setItem( this.itemName, JSON.stringify( this.currentProblem ) );
-	localStorage.setItem( "BW::votingproblems", JSON.stringify( problemsJSON ) );
+	localStorage.setItem( itemName, JSON.stringify( problemsJSON ) );
 	this.show();
 };
 
@@ -200,21 +202,20 @@ BW.VotingProblem.prototype.skip = function() {
 BW.VotingProblem.prototype.get = function() {
 	// Do whatever is done to get from server
 	// For now from localStorage which is preloaded
-	var problems = localStorage.getItem( "BW::votingproblems" );
+	var itemName = BW.currentUser.getLocalStorageVariableName( "votingProblems" );
+	var problems = localStorage.getItem( itemName );
 	if ( !problems ) problems = "[]";
 	var problemsJSON = JSON.parse( problems );
 	if ( problemsJSON.length === 0 ) {
 		// No more problems
 		$( "#skip-button" ).addClass( "ui-disabled" );
-		this.showOneSection( "empty" );
-		//var html = "<p class='center'>Wow, you've answered every single bridge problem on the site!  Thanks for being such an active participant!</p>";
-		//$( "#" + this.containerID).empty().append( html );	
+		this.showOneSection( "empty" );	
 		return;		
 	}
 	this.currentProblem = problemsJSON[0];
 	localStorage.setItem( this.itemName, JSON.stringify( this.currentProblem ) );
 	problemsJSON.splice( 0, 1 );
-	localStorage.setItem( "BW::votingproblems", JSON.stringify( problemsJSON ) );
+	localStorage.setItem( itemName, JSON.stringify( problemsJSON ) );
 	this.show();
 };
 
