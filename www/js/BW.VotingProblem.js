@@ -234,9 +234,17 @@ BW.VotingProblem.prototype.show = function() {
 	
 	// Image
 	$( "#bw-voting-problem-author-image" ).attr( "src", this.currentProblem.image).attr( "alt", this.currentProblem.name );
+	var next = deal.getAuction().getNextToCall();
+	var seats = [ "1st", "2nd", "3rd", "4th" ];
+	var position = 0;
+	var dealer = deal.getDealer();
+	while( dealer !== next ) {
+		position++;
+		dealer = Bridge.getLHO( dealer );
+	}
 	var fields = {
 		"author-name": this.currentProblem.name + " asks...",
-		"dealer": "Dealer " + Bridge.directions[ deal.getDealer() ].name,
+		"dealer": seats[ position ] + " Seat",
 		"scoring": BW.scoringTypes[ deal.getScoring() ],
 		"vulnerability": Bridge.vulnerabilities[ deal.getVulnerability() ].name + " Vul",
 		"description": deal.getNotes()

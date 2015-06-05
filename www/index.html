@@ -25,19 +25,27 @@
 			</div>		
 			<div id="bw-voting-problem-recent-container" class="center ui-corner-all ui-overlay-shadow"><span id="bw-voting-problem-recent"></span></div>
 			<div data-role="content" id="mycontent" class="ui-content">
+				<div data-role="popup" id="popupMenu">
+					<ul data-role="listview" data-inset="true">
+						<li data-icon="gear"><a role="page" data-page="options.html" data-icon="gear">Options</a></li>
+						<li data-icon="info"><a role="page" data-page="about.html" data-icon="info">About Us</a></li>
+					</ul>
+				</div>				
 			</div>
 			
 			<div id="myfooter" data-role="footer" data-position="fixed" style="text-align:center;">
 				<div data-role="navbar">
-				  <ul>
-					<li><a id="home-tab" class="ui-btn-active" role="page" data-page="vote.html" data-icon="check">Vote</a></li>
-					<li><a role="page" data-page="create.html" data-icon="edit">Create</a></li>
-					<li><a role="page" data-page="profile.html" data-icon="user">Profile</a></li>
-					<li><a role="page" data-page="options.html" data-icon="gear">Options</a></li>
-					<li><a role="page" data-page="about.html" data-icon="info">About Us</a></li>
+					<ul>
+						<li><a id="home-tab" data-type="navbar-item" class="ui-btn-active" role="page" data-name="vote" data-page="vote.html" data-icon="check">Vote</a></li>
+						<li><a data-type="navbar-item" role="page" data-name="create" data-page="create.html" data-icon="edit">Create</a></li>
+						<li><a data-type="navbar-item" role="page" data-name="view" data-page="view.html" data-icon="eye">View</a></li>
+						<li><a data-type="navbar-item" role="page" data-name="profile" data-page="profile.html" data-icon="user">Profile</a></li>
+						<li><a id="more-tab" data-type="navbar-item" role="page" data-name="more" data-page="more.html" data-icon="bars">More</a></li>
+					</ul>
 				</div>	
 			</div>			
 		</div>
+		
 		
 		<script type="text/javascript" src="cordova.js"></script>
 		<script type="text/javascript" src="js/lodash.min.js"></script>

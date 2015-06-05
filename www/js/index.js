@@ -118,8 +118,14 @@ BW.initialize = function() {
 	$.mobile.ignoreContentEnabled = true;
 	$.mobile.buttonMarkup.hoverDelay = 0;
 	$.mobile.hoverDelay = 0;
+	$.mobile.pushStateEnabled = false;
 	
 	BW.androidSwipeFix();
+	
+	$.post( "http://localhost:8000/api/v1/get-auth-token/", { username:"sriram", password:"sriram" })
+	  .done(function( data ) {
+		alert( "Data Loaded: " + data.token );
+	});	
 	
 	// Hack to always have 2 voting problems.
 	//var problems = localStorage.getItem( "BW::votingproblems" );
@@ -143,12 +149,19 @@ BW.initialize = function() {
 	// Assume that north is hand shown. It should not matter (famous last words)
 	BW.handDirection = 's';
 	
-	
 	// A cache to store loaded html files
 	BW.pageCache = {};		
 	
+	// Manage active tab
+	BW.lastNavbarItem = "vote";
+	$( "#popupMenu" ).popup( {
+		afterclose: function( event, ui ) {
+			BW.setNavbarActiveItem( BW.lastNavbarItem );
+		}
+	});
+	
 	// Load the different pages from menu
-	$( "a[role='page']" ).click( function() {
+	$( "body" ).on( "click", "a[role='page']", function() {
 		var page = $( this ).data("page");
 		if ( BW.currentUser.isLoggedIn ) BW.loadPage( page );
 	});
@@ -189,26 +202,33 @@ else {
  * Dispatches to appropriate handler based on action and passes the hash parameters
  */
 BW.loadPage = function( page ) {	
+	$( "#popupMenu" ).popup( "close" );
 	$.mobile.loading( "show" );
 	$( "#bw-voting-problem-recent" ).hide();
-	var pages = [ "vote.html", "options.html", "create.html", "profile.html", "about.html" ];
+	var pages = [ "vote.html", "options.html", "create.html", "view.html", "profile.html", "more.html", "about.html" ];
 	if ( !_.indexOf( pages, page ) === -1 ) {
 		alert( "Unknown page : " + page );
 		return;
 	}
-	if ( _.has( BW.pageCache, page ) ) {
-		$( '#' + BW.contentID ).empty().append( BW.pageCache[ page ] );
-		BW.pageLoaded( page );
+	if ( page === "more.html" ) {
+		$( "#popupMenu" ).popup( "open", { positionTo: "#more-tab" } );
 		$.mobile.loading( "hide" );
 	}
 	else {
-		$.get( page, function( html ) {
-			BW.pageCache[ page ] = html;
+		if ( _.has( BW.pageCache, page ) ) {
 			$( '#' + BW.contentID ).empty().append( BW.pageCache[ page ] );
 			BW.pageLoaded( page );
 			$.mobile.loading( "hide" );
-		});
-	}	
+		}
+		else {
+			$.get( page, function( html ) {
+				BW.pageCache[ page ] = html;
+				$( '#' + BW.contentID ).empty().append( BW.pageCache[ page ] );
+				BW.pageLoaded( page );
+				$.mobile.loading( "hide" );
+			});
+		}	
+	}
 };
 
 /**
@@ -229,23 +249,43 @@ BW.pageLoaded = function( page ) {
 			}
 			BW.currentOptions.change( name, value );		
 		});
+		BW.setNavbarActiveItem( "more" );
 	}
 	else if ( page === "vote.html" ) {
+		BW.setNavbarActiveItem( "vote" );
 		BW.votingProblem.initialize();
 	}
 	else if ( page === "create.html" ) {
+		BW.setNavbarActiveItem( "create" );
 		BW.createProblem.initialize();
 	}
 	else if ( page === "profile.html" ) {
+		BW.setNavbarActiveItem( "profile" );
 		BW.currentUser.loadProfile();
 	}
-	else if ( page === "about.html" ) {
+	else if ( page === "view.html" ) {
+		BW.setNavbarActiveItem( "view" );
 	}
+	else if ( page === "about.html" ) {
+		BW.setNavbarActiveItem( "more" );
+	}	
 	else {
 		alert( "Unknown page : " + page );
 		return;
 	}
 	$( '#' + BW.contentID ).trigger( "create" );
+};
+
+/**
+ * Set the active navbar item
+ */
+BW.setNavbarActiveItem = function( itemName ) {
+	BW.lastNavbarItem = itemName;
+	$( "[data-type='navbar-item']" ).each( function( index, element ) {
+		var name = $( this ).data( "name" );
+		if ( name === itemName ) $( this ).addClass( "ui-btn-active" );
+		else $( this ).removeClass( "ui-btn-active" );
+	});
 };
 
 

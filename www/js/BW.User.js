@@ -237,12 +237,12 @@ BW.User.prototype.loadPublishedProblems = function() {
 			var type = problem.type;
 			var hand = deal.getHand( problem.handDirection );
 			var icon = ( type === "bidding" ? "img/Box-Red.png" : "img/cardback.png" );	
-			html += "<li>";
+			html += "<li><a role='page' data-page='view.html' data-problem=''>";
 			html += "<img src='" + icon + "' alt='" + type + "' class='ui-li-icon'>"
 			html += "<div>" + hand.toHTML( { registerChangeHandler: false } ) + "</div>";
 			var spanClass = "bw-published-problem-information";
 			var secondLine = "<span class='" + spanClass + "'>" + BW.scoringTypes[ deal.get( "scoring" ) ] + "</span>, <span class='" + spanClass + "'>" + " Dealer: " + Bridge.directions[ deal.get( "dealer" ) ].name + "</span>, <span class='" + spanClass + "'>" + " Vul: " + Bridge.vulnerabilities[ deal.get( "vulnerability" ) ].name + "</span>";	
-			html += "<div>" + secondLine + "</div></li>";					
+			html += "<div>" + secondLine + "</div></a></li>";					
 		}, this );			
 		html += "</ul>";
 	}		

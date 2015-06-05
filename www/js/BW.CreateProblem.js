@@ -335,7 +335,10 @@ BW.CreateProblem.prototype.enableClicksAndSwipes = function() {
 	var text = this.stages[ this.stage].previous;
 	var disabled = ( this.stage === BW.CreateProblem.Stages.TYPE );
 	var id = "previous-stage-button";
+	text = "Back";
 	this.updateButton( id, text, disabled );
+	if ( disabled ) $( '#' + id ).hide();
+	else $( '#' + id ).show();
 	if ( !disabled ) {
 		$( '#' + this.containerID ).on( "swiperight", { problem: this }, function( e ) {
 			e.data.problem.previousStage();
@@ -374,6 +377,7 @@ BW.CreateProblem.prototype.enableClicksAndSwipes = function() {
 			}				
 		}		
 	}
+	if ( this.stage !== BW.CreateProblem.Stages.PREVIEW ) text = "Continue";
 	this.updateButton( id, text, disabled );
 	if ( !disabled ) {
 		$( '#' + this.containerID ).on( "swipeleft", { problem: this }, function( e ) {
