@@ -82,10 +82,11 @@ BW.CreateProblem.prototype.initialize = function() {
  */
 BW.CreateProblem.prototype.publish = function() {
 	var problem = this;
-	$.mobile.loading( "show", {
+	/*$.mobile.loading( "show", {
 	  text: "Submitting New Problem",
 	  textVisible: true
-	});	
+	});	*/
+	BW.showLoadingDialog( "Submitting New Problem" );
 	data = {};
 	if ( this.type === "bidding" ) data[ "type" ] = "Bidding";
 	else data[ "type" ] = "Lead";
@@ -110,14 +111,16 @@ BW.CreateProblem.prototype.publish = function() {
 	  data: data
 	});	
 	request.done(function( data ) {
-		$.mobile.loading( "hide" );
+		//$.mobile.loading( "hide" );
+		BW.hideLoadingDialog();
 		BW.createProblem.clearLocalStorage();
 		alert( "Your problem has been published." );
 		BW.loadPage( "vote.html" );
 	});
-	request.fail(function(jqXHR, textStatus, errorThrown){ 
+	request.fail(function(jqXHR, textStatus, errorThrown) { 
+		BW.hideLoadingDialog();
 		alert( "There is error when creating problem." );
-		$.mobile.loading( "hide" );
+		//$.mobile.loading( "hide" );
 		return;
 	});			
 	return;		

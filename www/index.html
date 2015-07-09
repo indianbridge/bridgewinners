@@ -26,12 +26,24 @@
 			</div>		
 			<div id="bw-voting-problem-recent-container" class="center ui-corner-all ui-overlay-shadow"><span id="bw-voting-problem-recent"></span></div>
 			<div data-role="content" id="mycontent" class="ui-content">
-				<div data-role="popup" id="popupMenu">
+				<div data-role="popup" id="popupMenu" data-history="false">
 					<ul data-role="listview" data-inset="true">
 						<li data-icon="gear"><a role="page" data-name="options" data-page="options.html" data-icon="gear">Options</a></li>
 						<li data-icon="info"><a role="page" data-name="about" data-page="about.html" data-icon="info">About Us</a></li>
 					</ul>
-				</div>				
+				</div>	
+				<div data-role="popup" id="loading-popup" class="ui-content" data-dismissible="false" data-history="false">
+					<img class="center" src="img/ajax-loader.gif"/>
+					<div class="center" id="loading-popup-content">Loading...</div>
+				</div>					
+				<div data-role="popup" id="poll-responses" data-overlay-theme="b" data-history="false">
+					<div data-role="header"><h1>Poll Responses</h1></div>
+					<div data-role="main" class="ui-content">
+						<a href="#" id="poll-responses-close-button" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+						<div id="poll-responses-content"></div>
+					</div>
+				</div>		
+					
 			</div>
 			
 			<div id="myfooter" data-role="footer" data-position="fixed" style="text-align:center;">

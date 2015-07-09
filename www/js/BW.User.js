@@ -60,10 +60,11 @@ BW.User.prototype.getName = function() {
  */
 BW.User.prototype.authenticateAccessToken = function() {
 	// Connect to BW server to check if access token is still ok
-	$.mobile.loading( "show", {
+	BW.showLoadingDialog( "Authenticating Access" );
+	/*$.mobile.loading( "show", {
 	  text: "Connecting to BW server",
 	  textVisible: true
-	});
+	});*/
 	
 	var url = encodeURI(BW.sitePrefix + 'rest-api/v1/get-profile/');
 	var request = $.ajax({
@@ -79,7 +80,8 @@ BW.User.prototype.authenticateAccessToken = function() {
 		user.username = data.username;
 		var avatarLink = user.getAvatarLink();
 		$( "#header-avatar" ).attr( "src", avatarLink );
-		$.mobile.loading( "hide" );
+		//$.mobile.loading( "hide" );
+		BW.hideLoadingDialog();
 		BW.loadPage( "vote.html" );
 	});
 	request.fail(function(jqXHR, textStatus, errorThrown){ 
@@ -87,6 +89,7 @@ BW.User.prototype.authenticateAccessToken = function() {
 		alert( "Unable to authenticate access. Please login again to continue" ); 
 		user.isLoggedIn = false;
 		user.username = null;
+		BW.hideLoadingDialog();
 		BW.loadPage( "vote.html" );
 	});	
 
@@ -160,6 +163,7 @@ BW.User.prototype.showLoginForm = function() {
 BW.User.prototype.login = function( username, password ) {
 	$( "#login-submit-button" ).prop( "disabled", true );
 	var url = encodeURI(BW.sitePrefix + 'rest-api/v1/get-auth-token/');
+	BW.showLoadingDialog( "Logging In" );
 	var request = $.ajax({
 	  method: "POST",
 	  context: this,
@@ -171,12 +175,14 @@ BW.User.prototype.login = function( username, password ) {
 		user.isLoggedIn = true;
 		user.accessToken = data[ "token" ];
 		localStorage.setItem( this.accessTokenLocalStorageVariableName, user.accessToken );
-		$.mobile.loading( "hide" );
+		BW.hideLoadingDialog();
+		//$.mobile.loading( "hide" );
 		$( "#login-submit-button" ).prop( "disabled", false );
 		$( document ).trigger( "BW.loginStatus:changed", [user] );
 	});
 	request.fail(function(jqXHR, textStatus, errorThrown){ 
 		var user = this;
+		BW.hideLoadingDialog();
 		alert( "Unable to login with the passed credentials" ); 
 		user.isLoggedIn = false;
 		user.accessToken = null;

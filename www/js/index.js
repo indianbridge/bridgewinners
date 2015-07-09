@@ -107,10 +107,15 @@ BW.initialize = function() {
 		BW.loadPage( page, parameters );
 	});
 	
+	/*$( "#poll-responses-close-button" ).on( "click", function() {
+		$( "#poll-responses" ).popup( "close" );	
+	});*/
+	
 	// Load the current user
 	BW.currentUser = new BW.User( BW.contentID );
 	BW.currentOptions = new BW.Options();
 	BW.votingProblem = new BW.VotingProblem( "bw-voting-problem" );
+	BW.viewProblem = new BW.VotingProblem( "bw-view-problem" );
 	BW.createProblem = new BW.CreateProblem( "bw-create-problem" );	
 	$( document ).trigger( "BW.loginStatus:changed", [BW.currentUser] );
 };
@@ -141,6 +146,15 @@ else {
 	$.when( cordovaReady, jQueryMobileReady ).then( BW.initialize );
 }
 
+BW.showLoadingDialog = function( text ) {
+	$( "#loading-popup-content" ).empty().append( text );
+	$( "#loading-popup" ).popup( "open" );
+};
+
+BW.hideLoadingDialog = function() {
+	$( "#loading-popup" ).popup( "close" );
+};
+
 /**
  * The hash change handler.
  * Dispatches to appropriate handler based on action and passes the hash parameters
@@ -148,39 +162,45 @@ else {
 BW.loadPage = function( page, parameters ) {	
 	$( "#bw-voting-problem-recent" ).hide();
 	$( "#popupMenu" ).popup( "close" );
-	$.mobile.loading( "show" );
+	//$.mobile.loading( "show" );
+	BW.showLoadingDialog( "Loading Page" );
 	if ( BW.currentUser.isLoggedIn ) {
 		$( "a[role='page']" ).removeClass( "ui-disabled" );
 		var pages = [ "vote.html", "options.html", "create.html", "view.html", "profile.html", "more.html", "about.html" ];
 		if ( !_.indexOf( pages, page ) === -1 ) {
+			BW.hideLoadingDialog();
 			alert( "Unknown page : " + page );
-			$.mobile.loading( "show" );
+			//$.mobile.loading( "hide" );
 			return;
 		}
 		if ( page === "more.html" ) {
+			BW.hideLoadingDialog();
 			$( "#popupMenu" ).popup( "open", { positionTo: "#more-tab" } );
-			$.mobile.loading( "hide" );
+			//$.mobile.loading( "hide" );
 		}
 		else {
 			if ( _.has( BW.pageCache, page ) ) {
 				$( '#' + BW.contentID ).empty().append( BW.pageCache[ page ] );
+				BW.hideLoadingDialog();
 				BW.pageLoaded( page, parameters );
-				$.mobile.loading( "hide" );
+				//$.mobile.loading( "hide" );
 			}
 			else {
 				$.get( page, function( html ) {
 					BW.pageCache[ page ] = html;
 					$( '#' + BW.contentID ).empty().append( BW.pageCache[ page ] );
+					BW.hideLoadingDialog();
 					BW.pageLoaded( page, parameters );
-					$.mobile.loading( "hide" );
+					//$.mobile.loading( "hide" );
 				});
 			}	
 		}		
 	}
 	else {
 		$( "a[role='page']" ).addClass( "ui-disabled" );
+		BW.hideLoadingDialog();
 		BW.currentUser.showLoginForm();
-		$.mobile.loading( "hide" );
+		//$.mobile.loading( "hide" );
 	}
 };
 
@@ -206,12 +226,12 @@ BW.pageLoaded = function( page, parameters ) {
 	}
 	else if ( page === "vote.html" ) {
 		BW.setNavbarActiveItem( "vote" );
-		$.mobile.loading( "hide" );
+		//$.mobile.loading( "hide" );
 		BW.votingProblem.initialize();
 	}
 	else if ( page === "create.html" ) {
 		BW.setNavbarActiveItem( "create" );
-		$.mobile.loading( "hide" );
+		//$.mobile.loading( "hide" );
 		BW.createProblem.initialize();
 	}
 	else if ( page === "profile.html" ) {
@@ -222,10 +242,10 @@ BW.pageLoaded = function( page, parameters ) {
 		BW.setNavbarActiveItem( "view" );
 		if ( parameters.hasOwnProperty( "slug" ) ) {
 			var slug = parameters[ "slug" ];
-			BW.votingProblem.initialize( slug );
+			BW.viewProblem.initialize( slug );
 		}
 		else {
-			BW.votingProblem.showList();
+			BW.viewProblem.showList();
 		}
 	}
 	else if ( page === "about.html" ) {

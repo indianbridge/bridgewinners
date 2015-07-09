@@ -652,3 +652,18 @@ span.bw-auction-diagram-field {
   color: red;
   font-style: italic;
 }
+.bw-private-response {
+    border: 1px solid #a1a1a1;
+    padding: 2px; 
+    background: #333333;
+    color: white;
+    border-radius: 10px;
+}
+
+.bw-public-response {
+    border: 1px solid #a1a1a1;
+    padding: 2px; 
+    background: #dddddd;
+    border-radius: 10px;
+}
+

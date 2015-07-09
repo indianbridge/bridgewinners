@@ -122,10 +122,11 @@ BW.VotingProblem.prototype.load = function( exclude ) {
 	if ( typeof exclude === "undefined" ) exclude = false;
 	this.showOneSection( "loading" );	
 	this.showRecentProblem();
-	$.mobile.loading( "show", {
+	/*$.mobile.loading( "show", {
 	  text: "Getting Voting Problem",
 	  textVisible: true
-	});	
+	});	*/
+	BW.showLoadingDialog( "Getting Voting Problem" );
 	data = {};
 	if ( exclude && this.slug ) data[ "exclude" ] = this.slug
 	var url = encodeURI(BW.sitePrefix + 'rest-api/v1/get-voting-problem/');
@@ -139,16 +140,19 @@ BW.VotingProblem.prototype.load = function( exclude ) {
 	request.done(function( data ) {
 		if ( data.alldone ) {
 			this.showOneSection( "empty" );
-			$.mobile.loading( "hide" );
+			BW.hideLoadingDialog();
+			//$.mobile.loading( "hide" );
 		}
 		else {
 			this.show( data );
-			$.mobile.loading( "hide" );
+			BW.hideLoadingDialog();
+			//$.mobile.loading( "hide" );
 		}
 	});
 	request.fail(function(jqXHR, textStatus, errorThrown){ 
 		this.showOneSection( "error" );
-		$.mobile.loading( "hide" );
+		BW.hideLoadingDialog();
+		//$.mobile.loading( "hide" );
 	});	
 };
 
@@ -158,10 +162,11 @@ BW.VotingProblem.prototype.load = function( exclude ) {
  */
 BW.VotingProblem.prototype.loadSpecificProblem = function( slug ) {	
 	this.showOneSection( "loading" );	
-	$.mobile.loading( "show", {
+	/*$.mobile.loading( "show", {
 	  text: "Getting Problem",
 	  textVisible: true
-	});	
+	});*/	
+	BW.showLoadingDialog( "Getting Problem" );
 	data = {};
 	var url = encodeURI(BW.sitePrefix + 'rest-api/v1/get-problem/' + slug + '/');
 	var request = $.ajax({
@@ -172,11 +177,13 @@ BW.VotingProblem.prototype.loadSpecificProblem = function( slug ) {
 	});	
 	request.done(function( data ) {
 		this.show( data );
-		$.mobile.loading( "hide" );
+		BW.hideLoadingDialog();
+		//$.mobile.loading( "hide" );
 	});
 	request.fail(function(jqXHR, textStatus, errorThrown){ 
 		this.showOneSection( "error" );
-		$.mobile.loading( "hide" );
+		BW.hideLoadingDialog();
+		//$.mobile.loading( "hide" );
 	});	
 };
 
@@ -186,10 +193,11 @@ BW.VotingProblem.prototype.loadSpecificProblem = function( slug ) {
  */
 BW.VotingProblem.prototype.showList = function() {
 	this.showOneSection( "loading" );
-	$.mobile.loading( "show", {
+	/*$.mobile.loading( "show", {
 	  text: "Getting Problem List",
 	  textVisible: true
-	});	
+	});	*/
+	BW.showLoadingDialog( "Getting Recent Problem List" );
 	data = {
 		start:0,
 		end: 9
@@ -232,13 +240,13 @@ BW.VotingProblem.prototype.showList = function() {
 		$( "#bw-voting-problem-list-contents" ).empty().append( html );	
 		$( "#bw-voting-problem-list-contents" ).trigger( "create" );
 		this.showOneSection( "list" );
-		//$( "#" + this.containerID ).empty().append( html );
-		//$( "#" + this.containerID ).trigger( "create" );
-		$.mobile.loading( "hide" );
+		BW.hideLoadingDialog();
+		//$.mobile.loading( "hide" );
 	});
 	request.fail(function(jqXHR, textStatus, errorThrown){ 
 		this.showOneSection( "error" );
-		$.mobile.loading( "hide" );
+		BW.hideLoadingDialog();
+		//$.mobile.loading( "hide" );
 	});		
 };
 
@@ -330,10 +338,11 @@ BW.VotingProblem.prototype.enableClicksAndSwipes = function() {
  */
 BW.VotingProblem.prototype.vote = function( answer, answerPublic ) {
 	
-	$.mobile.loading( "show", {
+	/*$.mobile.loading( "show", {
 	  text: "Submitting Vote",
 	  textVisible: true
-	});	
+	});*/
+	BW.showLoadingDialog( "Submitting Vote" );
 	data = {
 		Answer: true,
 		answer: answer	
@@ -348,15 +357,17 @@ BW.VotingProblem.prototype.vote = function( answer, answerPublic ) {
 	  data: data
 	});	
 	request.done(function( data ) {
-		$.mobile.loading( "hide" );
+		BW.hideLoadingDialog();
+		//$.mobile.loading( "hide" );
 		parameters = {
 			"slug": this.slug
 		};
 		BW.loadPage( "view.html", parameters );
 	});
-	request.fail(function(jqXHR, textStatus, errorThrown){ 
+	request.fail(function(jqXHR, textStatus, errorThrown) {
+		BW.hideLoadingDialog(); 
 		alert( "There is error when submitting Vote." );
-		$.mobile.loading( "hide" );
+		//$.mobile.loading( "hide" );
 		this.load();
 	});		
 };
@@ -369,10 +380,11 @@ BW.VotingProblem.prototype.abstain = function( answerPublic ) {
 		alert( "Cannot abstain on lead problem." );
 		return;
 	}
-	$.mobile.loading( "show", {
+	/*$.mobile.loading( "show", {
 	  text: "Submitting Abstain Vote",
 	  textVisible: true
-	});	
+	});	*/
+	BW.showLoadingDialog( "Submitting Abstain Vote" );
 	data = {
 		Abstain: true	
 	};
@@ -386,12 +398,14 @@ BW.VotingProblem.prototype.abstain = function( answerPublic ) {
 	  data: data
 	});	
 	request.done(function( data ) {
-		$.mobile.loading( "hide" );
+		BW.hideLoadingDialog();
+		//$.mobile.loading( "hide" );
 		this.load();
 	});
-	request.fail(function(jqXHR, textStatus, errorThrown){ 
+	request.fail(function(jqXHR, textStatus, errorThrown) { 
+		BW.hideLoadingDialog();
 		alert( "There is error when submitting Abstain Vote." );
-		$.mobile.loading( "hide" );
+		//$.mobile.loading( "hide" );
 		this.load();
 	});	
 };
@@ -445,6 +459,54 @@ BW.VotingProblem.prototype.showAllVotes = function( data ) {
 		$( "#bw-voting-problem-public" ).prop( "checked", data.my_answer.public ).checkboxradio('refresh');
 		if ( data.my_answer.public ) {
 			$( "#bw-public-votes-button" ).show();
+			$( "#bw-public-votes-button" ).click( { slug: data.slug }, function( e ) {
+				/*$.mobile.loading( "show", {
+				  text: "Getting Responses",
+				  textVisible: true
+				});*/
+				BW.showLoadingDialog( "Getting Responses" );
+				data = {};
+				var url = encodeURI(BW.sitePrefix + 'rest-api/v1/get-responses/' + e.data.slug + '/');
+				var request = $.ajax({
+					method: "GET",
+					context: this,
+					url: url,
+					headers: {'Authorization': 'Token ' + BW.currentUser.getAccessToken() }
+				});	
+				request.done(function( data ) {
+					var html = "";
+					var type = data.type.toLowerCase();
+					for( var i = 0; i < data.responses.length; ++i ) {
+						var response = data.responses[i];
+						html += "<h4>";
+						if ( type === "bidding" ) {
+							html += Bridge.getCallHTML( response.answer_text.toLowerCase() );
+						}
+						else {
+							html += Bridge.getCardHTML( response.answer_text.toLowerCase() );
+						}
+						html += "</h4>";
+						for( var j = 0; j < response.public_responses.length; ++j ) {
+							html += "<span class='bw-public-response'>" + response.public_responses[j] + "</span> ";
+						}
+						if ( response.num_private_responses >  0 ) {
+							html += "<span class='bw-private-response'>" + response.num_private_responses + " private</span>";
+						}
+					}
+					BW.hideLoadingDialog();
+					$( "#poll-responses-content" ).empty().append(html);
+					$( "#poll-responses" ).popup( "open" );						
+					//$.mobile.loading( "hide" );
+				});
+				request.fail(function(jqXHR, textStatus, errorThrown){ 
+					var html = "";
+					html += "Unable to retreive responses";
+					$( "#poll-responses-content" ).empty().append(html);
+					$( "#poll-responses" ).popup( "open" );	
+					BW.hideLoadingDialog();				
+					//$.mobile.loading( "hide" );
+				});					
+			});	
 		}
 		else {
 			$( "#bw-public-votes-button" ).hide();
