@@ -35,65 +35,6 @@ BW.androidSwipeFix = function() {
 	} );  	
 };
 
-BW.users = {
-	"bridge winners" : {
-		name: "Bridge Winners",
-		image: "http://media.bridgewinners.com/images/icons/banner_logo_cropped.png"
-	},
-	"gavin wolpert" : {
-		name: "Gavin Wolpert",
-		image: "http://media.bridgewinners.com/cache/b5/a5/b5a537ff5d712573d506aa9501356caa.png"
-	}
-};
-
-BW.votingProblems = [
-	{
-		number: 5816,
-		type: "bidding",
-		name: "Greg Humphreys",
-		image: "http://media.bridgewinners.com/cache/47/a8/47a8a90973610fdf86881ccacdbe3cd1.png",
-		direction: 's',
-		deal: {
-			dealer: 'n',
-			vulnerability: 'e',
-			scoring: "20VP",
-			hands : {
-				s: {
-					direction:"s",
-					name:"South",
-					hand:"sKJT32hJ32dKcAKQJ"
-				}				
-			},
-			auction: "p2dp2sp3dp",
-			notes: "Pd is very sound in 2nd seat red."
-		}
-	},
-	{
-		number: 48,
-		type: "lead",
-		name: "Gavin Wolpert",
-		image: "http://media.bridgewinners.com/cache/b5/a5/b5a537ff5d712573d506aa9501356caa.png",
-		direction: 's',
-		deal: {
-			dealer: 's',
-			vulnerability: 'b',
-			scoring: "KO",
-			hands : {
-				s: {
-					direction:"s",
-					name:"South",
-					hand:"sq32haq432ckj32d2"
-				}				
-			},
-			auction: "1hx2h3d3hxp4dp5dppp",
-			notes: "Your opponents in the District 9 GNT Qualifier are Meckwell, Meck is West, Rodwell is East.<br/>2♥ showed less than a constructive raise... the second double by Meck was just values takeout (kind of asking for a heart stopper).<br/>I'd love comments on your best guess of dummy's hand."
-		}
-	}	
-];
-
-
-BW.recentProblem = {};
-
 BW.scoringTypes = {
 	"KO": "IMPs (Knockout)",
 	"Matchpoints": "Matchpoints",
@@ -106,6 +47,12 @@ BW.scoringTypes = {
 	"Money": "Money",
 	"Any": "Any"
 };
+
+BW.colorPalette = [ "#5158AB", "#41AE32", "#E74224", "#E73390", "#2F8E9A", "#D056F2", "#855D1B",
+"#3A7140", "#AD4346", "#C277AF", "#E07B39", "#A89829", "#436790", "#2D9B80", "#D446B7", "#E06A84",
+"#B97AD8", "#697224", "#756CE2", "#9487C2", "#A53381", "#589FCE", "#4DA65F", "#7CA637", "#7D5780",
+"#E5494C", "#D93366", "#6088E1", "#864A9D", "#DC765A", "#3D7A21", "#995231", "#9F4361", "#C5872E",
+"#E267AB", "#AC4B14", "#E43AD6", "#B359D7", "#B53625", "#E9721E"];
 
 /**
  * The initialize function. Called only once when the app starts.
@@ -121,20 +68,6 @@ BW.initialize = function() {
 	$.mobile.pushStateEnabled = false;
 	
 	BW.androidSwipeFix();
-	
-	$.post( "http://localhost:8000/api/v1/get-auth-token/", { username:"sriram", password:"sriram" })
-	  .done(function( data ) {
-		alert( "Data Loaded: " + data.token );
-	});	
-	
-	// Hack to always have 2 voting problems.
-	//var problems = localStorage.getItem( "BW::votingproblems" );
-	//if ( !problems ) localStorage.setItem( "BW::votingproblems", JSON.stringify( BW.votingProblems ) );
-	"BW::bridge_votingProblems"
-	localStorage.setItem( "BW::gavin_votingProblems", JSON.stringify( BW.votingProblems ) );
-	localStorage.setItem( "BW::bridge_votingProblems", JSON.stringify( BW.votingProblems ) );
-	localStorage.removeItem( "BW::bridge_currentVotingProblem" );
-	localStorage.removeItem( "BW::gavin_currentVotingProblem" );
 	
 	// enable fast click
 	var attachFastClick = Origami.fastclick;
@@ -152,6 +85,8 @@ BW.initialize = function() {
 	// A cache to store loaded html files
 	BW.pageCache = {};		
 	
+	BW.sitePrefix = "http://108.166.89.84/";
+	
 	// Manage active tab
 	BW.lastNavbarItem = "vote";
 	$( "#popupMenu" ).popup( {
@@ -161,14 +96,23 @@ BW.initialize = function() {
 	});
 	
 	// Load the different pages from menu
-	$( "body" ).on( "click", "a[role='page']", function() {
+	$( "body" ).on( "click", "a[role='page'], img[role='page']", function() {
 		var page = $( this ).data("page");
-		if ( BW.currentUser.isLoggedIn ) BW.loadPage( page );
+		var parameterNames = [ "slug" ];
+		parameters = {};
+		for( var i = 0; i < parameterNames.length; ++i ) {
+			var parameterValue = $( this ).data( parameterNames[i] );
+			if ( parameterValue ) parameters[ parameterNames[i] ] = parameterValue;
+		}
+		BW.loadPage( page, parameters );
 	});
 	
 	// Load the current user
 	BW.currentUser = new BW.User( BW.contentID );
-	BW.currentUser.initialize();
+	BW.currentOptions = new BW.Options();
+	BW.votingProblem = new BW.VotingProblem( "bw-voting-problem" );
+	BW.createProblem = new BW.CreateProblem( "bw-create-problem" );	
+	$( document ).trigger( "BW.loginStatus:changed", [BW.currentUser] );
 };
 
 /**
@@ -201,33 +145,42 @@ else {
  * The hash change handler.
  * Dispatches to appropriate handler based on action and passes the hash parameters
  */
-BW.loadPage = function( page ) {	
+BW.loadPage = function( page, parameters ) {	
+	$( "#bw-voting-problem-recent" ).hide();
 	$( "#popupMenu" ).popup( "close" );
 	$.mobile.loading( "show" );
-	$( "#bw-voting-problem-recent" ).hide();
-	var pages = [ "vote.html", "options.html", "create.html", "view.html", "profile.html", "more.html", "about.html" ];
-	if ( !_.indexOf( pages, page ) === -1 ) {
-		alert( "Unknown page : " + page );
-		return;
-	}
-	if ( page === "more.html" ) {
-		$( "#popupMenu" ).popup( "open", { positionTo: "#more-tab" } );
-		$.mobile.loading( "hide" );
-	}
-	else {
-		if ( _.has( BW.pageCache, page ) ) {
-			$( '#' + BW.contentID ).empty().append( BW.pageCache[ page ] );
-			BW.pageLoaded( page );
+	if ( BW.currentUser.isLoggedIn ) {
+		$( "a[role='page']" ).removeClass( "ui-disabled" );
+		var pages = [ "vote.html", "options.html", "create.html", "view.html", "profile.html", "more.html", "about.html" ];
+		if ( !_.indexOf( pages, page ) === -1 ) {
+			alert( "Unknown page : " + page );
+			$.mobile.loading( "show" );
+			return;
+		}
+		if ( page === "more.html" ) {
+			$( "#popupMenu" ).popup( "open", { positionTo: "#more-tab" } );
 			$.mobile.loading( "hide" );
 		}
 		else {
-			$.get( page, function( html ) {
-				BW.pageCache[ page ] = html;
+			if ( _.has( BW.pageCache, page ) ) {
 				$( '#' + BW.contentID ).empty().append( BW.pageCache[ page ] );
-				BW.pageLoaded( page );
+				BW.pageLoaded( page, parameters );
 				$.mobile.loading( "hide" );
-			});
-		}	
+			}
+			else {
+				$.get( page, function( html ) {
+					BW.pageCache[ page ] = html;
+					$( '#' + BW.contentID ).empty().append( BW.pageCache[ page ] );
+					BW.pageLoaded( page, parameters );
+					$.mobile.loading( "hide" );
+				});
+			}	
+		}		
+	}
+	else {
+		$( "a[role='page']" ).addClass( "ui-disabled" );
+		BW.currentUser.showLoginForm();
+		$.mobile.loading( "hide" );
 	}
 };
 
@@ -235,7 +188,7 @@ BW.loadPage = function( page ) {
  * Actions after page is loaded.
  * @param {object} parameters the associative array of hash parameters
  */
-BW.pageLoaded = function( page ) {
+BW.pageLoaded = function( page, parameters ) {
 	if ( page === "options.html" ) {
 		BW.currentOptions.initializeAll();
 		$( ".bw-options" ).change( function() {
@@ -253,10 +206,12 @@ BW.pageLoaded = function( page ) {
 	}
 	else if ( page === "vote.html" ) {
 		BW.setNavbarActiveItem( "vote" );
+		$.mobile.loading( "hide" );
 		BW.votingProblem.initialize();
 	}
 	else if ( page === "create.html" ) {
 		BW.setNavbarActiveItem( "create" );
+		$.mobile.loading( "hide" );
 		BW.createProblem.initialize();
 	}
 	else if ( page === "profile.html" ) {
@@ -265,6 +220,13 @@ BW.pageLoaded = function( page ) {
 	}
 	else if ( page === "view.html" ) {
 		BW.setNavbarActiveItem( "view" );
+		if ( parameters.hasOwnProperty( "slug" ) ) {
+			var slug = parameters[ "slug" ];
+			BW.votingProblem.initialize( slug );
+		}
+		else {
+			BW.votingProblem.showList();
+		}
 	}
 	else if ( page === "about.html" ) {
 		BW.setNavbarActiveItem( "more" );

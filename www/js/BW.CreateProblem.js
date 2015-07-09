@@ -18,6 +18,13 @@ BW.CreateProblem = function( containerID ) {
 	this.loadProblem();
 };
 
+/** 
+ * Clear the partially saved problem since it is published
+ */
+BW.CreateProblem.prototype.clearLocalStorage = function() {
+	localStorage.removeItem( this.itemName );
+};
+
 
 /**
  * Mimicking an enum for stages
@@ -71,28 +78,58 @@ BW.CreateProblem.prototype.initialize = function() {
 };
 
 /**
+ * Publish this problem on the BW Server
+ */
+BW.CreateProblem.prototype.publish = function() {
+	var problem = this;
+	$.mobile.loading( "show", {
+	  text: "Submitting New Problem",
+	  textVisible: true
+	});	
+	data = {};
+	if ( this.type === "bidding" ) data[ "type" ] = "Bidding";
+	else data[ "type" ] = "Lead";
+	var deal = problem.deal;
+	data[ "scoring" ] = deal.getScoring();
+	data[ "vul" ] = deal.getVulnerability();
+	if ( data[ "vul" ] === '-' ) data[ "vul" ] = 0;
+	data[ "dealer" ] = deal.getDealer().toUpperCase();
+	data[ "auction" ] = deal.getAuction().toString().toUpperCase();
+	data[ "description" ] = deal.getNotes();
+	var hand = problem.deal.getHand( problem.handDirection );
+	for( var i = 0; i < Bridge.suitOrder.length; ++i ) {
+		var field = "hand_" + i;
+		data[ field ] = hand.getCards( Bridge.suitOrder[i] );
+	}
+	var url = encodeURI(BW.sitePrefix + 'rest-api/v1/create-problem/');
+	var request = $.ajax({
+	  method: "POST",
+	  context: this,
+	  url: url,
+	  headers: {'Authorization': 'Token ' + BW.currentUser.getAccessToken() },
+	  data: data
+	});	
+	request.done(function( data ) {
+		$.mobile.loading( "hide" );
+		BW.createProblem.clearLocalStorage();
+		alert( "Your problem has been published." );
+		BW.loadPage( "vote.html" );
+	});
+	request.fail(function(jqXHR, textStatus, errorThrown){ 
+		alert( "There is error when creating problem." );
+		$.mobile.loading( "hide" );
+		return;
+	});			
+	return;		
+};
+
+/**
  * Go to the next stage if allowed
  */
 BW.CreateProblem.prototype.nextStage = function() {
 	if ( this.stage === BW.CreateProblem.Stages.PREVIEW ) {
-		var problem = this;
-		alert( "Your problem has been published." );
-		localStorage.removeItem( problem.itemName );
-		var publishedItemsName = BW.currentUser.getLocalStorageVariableName( "publishedProblems" );
-		var publishedProblems = localStorage.getItem( publishedItemsName );
-		if ( !publishedProblems ) publishedProblems = [];
-		else publishedProblems = JSON.parse( publishedProblems );
-		var newProblem = {
-			handDirection: problem.handDirection,
-			type: problem.type,
-			deal: problem.deal.toJSON()
-		};
-		publishedProblems.unshift( newProblem );
-		localStorage.setItem( publishedItemsName, JSON.stringify( publishedProblems ) );
-		problem.loadProblem();
-		problem.initializeData();
-		problem.loadStage();	
-		return;	
+		this.publish();
+		return;
 	}
 	this.stage++;
 	this.save();
@@ -267,7 +304,7 @@ BW.CreateProblem.prototype.updateButton = function( id, text, disabled ) {
  */
 BW.CreateProblem.prototype.loadPreview = function() {
 	var deal = this.deal;
-	$( "#bw-voting-problem-author-image" ).attr( "src", BW.currentUser.getImage() ).attr( "alt", BW.currentUser.getName() );
+	$( "#bw-voting-problem-author-image" ).attr( "src", BW.currentUser.getAvatarLink() ).attr( "alt", BW.currentUser.getName() );
 	var fields = {
 		"author-name": BW.currentUser.getName() + " asks...",
 		"dealer": "Dealer " + Bridge.directions[ deal.getDealer() ].name,
