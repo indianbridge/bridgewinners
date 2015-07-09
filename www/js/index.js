@@ -86,7 +86,7 @@ BW.initialize = function() {
 	BW.pageCache = {};		
 	
 	// The address of the BW server
-	BW.sitePrefix = "http://108.166.89.84/";
+	BW.sitePrefix = "https://108.166.89.84/";
 	
 	// Manage active tab
 	BW.lastNavbarItem = "vote";

@@ -107,27 +107,7 @@ BW.CreateProblem.prototype.publish = function() {
 		failCallback: function( message ) { alert( message ); }
 	};
 	BW.ajax( parameters );
-	return false;	
-	/*var url = encodeURI(BW.sitePrefix + 'rest-api/v1/create-problem/');
-	var request = $.ajax({
-	  method: "POST",
-	  context: this,
-	  url: url,
-	  headers: {'Authorization': 'Token ' + BW.currentUser.getAccessToken() },
-	  data: data
-	});	
-	request.done(function( data ) {
-		BW.hideLoadingDialog();
-		BW.createProblem.clearLocalStorage();
-		alert( "Your problem has been published." );
-		BW.loadPage( "vote.html" );
-	});
-	request.fail(function(jqXHR, textStatus, errorThrown) { 
-		BW.hideLoadingDialog();
-		alert( "There is error when creating problem." );
-		return;
-	});			
-	return;	*/	
+	return false;		
 };
 
 /**
