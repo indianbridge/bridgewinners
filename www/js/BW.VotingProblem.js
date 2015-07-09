@@ -47,38 +47,37 @@ BW.VotingProblem.prototype.setProblemType = function( type ) {
 BW.VotingProblem.prototype.showRecentProblem = function() {
 	var html = "Loading Recent Answer";
 	$( "#bw-voting-problem-recent" ).empty().append( html ).show();
-	var url = encodeURI(BW.sitePrefix + 'rest-api/v1/get-recent-answers/');
-	var request = $.ajax({
-	  method: "POST",
-	  context: this,
-	  url: url,
-	  headers: {'Authorization': 'Token ' + BW.currentUser.getAccessToken() },
-	  data: { start:0, end:0 }
-	});	
-	request.done(function( data ) {
-		var answers = data.recent_answers;
-		if ( answers.length === 0 ) {
-			html = "You have not voted on any problems yet!";
-			$( "#bw-voting-problem-recent" ).empty().append( html );
-		}
-		else {
-			var hand = new Bridge.Hand( 'n' );
-			hand.setHand(answers[0].lin_str);
-			html = hand.toHTML();
-			if ( answers[0].answer !== "Abstain" ) {
-				if ( answers[0].type === "Bidding" ) html += ' ' + Bridge.getCallHTML(answers[0].answer);
-				else if ( answers[0].type === "Lead" ) html += ' ' + Bridge.getCardHTML(answers[0].answer);
-				html += ' ' + answers[0].percent + '%';
+	var parameters = {
+		urlSuffix: "rest-api/v1/get-recent-answers/",
+		loadingMessage: "Loading Recent Answer",
+		showDialog: false,
+		method: "POST",
+		context: this,
+		data: { start:0, end:0 },
+		successCallback: function( data ) {
+			var answers = data.recent_answers;
+			if ( answers.length === 0 ) {
+				html = "You have not voted on any problems yet!";
+				$( "#bw-voting-problem-recent" ).empty().append( html );
 			}
-			else html +=  ' ' + answers[0].answer;
-			html = '<a class="ui-btn" role="page" data-name="view" data-page="view.html" data-slug="' + answers[0].slug + '">' + html + '</a>';
-			$( "#bw-voting-problem-recent" ).empty().append( html );
-		}
-	});
-	request.fail(function(jqXHR, textStatus, errorThrown){ 
-		html = "Unable to load Recent Answer";
-		$( "#bw-voting-problem-recent" ).empty().append( html );
-	});		
+			else {
+				var hand = new Bridge.Hand( 'n' );
+				hand.setHand(answers[0].lin_str);
+				html = hand.toHTML();
+				if ( answers[0].answer !== "Abstain" ) {
+					if ( answers[0].type === "Bidding" ) html += ' ' + Bridge.getCallHTML(answers[0].answer);
+					else if ( answers[0].type === "Lead" ) html += ' ' + Bridge.getCardHTML(answers[0].answer);
+					html += ' ' + answers[0].percent + '%';
+				}
+				else html +=  ' ' + answers[0].answer;
+				html = '<a class="ui-btn" role="page" data-name="view" data-page="view.html" data-slug="' + answers[0].slug + '">' + html + '</a>';
+				$( "#bw-voting-problem-recent" ).empty().append( html );
+			}
+		},
+		failCallback: function( message ) { $( "#bw-voting-problem-recent" ).empty().append( "Unable to load Recent Answer" ); }
+	};
+	BW.ajax( parameters );
+	return false;		
 };
 
 /**
@@ -122,38 +121,26 @@ BW.VotingProblem.prototype.load = function( exclude ) {
 	if ( typeof exclude === "undefined" ) exclude = false;
 	this.showOneSection( "loading" );	
 	this.showRecentProblem();
-	/*$.mobile.loading( "show", {
-	  text: "Getting Voting Problem",
-	  textVisible: true
-	});	*/
-	BW.showLoadingDialog( "Getting Voting Problem" );
 	data = {};
 	if ( exclude && this.slug ) data[ "exclude" ] = this.slug
-	var url = encodeURI(BW.sitePrefix + 'rest-api/v1/get-voting-problem/');
-	var request = $.ajax({
-	  method: "POST",
-	  context: this,
-	  url: url,
-	  headers: {'Authorization': 'Token ' + BW.currentUser.getAccessToken() },
-	  data: data
-	});	
-	request.done(function( data ) {
-		if ( data.alldone ) {
-			this.showOneSection( "empty" );
-			BW.hideLoadingDialog();
-			//$.mobile.loading( "hide" );
-		}
-		else {
-			this.show( data );
-			BW.hideLoadingDialog();
-			//$.mobile.loading( "hide" );
-		}
-	});
-	request.fail(function(jqXHR, textStatus, errorThrown){ 
-		this.showOneSection( "error" );
-		BW.hideLoadingDialog();
-		//$.mobile.loading( "hide" );
-	});	
+	var parameters = {
+		urlSuffix: "rest-api/v1/get-voting-problem/",
+		loadingMessage: "Getting Voting Problem",
+		method: "POST",
+		context: this,
+		data: data,
+		successCallback: function( data ) {
+			if ( data.alldone ) {
+				this.context.showOneSection( "empty" );
+			}
+			else {
+				this.context.show( data );
+			}			
+		},
+		failCallback: function( message ) { this.context.showOneSection( "error" ); }
+	};
+	BW.ajax( parameters );
+	return false;		
 };
 
 
@@ -162,29 +149,20 @@ BW.VotingProblem.prototype.load = function( exclude ) {
  */
 BW.VotingProblem.prototype.loadSpecificProblem = function( slug ) {	
 	this.showOneSection( "loading" );	
-	/*$.mobile.loading( "show", {
-	  text: "Getting Problem",
-	  textVisible: true
-	});*/	
-	BW.showLoadingDialog( "Getting Problem" );
 	data = {};
-	var url = encodeURI(BW.sitePrefix + 'rest-api/v1/get-problem/' + slug + '/');
-	var request = $.ajax({
-	  method: "GET",
-	  context: this,
-	  url: url,
-	  headers: {'Authorization': 'Token ' + BW.currentUser.getAccessToken() }
-	});	
-	request.done(function( data ) {
-		this.show( data );
-		BW.hideLoadingDialog();
-		//$.mobile.loading( "hide" );
-	});
-	request.fail(function(jqXHR, textStatus, errorThrown){ 
-		this.showOneSection( "error" );
-		BW.hideLoadingDialog();
-		//$.mobile.loading( "hide" );
-	});	
+	var parameters = {
+		urlSuffix: "rest-api/v1/get-problem/" + slug + '/',
+		loadingMessage: "Getting Problem",
+		method: "GET",
+		context: this,
+		data: data,
+		successCallback: function( data ) {
+			this.context.show( data );			
+		},
+		failCallback: function( message ) { this.context.showOneSection( "error" ); }
+	};
+	BW.ajax( parameters );
+	return false;	
 };
 
 
@@ -193,61 +171,51 @@ BW.VotingProblem.prototype.loadSpecificProblem = function( slug ) {
  */
 BW.VotingProblem.prototype.showList = function() {
 	this.showOneSection( "loading" );
-	/*$.mobile.loading( "show", {
-	  text: "Getting Problem List",
-	  textVisible: true
-	});	*/
-	BW.showLoadingDialog( "Getting Recent Problem List" );
 	data = {
 		start:0,
 		end: 9
 	};
-	var url = encodeURI(BW.sitePrefix + 'rest-api/v1/get-recent-answers/' );
-	var request = $.ajax({
-	  method: "POST",
-	  context: this,
-	  url: url,
-	  data: data,
-	  headers: {'Authorization': 'Token ' + BW.currentUser.getAccessToken() }
-	});	
-	request.done(function( data ) {
-		var answers = data.recent_answers;
-		var html = "";
-		if ( answers.length <= 0 ) {
-			html += "<h4>You have not voted on any problems yet!</h4>";
-		}
-		else {
-			html += "<ul data-role='listview' data-inset='false'>";
-			_.each( answers, function( answer ) {
-				html += "<li data-icon='false'><a role='page' data-page='view.html' data-slug='" + answer.slug + "'>";
-				var icon = ( answer.type.toLowerCase() === "bidding" ? "img/Box-Red.png" : "img/cardback.png" );	
-				var avatarLink = BW.sitePrefix + answer.avatar;
-				html += '<img src="' + icon + '" class="ui-li-icon"/>';
-				html += '<div>';
-				var hand = new Bridge.Hand( 'n' );
-				hand.setHand(answer.lin_str);
-				html += hand.toHTML();
-				html += '</div>';
-				html += '<div>';
-				html += '<img src="' + avatarLink + '"/> ';
-				html += answer.author + '</div>';
-				var suffix = ( answer.num_answers === 1 ? "vote" : "votes" );
-				html += '<span class="ui-li-count">' + answer.num_answers + ' ' + suffix + '</span>';	
-				html += '</a></li>';			
-			}, this );			
-			html += "</ul>";			
-		}
-		$( "#bw-voting-problem-list-contents" ).empty().append( html );	
-		$( "#bw-voting-problem-list-contents" ).trigger( "create" );
-		this.showOneSection( "list" );
-		BW.hideLoadingDialog();
-		//$.mobile.loading( "hide" );
-	});
-	request.fail(function(jqXHR, textStatus, errorThrown){ 
-		this.showOneSection( "error" );
-		BW.hideLoadingDialog();
-		//$.mobile.loading( "hide" );
-	});		
+	var parameters = {
+		urlSuffix: "rest-api/v1/get-recent-answers/",
+		loadingMessage: "Getting Recent Problem List",
+		method: "POST",
+		context: this,
+		data: data,
+		successCallback: function( data ) {
+			var answers = data.recent_answers;
+			var html = "";
+			if ( answers.length <= 0 ) {
+				html += "<h4>You have not voted on any problems yet!</h4>";
+			}
+			else {
+				html += "<ul data-role='listview' data-inset='true'>";
+				_.each( answers, function( answer ) {
+					html += "<li data-icon='false'><a role='page' data-page='view.html' data-slug='" + answer.slug + "'>";
+					var icon = ( answer.type.toLowerCase() === "bidding" ? "img/Box-Red.png" : "img/cardback.png" );	
+					var avatarLink = BW.sitePrefix + answer.avatar;
+					html += '<img src="' + icon + '" class="ui-li-icon"/>';
+					html += '<div>';
+					var hand = new Bridge.Hand( 'n' );
+					hand.setHand(answer.lin_str);
+					html += hand.toHTML();
+					html += '</div>';
+					html += '<div>';
+					html += '<img src="' + avatarLink + '"/> ';
+					html += answer.author + '</div>';
+					var suffix = ( answer.num_answers === 1 ? "vote" : "votes" );
+					html += '<span class="ui-li-count">' + answer.num_answers + ' ' + suffix + '</span>';	
+					html += '</a></li>';			
+				}, this );			
+				html += "</ul>";			
+			}
+			$( "#bw-voting-problem-list-contents" ).empty().append( html );	
+			$( "#bw-voting-problem-list-contents" ).trigger( "create" );
+			this.context.showOneSection( "list" );
+		},
+		failCallback: function( message ) { this.context.showOneSection( "error" ); }
+	};
+	BW.ajax( parameters );
+	return false;		
 };
 
 
@@ -337,39 +305,28 @@ BW.VotingProblem.prototype.enableClicksAndSwipes = function() {
  * Send a vote for this problem to BW server
  */
 BW.VotingProblem.prototype.vote = function( answer, answerPublic ) {
-	
-	/*$.mobile.loading( "show", {
-	  text: "Submitting Vote",
-	  textVisible: true
-	});*/
-	BW.showLoadingDialog( "Submitting Vote" );
 	data = {
 		Answer: true,
 		answer: answer	
 	};
 	if ( answerPublic ) data[ "public" ] = answerPublic;
-	var url = encodeURI(BW.sitePrefix + 'rest-api/v1/poll-answer/' + this.slug + '/');
-	var request = $.ajax({
-	  method: "POST",
-	  context: this,
-	  url: url,
-	  headers: {'Authorization': 'Token ' + BW.currentUser.getAccessToken() },
-	  data: data
-	});	
-	request.done(function( data ) {
-		BW.hideLoadingDialog();
-		//$.mobile.loading( "hide" );
-		parameters = {
-			"slug": this.slug
-		};
-		BW.loadPage( "view.html", parameters );
-	});
-	request.fail(function(jqXHR, textStatus, errorThrown) {
-		BW.hideLoadingDialog(); 
-		alert( "There is error when submitting Vote." );
-		//$.mobile.loading( "hide" );
-		this.load();
-	});		
+	var parameters = {
+		urlSuffix: "rest-api/v1/poll-answer/" + this.slug + '/',
+		loadingMessage: "Submitting Vote",
+		method: "POST",
+		context: this,
+		data: data,
+		successCallback: function( data ) {
+			parameters = {
+				"slug": this.context.slug
+			};
+			BW.loadPage( "view.html", parameters );			
+		},
+		failCallback: function( message ) { alert( "Error : " + message ); this.context.load(); }
+	};
+	BW.ajax( parameters );
+	return false;		
+	
 };
 
 /**
@@ -380,34 +337,26 @@ BW.VotingProblem.prototype.abstain = function( answerPublic ) {
 		alert( "Cannot abstain on lead problem." );
 		return;
 	}
-	/*$.mobile.loading( "show", {
-	  text: "Submitting Abstain Vote",
-	  textVisible: true
-	});	*/
-	BW.showLoadingDialog( "Submitting Abstain Vote" );
 	data = {
 		Abstain: true	
 	};
 	if ( answerPublic ) data[ "public" ] = answerPublic;
-	var url = encodeURI(BW.sitePrefix + 'rest-api/v1/poll-answer/' + this.slug + '/');
-	var request = $.ajax({
-	  method: "POST",
-	  context: this,
-	  url: url,
-	  headers: {'Authorization': 'Token ' + BW.currentUser.getAccessToken() },
-	  data: data
-	});	
-	request.done(function( data ) {
-		BW.hideLoadingDialog();
-		//$.mobile.loading( "hide" );
-		this.load();
-	});
-	request.fail(function(jqXHR, textStatus, errorThrown) { 
-		BW.hideLoadingDialog();
-		alert( "There is error when submitting Abstain Vote." );
-		//$.mobile.loading( "hide" );
-		this.load();
-	});	
+	var parameters = {
+		urlSuffix: "rest-api/v1/poll-answer/" + this.slug + '/',
+		loadingMessage: "Submitting Vote",
+		method: "POST",
+		context: this,
+		data: data,
+		successCallback: function( data ) {
+			parameters = {
+				"slug": this.context.slug
+			};
+			BW.loadPage( "view.html", parameters );			
+		},
+		failCallback: function( message ) { alert( "Error : " + message ); this.context.load(); }
+	};
+	BW.ajax( parameters );
+	return false;	
 };
 
 /**
@@ -460,52 +409,45 @@ BW.VotingProblem.prototype.showAllVotes = function( data ) {
 		if ( data.my_answer.public ) {
 			$( "#bw-public-votes-button" ).show();
 			$( "#bw-public-votes-button" ).click( { slug: data.slug }, function( e ) {
-				/*$.mobile.loading( "show", {
-				  text: "Getting Responses",
-				  textVisible: true
-				});*/
-				BW.showLoadingDialog( "Getting Responses" );
 				data = {};
-				var url = encodeURI(BW.sitePrefix + 'rest-api/v1/get-responses/' + e.data.slug + '/');
-				var request = $.ajax({
+				var parameters = {
+					urlSuffix: "rest-api/v1/get-responses/" + e.data.slug + '/',
+					loadingMessage: "Getting Responses",
 					method: "GET",
 					context: this,
-					url: url,
-					headers: {'Authorization': 'Token ' + BW.currentUser.getAccessToken() }
-				});	
-				request.done(function( data ) {
-					var html = "";
-					var type = data.type.toLowerCase();
-					for( var i = 0; i < data.responses.length; ++i ) {
-						var response = data.responses[i];
-						html += "<h4>";
-						if ( type === "bidding" ) {
-							html += Bridge.getCallHTML( response.answer_text.toLowerCase() );
+					data: data,
+					successCallback: function( data ) {
+						var html = "";
+						var type = data.type.toLowerCase();
+						for( var i = 0; i < data.responses.length; ++i ) {
+							var response = data.responses[i];
+							html += "<h4>";
+							if ( type === "bidding" ) {
+								html += Bridge.getCallHTML( response.answer_text.toLowerCase() );
+							}
+							else {
+								html += Bridge.getCardHTML( response.answer_text.toLowerCase() );
+							}
+							html += "</h4>";
+							for( var j = 0; j < response.public_responses.length; ++j ) {
+								html += "<span class='bw-public-response'>" + response.public_responses[j] + "</span> ";
+							}
+							if ( response.num_private_responses >  0 ) {
+								html += "<span class='bw-private-response'>" + response.num_private_responses + " private</span>";
+							}
 						}
-						else {
-							html += Bridge.getCardHTML( response.answer_text.toLowerCase() );
-						}
-						html += "</h4>";
-						for( var j = 0; j < response.public_responses.length; ++j ) {
-							html += "<span class='bw-public-response'>" + response.public_responses[j] + "</span> ";
-						}
-						if ( response.num_private_responses >  0 ) {
-							html += "<span class='bw-private-response'>" + response.num_private_responses + " private</span>";
-						}
+						$( "#poll-responses-content" ).empty().append(html);
+						$( "#poll-responses" ).popup( "open" );			
+					},
+					failCallback: function( message ) {
+						var html = "";
+						html += "Unable to retreive responses";
+						$( "#poll-responses-content" ).empty().append(html);
+						$( "#poll-responses" ).popup( "open" );							
 					}
-					BW.hideLoadingDialog();
-					$( "#poll-responses-content" ).empty().append(html);
-					$( "#poll-responses" ).popup( "open" );						
-					//$.mobile.loading( "hide" );
-				});
-				request.fail(function(jqXHR, textStatus, errorThrown){ 
-					var html = "";
-					html += "Unable to retreive responses";
-					$( "#poll-responses-content" ).empty().append(html);
-					$( "#poll-responses" ).popup( "open" );	
-					BW.hideLoadingDialog();				
-					//$.mobile.loading( "hide" );
-				});					
+				};
+				BW.ajax( parameters );
+				return false;									
 			});	
 		}
 		else {

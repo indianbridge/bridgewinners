@@ -82,12 +82,7 @@ BW.CreateProblem.prototype.initialize = function() {
  */
 BW.CreateProblem.prototype.publish = function() {
 	var problem = this;
-	/*$.mobile.loading( "show", {
-	  text: "Submitting New Problem",
-	  textVisible: true
-	});	*/
-	BW.showLoadingDialog( "Submitting New Problem" );
-	data = {};
+	var data = {};
 	if ( this.type === "bidding" ) data[ "type" ] = "Bidding";
 	else data[ "type" ] = "Lead";
 	var deal = problem.deal;
@@ -102,7 +97,18 @@ BW.CreateProblem.prototype.publish = function() {
 		var field = "hand_" + i;
 		data[ field ] = hand.getCards( Bridge.suitOrder[i] );
 	}
-	var url = encodeURI(BW.sitePrefix + 'rest-api/v1/create-problem/');
+	var parameters = {
+		urlSuffix: "rest-api/v1/create-problem/",
+		loadingMessage: "Submitting New Problem",
+		method: "POST",
+		context: this,
+		data: data,
+		successCallback: this.submitSuccessCallback,
+		failCallback: function( message ) { alert( message ); }
+	};
+	BW.ajax( parameters );
+	return false;	
+	/*var url = encodeURI(BW.sitePrefix + 'rest-api/v1/create-problem/');
 	var request = $.ajax({
 	  method: "POST",
 	  context: this,
@@ -111,7 +117,6 @@ BW.CreateProblem.prototype.publish = function() {
 	  data: data
 	});	
 	request.done(function( data ) {
-		//$.mobile.loading( "hide" );
 		BW.hideLoadingDialog();
 		BW.createProblem.clearLocalStorage();
 		alert( "Your problem has been published." );
@@ -120,10 +125,26 @@ BW.CreateProblem.prototype.publish = function() {
 	request.fail(function(jqXHR, textStatus, errorThrown) { 
 		BW.hideLoadingDialog();
 		alert( "There is error when creating problem." );
-		//$.mobile.loading( "hide" );
 		return;
 	});			
-	return;		
+	return;	*/	
+};
+
+/**
+ * Submit Ajax done call back
+ */
+BW.CreateProblem.prototype.submitSuccessCallback = function( data ) {
+	var problem = this.context;
+	BW.createProblem.clearLocalStorage();
+	alert( "Your problem has been published." );
+	BW.loadPage( "vote.html" );
+};
+
+/**
+ * Submit Ajax fail call back
+ */
+BW.CreateProblem.prototype.submitFailCallback = function( message ) {
+	alert( message ); 
 };
 
 /**
@@ -181,16 +202,16 @@ BW.CreateProblem.prototype.initializeData = function() {
 	hand.toHTML( config );	
 	this.deal.setActiveHand( this.handDirection );
 	// Card Deck
-	var width = $( window ).width();
+	/*var width = $( window ).width();
 	var height = $( window ).height();
 	if ( width < 500 || height < 500 ) {
 		var useText = true;
 		var prefix = "bw-card-deck-text";
 	}
-	else {
-		var useText = false;
-		var prefix = "bw-card-deck";				
-	}
+	else {*/
+	var useText = false;
+	var prefix = "bw-card-deck";				
+	//}
 	config = {
 		prefix: prefix,
 		containerID: "bw-create-problem-card-deck", 

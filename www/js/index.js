@@ -85,6 +85,7 @@ BW.initialize = function() {
 	// A cache to store loaded html files
 	BW.pageCache = {};		
 	
+	// The address of the BW server
 	BW.sitePrefix = "http://108.166.89.84/";
 	
 	// Manage active tab
@@ -107,16 +108,22 @@ BW.initialize = function() {
 		BW.loadPage( page, parameters );
 	});
 	
-	/*$( "#poll-responses-close-button" ).on( "click", function() {
-		$( "#poll-responses" ).popup( "close" );	
-	});*/
-	
 	// Load the current user
 	BW.currentUser = new BW.User( BW.contentID );
+	
+	// Load the options
 	BW.currentOptions = new BW.Options();
+	
+	// Setup voting problem class
 	BW.votingProblem = new BW.VotingProblem( "bw-voting-problem" );
+	
+	// Setup view problem class
 	BW.viewProblem = new BW.VotingProblem( "bw-view-problem" );
+	
+	// Setup create problem class
 	BW.createProblem = new BW.CreateProblem( "bw-create-problem" );	
+	
+	// Trigger login status change so that appropriate start page can be loaded
 	$( document ).trigger( "BW.loginStatus:changed", [BW.currentUser] );
 };
 
@@ -146,13 +153,58 @@ else {
 	$.when( cordovaReady, jQueryMobileReady ).then( BW.initialize );
 }
 
+/**
+ * Show a popup overlay loading dialog while perfoming ajax request.
+ */
 BW.showLoadingDialog = function( text ) {
 	$( "#loading-popup-content" ).empty().append( text );
 	$( "#loading-popup" ).popup( "open" );
 };
 
+/**
+ * Hide the popup overlay loading dialog
+ */
 BW.hideLoadingDialog = function() {
 	$( "#loading-popup" ).popup( "close" );
+};
+
+/**
+ * Perform an Ajax request.
+ */
+BW.ajax = function( parameters ) {
+	var url = encodeURI( BW.sitePrefix + parameters.urlSuffix );
+	var showDialog = !parameters.hasOwnProperty( "showDialog" ) || parameters.showDialog;
+	if ( showDialog ) {
+		BW.showLoadingDialog( parameters.loadingMessage );
+	}
+	if ( parameters.hasOwnProperty( "includeHeaders" ) && !parameters.includeHeaders ) {
+		var headers = {};
+	}
+	else {
+		var headers = { 'Authorization': 'Token ' + BW.currentUser.getAccessToken() };
+	}
+	var request = $.ajax({
+		method: parameters.method,
+		context: parameters.context,
+		url: url,
+		data: parameters.data,
+		headers: headers
+	});	
+	request.done( function( data ) {
+		if ( showDialog ) BW.hideLoadingDialog();
+		if ( data.hasOwnProperty( "error" ) && data.error ) {
+			parameters.failCallback( data.message );
+		}
+		else {
+			parameters.successCallback( data );
+		}
+	});
+	request.fail( function( jqXHR, textStatus, errorThrown ) {
+		if ( showDialog ) BW.hideLoadingDialog();
+		var message = "Unable to connect to BW Server";
+		parameters.failCallback( message );
+	});	
+	return false;
 };
 
 /**
@@ -162,7 +214,6 @@ BW.hideLoadingDialog = function() {
 BW.loadPage = function( page, parameters ) {	
 	$( "#bw-voting-problem-recent" ).hide();
 	$( "#popupMenu" ).popup( "close" );
-	//$.mobile.loading( "show" );
 	BW.showLoadingDialog( "Loading Page" );
 	if ( BW.currentUser.isLoggedIn ) {
 		$( "a[role='page']" ).removeClass( "ui-disabled" );
@@ -170,20 +221,17 @@ BW.loadPage = function( page, parameters ) {
 		if ( !_.indexOf( pages, page ) === -1 ) {
 			BW.hideLoadingDialog();
 			alert( "Unknown page : " + page );
-			//$.mobile.loading( "hide" );
 			return;
 		}
 		if ( page === "more.html" ) {
 			BW.hideLoadingDialog();
 			$( "#popupMenu" ).popup( "open", { positionTo: "#more-tab" } );
-			//$.mobile.loading( "hide" );
 		}
 		else {
 			if ( _.has( BW.pageCache, page ) ) {
 				$( '#' + BW.contentID ).empty().append( BW.pageCache[ page ] );
 				BW.hideLoadingDialog();
 				BW.pageLoaded( page, parameters );
-				//$.mobile.loading( "hide" );
 			}
 			else {
 				$.get( page, function( html ) {
@@ -191,7 +239,6 @@ BW.loadPage = function( page, parameters ) {
 					$( '#' + BW.contentID ).empty().append( BW.pageCache[ page ] );
 					BW.hideLoadingDialog();
 					BW.pageLoaded( page, parameters );
-					//$.mobile.loading( "hide" );
 				});
 			}	
 		}		
@@ -200,7 +247,6 @@ BW.loadPage = function( page, parameters ) {
 		$( "a[role='page']" ).addClass( "ui-disabled" );
 		BW.hideLoadingDialog();
 		BW.currentUser.showLoginForm();
-		//$.mobile.loading( "hide" );
 	}
 };
 
@@ -226,12 +272,10 @@ BW.pageLoaded = function( page, parameters ) {
 	}
 	else if ( page === "vote.html" ) {
 		BW.setNavbarActiveItem( "vote" );
-		//$.mobile.loading( "hide" );
 		BW.votingProblem.initialize();
 	}
 	else if ( page === "create.html" ) {
 		BW.setNavbarActiveItem( "create" );
-		//$.mobile.loading( "hide" );
 		BW.createProblem.initialize();
 	}
 	else if ( page === "profile.html" ) {

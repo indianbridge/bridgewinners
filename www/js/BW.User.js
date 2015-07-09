@@ -54,45 +54,47 @@ BW.User.prototype.getName = function() {
 	return this.userInfo.name;
 };
 
-
 /**
  * Authenticate the access token with the BW server
  */
 BW.User.prototype.authenticateAccessToken = function() {
 	// Connect to BW server to check if access token is still ok
-	BW.showLoadingDialog( "Authenticating Access" );
-	/*$.mobile.loading( "show", {
-	  text: "Connecting to BW server",
-	  textVisible: true
-	});*/
-	
-	var url = encodeURI(BW.sitePrefix + 'rest-api/v1/get-profile/');
-	var request = $.ajax({
-	  method: "GET",
-	  context: this,
-	  url: url,
-	  headers: {'Authorization': 'Token ' + this.accessToken}
-	});	
-	request.done(function( data ) {
-		var user = this;
-		user.isLoggedIn = true;
-		user.userInfo = data;
-		user.username = data.username;
-		var avatarLink = user.getAvatarLink();
-		$( "#header-avatar" ).attr( "src", avatarLink );
-		//$.mobile.loading( "hide" );
-		BW.hideLoadingDialog();
-		BW.loadPage( "vote.html" );
-	});
-	request.fail(function(jqXHR, textStatus, errorThrown){ 
-		var user = this;
-		alert( "Unable to authenticate access. Please login again to continue" ); 
-		user.isLoggedIn = false;
-		user.username = null;
-		BW.hideLoadingDialog();
-		BW.loadPage( "vote.html" );
-	});	
+	var parameters = {
+		urlSuffix: "rest-api/v1/get-profile/",
+		loadingMessage: "Authenticating Access",
+		method: "GET",
+		context: this,
+		data: {},
+		successCallback: this.authenticationSuccessCallback,
+		failCallback: this.authenticationFailCallback
+	};
+	BW.ajax( parameters );
+	return false;	
+};
 
+/**
+ * Authentication Ajax sucess call back
+ */
+BW.User.prototype.authenticationSuccessCallback = function( data ) {
+	var user = this.context;
+	user.isLoggedIn = true;
+	user.userInfo = data;
+	user.username = data.username;
+	var avatarLink = user.getAvatarLink();
+	$( "#header-avatar" ).attr( "src", avatarLink );
+	BW.loadPage( "vote.html" );
+};
+
+/**
+ * Authentication Ajax fail call back
+ */
+BW.User.prototype.authenticationFailCallback = function( message ) {
+	var user = this.context;
+	alert( message ); 
+	user.isLoggedIn = false;
+	user.accessToken = null;
+	$( "#login-submit-button" ).prop( "disabled", false );
+	$( document ).trigger( "BW.loginStatus:changed", [user] );	
 };
 
 
@@ -134,12 +136,12 @@ BW.User.prototype.showLoginForm = function() {
 	html += '<input type="submit" value="LOG IN" id="login-submit-button">';
 	html += '</form>';
 	html += '</li>';
-	html += '<li>';
+	/*html += '<li>';
 	html += '<div style="text-align:center;">';
 	html += '<h4>Sign In Using Your Existing account At:</h4>';
 	html += '<img src="img/g+.png"/>';
 	html += '<img src="img/facebook.png"/></div>';
-	html += '</li>';
+	html += '</li>';*/
 	html += '</ul>';
 	html += '</div>';			
 	$( "#" + this.containerID ).empty().append( html );
@@ -149,8 +151,6 @@ BW.User.prototype.showLoginForm = function() {
 		var username = $( "#username" ).val();
 		var password = $( "#password" ).val();		
 		e.data.user.login( username, password );
-		event.preventDefault();
-		event.stopPropagation();
 		return false;		
 	});	
 };
@@ -162,33 +162,42 @@ BW.User.prototype.showLoginForm = function() {
  */
 BW.User.prototype.login = function( username, password ) {
 	$( "#login-submit-button" ).prop( "disabled", true );
-	var url = encodeURI(BW.sitePrefix + 'rest-api/v1/get-auth-token/');
-	BW.showLoadingDialog( "Logging In" );
-	var request = $.ajax({
-	  method: "POST",
-	  context: this,
-	  url: url,
-	  data: { username: username, password: password }
-	});	
-	request.done(function( data ) {
-		var user = this;
-		user.isLoggedIn = true;
-		user.accessToken = data[ "token" ];
-		localStorage.setItem( this.accessTokenLocalStorageVariableName, user.accessToken );
-		BW.hideLoadingDialog();
-		//$.mobile.loading( "hide" );
-		$( "#login-submit-button" ).prop( "disabled", false );
-		$( document ).trigger( "BW.loginStatus:changed", [user] );
-	});
-	request.fail(function(jqXHR, textStatus, errorThrown){ 
-		var user = this;
-		BW.hideLoadingDialog();
-		alert( "Unable to login with the passed credentials" ); 
-		user.isLoggedIn = false;
-		user.accessToken = null;
-		$( "#login-submit-button" ).prop( "disabled", false );
-		$( document ).trigger( "BW.loginStatus:changed", [user] );
-	});	
+	var parameters = {
+		urlSuffix: "rest-api/v1/get-auth-token/",
+		loadingMessage: "Logging In",
+		method: "POST",
+		context: this,
+		data: { username: username, password: password },
+		includeHeaders: false,
+		successCallback: this.loginSuccessCallback,
+		failCallback: this.loginFailCallback
+	};
+	BW.ajax( parameters );
+	return false;
+};
+
+/**
+ * Login Ajax done call back
+ */
+BW.User.prototype.loginSuccessCallback = function( data ) {
+	var user = this.context;
+	user.isLoggedIn = true;
+	user.accessToken = data[ "token" ];
+	localStorage.setItem( user.accessTokenLocalStorageVariableName, user.accessToken );
+	$( "#login-submit-button" ).prop( "disabled", false );
+	$( document ).trigger( "BW.loginStatus:changed", [user] );
+};
+
+/**
+ * Login Ajax fail call back
+ */
+BW.User.prototype.loginFailCallback = function( message ) {
+	var user = this.context;
+	alert( message ); 
+	user.isLoggedIn = false;
+	user.accessToken = null;
+	$( "#login-submit-button" ).prop( "disabled", false );
+	$( document ).trigger( "BW.loginStatus:changed", [user] );	
 };
 
 /**
@@ -213,35 +222,5 @@ BW.User.prototype.loadProfile = function() {
 	var avatarLink = BW.sitePrefix + this.userInfo.avatar;
 	html += "<img style='vertical-align:middle;' height='25px' src='" + avatarLink + "'/>Welcome " + userInfo.name;
 	$( "#profile-content" ).empty().html( html );
-	//this.loadPublishedProblems();
-};
-
-BW.User.prototype.loadPublishedProblems = function() {
-	var publishedItemsName = "BW::" + BW.currentUser.getUsername() + "_publishedProblems";
-	var publishedProblems = localStorage.getItem( publishedItemsName );	
-	if ( !publishedProblems ) publishedProblems = [];
-	else publishedProblems = JSON.parse( publishedProblems );
-	var html = "";
-	if ( publishedProblems.length <= 0 ) {
-		html += "<h4>You have not published any problems. Live a lttle. Publish some bidding and lead problems.</h4>";	
-	}
-	else {
-		html += "<ul data-role='listview' data-inset='false'>";
-		_.each( publishedProblems, function( problem ) {
-			var deal = new Bridge.Deal();
-			deal.fromJSON( problem.deal );
-			var type = problem.type;
-			var hand = deal.getHand( problem.handDirection );
-			var icon = ( type === "bidding" ? "img/Box-Red.png" : "img/cardback.png" );	
-			html += "<li><a role='page' data-page='view.html' data-problem=''>";
-			html += "<img src='" + icon + "' alt='" + type + "' class='ui-li-icon'>"
-			html += "<div>" + hand.toHTML( { registerChangeHandler: false } ) + "</div>";
-			var spanClass = "bw-published-problem-information";
-			var secondLine = "<span class='" + spanClass + "'>" + BW.scoringTypes[ deal.get( "scoring" ) ] + "</span>, <span class='" + spanClass + "'>" + " Dealer: " + Bridge.directions[ deal.get( "dealer" ) ].name + "</span>, <span class='" + spanClass + "'>" + " Vul: " + Bridge.vulnerabilities[ deal.get( "vulnerability" ) ].name + "</span>";	
-			html += "<div>" + secondLine + "</div></a></li>";					
-		}, this );			
-		html += "</ul>";
-	}		
-	$( "#bw-published-problems" ).empty().append( html );
 };
 
