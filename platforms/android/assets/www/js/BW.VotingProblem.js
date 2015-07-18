@@ -6,20 +6,14 @@ if ( typeof BW === "undefined" ) BW = {};
  */
 BW.VotingProblem = function( containerID ) {
 	this.containerID = containerID;
-	this.itemName = "BW::currentVotingProblem";
-	//This is for testing
-	localStorage.removeItem( this.itemName );
-	var problem = localStorage.getItem( this.itemName );
-	if ( problem ) {
-		this.currentProblem = JSON.parse( problem );		
-	}
-	else this.currentProblem = null;
 	
 	// used by bidding box
 	this.selectedLevel = null;
 	this.selectedCall = null;
 	// set by card deck
 	this.selectedCard = null;
+	this.selectedCardOrder = null;
+	this.setProblemType( "new" );
 	
 	var prefix = "bw-bidding-box";
 	this.bbConfig = { 
@@ -31,21 +25,59 @@ BW.VotingProblem = function( containerID ) {
 		tags: Bridge.getDivConfig( prefix ),
 		registerChangeHandler: false
 	};
+	this.type = null;
+	this.deal = null;
+	this.slug = null;
 };
 
-BW.VotingProblem.prototype.showRecentProblem = function() {
-	var problem = BW.recentProblem;
-	if ( problem ) {
-		var deal = new Bridge.Deal();
-		deal.fromJSON( problem.deal );
-		var html = deal.getHand( problem.direction ).toHTML();
-		html += " " + ( problem.type === "bidding" ? Bridge.getCallHTML( problem.vote ) : Bridge.getCardHTML( problem.vote ) );
-		if ( problem.vote !== "abstain" ) html += " " + problem.percent + '%';
+/**
+ * Select the type of problem new voting or already voted problem
+ */
+BW.VotingProblem.prototype.setProblemType = function( type ) {
+	if ( type === "new" ) {
+		this.showSkip = true;
+		this.showVotes = false;	
 	}
 	else {
-		var html = "You have not voted on any problems yet!";
+		this.showSkip = false;
+		this.showVotes = true;			
 	}
+};	
+
+BW.VotingProblem.prototype.showRecentProblem = function() {
+	var html = "Loading Recent Answer";
 	$( "#bw-voting-problem-recent" ).empty().append( html ).show();
+	var parameters = {
+		urlSuffix: "rest-api/v1/get-recent-answers/",
+		loadingMessage: "Loading Recent Answer",
+		showDialog: false,
+		method: "POST",
+		context: this,
+		data: { start:0, end:0 },
+		successCallback: function( data ) {
+			var answers = data.recent_answers;
+			if ( answers.length === 0 ) {
+				html = "You have not voted on any problems yet!";
+				$( "#bw-voting-problem-recent" ).empty().append( html );
+			}
+			else {
+				var hand = new Bridge.Hand( 'n' );
+				hand.setHand(answers[0].lin_str);
+				html = hand.toHTML();
+				if ( answers[0].answer !== "Abstain" ) {
+					if ( answers[0].type === "Bidding" ) html += ' ' + Bridge.getCallHTML(answers[0].answer);
+					else if ( answers[0].type === "Lead" ) html += ' ' + Bridge.getCardHTML(answers[0].answer);
+					html += ' ' + answers[0].percent + '%';
+				}
+				else html +=  ' ' + answers[0].answer;
+				html = '<a class="ui-btn" role="page" data-name="view" data-page="view.html" data-slug="' + answers[0].slug + '">' + html + '</a>';
+				$( "#bw-voting-problem-recent" ).empty().append( html );
+			}
+		},
+		failCallback: function( message ) { $( "#bw-voting-problem-recent" ).empty().append( "Unable to load Recent Answer" ); }
+	};
+	BW.ajax( parameters );
+	return false;		
 };
 
 /**
@@ -66,24 +98,126 @@ BW.VotingProblem.prototype.showOneSection = function( sectionName ) {
 /**
  * Load a problem
  */
-BW.VotingProblem.prototype.initialize = function() {
+BW.VotingProblem.prototype.initialize = function( slug ) {
+	if ( slug ) {
+		this.setProblemType( "old" );	
+	}
+	else {
+		this.setProblemType( "new" );	
+	}
 	this.enableClicksAndSwipes();
-	this.load();
+	if ( slug ) {
+		this.loadSpecificProblem( slug );
+	}
+	else {
+		this.load();
+	}
 };
 
 /**
  * Load a problem
  */
-BW.VotingProblem.prototype.load = function() {
+BW.VotingProblem.prototype.load = function( exclude ) {
+	if ( typeof exclude === "undefined" ) exclude = false;
 	this.showOneSection( "loading" );	
 	this.showRecentProblem();
-	if ( this.currentProblem ) {
-		this.show();
-	}
-	else {
-		this.get();
-	}
+	data = {};
+	if ( exclude && this.slug ) data[ "exclude" ] = this.slug
+	var parameters = {
+		urlSuffix: "rest-api/v1/get-voting-problem/",
+		loadingMessage: "Getting Voting Problem",
+		method: "POST",
+		context: this,
+		data: data,
+		successCallback: function( data ) {
+			if ( data.alldone ) {
+				this.context.showOneSection( "empty" );
+			}
+			else {
+				this.context.show( data );
+			}			
+		},
+		failCallback: function( message ) { this.context.showOneSection( "error" ); }
+	};
+	BW.ajax( parameters );
+	return false;		
 };
+
+
+/**
+ * Load a problem
+ */
+BW.VotingProblem.prototype.loadSpecificProblem = function( slug ) {	
+	this.showOneSection( "loading" );	
+	data = {};
+	var parameters = {
+		urlSuffix: "rest-api/v1/get-problem/" + slug + '/',
+		loadingMessage: "Getting Problem",
+		method: "GET",
+		context: this,
+		data: data,
+		successCallback: function( data ) {
+			this.context.show( data );			
+		},
+		failCallback: function( message ) { this.context.showOneSection( "error" ); }
+	};
+	BW.ajax( parameters );
+	return false;	
+};
+
+
+/**
+ * Show the list of problems
+ */
+BW.VotingProblem.prototype.showList = function() {
+	this.showOneSection( "loading" );
+	data = {
+		start:0,
+		end: 9
+	};
+	var parameters = {
+		urlSuffix: "rest-api/v1/get-recent-answers/",
+		loadingMessage: "Getting Recent Problem List",
+		method: "POST",
+		context: this,
+		data: data,
+		successCallback: function( data ) {
+			var answers = data.recent_answers;
+			var html = "";
+			if ( answers.length <= 0 ) {
+				html += "<h4>You have not voted on any problems yet!</h4>";
+			}
+			else {
+				html += "<ul data-role='listview' data-inset='true'>";
+				_.each( answers, function( answer ) {
+					html += "<li data-icon='false'><a role='page' data-page='view.html' data-slug='" + answer.slug + "'>";
+					var icon = ( answer.type.toLowerCase() === "bidding" ? "img/Box-Red.png" : "img/cardback.png" );	
+					var avatarLink = BW.sitePrefix + answer.avatar;
+					html += '<img src="' + icon + '" class="ui-li-icon"/>';
+					html += '<div>';
+					var hand = new Bridge.Hand( 'n' );
+					hand.setHand(answer.lin_str);
+					html += hand.toHTML();
+					html += '</div>';
+					html += '<div>';
+					html += '<img src="' + avatarLink + '"/> ';
+					html += answer.author + '</div>';
+					var suffix = ( answer.num_answers === 1 ? "vote" : "votes" );
+					html += '<span class="ui-li-count">' + answer.num_answers + ' ' + suffix + '</span>';	
+					html += '</a></li>';			
+				}, this );			
+				html += "</ul>";			
+			}
+			$( "#bw-voting-problem-list-contents" ).empty().append( html );	
+			$( "#bw-voting-problem-list-contents" ).trigger( "create" );
+			this.context.showOneSection( "list" );
+		},
+		failCallback: function( message ) { this.context.showOneSection( "error" ); }
+	};
+	BW.ajax( parameters );
+	return false;		
+};
+
 
 /**
  * Enable/Disable previous/next clicks and swipes
@@ -101,14 +235,8 @@ BW.VotingProblem.prototype.enableClicksAndSwipes = function() {
 		
 	});
 	$( "#bw-voting-problem-button-abstain" ).click( { problem: this }, function( e ) {
-		if ( e.data.problem.currentProblem.type === "bidding" ) {
-			var answerPublic = $( "#bw-voting-problem-public" ).prop( "checked" );
-			alert( "Thanks for you vote. Abstain selected. Answer is " + ( answerPublic ? "Public" : "Not Public" ) );
-			e.data.problem.vote( "abstain" );
-		}
-		else {
-			alert( "Cannot abstain on lead problem." );
-		}
+		var answerPublic = $( "#bw-voting-problem-public" ).prop( "checked" );
+		e.data.problem.abstain( answerPublic );
 	});	
 	$( "#bw-voting-problem-call" ).on( "click", ".bw-bidding-box-field-calls.enabled", { problem: this }, function( e ) {
 		var call = $( this ).data( "suit" );
@@ -134,27 +262,40 @@ BW.VotingProblem.prototype.enableClicksAndSwipes = function() {
 			$( "[data-card='" + problem.selectedCard + "']" ).removeClass( "bw-card-deck-selected" );
 		}
 		problem.selectedCard = $( this ).data( "card" );
+		problem.selectedCardOrder = $( this ).data( "card-order" );
 		$( "[data-card='" + problem.selectedCard + "']" ).addClass( "bw-card-deck-selected" );
 		$( "#bw-voting-problem-button-vote" ).removeClass( "ui-disabled" );
 	});
 	$( "#bw-voting-problem-button-vote" ).click( { problem: this }, function( e ) {
-		console.log("Voting");
 		var answerPublic = $( "#bw-voting-problem-public" ).prop( "checked" );
 		var problem = e.data.problem;
-		if ( problem.currentProblem.type === "bidding" ) {
-			var call = "";
-			call += ( problem.selectedLevel ? problem.selectedLevel : "" );
-			call += ( problem.selectedCall ? problem.selectedCall : "" );
-			if ( !Bridge.isBid( call ) ) {
-				alert( "A valid call has not been selected. Please try again!" );
-				return;
+		if ( problem.type === "bidding" ) {
+			var answer = 0;
+			var strain = problem.selectedCall;
+			if ( strain === 'p' ) answer = 37;
+			else if ( strain === 'x' ) answer = 35;
+			else if ( strain === 'r' ) answer = 36;
+			else {
+				answer = (problem.selectedLevel - 1) * 5;
+				switch ( strain ) {
+					case 'n' : 
+						answer++;
+					case 's' : 
+						answer++;			
+					case 'h' : 
+						answer++;			
+					case 'd' : 
+						answer++;	
+					default:
+						break;
+				}
 			}
-			alert( "Thanks for Voting for " + call + ". Answer is " + ( answerPublic ? "Public" : "Not Public" ) );
-			e.data.problem.vote( call );
+			e.data.problem.vote( answer, answerPublic );
 		}
 		else {
-			alert( "Thanks for Voting for " + e.data.problem.selectedCard + ". Answer is " + ( answerPublic ? "Public" : "Not Public" ) );
-			e.data.problem.vote( e.data.problem.selectedCard );
+			var answer = e.data.problem.selectedCardOrder;
+			var answerPublic = $( "#bw-voting-problem-public" ).prop( "checked" );
+			e.data.problem.vote( answer, answerPublic );
 		}
 	});	
 	
@@ -163,79 +304,201 @@ BW.VotingProblem.prototype.enableClicksAndSwipes = function() {
 /**
  * Send a vote for this problem to BW server
  */
-BW.VotingProblem.prototype.vote = function( answer ) {
-	// Do whatever is necesary to vote
-	BW.recentProblem = JSON.parse( JSON.stringify( this.currentProblem ) );
-	BW.recentProblem.vote = answer;
-	BW.recentProblem.percent = Math.floor((Math.random() * 100) + 1);
-	this.showRecentProblem();
-	this.currentProblem = null;		
-	this.load();
+BW.VotingProblem.prototype.vote = function( answer, answerPublic ) {
+	data = {
+		Answer: true,
+		answer: answer	
+	};
+	if ( answerPublic ) data[ "public" ] = answerPublic;
+	var parameters = {
+		urlSuffix: "rest-api/v1/poll-answer/" + this.slug + '/',
+		loadingMessage: "Submitting Vote",
+		method: "POST",
+		context: this,
+		data: data,
+		successCallback: function( data ) {
+			parameters = {
+				"slug": this.context.slug
+			};
+			BW.loadPage( "view.html", parameters );			
+		},
+		failCallback: function( message ) { alert( "Error : " + message ); this.context.load(); }
+	};
+	BW.ajax( parameters );
+	return false;		
+	
+};
+
+/**
+ * Send an abstain vote for this problem to BW server
+ */
+BW.VotingProblem.prototype.abstain = function( answerPublic ) {
+	if ( this.type !== "bidding" ) {
+		alert( "Cannot abstain on lead problem." );
+		return;
+	}
+	data = {
+		Abstain: true	
+	};
+	if ( answerPublic ) data[ "public" ] = answerPublic;
+	var parameters = {
+		urlSuffix: "rest-api/v1/poll-answer/" + this.slug + '/',
+		loadingMessage: "Submitting Vote",
+		method: "POST",
+		context: this,
+		data: data,
+		successCallback: function( data ) {
+			parameters = {
+				"slug": this.context.slug
+			};
+			BW.loadPage( "view.html", parameters );			
+		},
+		failCallback: function( message ) { alert( "Error : " + message ); this.context.load(); }
+	};
+	BW.ajax( parameters );
+	return false;	
 };
 
 /**
  * Skip a problem
  */
 BW.VotingProblem.prototype.skip = function() {
-	this.showOneSection( "loading" );
-	var problems = localStorage.getItem( "BW::votingproblems" );
-	if ( !problems ) problems = "[]";
-	var problemsJSON = JSON.parse( problems );
-	if ( problemsJSON.length === 0 ) {
-		alert( "This is the last problem you have to vote on. Can't Skip" );
-		this.showOneSection( "data" );
-		return;
-	}
-	var newProblem = problemsJSON[0];
-	problemsJSON.splice( 0, 1, this.currentProblem );
-	this.currentProblem = newProblem;
-	localStorage.setItem( this.itemName, JSON.stringify( this.currentProblem ) );
-	localStorage.setItem( "BW::votingproblems", JSON.stringify( problemsJSON ) );
-	this.show();
+	this.load( true );
 };
 
 /**
- * Get the next problem from the server
+ * Show all the votes
  */
-BW.VotingProblem.prototype.get = function() {
-	// Do whatever is done to get from server
-	// For now from localStorage which is preloaded
-	var problems = localStorage.getItem( "BW::votingproblems" );
-	if ( !problems ) problems = "[]";
-	var problemsJSON = JSON.parse( problems );
-	if ( problemsJSON.length === 0 ) {
-		// No more problems
-		$( "#skip-button" ).addClass( "ui-disabled" );
-		this.showOneSection( "empty" );
-		//var html = "<p class='center'>Wow, you've answered every single bridge problem on the site!  Thanks for being such an active participant!</p>";
-		//$( "#" + this.containerID).empty().append( html );	
-		return;		
+BW.VotingProblem.prototype.showAllVotes = function( data ) {
+	if ( data.my_answer ) {
+		var html = '';
+		html += '<table data-role="table" class="ui-responsive">';
+		html += '<thead><tr><td></td><td></td><td></td><td></td></tr></thead>';
+		html += '<tbody>';
+		var my_answer = data.my_answer.answer.toLowerCase();
+		var total = data.num_answers - data.abstentions;
+		for( var i = 0; i < data.answers.length; ++i ) {
+			var percent = Math.round(((data.answers[i].count/total)*100));
+			var answer = data.answers[i].text.toLowerCase();
+			var myAnswerClass = ( answer === my_answer ? "bw-problem-my-answer" : "" );
+			html += '<tr>';
+			var myAnswerHTML = ( data.type.toLowerCase() === "bidding" ? Bridge.getCallHTML(answer) : Bridge.getCardHTML(answer) );
+			html += '<td style="white-space: nowrap;" class="bw-problem-answer ' + myAnswerClass + '">' + myAnswerHTML + ':</td>';
+			html += '<td style="white-space: nowrap;" class="' + myAnswerClass + '">' + data.answers[i].count;
+			html += (data.answers[i].count > 1 ? " votes" : " vote") + '</td>';
+			html += '<td style="white-space: nowrap;" class="' + myAnswerClass + '">(' + percent + '%)</td>';
+			html += '<td class="bw-problem-vote-container"><span style="background-color: ' + BW.colorPalette[i] + '; width:' + percent + '%;" class="bw-problem-vote"></span></td>';
+			html += '</tr>';
+		}
+		// Abstains
+		if ( data.abstentions > 0 ) {
+			var answer = "abstain";
+			var myAnswerClass = ( answer === my_answer ? "bw-problem-my-answer" : "" );
+			html += '<tr>';
+			html += '<td class="bw-problem-answer ' + myAnswerClass + '">Abstentions:</td>';
+			html += '<td class="' + myAnswerClass + '">' + data.abstentions + '</td>';
+			html += '<td></td>';
+			html += '<td></td>';
+			html += '</tr>';		
+		}
+		html += '</tbody>';
+		html += '</table>';
+		$( "#bw-voting-problem-votes" ).empty().append( html );
+		$( "#bw-problem-vote-title" ).show();
+		$( "#bw-voting-problem-public" ).prop( "checked", data.my_answer.public ).checkboxradio('refresh');
+		if ( data.my_answer.public ) {
+			$( "#bw-public-votes-button" ).show();
+			$( "#bw-public-votes-button" ).click( { slug: data.slug }, function( e ) {
+				data = {};
+				var parameters = {
+					urlSuffix: "rest-api/v1/get-responses/" + e.data.slug + '/',
+					loadingMessage: "Getting Responses",
+					method: "GET",
+					context: this,
+					data: data,
+					successCallback: function( data ) {
+						var html = "";
+						var type = data.type.toLowerCase();
+						for( var i = 0; i < data.responses.length; ++i ) {
+							var response = data.responses[i];
+							html += "<h4>";
+							if ( type === "bidding" ) {
+								html += Bridge.getCallHTML( response.answer_text.toLowerCase() );
+							}
+							else {
+								html += Bridge.getCardHTML( response.answer_text.toLowerCase() );
+							}
+							html += "</h4>";
+							for( var j = 0; j < response.public_responses.length; ++j ) {
+								html += "<span class='bw-public-response'>" + response.public_responses[j] + "</span> ";
+							}
+							if ( response.num_private_responses >  0 ) {
+								html += "<span class='bw-private-response'>" + response.num_private_responses + " private</span>";
+							}
+						}
+						$( "#poll-responses-content" ).empty().append(html);
+						$( "#poll-responses" ).popup( "open" );			
+					},
+					failCallback: function( message ) {
+						var html = "";
+						html += "Unable to retreive responses";
+						$( "#poll-responses-content" ).empty().append(html);
+						$( "#poll-responses" ).popup( "open" );							
+					}
+				};
+				BW.ajax( parameters );
+				return false;									
+			});	
+		}
+		else {
+			$( "#bw-public-votes-button" ).hide();
+		}
 	}
-	this.currentProblem = problemsJSON[0];
-	localStorage.setItem( this.itemName, JSON.stringify( this.currentProblem ) );
-	problemsJSON.splice( 0, 1 );
-	localStorage.setItem( "BW::votingproblems", JSON.stringify( problemsJSON ) );
-	this.show();
+	else {
+		$( "#bw-public-votes-button" ).hide();
+		$( "#bw-problem-vote-title" ).hide();
+	}
 };
+
 
 /**
  * Show the VotingProblem
- * @param {string} containerID - the container for the form
+ * @param {string} data - the data returned for voting problem
  */
-BW.VotingProblem.prototype.show = function() {
+BW.VotingProblem.prototype.show = function( data ) {
 	this.showOneSection( "data" );
 	this.selectedLevel = null;
 	this.selectedCall = null;
 	this.selectedCard = null;
+	this.selectedCardOrder = null;
 	var deal = new Bridge.Deal();
-	deal.fromJSON( this.currentProblem.deal );
+	deal.setDealer( data.dealer );
+	deal.setVulnerability( data.vulnerability );
+	deal.getAuction().fromString( data.auction );
+	var next = deal.getAuction().getNextToCall();
+	this.direction = next;
+	deal.getHand( next ).setHand( data.lin_str );
+	deal.setNotes( data.description );
+	deal.setScoring( data.scoring );
+	this.slug = data.slug;
+	this.type = data.type.toLowerCase();
+	this.author = data.author;
+	this.avatarLink = BW.sitePrefix + data.avatar;
 	this.deal = deal;
 	
 	// Image
-	$( "#bw-voting-problem-author-image" ).attr( "src", this.currentProblem.image).attr( "alt", this.currentProblem.name );
+	$( "#bw-voting-problem-author-image" ).attr( "src", this.avatarLink).attr( "alt", this.author );
+	
+	var seats = [ "1st", "2nd", "3rd", "4th" ];
+	var position = 0;
+	var dealer = deal.getDealer();
+	while( dealer !== next ) {
+		position++;
+		dealer = Bridge.getLHO( dealer );
+	}
 	var fields = {
-		"author-name": this.currentProblem.name + " asks...",
-		"dealer": "Dealer " + Bridge.directions[ deal.getDealer() ].name,
+		"author-name": this.author + " asks...",
+		"dealer": seats[ position ] + " Seat",
 		"scoring": BW.scoringTypes[ deal.getScoring() ],
 		"vulnerability": Bridge.vulnerabilities[ deal.getVulnerability() ].name + " Vul",
 		"description": deal.getNotes()
@@ -244,15 +507,25 @@ BW.VotingProblem.prototype.show = function() {
 		var selector = "#bw-voting-problem-" + field;
 		$( selector ).empty().append( fields[ field ] );		
 	}
-	var question = "What's your " + ( this.currentProblem.type === "bidding" ? "Call" : "Lead" ) + "?";
+	var question = '';
+	question += (this.showVotes ? "Change" : "What's");
+	question += " your " + ( this.type === "bidding" ? "Call" : "Lead" ) + "?";
 	$( "#bw-voting-problem-question" ).empty().append( question );
 	$( "#bw-voting-problem-public" ).prop( "checked", BW.currentOptions.get( "bw-option-answerPublicly" ) );
 	
-	$( "#skip-button" ).removeClass( "ui-disabled" );
-	$( "#skip-button" ).off( "click" );
-	$( "#skip-button" ).click( {problem: this }, function( e ) {
-		e.data.problem.skip();
-	});
+	if ( this.showSkip ) {
+		$( "#skip-button" ).show().removeClass( "ui-disabled" );
+		$( "#skip-button" ).off( "click" );
+		$( "#skip-button" ).click( {problem: this }, function( e ) {
+			e.data.problem.skip();
+		});
+	}
+	else {
+		$( "#skip-button" ).hide();
+	}
+	if ( this.showVotes ) {
+		this.showAllVotes( data );
+	}
 	var auction = deal.getAuction();
 	var config = {
 		prefix: "bw-auction-diagram",
@@ -269,7 +542,7 @@ BW.VotingProblem.prototype.show = function() {
 	};	
 	var aID = config.idPrefix + "-" + config.prefix;	
 	auction.toHTML( config );
-	var hand = deal.getHand( this.currentProblem.direction );
+	var hand = deal.getHand( this.direction );
 	config = {
 		prefix: "bw-hand-diagram",
 		show: {
@@ -290,7 +563,7 @@ BW.VotingProblem.prototype.show = function() {
 	var width = ( aWidth > hWidth ? aWidth : hWidth );
 	$( "#" + hID ).width( width );
 	$( "#" + aID ).width( width );
-	if ( this.currentProblem.type === "bidding" ) {
+	if ( this.type === "bidding" ) {
 		$( "#bw-voting-problem-button-abstain" ).show();
 		$( "#bw-voting-problem-lead" ).hide();
 		$( "#bw-voting-problem-call" ).show();

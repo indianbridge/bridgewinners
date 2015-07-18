@@ -6,7 +6,7 @@ if ( typeof BW === "undefined" ) BW = {};
  */
 BW.Options = function() {
 	this.prefix = "bw-option-";
-	this.localStorageVariableName = "bw_options";
+	this.localStorageVariableName = BW.currentUser.getLocalStorageVariableName( "options" );
 	var options = localStorage.getItem( this.localStorageVariableName );
 	this.values = ( options ? JSON.parse( options ) : {} );
 	_.defaults( this.values, {

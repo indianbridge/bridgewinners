@@ -99,7 +99,7 @@ BW.initialize = function() {
 	// Load the different pages from menu
 	$( "body" ).on( "click", "a[role='page'], img[role='page']", function() {
 		var page = $( this ).data("page");
-		var parameterNames = [ "slug" ];
+		var parameterNames = [ "slug", "back_name", "back_page", "back_html" ];
 		parameters = {};
 		for( var i = 0; i < parameterNames.length; ++i ) {
 			var parameterValue = $( this ).data( parameterNames[i] );
@@ -119,6 +119,9 @@ BW.initialize = function() {
 	
 	// Setup view problem class
 	BW.viewProblem = new BW.VotingProblem( "bw-view-problem" );
+	
+	// Setup recently published problem class
+	BW.recentlyPublishedProblems = new BW.VotingProblem( "bw-published-problem" );	
 	
 	// Setup create problem class
 	BW.createProblem = new BW.CreateProblem( "bw-create-problem" );	
@@ -281,12 +284,12 @@ BW.pageLoaded = function( page, parameters ) {
 	else if ( page === "profile.html" ) {
 		BW.setNavbarActiveItem( "profile" );
 		BW.currentUser.loadProfile();
+		BW.recentlyPublishedProblems.showRecentlyPublishedList();
 	}
 	else if ( page === "view.html" ) {
 		BW.setNavbarActiveItem( "view" );
 		if ( parameters.hasOwnProperty( "slug" ) ) {
-			var slug = parameters[ "slug" ];
-			BW.viewProblem.initialize( slug );
+			BW.viewProblem.initialize( parameters );
 		}
 		else {
 			BW.viewProblem.showList();

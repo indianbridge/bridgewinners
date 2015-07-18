@@ -28,6 +28,7 @@ BW.VotingProblem = function( containerID ) {
 	this.type = null;
 	this.deal = null;
 	this.slug = null;
+	this.backButtonParameters = null;
 };
 
 /**
@@ -96,9 +97,21 @@ BW.VotingProblem.prototype.showOneSection = function( sectionName ) {
 };
 
 /**
+ * Set the back button parameter.
+ */
+BW.VotingProblem.prototype.setBackButtonParameters = function( parameters ) {
+	if ( parameters.back_html ) {
+		$( "#bw-voting-problem-data-back-button" ).empty().append( parameters.back_html ).data( "name", parameters.back_name ).data( "page", parameters.back_page );
+	}
+};
+
+/**
  * Load a problem
  */
-BW.VotingProblem.prototype.initialize = function( slug ) {
+BW.VotingProblem.prototype.initialize = function( parameters ) {
+	if ( !parameters ) parameters = {};
+	var slug = parameters[ "slug" ];
+	this.setBackButtonParameters( parameters );
 	if ( slug ) {
 		this.setProblemType( "old" );	
 	}
@@ -163,6 +176,58 @@ BW.VotingProblem.prototype.loadSpecificProblem = function( slug ) {
 	};
 	BW.ajax( parameters );
 	return false;	
+};
+
+/**
+ * Show the list of recently published problems
+ */
+BW.VotingProblem.prototype.showRecentlyPublishedList = function() {
+	this.showOneSection( "loading" );
+	data = {
+		start:0,
+		end: 9
+	};
+	var parameters = {
+		urlSuffix: "rest-api/v1/get-recent-published/",
+		loadingMessage: "Getting Recent Published Problem List",
+		method: "POST",
+		context: this,
+		data: data,
+		successCallback: function( data ) {
+			var answers = data.recent_answers;
+			var html = "";
+			if ( answers.length <= 0 ) {
+				html += "<h4>You have not published any problems yet!</h4>";
+			}
+			else {
+				html += "<ul data-role='listview' data-inset='true'>";
+				_.each( answers, function( answer ) {
+					html += "<li data-icon='false'><a role='page' data-page='view.html' data-back_name='profile' data-back_page='profile.html' data-back_html='Show Recent Published Problem List' data-slug='" + answer.slug + "'>";
+					var icon = ( answer.type.toLowerCase() === "bidding" ? "img/Box-Red.png" : "img/cardback.png" );	
+					var avatarLink = BW.sitePrefix + answer.avatar;
+					html += '<img src="' + icon + '" class="ui-li-icon"/>';
+					html += '<div>';
+					var hand = new Bridge.Hand( 'n' );
+					hand.setHand(answer.lin_str);
+					html += hand.toHTML();
+					html += '</div>';
+					/*html += '<div>';
+					html += '<img src="' + avatarLink + '"/> ';
+					html += answer.author + '</div>';*/
+					var suffix = ( answer.num_answers === 1 ? "vote" : "votes" );
+					html += '<span class="ui-li-count">' + answer.num_answers + ' ' + suffix + '</span>';	
+					html += '</a></li>';			
+				}, this );			
+				html += "</ul>";			
+			}
+			$( "#bw-published-problem-list-contents" ).empty().append( html );	
+			$( "#bw-published-problem-list-contents" ).trigger( "create" );
+			this.context.showOneSection( "list" );
+		},
+		failCallback: function( message ) { this.context.showOneSection( "error" ); }
+	};
+	BW.ajax( parameters );
+	return false;		
 };
 
 

@@ -22,8 +22,8 @@
 *:first-child+html .clearfix { zoom: 1; } /* IE7 */
 
 .margin-bottom {
-  margin-bottom:5px;
- }
+	margin-bottom:5px;
+}
 
 
 .clear {
@@ -35,6 +35,18 @@
 	display: none;
 	visibility: hidden;
 }
+
+#next-stage-button {
+	color: #FFFFFF;
+	background-color: #006600;
+}
+
+#mycontent {
+	padding: 0.1em;
+}
+
+/** Fix to hide vertical scrollbar */
+.ui-content .ui-listview, .ui-panel-inner>.ui-listview { margin:0em}
 
 .suit-spades, .suit-clubs, .suit-NT, .bw_spades, .bw_clubs {
 	color: #000000;
@@ -66,6 +78,10 @@
 
 .bw-voting-problem-row {
 	white-space : normal;
+}
+
+.bw-published-problem-information { 
+	white-space: normal;
 }
 
 .bw-create-problem-notes {
@@ -264,7 +280,9 @@ span.bw-auction-diagram-field {
 	display: inline-block;
 	font-weight: bold;
 	font-size: 16px;
-	width: 32px;
+	width: 24px;
+	margin-right: 5px;
+	margin-bottom: 5px;
 	font-family: arial; 
     text-align: center;	
     border-radius:5px;
@@ -392,6 +410,11 @@ span.bw-auction-diagram-field {
         background-size: contain;
 }
 
+.bw-card-deck-field-cards-s-x {
+        background-image: url(img/cards/sx.png);
+        background-size: contain;
+}
+
 .bw-card-deck-field-cards-h-a {
         background-image: url(img/cards/ha.png);
         background-size: contain;
@@ -454,6 +477,11 @@ span.bw-auction-diagram-field {
 
 .bw-card-deck-field-cards-h-2 {
         background-image: url(img/cards/h2.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-h-x {
+        background-image: url(img/cards/hx.png);
         background-size: contain;
 }
 
@@ -522,6 +550,11 @@ span.bw-auction-diagram-field {
         background-size: contain;
 }
 
+.bw-card-deck-field-cards-d-x {
+        background-image: url(img/cards/dx.png);
+        background-size: contain;
+}
+
 .bw-card-deck-field-cards-c-a {
         background-image: url(img/cards/ca.png);
         background-size: contain;
@@ -586,3 +619,51 @@ span.bw-auction-diagram-field {
         background-image: url(img/cards/c2.png);
         background-size: contain;
 }
+
+.bw-card-deck-field-cards-c-x {
+        background-image: url(img/cards/cx.png);
+        background-size: contain;
+}
+
+.bw-problem-answer {
+	text-align: right;
+}
+
+.bw-problem-vote {
+	display: inline-block;
+	height: 1em;
+}
+
+.bw-problem-vote-container {
+	width: 100%;
+}
+
+.bw-problem-vote-title {
+	font-weight: bold;
+	font-style: italic;
+}
+
+.bw-problem-my-answer {
+  color: red;
+  font-style: italic;
+}
+
+.bw-problem-my-answer .suit-NT, .bw-problem-my-answer .suit-spades, .bw-problem-my-answer .suit-clubs  {
+  color: red;
+  font-style: italic;
+}
+.bw-private-response {
+    border: 1px solid #a1a1a1;
+    padding: 2px; 
+    background: #333333;
+    color: white;
+    border-radius: 10px;
+}
+
+.bw-public-response {
+    border: 1px solid #a1a1a1;
+    padding: 2px; 
+    background: #dddddd;
+    border-radius: 10px;
+}
+

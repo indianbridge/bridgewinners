@@ -35,64 +35,6 @@ BW.androidSwipeFix = function() {
 	} );  	
 };
 
-BW.users = {
-	"bridge winners" : {
-		name: "Bridge Winners",
-		image: "http://media.bridgewinners.com/images/icons/banner_logo_cropped.png"
-	},
-	"gavin wolpert" : {
-		name: "Gavin Wolpert",
-		image: "http://media.bridgewinners.com/cache/b5/a5/b5a537ff5d712573d506aa9501356caa.png"
-	}
-};
-
-BW.votingProblems = [
-	{
-		number: 5816,
-		type: "bidding",
-		name: "Greg Humphreys",
-		image: "http://media.bridgewinners.com/cache/47/a8/47a8a90973610fdf86881ccacdbe3cd1.png",
-		direction: 's',
-		deal: {
-			dealer: 'n',
-			vulnerability: 'e',
-			scoring: "20VP",
-			hands : {
-				s: {
-					direction:"s",
-					name:"South",
-					hand:"sKJT32hJ32dKcAKQJ"
-				}				
-			},
-			auction: "p2dp2sp3dp",
-			notes: "Pd is very sound in 2nd seat red."
-		}
-	},
-	{
-		number: 48,
-		type: "lead",
-		name: "Gavin Wolpert",
-		image: "http://media.bridgewinners.com/cache/b5/a5/b5a537ff5d712573d506aa9501356caa.png",
-		direction: 's',
-		deal: {
-			dealer: 's',
-			vulnerability: 'b',
-			scoring: "KO",
-			hands : {
-				s: {
-					direction:"s",
-					name:"South",
-					hand:"sq32haq432ckj32d2"
-				}				
-			},
-			auction: "1hx2h3d3hxp4dp5dppp",
-			notes: "Your opponents in the District 9 GNT Qualifier are Meckwell, Meck is West, Rodwell is East.<br/>2♥ showed less than a constructive raise... the second double by Meck was just values takeout (kind of asking for a heart stopper).<br/>I'd love comments on your best guess of dummy's hand."
-		}
-	}	
-];
-
-BW.recentProblem = null;
-
 BW.scoringTypes = {
 	"KO": "IMPs (Knockout)",
 	"Matchpoints": "Matchpoints",
@@ -106,6 +48,12 @@ BW.scoringTypes = {
 	"Any": "Any"
 };
 
+BW.colorPalette = [ "#5158AB", "#41AE32", "#E74224", "#E73390", "#2F8E9A", "#D056F2", "#855D1B",
+"#3A7140", "#AD4346", "#C277AF", "#E07B39", "#A89829", "#436790", "#2D9B80", "#D446B7", "#E06A84",
+"#B97AD8", "#697224", "#756CE2", "#9487C2", "#A53381", "#589FCE", "#4DA65F", "#7CA637", "#7D5780",
+"#E5494C", "#D93366", "#6088E1", "#864A9D", "#DC765A", "#3D7A21", "#995231", "#9F4361", "#C5872E",
+"#E267AB", "#AC4B14", "#E43AD6", "#B359D7", "#B53625", "#E9721E"];
+
 /**
  * The initialize function. Called only once when the app starts.
  */
@@ -117,13 +65,9 @@ BW.initialize = function() {
 	$.mobile.ignoreContentEnabled = true;
 	$.mobile.buttonMarkup.hoverDelay = 0;
 	$.mobile.hoverDelay = 0;
+	$.mobile.pushStateEnabled = false;
 	
 	BW.androidSwipeFix();
-	
-	// Hack to always have 2 voting problems.
-	//var problems = localStorage.getItem( "BW::votingproblems" );
-	//if ( !problems ) localStorage.setItem( "BW::votingproblems", JSON.stringify( BW.votingProblems ) );
-	localStorage.setItem( "BW::votingproblems", JSON.stringify( BW.votingProblems ) );
 	
 	// enable fast click
 	var attachFastClick = Origami.fastclick;
@@ -138,27 +82,49 @@ BW.initialize = function() {
 	// Assume that north is hand shown. It should not matter (famous last words)
 	BW.handDirection = 's';
 	
-	
 	// A cache to store loaded html files
-	BW.pageCache = {};	
+	BW.pageCache = {};		
 	
-	// Load the current options
-	BW.currentOptions = new BW.Options();	
+	// The address of the BW server
+	BW.sitePrefix = "https://108.166.89.84/";
 	
-	// Setup voting problem
-	BW.votingProblem = new BW.VotingProblem( "bw-voting-problem" );
-	
-	// Setup create problem
-	BW.createProblem = new BW.CreateProblem( "bw-create-problem" );
+	// Manage active tab
+	BW.lastNavbarItem = "vote";
+	$( "#popupMenu" ).popup( {
+		afterclose: function( event, ui ) {
+			BW.setNavbarActiveItem( BW.lastNavbarItem );
+		}
+	});
 	
 	// Load the different pages from menu
-	$( "a[role='page']" ).click( function() {
+	$( "body" ).on( "click", "a[role='page'], img[role='page']", function() {
 		var page = $( this ).data("page");
-		if ( BW.currentUser.isLoggedIn ) BW.loadPage( page );
+		var parameterNames = [ "slug" ];
+		parameters = {};
+		for( var i = 0; i < parameterNames.length; ++i ) {
+			var parameterValue = $( this ).data( parameterNames[i] );
+			if ( parameterValue ) parameters[ parameterNames[i] ] = parameterValue;
+		}
+		BW.loadPage( page, parameters );
 	});
 	
 	// Load the current user
 	BW.currentUser = new BW.User( BW.contentID );
+	
+	// Load the options
+	BW.currentOptions = new BW.Options();
+	
+	// Setup voting problem class
+	BW.votingProblem = new BW.VotingProblem( "bw-voting-problem" );
+	
+	// Setup view problem class
+	BW.viewProblem = new BW.VotingProblem( "bw-view-problem" );
+	
+	// Setup create problem class
+	BW.createProblem = new BW.CreateProblem( "bw-create-problem" );	
+	
+	// Trigger login status change so that appropriate start page can be loaded
+	$( document ).trigger( "BW.loginStatus:changed", [BW.currentUser] );
 };
 
 /**
@@ -188,37 +154,107 @@ else {
 }
 
 /**
+ * Show a popup overlay loading dialog while perfoming ajax request.
+ */
+BW.showLoadingDialog = function( text ) {
+	$( "#loading-popup-content" ).empty().append( text );
+	$( "#loading-popup" ).popup( "open" );
+};
+
+/**
+ * Hide the popup overlay loading dialog
+ */
+BW.hideLoadingDialog = function() {
+	$( "#loading-popup" ).popup( "close" );
+};
+
+/**
+ * Perform an Ajax request.
+ */
+BW.ajax = function( parameters ) {
+	var url = encodeURI( BW.sitePrefix + parameters.urlSuffix );
+	var showDialog = !parameters.hasOwnProperty( "showDialog" ) || parameters.showDialog;
+	if ( showDialog ) {
+		BW.showLoadingDialog( parameters.loadingMessage );
+	}
+	if ( parameters.hasOwnProperty( "includeHeaders" ) && !parameters.includeHeaders ) {
+		var headers = {};
+	}
+	else {
+		var headers = { 'Authorization': 'Token ' + BW.currentUser.getAccessToken() };
+	}
+	var request = $.ajax({
+		method: parameters.method,
+		context: parameters.context,
+		url: url,
+		data: parameters.data,
+		headers: headers
+	});	
+	request.done( function( data ) {
+		if ( showDialog ) BW.hideLoadingDialog();
+		if ( data.hasOwnProperty( "error" ) && data.error ) {
+			parameters.failCallback( data.message );
+		}
+		else {
+			parameters.successCallback( data );
+		}
+	});
+	request.fail( function( jqXHR, textStatus, errorThrown ) {
+		if ( showDialog ) BW.hideLoadingDialog();
+		var message = "Unable to connect to BW Server";
+		parameters.failCallback( message );
+	});	
+	return false;
+};
+
+/**
  * The hash change handler.
  * Dispatches to appropriate handler based on action and passes the hash parameters
  */
-BW.loadPage = function( page ) {	
-	$.mobile.loading( "show" );
+BW.loadPage = function( page, parameters ) {	
 	$( "#bw-voting-problem-recent" ).hide();
-	var pages = [ "vote.html", "options.html", "create.html", "profile.html", "about.html" ];
-	if ( !_.indexOf( pages, page ) === -1 ) {
-		alert( "Unknown page : " + page );
-		return;
-	}
-	if ( _.has( BW.pageCache, page ) ) {
-		$( '#' + BW.contentID ).empty().append( BW.pageCache[ page ] );
-		BW.pageLoaded( page );
-		$.mobile.loading( "hide" );
+	$( "#popupMenu" ).popup( "close" );
+	BW.showLoadingDialog( "Loading Page" );
+	if ( BW.currentUser.isLoggedIn ) {
+		$( "a[role='page']" ).removeClass( "ui-disabled" );
+		var pages = [ "vote.html", "options.html", "create.html", "view.html", "profile.html", "more.html", "about.html" ];
+		if ( !_.indexOf( pages, page ) === -1 ) {
+			BW.hideLoadingDialog();
+			alert( "Unknown page : " + page );
+			return;
+		}
+		if ( page === "more.html" ) {
+			BW.hideLoadingDialog();
+			$( "#popupMenu" ).popup( "open", { positionTo: "#more-tab" } );
+		}
+		else {
+			if ( _.has( BW.pageCache, page ) ) {
+				$( '#' + BW.contentID ).empty().append( BW.pageCache[ page ] );
+				BW.hideLoadingDialog();
+				BW.pageLoaded( page, parameters );
+			}
+			else {
+				$.get( page, function( html ) {
+					BW.pageCache[ page ] = html;
+					$( '#' + BW.contentID ).empty().append( BW.pageCache[ page ] );
+					BW.hideLoadingDialog();
+					BW.pageLoaded( page, parameters );
+				});
+			}	
+		}		
 	}
 	else {
-		$.get( page, function( html ) {
-			BW.pageCache[ page ] = html;
-			$( '#' + BW.contentID ).empty().append( BW.pageCache[ page ] );
-			BW.pageLoaded( page );
-			$.mobile.loading( "hide" );
-		});
-	}	
+		$( "a[role='page']" ).addClass( "ui-disabled" );
+		BW.hideLoadingDialog();
+		BW.currentUser.showLoginForm();
+	}
 };
 
 /**
  * Actions after page is loaded.
  * @param {object} parameters the associative array of hash parameters
  */
-BW.pageLoaded = function( page ) {
+BW.pageLoaded = function( page, parameters ) {
 	if ( page === "options.html" ) {
 		BW.currentOptions.initializeAll();
 		$( ".bw-options" ).change( function() {
@@ -232,23 +268,50 @@ BW.pageLoaded = function( page ) {
 			}
 			BW.currentOptions.change( name, value );		
 		});
+		BW.setNavbarActiveItem( "more" );
 	}
 	else if ( page === "vote.html" ) {
+		BW.setNavbarActiveItem( "vote" );
 		BW.votingProblem.initialize();
 	}
 	else if ( page === "create.html" ) {
+		BW.setNavbarActiveItem( "create" );
 		BW.createProblem.initialize();
 	}
 	else if ( page === "profile.html" ) {
+		BW.setNavbarActiveItem( "profile" );
 		BW.currentUser.loadProfile();
 	}
-	else if ( page === "about.html" ) {
+	else if ( page === "view.html" ) {
+		BW.setNavbarActiveItem( "view" );
+		if ( parameters.hasOwnProperty( "slug" ) ) {
+			var slug = parameters[ "slug" ];
+			BW.viewProblem.initialize( slug );
+		}
+		else {
+			BW.viewProblem.showList();
+		}
 	}
+	else if ( page === "about.html" ) {
+		BW.setNavbarActiveItem( "more" );
+	}	
 	else {
 		alert( "Unknown page : " + page );
 		return;
 	}
 	$( '#' + BW.contentID ).trigger( "create" );
+};
+
+/**
+ * Set the active navbar item
+ */
+BW.setNavbarActiveItem = function( itemName ) {
+	BW.lastNavbarItem = itemName;
+	$( "[data-type='navbar-item']" ).each( function( index, element ) {
+		var name = $( this ).data( "name" );
+		if ( name === itemName ) $( this ).addClass( "ui-btn-active" );
+		else $( this ).removeClass( "ui-btn-active" );
+	});
 };
 
 

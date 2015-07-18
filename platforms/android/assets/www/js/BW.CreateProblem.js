@@ -14,8 +14,15 @@ BW.CreateProblem = function( containerID ) {
 		{ name: "preview", next: "Publish", previous: "Extra Information" }
 	];
 	this.containerID = containerID;
-	this.itemName = "BW::currentCreateProblem";	
+	this.itemName = BW.currentUser.getLocalStorageVariableName( "currentCreateProblem" );
 	this.loadProblem();
+};
+
+/** 
+ * Clear the partially saved problem since it is published
+ */
+BW.CreateProblem.prototype.clearLocalStorage = function() {
+	localStorage.removeItem( this.itemName );
 };
 
 
@@ -71,17 +78,62 @@ BW.CreateProblem.prototype.initialize = function() {
 };
 
 /**
+ * Publish this problem on the BW Server
+ */
+BW.CreateProblem.prototype.publish = function() {
+	var problem = this;
+	var data = {};
+	if ( this.type === "bidding" ) data[ "type" ] = "Bidding";
+	else data[ "type" ] = "Lead";
+	var deal = problem.deal;
+	data[ "scoring" ] = deal.getScoring();
+	data[ "vul" ] = deal.getVulnerability();
+	if ( data[ "vul" ] === '-' ) data[ "vul" ] = 0;
+	data[ "dealer" ] = deal.getDealer().toUpperCase();
+	data[ "auction" ] = deal.getAuction().toString().toUpperCase();
+	data[ "description" ] = deal.getNotes();
+	var hand = problem.deal.getHand( problem.handDirection );
+	for( var i = 0; i < Bridge.suitOrder.length; ++i ) {
+		var field = "hand_" + i;
+		data[ field ] = hand.getCards( Bridge.suitOrder[i] );
+	}
+	var parameters = {
+		urlSuffix: "rest-api/v1/create-problem/",
+		loadingMessage: "Submitting New Problem",
+		method: "POST",
+		context: this,
+		data: data,
+		successCallback: this.submitSuccessCallback,
+		failCallback: function( message ) { alert( message ); }
+	};
+	BW.ajax( parameters );
+	return false;		
+};
+
+/**
+ * Submit Ajax done call back
+ */
+BW.CreateProblem.prototype.submitSuccessCallback = function( data ) {
+	var problem = this.context;
+	BW.createProblem.clearLocalStorage();
+	alert( "Your problem has been published." );
+	BW.loadPage( "vote.html" );
+};
+
+/**
+ * Submit Ajax fail call back
+ */
+BW.CreateProblem.prototype.submitFailCallback = function( message ) {
+	alert( message ); 
+};
+
+/**
  * Go to the next stage if allowed
  */
 BW.CreateProblem.prototype.nextStage = function() {
 	if ( this.stage === BW.CreateProblem.Stages.PREVIEW ) {
-		var problem = this;
-		alert( "Your problem has been published." );
-		localStorage.removeItem( problem.itemName );
-		problem.loadProblem();
-		problem.initializeData();
-		problem.loadStage();	
-		return;	
+		this.publish();
+		return;
 	}
 	this.stage++;
 	this.save();
@@ -130,16 +182,16 @@ BW.CreateProblem.prototype.initializeData = function() {
 	hand.toHTML( config );	
 	this.deal.setActiveHand( this.handDirection );
 	// Card Deck
-	var width = $( window ).width();
+	/*var width = $( window ).width();
 	var height = $( window ).height();
 	if ( width < 500 || height < 500 ) {
 		var useText = true;
 		var prefix = "bw-card-deck-text";
 	}
-	else {
-		var useText = false;
-		var prefix = "bw-card-deck";				
-	}
+	else {*/
+	var useText = false;
+	var prefix = "bw-card-deck";				
+	//}
 	config = {
 		prefix: prefix,
 		containerID: "bw-create-problem-card-deck", 
@@ -256,7 +308,7 @@ BW.CreateProblem.prototype.updateButton = function( id, text, disabled ) {
  */
 BW.CreateProblem.prototype.loadPreview = function() {
 	var deal = this.deal;
-	$( "#bw-voting-problem-author-image" ).attr( "src", BW.currentUser.getImage() ).attr( "alt", BW.currentUser.getName() );
+	$( "#bw-voting-problem-author-image" ).attr( "src", BW.currentUser.getAvatarLink() ).attr( "alt", BW.currentUser.getName() );
 	var fields = {
 		"author-name": BW.currentUser.getName() + " asks...",
 		"dealer": "Dealer " + Bridge.directions[ deal.getDealer() ].name,
@@ -324,7 +376,10 @@ BW.CreateProblem.prototype.enableClicksAndSwipes = function() {
 	var text = this.stages[ this.stage].previous;
 	var disabled = ( this.stage === BW.CreateProblem.Stages.TYPE );
 	var id = "previous-stage-button";
+	text = "Back";
 	this.updateButton( id, text, disabled );
+	if ( disabled ) $( '#' + id ).hide();
+	else $( '#' + id ).show();
 	if ( !disabled ) {
 		$( '#' + this.containerID ).on( "swiperight", { problem: this }, function( e ) {
 			e.data.problem.previousStage();
@@ -363,6 +418,7 @@ BW.CreateProblem.prototype.enableClicksAndSwipes = function() {
 			}				
 		}		
 	}
+	if ( this.stage !== BW.CreateProblem.Stages.PREVIEW ) text = "Continue";
 	this.updateButton( id, text, disabled );
 	if ( !disabled ) {
 		$( '#' + this.containerID ).on( "swipeleft", { problem: this }, function( e ) {

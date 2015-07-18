@@ -1,17 +1,17 @@
-<div id="bw-voting-problem">	
+<div id="bw-view-problem">	
 	<div id="bw-voting-problem-loading" data-section="loading">
 	</div>	
 	<div id="bw-voting-problem-empty" data-section="error">
 		<p class="center">
-			Unable to retreive voting problem from BridgeWinners server!
+			Unable to retreive information from BridgeWinners server!
 		</p>		
 	</div>	
-	<div id="bw-voting-problem-empty" data-section="empty">
-		<p class="center">
-			Wow, you've answered every single bridge problem on the site!  Thanks for being such an active participant!
-		</p>		
-	</div>
+	<div id="bw-voting-problem-list" data-section="list">
+		<h4>Problems recently Voted On</h4>
+		<div id="bw-voting-problem-list-contents"></div>
+	</div>		
 	<div id="bw-voting-problem-data" data-section="data">
+		<a role="page" data-name="view" data-page="view.html" class="ui-btn ui-icon-arrow-l ui-btn-icon-left">Show Recent Problem List</a>
 		<div class="clearfix margin-bottom">	
 		<img id="bw-voting-problem-author-image" class="float-left bw-voting-problem-author-image"/>
 		<div id="bw-voting-problem-author-name" class="bw-voting-problem-row bw-voting-problem-author-name"></div>
@@ -31,7 +31,12 @@
 		<div id="bw-voting-problem-hand" class="bw-voting-problem-hand"></div>		
 		</div>
 		<div id="bw-voting-problem-description" class="bw-voting-problem-row bw-voting-problem-description"></div>
-		</div>						
+		</div>
+		<div class="bw-problem-vote-title">Current Poll Results:</div>	
+		<div class="bw-voting-problem-buttons">	
+			<a id="bw-public-votes-button" class="ui-btn ui-mini ui-shadow ui-corner-all ui-btn-inline">See All Public Answers</a>
+		</div>
+		<div id="bw-voting-problem-votes" class="bw-voting-problem-row bw-voting-problem-votes"></div>			
 		<div id="bw-voting-problem-question" class="bw-voting-problem-row bw-voting-problem-question"></div>
 		<div id="bw-voting-problem-lead" class="bw-voting-problem-row bw-voting-problem-lead"></div>	
 		<div id="bw-voting-problem-call" class="bw-voting-problem-row bw-voting-problem-call"></div>	
