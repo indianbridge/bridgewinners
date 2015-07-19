@@ -98,6 +98,7 @@ BW.initialize = function() {
 	
 	// Load the different pages from menu
 	$( "body" ).on( "click", "a[role='page'], img[role='page']", function() {
+		$( "#bw-poll-votes" ).popup( "close" );
 		var page = $( this ).data("page");
 		var parameterNames = [ "slug", "back_name", "back_page", "back_html" ];
 		parameters = {};
@@ -107,6 +108,16 @@ BW.initialize = function() {
 		}
 		BW.loadPage( page, parameters );
 	});
+	
+	// Expand problem vote details
+	$( "body" ).on( "click", ".bw-problem-summary-button", function() {
+		var slug = $( this ).data( "slug" );
+		BW.VotingProblem.showVotes( BW.problems[ slug ] );
+		$( "#bw-poll-votes" ).popup( "open" );
+	});
+	
+	// Loaded problems
+	BW.problems = {};
 	
 	// Load the current user
 	BW.currentUser = new BW.User( BW.contentID );

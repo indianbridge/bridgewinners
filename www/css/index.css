@@ -90,7 +90,7 @@
 
 .bw-voting-problem-question {
 	font-weight: bold;
-	color: blue;
+	/*color: blue;*/
 }
 
 .bw-auction-diagram {
@@ -665,5 +665,9 @@ span.bw-auction-diagram-field {
     padding: 2px; 
     background: #dddddd;
     border-radius: 10px;
+}
+
+.bw-no-margin-top {
+	margin-top: 0;
 }
 

@@ -62,16 +62,20 @@ BW.VotingProblem.prototype.showRecentProblem = function() {
 				$( "#bw-voting-problem-recent" ).empty().append( html );
 			}
 			else {
+				var answer = answers[0];
+				BW.problems[ answer.slug ] = answer;
 				var hand = new Bridge.Hand( 'n' );
-				hand.setHand(answers[0].lin_str);
-				html = hand.toHTML();
-				if ( answers[0].answer !== "Abstain" ) {
-					if ( answers[0].type === "Bidding" ) html += ' ' + Bridge.getCallHTML(answers[0].answer);
-					else if ( answers[0].type === "Lead" ) html += ' ' + Bridge.getCardHTML(answers[0].answer);
-					html += ' ' + answers[0].percent + '%';
+				hand.setHand( answer.lin_str );
+				html = "Last Vote: ";
+				html += hand.toHTML();
+				if ( answer.answer !== "Abstain" ) {
+					if ( answer.type === "Bidding" ) html += ' ' + Bridge.getCallHTML(answer.answer);
+					else if ( answer.type === "Lead" ) html += ' ' + Bridge.getCardHTML(answer.answer);
+					html += ' ' + answer.answer_count + '/' + ( answer.num_answers - answer.num_abstentions ) + ' ' + answer.percent + '%';
 				}
-				else html +=  ' ' + answers[0].answer;
-				html = '<a class="ui-btn" role="page" data-name="view" data-page="view.html" data-slug="' + answers[0].slug + '">' + html + '</a>';
+				else html +=  ' ' + answer.answer;
+				//html = '<a class="ui-btn" role="page" data-name="view" data-page="view.html" data-slug="' + answer.slug + '">' + html + '</a>';
+				html = '<a class="ui-btn ui-icon-carat-d ui-btn-icon-right bw-no-margin-top bw-problem-summary-button" data-name="view" data-page="view.html" data-slug="' + answer.slug + '">' + html + '</a>';
 				$( "#bw-voting-problem-recent" ).empty().append( html );
 			}
 		},
@@ -202,7 +206,9 @@ BW.VotingProblem.prototype.showRecentlyPublishedList = function() {
 			else {
 				html += "<ul data-role='listview' data-inset='true'>";
 				_.each( answers, function( answer ) {
-					html += "<li data-icon='false'><a role='page' data-page='view.html' data-back_name='profile' data-back_page='profile.html' data-back_html='Show Recent Published Problem List' data-slug='" + answer.slug + "'>";
+					BW.problems[ answer.slug ] = answer;
+					//html += "<li data-icon='false'><a role='page' data-page='view.html' data-back_name='profile' data-back_page='profile.html' data-back_html='Show Recent Published Problem List' data-slug='" + answer.slug + "'>";
+					html += "<li data-icon='false'><a class='bw-problem-summary-button' data-slug='" + answer.slug + "'>";
 					var icon = ( answer.type.toLowerCase() === "bidding" ? "img/Box-Red.png" : "img/cardback.png" );	
 					var avatarLink = BW.sitePrefix + answer.avatar;
 					html += '<img src="' + icon + '" class="ui-li-icon"/>';
@@ -255,7 +261,9 @@ BW.VotingProblem.prototype.showList = function() {
 			else {
 				html += "<ul data-role='listview' data-inset='true'>";
 				_.each( answers, function( answer ) {
-					html += "<li data-icon='false'><a role='page' data-page='view.html' data-slug='" + answer.slug + "'>";
+					BW.problems[ answer.slug ] = answer;
+					//html += "<li data-icon='false'><a role='page' data-page='view.html' data-slug='" + answer.slug + "'>";
+					html += "<li data-icon='carat-d'><a class='bw-problem-summary-button' data-slug='" + answer.slug + "'>";
 					var icon = ( answer.type.toLowerCase() === "bidding" ? "img/Box-Red.png" : "img/cardback.png" );	
 					var avatarLink = BW.sitePrefix + answer.avatar;
 					html += '<img src="' + icon + '" class="ui-li-icon"/>';
@@ -432,6 +440,49 @@ BW.VotingProblem.prototype.skip = function() {
 };
 
 /**
+ * Show votes
+ */
+BW.VotingProblem.showVotes = function( data ) {
+	var html = '';
+	html += '<table data-role="table" class="ui-responsive">';
+	html += '<thead><tr><td></td><td></td><td></td><td></td></tr></thead>';
+	html += '<tbody>';
+	var my_answer = ( data.my_answer ? data.my_answer.answer.toLowerCase() : "" );
+	var total = data.num_answers - data.num_abstentions;
+	if ( data.answers.length === 0 ) {
+		html += '<tr><td>No Votes</td></tr>';
+	}
+	for( var i = 0; i < data.answers.length; ++i ) {
+		var percent = Math.round(((data.answers[i].count/total)*100));
+		var answer = data.answers[i].text.toLowerCase();
+		var myAnswerClass = ( answer === my_answer ? "bw-problem-my-answer" : "" );
+		html += '<tr>';
+		var myAnswerHTML = ( data.type.toLowerCase() === "bidding" ? Bridge.getCallHTML(answer) : Bridge.getCardHTML(answer) );
+		html += '<td style="white-space: nowrap;" class="bw-problem-answer ' + myAnswerClass + '">' + myAnswerHTML + ':</td>';
+		html += '<td style="white-space: nowrap;" class="' + myAnswerClass + '">' + data.answers[i].count;
+		html += (data.answers[i].count > 1 ? " votes" : " vote") + '</td>';
+		html += '<td style="white-space: nowrap;" class="' + myAnswerClass + '">(' + percent + '%)</td>';
+		html += '<td class="bw-problem-vote-container"><span style="background-color: ' + BW.colorPalette[i] + '; width:' + percent + '%;" class="bw-problem-vote"></span></td>';
+		html += '</tr>';
+	}
+	// Abstains
+	if ( data.num_abstentions > 0 ) {
+		var answer = "abstain";
+		var myAnswerClass = ( answer === my_answer ? "bw-problem-my-answer" : "" );
+		html += '<tr>';
+		html += '<td class="bw-problem-answer ' + myAnswerClass + '">Abstentions:</td>';
+		html += '<td class="' + myAnswerClass + '">' + data.num_abstentions + '</td>';
+		html += '<td></td>';
+		html += '<td></td>';
+		html += '</tr>';		
+	}
+	html += '</tbody>';
+	html += '</table>';	
+	html += '<a class="ui-btn" role="page" data-name="view" data-page="view.html" data-slug="' + data.slug + '">View Problem Details</a>';
+	$( "#bw-poll-votes-content" ).empty().append( html );
+};
+
+/**
  * Show all the votes
  */
 BW.VotingProblem.prototype.showAllVotes = function( data ) {
@@ -440,8 +491,8 @@ BW.VotingProblem.prototype.showAllVotes = function( data ) {
 		html += '<table data-role="table" class="ui-responsive">';
 		html += '<thead><tr><td></td><td></td><td></td><td></td></tr></thead>';
 		html += '<tbody>';
-		var my_answer = data.my_answer.answer.toLowerCase();
-		var total = data.num_answers - data.abstentions;
+		var my_answer = ( data.my_answer ? data.my_answer.answer.toLowerCase() : "" );
+		var total = data.num_answers - data.num_abstentions;
 		for( var i = 0; i < data.answers.length; ++i ) {
 			var percent = Math.round(((data.answers[i].count/total)*100));
 			var answer = data.answers[i].text.toLowerCase();
@@ -456,12 +507,12 @@ BW.VotingProblem.prototype.showAllVotes = function( data ) {
 			html += '</tr>';
 		}
 		// Abstains
-		if ( data.abstentions > 0 ) {
+		if ( data.num_abstentions > 0 ) {
 			var answer = "abstain";
 			var myAnswerClass = ( answer === my_answer ? "bw-problem-my-answer" : "" );
 			html += '<tr>';
 			html += '<td class="bw-problem-answer ' + myAnswerClass + '">Abstentions:</td>';
-			html += '<td class="' + myAnswerClass + '">' + data.abstentions + '</td>';
+			html += '<td class="' + myAnswerClass + '">' + data.num_abstentions + '</td>';
 			html += '<td></td>';
 			html += '<td></td>';
 			html += '</tr>';		
@@ -573,7 +624,7 @@ BW.VotingProblem.prototype.show = function( data ) {
 		$( selector ).empty().append( fields[ field ] );		
 	}
 	var question = '';
-	question += (this.showVotes ? "Change" : "What's");
+	question += (this.showVotes ? "Change" : "What is");
 	question += " your " + ( this.type === "bidding" ? "Call" : "Lead" ) + "?";
 	$( "#bw-voting-problem-question" ).empty().append( question );
 	$( "#bw-voting-problem-public" ).prop( "checked", BW.currentOptions.get( "bw-option-answerPublicly" ) );

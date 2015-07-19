@@ -24,7 +24,7 @@
 				<span class="center"><img style="vertical-align:middle;" height="25px" src="img/icon.png"/>Bridge Winners</span>
 				<img role="page" data-name="profile" data-page="profile.html" id="header-avatar" style="vertical-align:middle;" class="ui-btn-right" height="21px" src=""/>
 			</div>		
-			<div id="bw-voting-problem-recent-container" class="center ui-corner-all ui-overlay-shadow"><span id="bw-voting-problem-recent"></span></div>
+			<div id="bw-voting-problem-recent-container" class="center"><span id="bw-voting-problem-recent"></span></div>
 			<div data-role="content" id="mycontent" class="ui-content">
 				<div data-role="popup" id="popupMenu" data-history="false">
 					<ul data-role="listview" data-inset="true">
@@ -35,7 +35,14 @@
 				<div data-role="popup" id="loading-popup" class="ui-content" data-dismissible="false" data-history="false">
 					<img class="center" src="img/ajax-loader.gif"/>
 					<div class="center" id="loading-popup-content">Loading...</div>
-				</div>					
+				</div>	
+				<div data-role="popup" id="bw-poll-votes" data-overlay-theme="b" data-history="false">
+					<div data-role="header"><h1>Current Poll Results</h1></div>
+					<div data-role="main" class="ui-content">
+						<a href="#" id="bw-poll-votes-close-button" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+						<div id="bw-poll-votes-content"></div>
+					</div>
+				</div>									
 				<div data-role="popup" id="poll-responses" data-overlay-theme="b" data-history="false">
 					<div data-role="header"><h1>Poll Responses</h1></div>
 					<div data-role="main" class="ui-content">
