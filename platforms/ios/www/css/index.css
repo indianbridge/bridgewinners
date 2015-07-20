@@ -1,0 +1,673 @@
+.center {
+	display:block;
+	margin-left: auto;
+	margin-right: auto;
+	text-align:center;
+}
+
+.float-left {
+	float: left;
+	margin-right: 5px;
+}
+
+.clearfix:after {
+	visibility: hidden;
+	display: block;
+	font-size: 0;
+	content: " ";
+	clear: both;
+	height: 0;
+	}
+* html .clearfix             { zoom: 1; } /* IE6 */
+*:first-child+html .clearfix { zoom: 1; } /* IE7 */
+
+.margin-bottom {
+	margin-bottom:5px;
+}
+
+
+.clear {
+	clear: both;
+	margin: 0;
+}
+
+.hidden {
+	display: none;
+	visibility: hidden;
+}
+
+#next-stage-button {
+	color: #FFFFFF;
+	background-color: #006600;
+}
+
+#mycontent {
+	padding: 0.1em;
+}
+
+/** Fix to hide vertical scrollbar */
+.ui-content .ui-listview, .ui-panel-inner>.ui-listview { margin:0em}
+
+.suit-spades, .suit-clubs, .suit-NT, .bw_spades, .bw_clubs {
+	color: #000000;
+}
+
+.suit-hearts, .suit-diamonds, .bw_diams, .bw_hearts {
+	color: #CB0000;
+}	
+
+.bid-pass { color: #006600; }
+.bid-double { color: #990000; }
+.bid-redouble { color: #000099; }
+
+.vulnerable {
+	background-color: #cc0000;
+	color: #ffffff;
+}
+
+.bw-voting-problem-recent {
+	background-color: #cccccc;
+}
+
+.bw-voting-problem-information-field1 {
+	margin:right: 2px;
+	-webkit-box-shadow: 0 0 12px rgba(0,0,0,.6);
+	-moz-box-shadow: 0 0 12px rgba(0,0,0,.6);
+	box-shadow: 0 0 12px rgba(0,0,0,.6);
+}
+
+.bw-voting-problem-row {
+	white-space : normal;
+}
+
+.bw-published-problem-information { 
+	white-space: normal;
+}
+
+.bw-create-problem-notes {
+	min-height: 100px;
+}
+
+.bw-voting-problem-question {
+	font-weight: bold;
+	/*color: blue;*/
+}
+
+.bw-auction-diagram {
+	display:inline-block;
+	border: 2px solid #006600;
+	font-size: 16px;
+	font-weight: bold;
+	font-family: arial; 
+	border-collapse: collapse;  
+}
+
+span.bw-auction-diagram-field {
+	display: inline-block;
+	width: 32px;
+	text-align:center;
+}
+
+.bw-auction-diagram-content {
+	background-color: #99cccc;
+}
+
+.bw-hand-diagram {
+	display:inline-block;
+	border-right: 2px solid #006600;
+	border-left: 2px solid #006600;
+	border-bottom: 2px solid #006600;
+	font-size: 16px;
+	font-weight: bold;
+	font-family: arial; 
+	border-collapse: collapse;  
+	min-width: 128px;
+}
+
+.hand-diagram-column-suit {
+	padding-left: 5px;
+}
+
+.bw-hand-diagram-field-direction {
+	display: inline-block;
+	width: 32px;
+	text-align:center;
+	background: #336799;
+	color: #FFFFFF;  
+}
+
+.bw-hand-diagram-border-top {
+	border-top: 2px solid #006600;
+}
+
+.bw-hand-diagram-content {
+	background-color: #E2E1B5;
+}
+
+.bw-hand-diagram-field-suit {
+	display: inline-block;
+	width: 32px;
+	text-align:center;
+}
+
+.bw-hand-diagram-field-cards {
+	padding-right: 2px;
+}
+
+.bw-bidding-box-full-field {
+	display: inline-block;
+	font-size: 20px;
+	height: 35px;
+	width: 50px;
+	line-height: 30px;
+	text-align: center;
+	font-weight: bold;
+	border: 1px solid blue;
+	background: #ccf;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+}
+
+
+.bw-bidding-box-full-field-calls-p {
+	width: 100px;
+	background-color: #006600;
+	color: #FFFFFF;
+}
+
+.bw-bidding-box-full-field-calls-x {
+	width: 75px;
+	background-color: #990000;
+	color: #FFFFFF;
+	margin-left:2px;
+}
+
+.bw-bidding-box-full-field-calls-r {
+	width: 75px;
+	background-color: #000099;
+	color: #FFFFFF;
+	margin-left:2px;
+}
+
+.bw-bidding-box-full-field-calls-allpass {
+	width: 100px;
+	background-color: #006600;
+	color: #FFFFFF;
+}
+
+.bw-bidding-box-full-field-calls-undo {
+	width: 75px;
+	background-color: #000000;
+	color: #FFFFFF;
+	margin-left:2px;
+}
+
+.bw-bidding-box-full-field-calls-reset {
+	width: 75px;
+	background-color: #000000;
+	color: #FFFFFF;
+	margin-left:2px;
+}
+
+
+
+
+.bw-bidding-box-full-field.disabled {
+	opacity: 0.25;
+    filter: Alpha(opacity=25); /* IE8 and earlier */
+	cursor: not-allowed;
+}
+
+.bw-bidding-box-full-field.enabled {
+	cursor: pointer;
+}
+.bw-bidding-box-field {
+	display: inline-block;
+	width: 40px;
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+	font-size: 28px;
+	font-weight: bold;
+	border: 1px solid blue;
+	background: #ccf;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+}
+
+.bw-bidding-box-field.disabled {
+	opacity: 0.25;
+    filter: Alpha(opacity=25); /* IE8 and earlier */
+	cursor: not-allowed;
+}
+
+.bw-bidding-box-field.enabled {
+	cursor: pointer;
+}
+
+.bw-bidding-box-field-level-0 {
+	border-style:none;
+	cursor: none;
+	height:0;
+}
+
+.bw-bidding-box-field-calls-p {
+	background-color: #006600;
+	color: #FFFFFF;
+}
+
+.bw-bidding-box-field-calls-x {
+	background-color: #990000;
+	color: #FFFFFF;
+}
+
+.bw-bidding-box-field-calls-r {
+	background-color: #000099;
+	color: #FFFFFF;
+}
+
+.selected {
+	background-color: #FFCE00;
+}
+
+.bw-card-deck-text-row {
+	padding-bottom: 5px;
+}
+	
+.bw-card-deck-text-field-cards {
+	display: inline-block;
+	font-weight: bold;
+	font-size: 16px;
+	width: 24px;
+	margin-right: 5px;
+	margin-bottom: 5px;
+	font-family: arial; 
+    text-align: center;	
+    border-radius:5px;
+    border: 1px solid gray;
+    cursor: pointer;
+}
+
+.bw-card-deck-text-field-reset {
+	display: inline-block;
+	font-weight: bold;
+	font-size: 16px;
+	font-family: arial; 
+    text-align: center;	
+    border-radius:5px;
+    border: 1px solid gray;
+    cursor: pointer; 
+	background-color: #000000;
+	color: #FFFFFF;
+}
+
+.bw-card-deck-text-field-cards.unassigned {
+	opacity: 0.50;
+    filter: Alpha(opacity=50); /* IE8 and earlier */
+}
+
+.bw-card-deck-text-field-cards.assigned {
+	background-color: #99cccc;
+	color: #000000;	
+}
+
+.bw-card-deck-field-cards {
+	display: inline-block;
+	position: relative;
+	width: 37px;
+	height: 50px;
+    cursor: pointer;
+}
+
+.bw-card-deck-field-cards.assigned {
+	background-image: url(img/cards/cb.png);
+	background-size: contain;
+}
+
+.bw-card-deck-field-reset {
+	display: inline-block;
+	font-weight: bold;
+	font-size: 16px;
+	font-family: arial; 
+    text-align: center;	
+    border-radius:5px;
+    border: 1px solid gray;
+    cursor: pointer; 
+	background-color: #000000;
+	color: #FFFFFF;
+}
+
+.bw-card-deck-selected {
+	top: -10px;
+	-webkit-filter: sepia(1);
+	filter: sepia(1);
+}
+
+.bw-card-deck-field-cards-s-a {
+        background-image: url(img/cards/sa.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-s-k {
+        background-image: url(img/cards/sk.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-s-q {
+        background-image: url(img/cards/sq.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-s-j {
+        background-image: url(img/cards/sj.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-s-t {
+        background-image: url(img/cards/st.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-s-9 {
+        background-image: url(img/cards/s9.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-s-8 {
+        background-image: url(img/cards/s8.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-s-7 {
+        background-image: url(img/cards/s7.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-s-6 {
+        background-image: url(img/cards/s6.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-s-5 {
+        background-image: url(img/cards/s5.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-s-4 {
+        background-image: url(img/cards/s4.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-s-3 {
+        background-image: url(img/cards/s3.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-s-2 {
+        background-image: url(img/cards/s2.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-s-x {
+        background-image: url(img/cards/sx.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-h-a {
+        background-image: url(img/cards/ha.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-h-k {
+        background-image: url(img/cards/hk.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-h-q {
+        background-image: url(img/cards/hq.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-h-j {
+        background-image: url(img/cards/hj.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-h-t {
+        background-image: url(img/cards/ht.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-h-9 {
+        background-image: url(img/cards/h9.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-h-8 {
+        background-image: url(img/cards/h8.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-h-7 {
+        background-image: url(img/cards/h7.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-h-6 {
+        background-image: url(img/cards/h6.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-h-5 {
+        background-image: url(img/cards/h5.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-h-4 {
+        background-image: url(img/cards/h4.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-h-3 {
+        background-image: url(img/cards/h3.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-h-2 {
+        background-image: url(img/cards/h2.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-h-x {
+        background-image: url(img/cards/hx.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-d-a {
+        background-image: url(img/cards/da.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-d-k {
+        background-image: url(img/cards/dk.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-d-q {
+        background-image: url(img/cards/dq.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-d-j {
+        background-image: url(img/cards/dj.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-d-t {
+        background-image: url(img/cards/dt.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-d-9 {
+        background-image: url(img/cards/d9.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-d-8 {
+        background-image: url(img/cards/d8.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-d-7 {
+        background-image: url(img/cards/d7.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-d-6 {
+        background-image: url(img/cards/d6.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-d-5 {
+        background-image: url(img/cards/d5.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-d-4 {
+        background-image: url(img/cards/d4.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-d-3 {
+        background-image: url(img/cards/d3.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-d-2 {
+        background-image: url(img/cards/d2.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-d-x {
+        background-image: url(img/cards/dx.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-c-a {
+        background-image: url(img/cards/ca.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-c-k {
+        background-image: url(img/cards/ck.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-c-q {
+        background-image: url(img/cards/cq.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-c-j {
+        background-image: url(img/cards/cj.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-c-t {
+        background-image: url(img/cards/ct.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-c-9 {
+        background-image: url(img/cards/c9.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-c-8 {
+        background-image: url(img/cards/c8.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-c-7 {
+        background-image: url(img/cards/c7.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-c-6 {
+        background-image: url(img/cards/c6.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-c-5 {
+        background-image: url(img/cards/c5.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-c-4 {
+        background-image: url(img/cards/c4.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-c-3 {
+        background-image: url(img/cards/c3.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-c-2 {
+        background-image: url(img/cards/c2.png);
+        background-size: contain;
+}
+
+.bw-card-deck-field-cards-c-x {
+        background-image: url(img/cards/cx.png);
+        background-size: contain;
+}
+
+.bw-problem-answer {
+	text-align: right;
+}
+
+.bw-problem-vote {
+	display: inline-block;
+	height: 1em;
+}
+
+.bw-problem-vote-container {
+	width: 100%;
+}
+
+.bw-problem-vote-title {
+	font-weight: bold;
+	font-style: italic;
+}
+
+.bw-problem-my-answer {
+  color: red;
+  font-style: italic;
+}
+
+.bw-problem-my-answer .suit-NT, .bw-problem-my-answer .suit-spades, .bw-problem-my-answer .suit-clubs  {
+  color: red;
+  font-style: italic;
+}
+.bw-private-response {
+    border: 1px solid #a1a1a1;
+    padding: 2px; 
+    background: #333333;
+    color: white;
+    border-radius: 10px;
+}
+
+.bw-public-response {
+    border: 1px solid #a1a1a1;
+    padding: 2px; 
+    background: #dddddd;
+    border-radius: 10px;
+}
+
+.bw-no-margin-top {
+	margin-top: 0;
+}
+
