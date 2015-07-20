@@ -221,10 +221,24 @@ BW.ajax = function( parameters ) {
 	});
 	request.fail( function( jqXHR, textStatus, errorThrown ) {
 		if ( showDialog ) BW.hideLoadingDialog();
-		var message = "Unable to connect to BW Server";
-		parameters.failCallback( message );
+		BW.showConnectionError();
 	});	
 	return false;
+};
+
+/**
+ * Show unable to connect to BW server message
+ */
+BW.showConnectionError = function() {
+	$( "a[role='page']" ).addClass( "ui-disabled" );
+	var html = "";
+	html += '<h4>Unable to connect to BW Server!';
+	html += '<a id="bw-connect-server" class="ui-btn">Try Again</a>';			
+	$( "#" + BW.contentID ).empty().append( html );	
+	$( "#bw-connect-server").click( { user: this }, function( e ) {
+		$( document ).trigger( "BW.loginStatus:changed", [e.data.user] );	
+		return false;		
+	});	
 };
 
 /**

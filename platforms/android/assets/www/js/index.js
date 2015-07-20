@@ -89,7 +89,7 @@ BW.initialize = function() {
 	BW.sitePrefix = "https://108.166.89.84/";
 	
 	// Manage active tab
-	BW.lastNavbarItem = "vote";
+	BW.lastNavbarItem = "vote.html";
 	$( "#popupMenu" ).popup( {
 		afterclose: function( event, ui ) {
 			BW.setNavbarActiveItem( BW.lastNavbarItem );
@@ -112,12 +112,18 @@ BW.initialize = function() {
 	// Expand problem vote details
 	$( "body" ).on( "click", ".bw-problem-summary-button", function() {
 		var slug = $( this ).data( "slug" );
-		BW.VotingProblem.showVotes( BW.problems[ slug ] );
+		var back_page = $( this ).data( "back_page" );
+		if ( !back_page ) back_page = "view.html";
+		BW.VotingProblem.showVotes( BW.problems[ slug ], back_page );
 		$( "#bw-poll-votes" ).popup( "open" );
 	});
 	
 	// Loaded problems
 	BW.problems = {};
+	
+	// Resolutions
+	BW.maxScreenWidth = 414;
+	BW.unitWidth = 320;
 	
 	// Load the current user
 	BW.currentUser = new BW.User( BW.contentID );
@@ -215,10 +221,24 @@ BW.ajax = function( parameters ) {
 	});
 	request.fail( function( jqXHR, textStatus, errorThrown ) {
 		if ( showDialog ) BW.hideLoadingDialog();
-		var message = "Unable to connect to BW Server";
-		parameters.failCallback( message );
+		BW.showConnectionError();
 	});	
 	return false;
+};
+
+/**
+ * Show unable to connect to BW server message
+ */
+BW.showConnectionError = function() {
+	$( "a[role='page']" ).addClass( "ui-disabled" );
+	var html = "";
+	html += '<h4>Unable to connect to BW Server!';
+	html += '<a id="bw-connect-server" class="ui-btn">Try Again</a>';			
+	$( "#" + this.containerID ).empty().append( html );	
+	$( "#bw-connect-server").click( { user: this }, function( e ) {
+		$( document ).trigger( "BW.loginStatus:changed", [e.data.user] );	
+		return false;		
+	});	
 };
 
 /**
@@ -282,23 +302,23 @@ BW.pageLoaded = function( page, parameters ) {
 			}
 			BW.currentOptions.change( name, value );		
 		});
-		BW.setNavbarActiveItem( "more" );
+		BW.setNavbarActiveItem( "more.html" );
 	}
 	else if ( page === "vote.html" ) {
-		BW.setNavbarActiveItem( "vote" );
+		BW.setNavbarActiveItem( "vote.html" );
 		BW.votingProblem.initialize();
 	}
 	else if ( page === "create.html" ) {
-		BW.setNavbarActiveItem( "create" );
+		BW.setNavbarActiveItem( "create.html" );
 		BW.createProblem.initialize();
 	}
 	else if ( page === "profile.html" ) {
-		BW.setNavbarActiveItem( "profile" );
+		BW.setNavbarActiveItem( "profile.html" );
 		BW.currentUser.loadProfile();
 		BW.recentlyPublishedProblems.showRecentlyPublishedList();
 	}
 	else if ( page === "view.html" ) {
-		BW.setNavbarActiveItem( "view" );
+		BW.setNavbarActiveItem( "view.html" );
 		if ( parameters.hasOwnProperty( "slug" ) ) {
 			BW.viewProblem.initialize( parameters );
 		}
@@ -307,7 +327,7 @@ BW.pageLoaded = function( page, parameters ) {
 		}
 	}
 	else if ( page === "about.html" ) {
-		BW.setNavbarActiveItem( "more" );
+		BW.setNavbarActiveItem( "more.html" );
 	}	
 	else {
 		alert( "Unknown page : " + page );
@@ -322,8 +342,8 @@ BW.pageLoaded = function( page, parameters ) {
 BW.setNavbarActiveItem = function( itemName ) {
 	BW.lastNavbarItem = itemName;
 	$( "[data-type='navbar-item']" ).each( function( index, element ) {
-		var name = $( this ).data( "name" );
-		if ( name === itemName ) $( this ).addClass( "ui-btn-active" );
+		var page = $( this ).data( "page" );
+		if ( page === itemName ) $( this ).addClass( "ui-btn-active" );
 		else $( this ).removeClass( "ui-btn-active" );
 	});
 };

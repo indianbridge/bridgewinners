@@ -88,7 +88,7 @@ BW.User.prototype.authenticationSuccessCallback = function( data ) {
 /**
  * Authentication Ajax fail call back
  */
-BW.User.prototype.authenticationFailCallback = function( message ) {
+BW.User.prototype.authenticationFailCallback = function( message ) { 
 	var user = this.context;
 	alert( message ); 
 	user.isLoggedIn = false;
@@ -112,9 +112,9 @@ BW.User.prototype.getLocalStorageVariableName = function( itemName ) {
 	return "BW::" + this.username + "_" + itemName;
 };
 
+
 /**
  * Show the login form.
- * @param {string} containerID - the container for the form
  */
 BW.User.prototype.showLoginForm = function() {
 	var html = "";
