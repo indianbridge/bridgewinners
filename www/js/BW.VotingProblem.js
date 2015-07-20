@@ -696,9 +696,7 @@ BW.VotingProblem.prototype.show = function( data ) {
 		var screenWidth = $( window ).width();
 		if ( screenWidth > BW.maxScreenWidth ) screenWidth = BW.maxScreenWidth;
         screenWidth = screenWidth - 25;
-        alert(screenWidth);
 		var scalingFactor = screenWidth * 1.0 / BW.unitWidth;
-        alert(scalingFactor);
 		if ( scalingFactor > 1 ) {
 			var newWidth = $( ".bw-bidding-box-field" ).width() * scalingFactor;
 			var newFontSize = parseInt( $( ".bw-bidding-box-field" ).css( "font-size" ) ) * scalingFactor;
