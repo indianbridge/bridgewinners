@@ -104,9 +104,17 @@ BW.VotingProblem.prototype.showOneSection = function( sectionName ) {
  * Set the back button parameter.
  */
 BW.VotingProblem.prototype.setBackButtonParameters = function( parameters ) {
-	if ( parameters.back_html ) {
-		$( "#bw-voting-problem-data-back-button" ).empty().append( parameters.back_html ).data( "name", parameters.back_name ).data( "page", parameters.back_page );
+	if ( !parameters.back_page ) parameters.back_page = "view.html";
+	var html = "";
+	switch ( parameters.back_page ) {
+		case "profile.html":
+			html = "Show Recently Published Problem List";
+			break
+		default:
+			html = "Show Recently Voted Problem List";
+			break;				
 	}
+	$( "#bw-voting-problem-data-back-button" ).empty().append( html ).data( "page", parameters.back_page );
 };
 
 /**
@@ -208,7 +216,7 @@ BW.VotingProblem.prototype.showRecentlyPublishedList = function() {
 				_.each( answers, function( answer ) {
 					BW.problems[ answer.slug ] = answer;
 					//html += "<li data-icon='false'><a role='page' data-page='view.html' data-back_name='profile' data-back_page='profile.html' data-back_html='Show Recent Published Problem List' data-slug='" + answer.slug + "'>";
-					html += "<li data-icon='false'><a class='bw-problem-summary-button' data-slug='" + answer.slug + "'>";
+					html += "<li data-icon='false'><a class='bw-problem-summary-button' data-back_page='profile.html' data-slug='" + answer.slug + "'>";
 					var icon = ( answer.type.toLowerCase() === "bidding" ? "img/Box-Red.png" : "img/cardback.png" );	
 					var avatarLink = BW.sitePrefix + answer.avatar;
 					html += '<img src="' + icon + '" class="ui-li-icon"/>';
@@ -263,7 +271,7 @@ BW.VotingProblem.prototype.showList = function() {
 				_.each( answers, function( answer ) {
 					BW.problems[ answer.slug ] = answer;
 					//html += "<li data-icon='false'><a role='page' data-page='view.html' data-slug='" + answer.slug + "'>";
-					html += "<li data-icon='carat-d'><a class='bw-problem-summary-button' data-slug='" + answer.slug + "'>";
+					html += "<li data-icon='carat-d'><a class='bw-problem-summary-button' data-back_page='view.html' data-slug='" + answer.slug + "'>";
 					var icon = ( answer.type.toLowerCase() === "bidding" ? "img/Box-Red.png" : "img/cardback.png" );	
 					var avatarLink = BW.sitePrefix + answer.avatar;
 					html += '<img src="' + icon + '" class="ui-li-icon"/>';
@@ -442,7 +450,7 @@ BW.VotingProblem.prototype.skip = function() {
 /**
  * Show votes
  */
-BW.VotingProblem.showVotes = function( data ) {
+BW.VotingProblem.showVotes = function( data, returnPage ) {
 	var html = '';
 	html += '<table data-role="table" class="ui-responsive">';
 	html += '<thead><tr><td></td><td></td><td></td><td></td></tr></thead>';
@@ -478,7 +486,7 @@ BW.VotingProblem.showVotes = function( data ) {
 	}
 	html += '</tbody>';
 	html += '</table>';	
-	html += '<a class="ui-btn" role="page" data-name="view" data-page="view.html" data-slug="' + data.slug + '">View Problem Details</a>';
+	html += '<a class="ui-btn" role="page" data-page="view.html" data-back_page="' + returnPage + '" data-slug="' + data.slug + '">View Problem Details</a>';
 	$( "#bw-poll-votes-content" ).empty().append( html );
 };
 
@@ -685,6 +693,18 @@ BW.VotingProblem.prototype.show = function( data ) {
 		$( "#bw-voting-problem-call" ).show();
 
 		auction.toBiddingBox( this.bbConfig );
+		var screenWidth = $( window ).width();
+		if ( screenWidth > BW.maxScreenWidth ) screenWidth = BW.maxScreenWidth;
+		var scalingFactor = screenWidth * 1.0 / BW.unitWidth;	
+		if ( scalingFactor > 1 ) {
+			var newWidth = $( ".bw-bidding-box-field" ).width() * scalingFactor;
+			var newFontSize = parseInt( $( ".bw-bidding-box-field" ).css( "font-size" ) ) * scalingFactor;
+			var newLineHeight = parseInt( $( ".bw-bidding-box-field" ).css( "line-height" ) ) * scalingFactor;
+			$( ".bw-bidding-box-field" ).width(newWidth);
+			$( ".bw-bidding-box-field" ).height(newWidth);
+			$( ".bw-bidding-box-field" ).css( "font-size", newFontSize + "px" );
+			$( ".bw-bidding-box-field" ).css( "line-height", newLineHeight + "px" );
+		}
 	}
 	else {
 		$( "#bw-voting-problem-button-abstain" ).hide();
