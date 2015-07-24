@@ -35,7 +35,19 @@ BW.androidSwipeFix = function() {
 	} );  	
 };
 
-
+/** Mapping from scoring types to display names. */
+BW.scoringTypes = {
+	"KO": "IMPs (Knockout)",
+	"Matchpoints": "Matchpoints",
+	"20VP": "IMPs (20 Victory Point Scale)",
+	"30VP": "IMPs (30 Victory Point Scale)",
+	"WL": "IMPs (Win/Loss Swiss)",
+	"CrossImps": "Cross-Imps",
+	"BAM": "Board-a-Match",
+	"TP": "Total Points",
+	"Money": "Money",
+	"Any": "Any"
+};	
 
 /** Color palette to use when displaying voting results. */
 BW.colorPalette = [ "#5158AB", "#41AE32", "#E74224", "#E73390", "#2F8E9A", "#D056F2", "#855D1B",
@@ -137,14 +149,8 @@ BW.initialize = function() {
 	// Setup voting problem class
 	BW.votingProblem = new BW.VotingProblem( "bw-voting-problem" );
 	
-	// Setup view problem class
-	/*BW.viewProblem = new BW.VotingProblem( "bw-view-problem" );
-	
-	// Setup recently published problem class
-	BW.recentlyPublishedProblems = new BW.VotingProblem( "bw-published-problem" );	
-	
 	// Setup create problem class
-	BW.createProblem = new BW.CreateProblem( "bw-create-problem" );	*/
+	BW.createProblem = new BW.CreateProblem( "bw-create-problem" );
 	
 	// Trigger login status change so that appropriate start page can be loaded
 	$( document ).trigger( "BW.loginStatus:changed", [BW.currentUser] );
@@ -236,6 +242,11 @@ BW.loadPage = function( parameters ) {
 			BW.votingProblem.load();
 			BW.setNavbarActiveItem( "vote" );			
 			break;
+		case "create" :
+			BW.showOneSection( "bw_create_problem" );
+			BW.setNavbarActiveItem( "create" );
+			BW.createProblem.initialize();		
+			break;
 		case "view" :
 			BW.setNavbarActiveItem( "view" );
 			if ( parameters.slug ) {
@@ -267,6 +278,10 @@ BW.loadPage = function( parameters ) {
 			break;
 		case "more" :
 			$( "#bw-popup-menu" ).popup( "open" );
+			break;
+		case "about" :
+			BW.setNavbarActiveItem( "more" );
+			BW.showOneSection( "bw_about" );		
 			break;
 		case "options" :
 			BW.setNavbarActiveItem( "more" );

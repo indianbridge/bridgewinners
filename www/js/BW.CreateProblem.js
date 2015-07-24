@@ -4,7 +4,7 @@ if ( typeof BW === "undefined" ) BW = {};
 /**
  * A class to represent a bidding or lead problem to be voted on
  */
-BW.CreateProblem = function( containerID ) {
+BW.CreateProblem = function( containerID, username ) {
 	this.stages = [
 		{ name: "type", next: "Hand", previous: "Nothing back there" },
 		{ name: "hand", next: "Scoring/Vul/Dealer", previous: "Type" },
@@ -14,7 +14,28 @@ BW.CreateProblem = function( containerID ) {
 		{ name: "preview", next: "Publish", previous: "Extra Information" }
 	];
 	this.containerID = containerID;
-	this.itemName = BW.currentUser.getLocalStorageVariableName( "currentCreateProblem" );
+	this.itemName = "bw_" + username + "_currentCreateProblem";
+	
+	// Resolutions
+	this.maxResizing = 414;
+	this.biddingBoxFieldClass = ".bw-bidding-box-full-field";
+	this.biddingBoxDimensions = null;	
+	
+	// Window resize or orientation change
+	this.resizeCardDeck();
+	this.resizeBiddingBox();
+	$( window ).on( "orientationchange", { problem: this }, function( e ) {
+		e.data.problem.resizeCardDeck();
+		e.data.problem.resizeBiddingBox();
+	});
+	
+	$( "#next-stage-button" ).click( { problem: this }, function( e ) {
+		e.data.problem.nextStage();
+	});
+	$( "#previous-stage-button" ).click( { problem: this }, function( e ) {
+		e.data.problem.previousStage();
+	});	
+		
 	this.loadProblem();
 };
 
@@ -65,13 +86,7 @@ BW.CreateProblem.prototype.loadProblem = function() {
  */
 BW.CreateProblem.prototype.initialize = function() {
 	$( "#bw-create-problem-loading" ).show();
-	$( "div[data-stage]" ).hide();
-	$( "#next-stage-button" ).click( { problem: this }, function( e ) {
-		e.data.problem.nextStage();
-	});
-	$( "#previous-stage-button" ).click( { problem: this }, function( e ) {
-		e.data.problem.previousStage();
-	});					
+	$( "div[data-stage]" ).hide();					
 	this.initializeData();
 	this.setupEventHandlers();
 	this.loadStage();
@@ -98,7 +113,7 @@ BW.CreateProblem.prototype.publish = function() {
 		data[ field ] = hand.getCards( Bridge.suitOrder[i] );
 	}
 	var parameters = {
-		urlSuffix: "rest-api/v1/create-problem/",
+		urlSuffix: "create-problem/",
 		loadingMessage: "Submitting New Problem",
 		method: "POST",
 		context: this,
@@ -117,7 +132,7 @@ BW.CreateProblem.prototype.submitSuccessCallback = function( data ) {
 	var problem = this.context;
 	BW.createProblem.clearLocalStorage();
 	alert( "Your problem has been published." );
-	BW.loadPage( "vote.html" );
+	BW.loadPage( { page: "vote" } );
 };
 
 /**
@@ -151,6 +166,64 @@ BW.CreateProblem.prototype.previousStage = function() {
 };
 
 /**
+ * Position hand diagram with overlapping cards
+ */
+BW.CreateProblem.prototype.resizeCardDeck = function() {	
+	var styleID = "bw-create-problem-deck-style";
+	if ( $( "#" + styleID ).length <= 0 ) {
+		$( document.head ).append( "<style id='" + styleID + "'></style>" );
+	}
+	var styleElement = $( "#" + styleID );		
+	var screenWidth = $( window ).width();
+	var cardWidth = 158;
+	var cardHeight = 220;
+	var fullWidth = 13 * cardWidth;
+	var scalingFactor = screenWidth/fullWidth;
+	if ( scalingFactor > 1 ) scalingFactor = 1;
+	var newWidth = cardWidth * scalingFactor;
+	var newHeight = cardHeight * scalingFactor;
+	var style = ".bw-card-deck-field-cards {width:" + newWidth + "px; height:" + newHeight + "px;}";
+	styleElement.empty().append( style );
+};
+
+/**
+ * Resize the bidding box
+ */
+BW.CreateProblem.prototype.resizeBiddingBox = function() {
+	var styleID = "bw-create-problem-bb-style";
+	if ( $( "#" + styleID ).length <= 0 ) {
+		$( document.head ).append( "<style id='" + styleID + "'></style>" );
+	}
+	var styleElement = $( "#" + styleID );	
+	var screenWidth = $( window ).width();
+	if ( screenWidth > 375 ) screenWidth = 375;
+	var heightRatio = 35/50;
+	var fontRatio = 20/50;
+	var width = screenWidth/5;
+	var height = width * heightRatio;
+	var fontSize = width * fontRatio;
+	var style = this.biddingBoxFieldClass + " {";
+	style += "width: " + width + "px;";
+	style += "height: " + height + "px;"
+	style += "line-height: " + height + "px;";
+	style += "font-size: " + fontSize + "px;";
+	style += "} ";	
+	
+	width = screenWidth/3;
+	var suffixes = [ 'p', 'x', 'r', 'allpass', 'reset', 'undo' ];
+	for( var i = 0; i < suffixes.length; ++i ) {
+		suffixes[i] = this.biddingBoxFieldClass + '-calls-' + suffixes[i];
+	}
+	style += " " + suffixes.join( ',' ) + " {";
+	style += "width: " + width + "px;";
+	style += "height: " + height + "px;"
+	style += "line-height: " + height + "px;";
+	style += "font-size: " + fontSize + "px;";
+	style += "}";
+	styleElement.empty().append( style );	
+};
+
+/**
  * Initialize data in all fields,
  * Setup change handlers
  */
@@ -166,57 +239,36 @@ BW.CreateProblem.prototype.initializeData = function() {
 	//hand
 	var hand = this.deal.getHand( this.handDirection );
 	config = {
-		prefix: "bw-hand-diagram-cards",
+		prefix: "bw-hand-images",
+		alternateSuitColor: true,
 		show: {
 			direction: false,
 			name: false,
-			countInHeader: false,
-			suit: false,
-			text: false
+			text: false,
+			suit: false
 		},
-		tags: Bridge.getSpanConfig( "bw-hand-diagram-cards" ),
+		tags: Bridge.getSpanConfig( "bw-hand-images" ),
 		data: {},
-		classes: { "bw-hand-diagram": [ "bw-hand-diagram-border-top" ] },
-		idPrefix: "h",
+		classes: {},
+		//classes: { "bw-hand-diagram": [ "bw-hand-diagram-border-top" ] },
+		idPrefix: "create",
 		containerID: "bw-create-problem-hand-diagram",
 		registerChangeHandler: true
 	};		
 	hand.toHTML( config );	
-	var position = $( '.bw-hand-diagram-cards-field-cards-1' ).offset();
-	alert(position.left);
-	position.left -= 10;
-	$( '.bw-hand-diagram-cards-field-cards-1' ).css({
-    color: 'red',
-    backgroundColor: 'orange',
-    left: -10,
-    top: 60,
-});
-	/*alert($( '.bw-hand-diagram-cards-field-cards-1' ).css("left"));
-	alert($( '.bw-hand-diagram-cards-field-cards-1' ).css("position"));
-	$( '.bw-hand-diagram-cards-field-cards-1' ).css({ left:-10})
-	alert($( '.bw-hand-diagram-cards-field-cards-1' ).css("left"));*/
-
-	this.deal.setActiveHand( this.handDirection );
-	// Card Deck
-	/*var width = $( window ).width();
-	var height = $( window ).height();
-	if ( width < 500 || height < 500 ) {
-		var useText = true;
-		var prefix = "bw-card-deck-text";
-	}
-	else {*/
-	var useText = false;
-	var prefix = "bw-card-deck";				
-	//}
+	this.deal.setActiveHand( this.handDirection );				
+	
+	var prefix = "bw-card-deck";
 	config = {
 		prefix: prefix,
 		containerID: "bw-create-problem-card-deck", 
 		idPrefix: "cd", 
-		show: { reset: true, text:useText, title: false, activeHand: false, assignedTo: false }, 
+		show: { reset: true, text:false, title: false, activeHand: false, assignedTo: false }, 
 		tags: Bridge.getDivConfig( prefix ),
 		registerChangeHandler: true
 	};	
-	this.deal.toCardDeck( config );		
+	this.deal.toCardDeck( config );	
+	//this.setCardSize();
 	
 	// Scoring and Info
 	var fields = [ "scoring", "notes" ];
@@ -263,6 +315,7 @@ BW.CreateProblem.prototype.initializeData = function() {
 		registerChangeHandler: true
 	};		
 	auction.toBiddingBox( config );
+	//this.resizeBiddingBox();
 	
 	// Text
 	var field = "notes";
@@ -324,7 +377,7 @@ BW.CreateProblem.prototype.updateButton = function( id, text, disabled ) {
  */
 BW.CreateProblem.prototype.loadPreview = function() {
 	var deal = this.deal;
-	$( "#bw-voting-problem-author-image" ).attr( "src", BW.currentUser.getAvatarLink() ).attr( "alt", BW.currentUser.getName() );
+	$( "#bw-create-problem-preview-author-image" ).attr( "src", BW.currentUser.getAvatarLink() ).attr( "alt", BW.currentUser.getName() );
 	var fields = {
 		"author-name": BW.currentUser.getName() + " asks...",
 		"dealer": "Dealer " + Bridge.directions[ deal.getDealer() ].name,
@@ -333,12 +386,12 @@ BW.CreateProblem.prototype.loadPreview = function() {
 		"description": deal.getNotes()
 	};
 	for( var field in fields ) {
-		var selector = "#bw-voting-problem-" + field;
+		var selector = "#bw-create-problem-preview-" + field;
 		$( selector ).empty().append( fields[ field ] );		
 	}
 	
 	var question = "What's your " + ( this.type === "bidding" ? "Call" : "Lead" ) + "?";
-	$( "#bw-voting-problem-question" ).empty().append( question );	
+	$( "#bw-create-problem-preview-question" ).empty().append( question );	
 	
 	var auction = this.deal.getAuction();
 	var config = {
@@ -350,12 +403,11 @@ BW.CreateProblem.prototype.loadPreview = function() {
 		data: {},
 		classes: {},
 		idPrefix: "ap",
-		containerID: "bw-voting-problem-auction",
+		containerID: "bw-create-problem-preview-auction",
 		registerChangeHandler: false,
 		addQuestionMark: true
 	};	
-	var aID = config.idPrefix + "-" + config.prefix;	
-	auction.toHTML( config );
+	var html = auction.toHTML( config );
 	var hand = deal.getHand( this.handDirection );
 	config = {
 		prefix: "bw-hand-diagram",
@@ -365,18 +417,12 @@ BW.CreateProblem.prototype.loadPreview = function() {
 		},
 		tags: Bridge.getDivConfig( "bw-hand-diagram" ),
 		data: {},
-		classes: {},
+		classes: { "bw-hand-diagram": [ "bw-hand-diagram-border-top" ] },
 		idPrefix: "hp",
-		containerID: "bw-voting-problem-hand",
+		containerID: "bw-create-problem-preview-hand",
 		registerChangeHandler: false
 	};		
-	hand.toHTML( config );
-	var hID = config.idPrefix + "-" + config.prefix;	
-	var aWidth = $( "#" + aID ).width();
-	var hWidth = $( "#" + hID ).width();
-	var width = ( aWidth > hWidth ? aWidth : hWidth );
-	$( "#" + hID ).width( width );
-	$( "#" + aID ).width( width );	
+	hand.toHTML( config );	
 };
 
 /**

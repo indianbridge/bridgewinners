@@ -66,6 +66,10 @@
 	color: #ffffff;
 }
 
+.bw-hand-images-field-cards- {
+	position: static;
+}
+
 .bw-voting-problem-recent {
 	background-color: #cccccc;
 }
@@ -152,7 +156,7 @@ span.bw-auction-diagram-field {
 	font-size: 20px;
 	height: 35px;
 	width: 50px;
-	line-height: 30px;
+	line-height: 35px;
 	text-align: center;
 	font-weight: bold;
 	border: 1px solid blue;
@@ -308,7 +312,7 @@ span.bw-auction-diagram-field {
 
 
 
-.bw-card-deck-field-cards {
+.sriram-card-deck-field-cards {
 	display: inline-block;
 	position: relative;
 	width: 37px;
@@ -334,7 +338,12 @@ span.bw-auction-diagram-field {
 	color: #FFFFFF;
 }
 
+#bw-voting-problem-hand, #bw-create-problem-card-deck, #bw-create-problem-hand-diagram, #bw-voting-problem-call, #bw-create-problem-bidding-box  {
+	white-space:nowrap;
+}
+
 .bw-card-selected {
+	top: -10px;
 	-webkit-filter: sepia(1);
 	filter: sepia(1);
 }
@@ -370,7 +379,7 @@ span.bw-auction-diagram-field {
         background-size: contain;
 }
 
-.sriram-card-deck-field-cards-s-8, .bw-hand-diagram-cards-field-cards-s-8 {
+.sriram-card-deck-field-cards-s-8 {
         background-image: url(img/cards/s8.png);
         background-size: contain;
 }

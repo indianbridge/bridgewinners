@@ -37,6 +37,7 @@ BW.positionCards = function( parameters ) {
 
 $(document).ready(function(){
 	BW.positionCards( { classPrefixes: ["dsad",".bw-hand-diagram-cards-field-cards"] } );
+	$( "#test-style" ).empty().append( ".test{color:blue;}" );
 });
 
 

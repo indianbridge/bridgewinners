@@ -1,15 +1,16 @@
 suits = [ 's', 'h', 'd', 'c' ]
 ranks = [ 'a', 'k', 'q', 'j', 't', '9', '8', '7', '6', '5', '4', '3', '2', 'x' ]
-prefixes = [ '.bw-hand-images-field-cards' ]
+prefixes = [ '.bw-hand-images-field-cards', '.bw-card-deck-field-cards' ]
 fo = open( 'css/card_images.css', 'w' )
 fo.write( ', '.join(prefixes) )
 fo.write( ' {\n' )
 fo.write( '\tdisplay: inline-block;\n' )
-fo.write( '\tposition: absolute;\n' )
+fo.write( '\tposition: relative;\n' )
 fo.write( '\twidth: 0px;\n' )
 fo.write( '\theight: 0px;\n' )
 fo.write( '\tcursor: pointer;\n' )
 fo.write( '}\n' )
+
 for suit in suits:
 	for rank in ranks:
 		classes = []

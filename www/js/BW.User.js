@@ -146,7 +146,13 @@ BW.User.prototype.showLoginForm = function() {
 	
 };
 
-
+/**
+ * Get the avatar link for current user.
+ */
+BW.User.prototype.getAvatarLink = function() {
+	var userInfo = this.userInfo;
+	return BW.getAvatarLink( userInfo.avatar );	
+};
 
 /**
  * Load the user profile information.
