@@ -5,16 +5,20 @@ if ( typeof BW === "undefined" ) BW = {};
  * Class to handle options setting, loading, saving etc. 
  */
 BW.Options = function() {
-	this.prefix = "bw-option-";
-	this.localStorageVariableName = BW.currentUser.getLocalStorageVariableName( "options" );
-	var options = localStorage.getItem( this.localStorageVariableName );
-	this.values = ( options ? JSON.parse( options ) : {} );
-	_.defaults( this.values, {
-		"bw-option-theme" : "css/themes/bootstrap/jquery.mobile.bootstrap.min.css",
-		"bw-option-answerPublicly" : true,
-		"enableDebug": false
-	});
-	this.loadAll();	
+	this.prefix = "bw-option-";	
+	this.localStorageVariableName = null;
+	$( ".bw-options" ).on( "change", { options : this }, function( e ) {
+		var options = e.data.options;
+		var name = $( this ).attr( "name" );
+		var type = $( this ).attr( "type" )
+		if ( type === "checkbox" ) {
+			var value = $( this ).prop( "checked" );
+		}
+		else {
+			var value = $( this ).val();
+		}
+		options.change( name, value );		
+	});	
 };
 
 /**
@@ -57,10 +61,19 @@ BW.Options.prototype.load = function ( name ) {
 /**
  * Load/Propagate all the options.
  */
-BW.Options.prototype.loadAll = function() {
+BW.Options.prototype.loadAll = function( username ) {
+	this.localStorageVariableName = "bw_" + username + "_options";
+	var options = localStorage.getItem( this.localStorageVariableName );
+	this.values = ( options ? JSON.parse( options ) : {} );
+	_.defaults( this.values, {
+		"bw-option-theme" : "css/themes/bootstrap/jquery.mobile.bootstrap.min.css",
+		"bw-option-answerPublicly" : true,
+		"enableDebug": false
+	});	
 	for( var option in this.values ) {
 		this.load( option );
 	}
+	this.initializeAll();
 };
 
 /**
@@ -72,13 +85,12 @@ BW.Options.prototype.initialize = function( name ) {
 		alert( "Cannot find " + name + " in options" );
 		return;
 	}	
-	// Only one option for now
 	switch ( name ) {
 		case this.prefix + "theme" :
-			$( "#" + name ).val( this.values[ name ] );	
+			$( "#" + name ).val( this.values[ name ] ).selectmenu('refresh', true);;	
 			break;
 		case this.prefix + "answerPublicly" :
-			$( "#" + name ).prop( "checked", this.values[ name ] );
+			$( "#" + name ).prop( "checked", this.values[ name ] ).checkboxradio('refresh');
 			break;
 		default :
 			break;

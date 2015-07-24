@@ -16,19 +16,6 @@ BW.CreateProblem = function( containerID, username ) {
 	this.containerID = containerID;
 	this.itemName = "bw_" + username + "_currentCreateProblem";
 	
-	// Resolutions
-	this.maxResizing = 414;
-	this.biddingBoxFieldClass = ".bw-bidding-box-full-field";
-	this.biddingBoxDimensions = null;	
-	
-	// Window resize or orientation change
-	this.resizeCardDeck();
-	this.resizeBiddingBox();
-	$( window ).on( "orientationchange", { problem: this }, function( e ) {
-		e.data.problem.resizeCardDeck();
-		e.data.problem.resizeBiddingBox();
-	});
-	
 	$( "#next-stage-button" ).click( { problem: this }, function( e ) {
 		e.data.problem.nextStage();
 	});
@@ -166,64 +153,6 @@ BW.CreateProblem.prototype.previousStage = function() {
 };
 
 /**
- * Position hand diagram with overlapping cards
- */
-BW.CreateProblem.prototype.resizeCardDeck = function() {	
-	var styleID = "bw-create-problem-deck-style";
-	if ( $( "#" + styleID ).length <= 0 ) {
-		$( document.head ).append( "<style id='" + styleID + "'></style>" );
-	}
-	var styleElement = $( "#" + styleID );		
-	var screenWidth = $( window ).width();
-	var cardWidth = 158;
-	var cardHeight = 220;
-	var fullWidth = 13 * cardWidth;
-	var scalingFactor = screenWidth/fullWidth;
-	if ( scalingFactor > 1 ) scalingFactor = 1;
-	var newWidth = cardWidth * scalingFactor;
-	var newHeight = cardHeight * scalingFactor;
-	var style = ".bw-card-deck-field-cards {width:" + newWidth + "px; height:" + newHeight + "px;}";
-	styleElement.empty().append( style );
-};
-
-/**
- * Resize the bidding box
- */
-BW.CreateProblem.prototype.resizeBiddingBox = function() {
-	var styleID = "bw-create-problem-bb-style";
-	if ( $( "#" + styleID ).length <= 0 ) {
-		$( document.head ).append( "<style id='" + styleID + "'></style>" );
-	}
-	var styleElement = $( "#" + styleID );	
-	var screenWidth = $( window ).width();
-	if ( screenWidth > 375 ) screenWidth = 375;
-	var heightRatio = 35/50;
-	var fontRatio = 20/50;
-	var width = screenWidth/5;
-	var height = width * heightRatio;
-	var fontSize = width * fontRatio;
-	var style = this.biddingBoxFieldClass + " {";
-	style += "width: " + width + "px;";
-	style += "height: " + height + "px;"
-	style += "line-height: " + height + "px;";
-	style += "font-size: " + fontSize + "px;";
-	style += "} ";	
-	
-	width = screenWidth/3;
-	var suffixes = [ 'p', 'x', 'r', 'allpass', 'reset', 'undo' ];
-	for( var i = 0; i < suffixes.length; ++i ) {
-		suffixes[i] = this.biddingBoxFieldClass + '-calls-' + suffixes[i];
-	}
-	style += " " + suffixes.join( ',' ) + " {";
-	style += "width: " + width + "px;";
-	style += "height: " + height + "px;"
-	style += "line-height: " + height + "px;";
-	style += "font-size: " + fontSize + "px;";
-	style += "}";
-	styleElement.empty().append( style );	
-};
-
-/**
  * Initialize data in all fields,
  * Setup change handlers
  */
@@ -315,7 +244,6 @@ BW.CreateProblem.prototype.initializeData = function() {
 		registerChangeHandler: true
 	};		
 	auction.toBiddingBox( config );
-	//this.resizeBiddingBox();
 	
 	// Text
 	var field = "notes";

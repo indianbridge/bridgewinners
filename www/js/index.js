@@ -101,14 +101,6 @@ BW.initialize = function() {
 	
 	// Load the different pages from menu
 	$( "body" ).on( "click", "a[role='page'], img[role='page']", function() {
-		/*$( "#bw-poll-votes" ).popup( "close" );
-		var page = $( this ).data("page");
-		var parameterNames = [ "slug", "back_name", "back_page", "back_html" ];
-		parameters = {};
-		for( var i = 0; i < parameterNames.length; ++i ) {
-			var parameterValue = $( this ).data( parameterNames[i] );
-			if ( parameterValue ) parameters[ parameterNames[i] ] = parameterValue;
-		}*/
 		BW.loadPage( $( this ).data() );
 	});
 	
@@ -123,15 +115,15 @@ BW.initialize = function() {
 		$( "#bw-poll-votes" ).popup( "open" );
 	});
 	
+	// Resize event
+	BW.resizeHandler();
+	$( window ).on( "orientationchange", BW.resizeHandler );
 	
 	// Loaded problems
 	BW.problems = {};
 	
 	// Show empty screen
 	BW.showOneSection( "default" );
-	
-	// Card dimension ratio
-	BW.cardDimensionRatio = 1.3924;
 	
 	// Load the current user
 	BW.currentUser = new BW.User( BW.contentID );
@@ -404,8 +396,6 @@ BW.showRecentVote = function() {
 				//html = '<a class="bw-no-margin-top ui-btn" role="page" data-name="view" data-page="view" data-slug="' + answer.slug + '">' + html + '</a>';
 				html = '<a class="ui-btn ui-icon-carat-d ui-btn-icon-right bw-no-margin-top bw-problem-summary-button" data-source="vote" data-page="view" data-slug="' + answer.slug + '">' + html + '</a>';
 				$( container ).empty().append( html );
-				// Redraw cards
-				BW.votingProblem.positionCards();
 			}
 		},
 		failCallback: function( message ) { 
@@ -482,101 +472,91 @@ BW.getAvatarLink = function( avatar ) {
 
 
 /**
- * The hash change handler.
- * Dispatches to appropriate handler based on action and passes the hash parameters
+ * Things to do when resize happens
  */
-BW.loadPage1 = function( page, parameters ) {	
-	$( "#bw-voting-problem-recent" ).hide();
-	$( "#popupMenu" ).popup( "close" );
-	BW.showLoadingDialog( "Loading Page" );
-	if ( BW.currentUser.isLoggedIn ) {
-		$( "a[role='page']" ).removeClass( "ui-disabled" );
-		var pages = [ "vote.html", "options.html", "create.html", "view.html", "profile.html", "more.html", "about.html" ];
-		if ( !_.indexOf( pages, page ) === -1 ) {
-			BW.hideLoadingDialog();
-			alert( "Unknown page : " + page );
-			return;
-		}
-		if ( page === "more.html" ) {
-			BW.hideLoadingDialog();
-			$( "#popupMenu" ).popup( "open", { positionTo: "#more-tab" } );
-		}
-		else {
-			if ( _.has( BW.pageCache, page ) ) {
-				$( '#' + BW.contentID ).empty().append( BW.pageCache[ page ] );
-				BW.hideLoadingDialog();
-				BW.pageLoaded( page, parameters );
-			}
-			else {
-				$.get( page, function( html ) {
-					BW.pageCache[ page ] = html;
-					$( '#' + BW.contentID ).empty().append( BW.pageCache[ page ] );
-					BW.hideLoadingDialog();
-					BW.pageLoaded( page, parameters );
-				});
-			}	
-		}		
-	}
-	else {
-		$( "a[role='page']" ).addClass( "ui-disabled" );
-		BW.hideLoadingDialog();
-		BW.currentUser.showLoginForm();
-	}
-};
-
-/**
- * Actions after page is loaded.
- * @param {object} parameters the associative array of hash parameters
- */
-BW.pageLoaded1 = function( page, parameters ) {
-	if ( page === "options.html" ) {
-		BW.currentOptions.initializeAll();
-		$( ".bw-options" ).change( function() {
-			var name = $( this ).attr( "name" );
-			var type = $( this ).attr( "type" )
-			if ( type === "checkbox" ) {
-				var value = $( this ).prop( "checked" );
-			}
-			else {
-				var value = $( this ).val();
-			}
-			BW.currentOptions.change( name, value );		
-		});
-		BW.setNavbarActiveItem( "more.html" );
-	}
-	else if ( page === "vote.html" ) {
-		BW.setNavbarActiveItem( "vote.html" );
-		BW.votingProblem.initialize();
-	}
-	else if ( page === "create.html" ) {
-		BW.setNavbarActiveItem( "create.html" );
-		BW.createProblem.initialize();
-	}
-	else if ( page === "profile.html" ) {
-		BW.setNavbarActiveItem( "profile.html" );
-		BW.currentUser.loadProfile();
-		BW.recentlyPublishedProblems.showRecentlyPublishedList();
-	}
-	else if ( page === "view.html" ) {
-		BW.setNavbarActiveItem( "view.html" );
-		if ( parameters.hasOwnProperty( "slug" ) ) {
-			BW.viewProblem.initialize( parameters );
-		}
-		else {
-			BW.viewProblem.showList();
-		}
-	}
-	else if ( page === "about.html" ) {
-		BW.setNavbarActiveItem( "more.html" );
+BW.resizeHandler = function() {
+	var styleElement = $( "#bw-computed-styles" );
+	var style = "\n";
+	var screenWidth = $( window ).width();
+	var cardWidth = 158;
+	var cardHeight = 220;
+	
+	// Card Deck
+	var fullWidth = 13 * cardWidth;
+	var scalingFactor = screenWidth/fullWidth;
+	if ( scalingFactor > 1 ) scalingFactor = 1;
+	var newWidth = cardWidth * scalingFactor;
+	var newHeight = cardHeight * scalingFactor;
+	style += "\t.bw-card-deck-field-cards {\n";
+	style += "\t\twidth:" + newWidth + "px;\n";
+	style += "\t\theight:" + newHeight + "px;\n";
+	style += "\t}\n";
+	
+	// Hand diagram
+	var overlap = 0.75;
+	var fullWidth = (1-overlap) * 12 * cardWidth + cardWidth;
+	var scalingFactor = screenWidth/fullWidth;
+	if ( scalingFactor > 1 ) scalingFactor = 1;
+	var classPrefix = ".bw-hand-images-field-cards";
+	style += "\t" + classPrefix + " {\n";
+	style += "\t\twidth: " + ( cardWidth * scalingFactor ) + "px;\n";
+	style += "\t\theight: " + ( cardHeight * scalingFactor ) + "px;\n";
+	style += "\t}\n";
+	var overlapWidth = overlap * cardWidth * scalingFactor;
+	var left = 0;
+	for( var i = 1; i <= 12; ++i ) {
+		left += overlapWidth;
+		style += "\t" + classPrefix + "-" + i + " {\n";
+		style += "\t\tleft: -" + left + "px;\n";
+		style += "\t}\n";
 	}	
-	else {
-		alert( "Unknown page : " + page );
-		return;
-	}	
-	$( '#' + BW.contentID ).trigger( "create" );
+	style += "\n";	
+	
+	screenWidth = screenWidth - 20;
+	var maxWidth = 394;
+	// Concise bidding box
+	classPrefix = ".bw-bidding-box-field";
+	if ( screenWidth > maxWidth ) screenWidth = maxWidth;
+	var heightRatio = 40/40;
+	var fontRatio = 28/40;
+	var width = screenWidth/8;
+	var height = width * heightRatio;
+	var fontSize = width * fontRatio;
+	style += "\t" + classPrefix + " {\n";
+	style += "\t\twidth: " + width + "px;\n";
+	style += "\t\theight: " + height + "px;\n"
+	style += "\t\tline-height: " + height + "px;\n";
+	style += "\t\tfont-size: " + fontSize + "px;\n";
+	style += "\t}\n";
+	
+	// Full bidding box	
+	classPrefix = ".bw-bidding-box-full-field";
+	heightRatio = 35/50;
+	fontRatio = 20/50;
+	width = screenWidth/5;
+	height = width * heightRatio;
+	fontSize = width * fontRatio;
+	style += "\t" + classPrefix + " {\n";
+	style += "\t\twidth: " + width + "px;\n";
+	style += "\t\theight: " + height + "px;\n"
+	style += "\t\tline-height: " + height + "px;\n";
+	style += "\t\tfont-size: " + fontSize + "px;\n";
+	style += "\t}\n";	
+	
+	width = screenWidth/3;
+	var suffixes = [ 'p', 'x', 'r', 'allpass', 'reset', 'undo' ];
+	for( var i = 0; i < suffixes.length; ++i ) {
+		suffixes[i] = classPrefix + '-calls-' + suffixes[i];
+	}
+	style += "\t" + suffixes.join( ',' ) + " {\n";
+	style += "\t\twidth: " + width + "px;\n";
+	style += "\t\theight: " + height + "px;\n"
+	style += "\t\tline-height: " + height + "px;\n";
+	style += "\t\tfont-size: " + fontSize + "px;\n";
+	style += "\t}\n";
+		
+	styleElement.empty().append( style );
 };
-
-
 
 
 

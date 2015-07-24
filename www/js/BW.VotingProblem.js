@@ -7,11 +7,6 @@ if ( typeof BW === "undefined" ) BW = {};
 BW.VotingProblem = function( containerID ) {
 	this.containerID = containerID;
 	this.containerPrefix = "bw-voting-problem";
-
-	// Resolutions
-	this.maxResizing = 414;
-	this.biddingBoxFieldClass = ".bw-bidding-box-field";
-	this.biddingBoxDimensions = null;
 	
 	// used by bidding box
 	this.selectedLevel = null;
@@ -28,14 +23,7 @@ BW.VotingProblem = function( containerID ) {
 	this.backButtonParameters = null;
 	
 	
-	/** All clicks and event handlers */
-	// Window resize or orientation change
-	this.resizeBiddingBox();
-	this.resizeCards();
-	$( window ).on( "orientationchange", { problem: this }, function( e ) {
-		e.data.problem.resizeCards();
-		e.data.problem.resizeBiddingBox();
-	});	
+	/** All clicks and event handlers */	
 	
 	// Show public responses.
 	$( document ).on( "click", "#bw-voting-problem-public-votes-button", { problem: this }, function( e ) {
@@ -289,38 +277,6 @@ BW.VotingProblem.prototype.showHand = function() {
 
 
 /**
- * Position hand diagram with overlapping cards
- */
-BW.VotingProblem.prototype.resizeCards = function( parameters ) {
-	var styleID = "bw-voting-problem-hand-style";
-	if ( $( "#" + styleID ).length <= 0 ) {
-		$( document.head ).append( "<style id='" + styleID + "'></style>" );
-	}
-	var styleElement = $( "#" + styleID );	
-	if ( typeof parameters === "undefined" ) parameters = {};
-	if ( !parameters.container ) parameters.container = window;
-	var screenWidth = $( parameters.container ).width();
-	var cardWidth = (parameters.width ? parameters.width : 158);
-	var cardHeight = (parameters.height ? parameters.height : 220);
-	var overlap = (parameters.overlap ? parameters.overlap : 0.75);
-	var fullWidth = (1-overlap) * 12 * cardWidth + cardWidth;
-	var scalingFactor = screenWidth/fullWidth;
-	if ( scalingFactor > 1 ) scalingFactor = 1;
-	var classPrefix = (parameters.classPrefix ? parameters.classPrefix : ".bw-hand-images-field-cards");
-	var style = classPrefix + " { ";
-	style += "width: " + ( cardWidth * scalingFactor ) + "px;";
-	style += "height: " + ( cardHeight * scalingFactor ) + "px;";
-	style += "} ";
-	var overlapWidth = overlap * cardWidth * scalingFactor;
-	var left = 0;
-	for( var i = 1; i <= 12; ++i ) {
-		left += overlapWidth;
-		style += classPrefix + "-" + i + "{ left: -" + left + "px;} ";
-	}	
-	styleElement.empty().append( style );	
-};
-
-/**
  * Show the problem auction
  */
 BW.VotingProblem.prototype.showAuction = function() {
@@ -376,32 +332,6 @@ BW.VotingProblem.prototype.showBiddingBox = function() {
 		registerChangeHandler: false
 	};		
 	auction.toBiddingBox( config );	
-	//this.resizeBiddingBox();
-};
-
-/**
- * Resize the bidding box
- */
-BW.VotingProblem.prototype.resizeBiddingBox = function() {
-	var styleID = "bw-voting-problem-bb-style";
-	if ( $( "#" + styleID ).length <= 0 ) {
-		$( document.head ).append( "<style id='" + styleID + "'></style>" );
-	}
-	var styleElement = $( "#" + styleID );
-	var screenWidth = $( window ).width();
-	if ( screenWidth > 375 ) screenWidth = 375;
-	var heightRatio = 40/40;
-	var fontRatio = 28/40;
-	var width = screenWidth/8;
-	var height = width * heightRatio;
-	var fontSize = width * fontRatio;
-	var style = this.biddingBoxFieldClass + " {";
-	style += "width: " + width + "px;";
-	style += "height: " + height + "px;"
-	style += "line-height: " + height + "px;";
-	style += "font-size: " + fontSize + "px;";
-	style += "}";
-	styleElement.empty().append( style );		
 };
 
 /**
