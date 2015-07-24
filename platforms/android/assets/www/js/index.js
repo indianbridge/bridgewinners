@@ -234,7 +234,7 @@ BW.showConnectionError = function() {
 	var html = "";
 	html += '<h4>Unable to connect to BW Server!';
 	html += '<a id="bw-connect-server" class="ui-btn">Try Again</a>';			
-	$( "#" + this.containerID ).empty().append( html );	
+	$( "#" + BW.contentID ).empty().append( html );	
 	$( "#bw-connect-server").click( { user: this }, function( e ) {
 		$( document ).trigger( "BW.loginStatus:changed", [e.data.user] );	
 		return false;		

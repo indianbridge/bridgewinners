@@ -12,6 +12,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, usr-scalable=no">
         <link id="jqm-stylesheet" rel="stylesheet" type="text/css" href="css/themes/bootstrap/jquery.mobile.bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="css/index.css">
+        <link rel="stylesheet" type="text/css" href="css/card_images.css">
 		<script src="js/jquery.min.js"></script>
 		<script src="js/jquery.mobile-1.4.5.min.js"></script>        
 		<script src="js/fastclick.min.js"></script>     
@@ -24,12 +25,127 @@
 				<span class="center"><img style="vertical-align:middle;" height="25px" src="img/icon.png"/>Bridge Winners</span>
 				<img role="page" data-page="profile.html" id="header-avatar" style="vertical-align:middle;" class="ui-btn-right" height="21px" src=""/>
 			</div>		
-			<div id="bw-voting-problem-recent-container" class="center"><span id="bw-voting-problem-recent"></span></div>
+			<div id="bw-recent-vote-container" class="center"><span id="bw-recent-vote"></span></div>
 			<div data-role="content" id="mycontent" class="ui-content">
-				<div data-role="popup" id="popupMenu" data-history="false">
+				<div data-section="bw_empty"></div>
+				<div data-section="bw_login">
+					<div data-role="header">
+						<h4>Sign In to access features of this app</h4>
+					</div>
+					<div data-role="main" class="ui-content">
+						<ul data-role="listview" data-inset="true">
+							<li>
+								<form id="loginForm" data-ajax="false">
+									<div data-role="fieldcontain" class="ui-hide-label">
+										<label for="username">Username:</label>
+										<input type="text" name="username" id="username" value="" placeholder="Email or Username" />
+									</div>
+									<div data-role="fieldcontain" class="ui-hide-label">
+										<label for="password">Password:</label>
+										<input type="password" name="password" id="password" value="" placeholder="Password" />
+									</div>
+									<input type="submit" value="LOG IN" id="login-submit-button">
+								</form>
+							</li>
+						</ul>
+					</div>						
+				</div>
+				<div data-section="bw_connect_error">
+					<h4>Unable to connect to BW Server!</h4>
+					<a id="bw-connect-server" class="ui-btn">Try Again</a>
+				</div>					
+				<div data-section="bw_error">
+					<h4 id="bw-error-message" class="center"></h4>		
+				</div>				
+				<div data-section="bw_voting_problem_empty">
+					<p class="center">
+						Wow, you've answered every single bridge problem on the site!  Thanks for being such an active participant!
+					</p>		
+				</div>
+				<div id="bw-voting-problem-data" data-section="bw_voting_problem">
+					<a id="bw-voting-problem-button-back" role="page" data-page="view" class="ui-btn ui-icon-arrow-l ui-btn-icon-left">Show Recent Problem List</a>
+					<img id="bw-voting-problem-author-image" class="float-left bw-voting-problem-author-image"/>
+					<div id="bw-voting-problem-author-name" class="bw-voting-problem-row bw-voting-problem-author-name"></div>
+					<div class="bw-voting-problem-row bw-voting-problem-information">
+						<span id="bw-voting-problem-scoring" class="bw-voting-problem-row bw-voting-problem-information-field">
+						</span>,			
+						<span id="bw-voting-problem-dealer" class="bw-voting-problem-row bw-voting-problem-information-field">
+						</span>,  
+						<span id="bw-voting-problem-vulnerability" class="bw-voting-problem-row bw-voting-problem-information-field">
+						</span>	
+						you hold:					
+					</div>
+					<div id="bw-voting-problem-hand" class="bw-voting-problem-hand"></div>	
+					<div>
+						<span id="bw-voting-problem-auction" class="float-left bw-voting-problem-auction"></span>
+						<span id="bw-voting-problem-description" class="bw-voting-problem-row bw-voting-problem-description"></span>					
+					</div>	
+					<div class="clearfix margin-bottom"></div>
+					<div id="bw-voting-problem-votes-container">
+						<div class="bw-voting-problem-vote-title bw-voting-problem-question">Current Poll Results:</div>	
+						<div class="bw-voting-problem-buttons">	
+							<a id="bw-voting-problem-public-votes-button" class="ui-btn ui-mini ui-shadow ui-corner-all ui-btn-inline">See All Public Answers</a>
+						</div>
+						<div id="bw-voting-problem-votes" class="bw-voting-problem-row bw-voting-problem-votes"></div>		
+					</div>
+					<div id="bw-voting-problem-question" class="bw-voting-problem-row bw-voting-problem-question"></div>
+					<div id="bw-voting-problem-lead" class="bw-voting-problem-row bw-voting-problem-lead"></div>	
+					<div id="bw-voting-problem-call" class="bw-voting-problem-row bw-voting-problem-call">
+						<div id="bw-voting-problem-bidding-box-level" class="center"></div>
+						<div id="bw-voting-problem-bidding-box-strain" class="center"></div>
+					</div>	
+					<div class="bw-voting-problem-buttons">
+						<div class="ui-grid-b">
+							<div class="ui-block-a"><a id="bw-voting-problem-button-vote" class="ui-btn ui-mini ui-shadow ui-corner-all ui-disabled">Vote</a></div>
+							<div class="ui-block-b"><a id="bw-voting-problem-button-abstain" class="ui-btn ui-mini ui-shadow ui-corner-all">Abstain</a></div>
+							<div class="ui-block-c"><a id="bw-voting-problem-button-skip" class="ui-btn ui-mini ui-shadow ui-corner-all">Skip</a></div>
+						</div>						
+					</div>		
+					<div id="bw-voting-problem-answer-publicly" class="bw-voting-problem-public">
+						<fieldset>
+							<input type="checkbox" name="bw-voting-problem-public" id="bw-voting-problem-public" checked>	
+							<label for="bw-voting-problem-public">Answer publicly</label>
+						</fieldset>	
+					</div>	
+				</div>	
+				<div id="bw-problem-list" data-section="bw_problem_list">
+					<h4>Problems recently Voted On</h4>
+					<div id="bw-problem-list-contents"></div>
+				</div>		
+				<div data-section="bw_profile">
+					<div id="profile-content">Welcome</div>
+					<a class="ui-btn ui-corner-all ui-shadow ui-icon-action ui-btn-icon-left" id="logout-submit-button">LOG OUT</a>
+					<div id="bw-published-problem-list">
+						<h4>Last 10 Problems You Published</h4>
+						<div id="bw-published-problem-list-contents"></div>
+					</div>						
+				</div>			
+				<div data-section="bw_options">
+					<ul id="bw-options-list" data-role="listview" data-inset="true"> 
+						<li data-icon="false">
+							<fieldset class="ui-field-contain">
+							<label for="bw-option-theme">Change Theme</label>
+							<select class="bw-options" id="bw-option-theme" name="bw-option-theme">
+								<option value="css/themes/default/jquery.mobile-1.4.5.min.css">Default</option>
+								<option value="css/themes/flat/jquery.mobile.flatui.min.css">Flat UI</option>
+								<option value="css/themes/square/jquery.mobile.squareui.css">Square UI</option>
+								<option value="css/themes/bootstrap/jquery.mobile.bootstrap.min.css">Bootstrap</option>
+							</select>	
+							</fieldset>
+						</li>	
+						<li data-icon="false">
+							<fieldset class="ui-field-contain">
+								<label>Answer Publicly</label>
+								<label for="bw-option-answerPublicly">(can be overridden when voting)</label>
+								<input class="bw-options" type="checkbox" name="bw-option-answerPublicly" id="bw-option-answerPublicly" checked>	
+							</fieldset>		
+						</li>
+					</ul>	
+				</div>							
+				<div data-role="popup" id="bw-popup-menu" data-history="false" data-position-to="#more-tab">
 					<ul data-role="listview" data-inset="true">
-						<li data-icon="gear"><a role="page" data-page="options.html" data-icon="gear">Options</a></li>
-						<li data-icon="info"><a role="page" data-page="about.html" data-icon="info">About Us</a></li>
+						<li data-icon="gear"><a role="page" data-page="options" data-icon="gear">Options</a></li>
+						<li data-icon="info"><a role="page" data-page="about" data-icon="info">About Us</a></li>
 					</ul>
 				</div>	
 				<div data-role="popup" id="loading-popup" class="ui-content" data-dismissible="false" data-history="false">
@@ -39,15 +155,15 @@
 				<div data-role="popup" id="bw-poll-votes" data-overlay-theme="b" data-history="false">
 					<div data-role="header"><h1>Current Poll Results</h1></div>
 					<div data-role="main" class="ui-content">
-						<a href="#" id="bw-poll-votes-close-button" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+						<a id="bw-poll-votes-close-button" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
 						<div id="bw-poll-votes-content"></div>
 					</div>
 				</div>									
-				<div data-role="popup" id="poll-responses" data-overlay-theme="b" data-history="false">
+				<div data-role="popup" id="bw-poll-responses" data-overlay-theme="b" data-history="false">
 					<div data-role="header"><h1>Poll Responses</h1></div>
 					<div data-role="main" class="ui-content">
-						<a href="#" id="poll-responses-close-button" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
-						<div id="poll-responses-content"></div>
+						<a href="#" id="bw-poll-responses-close-button" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+						<div id="bw-poll-responses-content"></div>
 					</div>
 				</div>		
 					
@@ -56,11 +172,11 @@
 			<div id="myfooter" data-role="footer" data-position="fixed" style="text-align:center;">
 				<div data-role="navbar">
 					<ul>
-						<li><a id="home-tab" data-type="navbar-item" class="ui-btn-active" role="page" data-page="vote.html" data-icon="check">Vote</a></li>
-						<li><a data-type="navbar-item" role="page" data-page="create.html" data-icon="edit">Create</a></li>
-						<li><a data-type="navbar-item" role="page" data-page="view.html" data-icon="eye">View</a></li>
-						<li><a data-type="navbar-item" role="page" data-page="profile.html" data-icon="user">Profile</a></li>
-						<li><a id="more-tab" data-type="navbar-item" role="page" data-page="more.html" data-icon="bars">More</a></li>
+						<li><a data-type="navbar-item" class="ui-btn-active" role="page" data-page="vote" data-icon="check">Vote</a></li>
+						<li><a data-type="navbar-item" role="page" data-page="create" data-icon="edit">Create</a></li>
+						<li><a data-type="navbar-item" role="page" data-page="view" data-icon="eye">View</a></li>
+						<li><a data-type="navbar-item" role="page" data-page="profile" data-icon="user">Profile</a></li>
+						<li><a id="more-tab" data-type="navbar-item" role="page" data-page="more" data-icon="bars">More</a></li>
 					</ul>
 				</div>	
 			</div>			
@@ -72,6 +188,7 @@
 		<script type="text/javascript" src="js/bridge.min.js"></script>
 		<script type="text/javascript" src="js/BW.Options.js"></script>
 		<script type="text/javascript" src="js/BW.VotingProblem.js"></script>
+		<script type="text/javascript" src="js/BW.ProblemList.js"></script>
 		<script type="text/javascript" src="js/BW.CreateProblem.js"></script>
         <script type="text/javascript" src="js/BW.User.js"></script>
         <script type="text/javascript" src="js/index.js"></script>

@@ -166,13 +166,15 @@ BW.CreateProblem.prototype.initializeData = function() {
 	//hand
 	var hand = this.deal.getHand( this.handDirection );
 	config = {
-		prefix: "bw-hand-diagram",
+		prefix: "bw-hand-diagram-cards",
 		show: {
-			direction: true,
-			name: true,
-			countInHeader: true
+			direction: false,
+			name: false,
+			countInHeader: false,
+			suit: false,
+			text: false
 		},
-		tags: Bridge.getDivConfig( "bw-hand-diagram" ),
+		tags: Bridge.getSpanConfig( "bw-hand-diagram-cards" ),
 		data: {},
 		classes: { "bw-hand-diagram": [ "bw-hand-diagram-border-top" ] },
 		idPrefix: "h",
@@ -180,6 +182,20 @@ BW.CreateProblem.prototype.initializeData = function() {
 		registerChangeHandler: true
 	};		
 	hand.toHTML( config );	
+	var position = $( '.bw-hand-diagram-cards-field-cards-1' ).offset();
+	alert(position.left);
+	position.left -= 10;
+	$( '.bw-hand-diagram-cards-field-cards-1' ).css({
+    color: 'red',
+    backgroundColor: 'orange',
+    left: -10,
+    top: 60,
+});
+	/*alert($( '.bw-hand-diagram-cards-field-cards-1' ).css("left"));
+	alert($( '.bw-hand-diagram-cards-field-cards-1' ).css("position"));
+	$( '.bw-hand-diagram-cards-field-cards-1' ).css({ left:-10})
+	alert($( '.bw-hand-diagram-cards-field-cards-1' ).css("left"));*/
+
 	this.deal.setActiveHand( this.handDirection );
 	// Card Deck
 	/*var width = $( window ).width();
