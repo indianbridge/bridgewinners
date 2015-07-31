@@ -10,6 +10,7 @@ BW.User = function( containerID ) {
 	this.containerID = containerID;
 	//this.username = null;
 	this.isLoggedIn = false;
+	this.isAuthenticated = false;
 	this.userInfo = null;
 	this.userName = null;
 	
@@ -20,10 +21,11 @@ BW.User = function( containerID ) {
 		e.data.user.login( username, password );
 		return false;		
 	});	
-	$( document ).on( "click", "#logout-submit-button", { user: this }, function( e ) {
+	
+	$( document ).on( "click", "#logout-submit-button" , { user: this }, function( e ) {
 		e.data.user.logout();
 		return false;			
-	});	
+	});
 	
 	// Login Status change handler
 	$( document ).on( "BW.loginStatus:changed", function( e, user ) {
@@ -43,7 +45,8 @@ BW.User.prototype.initialize = function() {
 		this.isLoggedIn = false;
 		BW.disableNavbar();
 		BW.hideLoadingDialog();
-		BW.showOneSection( "bw_login" );
+		BW.loadPage( { page: "login" } );
+		//BW.showOneSection( "bw_login" );
 		//this.showLoginForm();
 	}
 };
@@ -72,6 +75,7 @@ BW.User.prototype.authenticateAccessToken = function() {
 BW.User.prototype.authenticationSuccessCallback = function( data ) {
 	var user = this.context;
 	user.isLoggedIn = true;
+	user.isAuthenticated = true;
 	user.userInfo = data;
 	user.username = data.username;
 	var avatarLink = BW.getAvatarLink( user.userInfo.avatar );
@@ -81,8 +85,8 @@ BW.User.prototype.authenticationSuccessCallback = function( data ) {
 		page: "vote",
 		slug: null
 	}
-	BW.currentOptions.loadAll( user.username );
 	BW.enableNavbar();
+	BW.currentOptions.loadAll( user.username );
 	BW.loadPage( parameters );
 };
 
@@ -97,16 +101,6 @@ BW.User.prototype.authenticationFailCallback = function( message ) {
 	$( "#login-submit-button" ).prop( "disabled", false );
 	$( document ).trigger( "BW.loginStatus:changed", [user] );	
 };
-
-
-
-
-/**
- * Get the locat storage variable name
- */
-/*BW.User.prototype.getLocalStorageVariableName = function( itemName ) {
-	return "BW::" + this.username + "_" + itemName;
-};*/
 
 
 /**
@@ -217,6 +211,7 @@ BW.User.prototype.loginFailCallback = function( message ) {
 BW.User.prototype.logout = function() {
 	this.isLoggedIn = false;
 	this.accessToken = null;
+	this.isAuthenticated = false;
 	this.userInfo = null;
 	localStorage.removeItem( this.accessTokenLocalStorageVariableName );
 	$( "#header-avatar" ).attr( "src", "" );
@@ -244,6 +239,6 @@ BW.User.prototype.getName = function() {
 
 /** Update the login/logout button status */
 BW.User.prototype.updateButtonStatus = function() {
-	$( "#logout-submit-button" ).prop( "disabled", !this.loggedIn );
-	$( "#login-submit-button" ).prop( "disabled", this.loggedIn );
+	$( "#logout-submit-button" ).prop( "disabled", !this.isLoggedIn );
+	$( "#login-submit-button" ).prop( "disabled", this.isLoggedIn );
 };

@@ -24,150 +24,7 @@ BW.VotingProblem = function( containerID ) {
 	
 	
 	/** All clicks and event handlers */	
-	
-	// Show public responses.
-	$( document ).on( "click", "#bw-voting-problem-public-votes-button", { problem: this }, function( e ) {
-		data = {};
-		var problem = e.data.problem;
-		var slug = problem.slug;
-		var parameters = {
-			urlSuffix: "get-responses/" + slug + '/',
-			loadingMessage: "Getting Responses",
-			method: "GET",
-			context: this,
-			data: data,
-			successCallback: function( data ) {
-				var html = "";
-				var type = data.type.toLowerCase();
-				for( var i = 0; i < data.responses.length; ++i ) {
-					var response = data.responses[i];
-					html += "<h4>";
-					if ( type === "bidding" ) {
-						html += Bridge.getCallHTML( response.answer_text.toLowerCase() );
-					}
-					else {
-						html += Bridge.getCardHTML( response.answer_text.toLowerCase() );
-					}
-					html += "</h4>";
-					for( var j = 0; j < response.public_responses.length; ++j ) {
-						html += "<span class='bw-public-response'>" + response.public_responses[j] + "</span> ";
-					}
-					if ( response.num_private_responses >  0 ) {
-						html += "<span class='bw-private-response'>" + response.num_private_responses + " private</span>";
-					}
-				}
-				$( "#bw-poll-responses-content" ).empty().append(html);
-				$( "#bw-poll-responses" ).popup( "open" );			
-			},
-			failCallback: function( message ) {
-				var html = "";
-				html += "Unable to retreive responses";
-				$( "#bw-poll-responses-content" ).empty().append(html);
-				$( "#bw-poll-responses" ).popup( "open" );							
-			}
-		};
-		BW.ajax( parameters );
-		return false;									
-	});		
-	
-	// skip button clicked
-	var id = this.getID( "button-skip" );
-	$( document ).on( "click", id, { problem: this }, function( e ) {
-		var parameters = {
-			"exclude": e.data.problem.slug
-		};
-		e.data.problem.load( parameters );
-	});
-	
-	// Bidding level selected
-	$( document ).on( "click", ".bw-bidding-box-field-level.enabled", { problem: this }, function( e ) {
-		var problem = e.data.problem;
-		var level = _.parseInt( $( this ).data( "level" ) );
-		if ( problem.selectedLevel === level ) return;
-		var auction = problem.getAuction();
-		$( problem.getID( "button-vote" ) ).addClass( "ui-disabled" );	
-		auction.setSelectedLevel( level );
-		problem.selectedCall = null;
-		problem.selectedLevel = level;
-		problem.showBiddingBox();
-		//auction.toBiddingBox( e.data.problem.bbConfig );		
-		
-	});
-	
-	// Click on call
-	$( document ).on( "click", ".bw-bidding-box-field-calls.enabled", { problem: this }, function( e ) {
-		var call = $( this ).data( "suit" );
-		if ( e.data.problem.selectedCall ) {
-			var selector = ".bw-bidding-box-field-calls-" + e.data.problem.selectedCall;
-			$( selector ).removeClass( "selected" );
-		}
-		var auction = e.data.problem.getAuction();
-		e.data.problem.selectedCall = call;
-		if ( !Bridge.isStrain( call ) ) {
-			e.data.problem.selectedLevel = null;
-			auction.unsetSelectedLevel();
-			e.data.problem.showBiddingBox();	
-		}
-		var selector = ".bw-bidding-box-field-calls-" + call;
-		$( selector ).addClass( "selected" );
-		$( "#bw-voting-problem-button-vote" ).removeClass( "ui-disabled" );	
-	});	
-	
-	// Abstain vote	
-	$( document ).on( "click", "#bw-voting-problem-button-abstain", { problem: this }, function( e ) {
-		var answerPublic = $( "#bw-voting-problem-public" ).prop( "checked" );
-		e.data.problem.vote( null, answerPublic );
-	});	
-	
-	// Actual vote
-	$( document ).on( "click", "#bw-voting-problem-button-vote", { problem: this }, function( e ) {
-		var answerPublic = $( "#bw-voting-problem-public" ).prop( "checked" );
-		var problem = e.data.problem;
-		if ( problem.type === "bidding" ) {
-			var answer = 0;
-			var strain = problem.selectedCall;
-			if ( strain === 'p' ) answer = 37;
-			else if ( strain === 'x' ) answer = 35;
-			else if ( strain === 'r' ) answer = 36;
-			else {
-				answer = (problem.selectedLevel - 1) * 5;
-				switch ( strain ) {
-					case 'n' : 
-						answer++;
-					case 's' : 
-						answer++;			
-					case 'h' : 
-						answer++;			
-					case 'd' : 
-						answer++;	
-					default:
-						break;
-				}
-			}
-			e.data.problem.vote( answer, answerPublic );
-		}
-		else {
-			var answer = e.data.problem.selectedCardOrder;
-			var answerPublic = $( "#bw-voting-problem-public" ).prop( "checked" );
-			e.data.problem.vote( answer, answerPublic );
-		}
-	});	
-	
-	// Lead vote
-	$( document ).on( "click",  "#bw-voting-problem-hand .bw-hand-images-field-cards", { problem: this }, function( e ) {
-		if ( e.data.problem.type === "lead" ) {
-			var problem = e.data.problem;
-			if ( problem.selectedCard ) {
-				var card = $( "[data-card='" + problem.selectedCard + "']" );
-				card.removeClass( "bw-card-selected" );
-			}
-			problem.selectedCard = $( this ).data( "card" );
-			problem.selectedCardOrder = $( this ).data( "card-order" );
-			var card = $( "[data-card='" + problem.selectedCard + "']" );
-			card.addClass( "bw-card-selected" );
-			$( "#bw-voting-problem-button-vote" ).removeClass( "ui-disabled" );
-		}
-	});	
+	this.enableClicksAndSwipes();
 };
 
 /**
@@ -337,12 +194,17 @@ BW.VotingProblem.prototype.showBiddingBox = function() {
 /**
  * Show the problem auction
  */
-BW.VotingProblem.prototype.showQuestion = function() {
-	var question = '';
-	var changeVote = ( this.data.hasOwnProperty( "my_answer" ) && this.data[ "my_answer" ] );
-	question += ( changeVote ? "Change" : "What is");
-	question += " your " + ( this.data.type.toLowerCase() === "bidding" ? "Call" : "Lead" ) + "?";
-	$( this.getID( "question" ) ).empty().append( question );	
+BW.VotingProblem.prototype.showQuestion = function( show ) {
+	if ( typeof show === "undefined" ) show = true;
+	var id = this.getID( "question" );
+	if ( !show ) $( id ).hide();
+	else {
+		var question = '';
+		var changeVote = ( this.data.hasOwnProperty( "my_answer" ) && this.data[ "my_answer" ] );
+		question += ( changeVote ? "Change" : "What is");
+		question += " your " + ( this.data.type.toLowerCase() === "bidding" ? "Call" : "Lead" ) + "?";
+		$( id ).empty().append( question ).show();	
+	}
 };
 
 /**
@@ -390,11 +252,6 @@ BW.VotingProblem.prototype.showBackButton = function() {
  * Show the votes
  */
 BW.VotingProblem.prototype.showVotes = function() {
-	var alreadyVoted = ( this.data.hasOwnProperty( "my_answer" ) && this.data[ "my_answer" ] );	
-	if ( !alreadyVoted ) {
-		$( this.getID( "votes-container" ) ).hide();
-		return;
-	}
 	$( this.getID( "votes-container" ) ).show();
 	var votesTable = BW.VotingProblem.getVotesTable( this.data );
 	$( this.getID( "votes" ) ).empty().html( votesTable );
@@ -419,6 +276,7 @@ BW.VotingProblem.prototype.show = function( data ) {
 	this.selectedCard = null;
 	this.selectedCardOrder = null;
 	var deal = new Bridge.Deal();
+	deal.disableEventTrigger();
 	deal.setDealer( data.dealer );
 	deal.setVulnerability( data.vulnerability );
 	deal.getAuction().fromString( data.auction );
@@ -433,17 +291,97 @@ BW.VotingProblem.prototype.show = function( data ) {
 	this.avatarLink = BW.getAvatarLink( data.avatar );
 	this.deal = deal;
 	
-	this.showBackButton();
+	//this.showBackButton();
 	this.showInfo();
-	this.showHand();
 	this.showAuction();
-	this.showQuestion();
+	this.showHand();
+	this.showQuestion( false );
 	this.showBiddingBox();
 	this.showAnswerPublicly( false );
 	this.showButtons();
-	this.showVotes();
+	var alreadyVoted = ( this.data.hasOwnProperty( "my_answer" ) && this.data[ "my_answer" ] );	
+	if ( !alreadyVoted ) {
+		$( this.getID( "votes-container" ) ).hide();
+		
+	}
+	else {
+		this.showVotes();
+	}
+	this.resize();
 };
 
+BW.VotingProblem.prototype.resizeBiddingBox = function() {
+	var styleElement = $( "#bw-voting-bidding-box-computed-styles" );
+	var style = "\n";
+	var screenWidth = $( window ).width();
+	var cardWidth = 158;
+	var cardHeight = 220;
+	screenWidth = screenWidth - 20;
+	var maxWidth = 394;
+	if ( screenWidth > maxWidth ) screenWidth = maxWidth;
+	// Concise bidding box
+	classPrefix = ".bw-bidding-box-field";
+	var heightRatio = 40/40;
+	var fontRatio = 28/40;
+	var width = screenWidth/8;
+	var height = width * heightRatio;
+	var fontSize = width * fontRatio;
+	style += "\t" + classPrefix + " {\n";
+	style += "\t\twidth: " + width + "px;\n";
+	style += "\t\theight: " + height + "px;\n"
+	style += "\t\tline-height: " + height + "px;\n";
+	style += "\t\tfont-size: " + fontSize + "px;\n";
+	style += "\t}\n";
+	styleElement.empty().append( style );	
+};
+
+BW.VotingProblem.prototype.resizeHandImages = function( height ) {
+	var styleElement = $( "#bw-voting-hand-images-computed-styles" );
+	var style = "\n";
+	var screenWidth = $( window ).width();
+	var cardWidth = 158;
+	var cardHeight = 220;	
+	var overlap = 0.75;
+	var fullWidth = (1-overlap) * 12 * cardWidth + cardWidth;
+	var scalingFactor = screenWidth/fullWidth;
+	if ( scalingFactor > 1 ) scalingFactor = 1;
+	var newWidth = cardWidth * scalingFactor;
+	var newHeight = height;
+	if ( newHeight > cardHeight ) newHeight = cardHeight;
+	var classPrefix = ".bw-hand-images-field-cards";
+	style += "\t" + classPrefix + " {\n";
+	style += "\t\twidth: " + newWidth + "px;\n";
+	style += "\t\theight: " + newHeight + "px;\n";
+	style += "\t}\n";
+	var overlapWidth = overlap * cardWidth * scalingFactor;
+	var left = 0;
+	for( var i = 1; i <= 12; ++i ) {
+		left += overlapWidth;
+		style += "\t" + classPrefix + "-" + i + " {\n";
+		style += "\t\tleft: -" + left + "px;\n";
+		style += "\t}\n";
+	}	
+	style += "\n";	
+	styleElement.empty().append( style );	
+};
+
+BW.VotingProblem.prototype.resize = function() {
+	this.resizeBiddingBox();
+	var alreadyVoted = ( this.data.hasOwnProperty( "my_answer" ) && this.data[ "my_answer" ] );	
+	var totalContentHeight = $(window).height() - ( $("#myheader").height() + $("#myfooter").height() + 7);
+	var ids = [ "bw-voting-problem-info", "bw-voting-problem-buttons"];
+	if ( this.type === "bidding" ) ids.push( "bw-voting-problem-call" );
+	if ( !this.parameters.hasOwnProperty( "slug") ) ids.push( "bw-recent-vote-container" );
+	if ( alreadyVoted ) ids.push( "bw-voting-problem-votes-container" );
+	var fixedHeight = 0;
+	_.each( ids, function( id ) {
+		fixedHeight += $( "#" + id ).height();
+	}, this );
+	var fluidHeight = totalContentHeight - fixedHeight;
+	$( "#bw-voting-problem-hand" ).height( fluidHeight/2 );
+	this.resizeHandImages( fluidHeight/2 );
+	$( "#bw-voting-problem-auction-description" ).height( fluidHeight/2 );
+};
 
 /**
  * Get the auction for this problem.
@@ -457,22 +395,77 @@ BW.VotingProblem.prototype.getAuction = function() {
  * Enable/Disable previous/next clicks and swipes
  */
 BW.VotingProblem.prototype.enableClicksAndSwipes = function() {
-	$( "#bw-voting-problem-call" ).on( "click", ".bw-bidding-box-field-level.enabled", { problem: this }, function( e ) {
+	// Show public responses.
+	$( document ).on( "click", "#bw-voting-problem-public-votes-button", { problem: this }, function( e ) {
+		data = {};
+		var problem = e.data.problem;
+		var slug = problem.slug;
+		var parameters = {
+			urlSuffix: "get-responses/" + slug + '/',
+			loadingMessage: "Getting Responses",
+			method: "GET",
+			context: this,
+			data: data,
+			successCallback: function( data ) {
+				var html = "";
+				var type = data.type.toLowerCase();
+				for( var i = 0; i < data.responses.length; ++i ) {
+					var response = data.responses[i];
+					html += "<h4>";
+					if ( type === "bidding" ) {
+						html += Bridge.getCallHTML( response.answer_text.toLowerCase() );
+					}
+					else {
+						html += Bridge.getCardHTML( response.answer_text.toLowerCase() );
+					}
+					html += "</h4>";
+					for( var j = 0; j < response.public_responses.length; ++j ) {
+						html += "<span class='bw-public-response'>" + response.public_responses[j] + "</span> ";
+					}
+					if ( response.num_private_responses >  0 ) {
+						html += "<span class='bw-private-response'>" + response.num_private_responses + " private</span>";
+					}
+				}
+				$( "#bw-poll-responses-content" ).empty().append(html);
+				$( "#bw-poll-responses" ).popup( "open" );			
+			},
+			failCallback: function( message ) {
+				var html = "";
+				html += "Unable to retreive responses";
+				$( "#bw-poll-responses-content" ).empty().append(html);
+				$( "#bw-poll-responses" ).popup( "open" );							
+			}
+		};
+		BW.ajax( parameters );
+		return false;									
+	});		
+	
+	// skip button clicked
+	var id = this.getID( "button-skip" );
+	$( document ).on( "click", id, { problem: this }, function( e ) {
+		var parameters = {
+			"exclude": e.data.problem.slug
+		};
+		e.data.problem.load( parameters );
+	});
+	
+	// Bidding level selected
+	$( document ).on( "click", ".bw-bidding-box-field-level.enabled", { problem: this }, function( e ) {
+		var problem = e.data.problem;
 		var level = _.parseInt( $( this ).data( "level" ) );
-		if ( e.data.problem.selectedLevel === level ) return;
-		var auction = e.data.problem.getAuction();
-		$( "#bw-voting-problem-button-vote" ).addClass( "ui-disabled" );	
+		if ( problem.selectedLevel === level ) return;
+		var auction = problem.getAuction();
+		$( problem.getID( "button-vote" ) ).addClass( "ui-disabled" );	
 		auction.setSelectedLevel( level );
-		e.data.problem.selectedCall = null;
-		e.data.problem.selectedLevel = level;
-		auction.toBiddingBox( e.data.problem.bbConfig );		
+		problem.selectedCall = null;
+		problem.selectedLevel = level;
+		problem.showBiddingBox();
+		//auction.toBiddingBox( e.data.problem.bbConfig );		
 		
 	});
-	$( "#bw-voting-problem-button-abstain" ).click( { problem: this }, function( e ) {
-		var answerPublic = $( "#bw-voting-problem-public" ).prop( "checked" );
-		e.data.problem.abstain( answerPublic );
-	});	
-	$( "#bw-voting-problem-call" ).on( "click", ".bw-bidding-box-field-calls.enabled", { problem: this }, function( e ) {
+	
+	// Click on call
+	$( document ).on( "click", ".bw-bidding-box-field-calls.enabled", { problem: this }, function( e ) {
 		var call = $( this ).data( "suit" );
 		if ( e.data.problem.selectedCall ) {
 			var selector = ".bw-bidding-box-field-calls-" + e.data.problem.selectedCall;
@@ -483,24 +476,21 @@ BW.VotingProblem.prototype.enableClicksAndSwipes = function() {
 		if ( !Bridge.isStrain( call ) ) {
 			e.data.problem.selectedLevel = null;
 			auction.unsetSelectedLevel();
-			auction.toBiddingBox( e.data.problem.bbConfig );	
+			e.data.problem.showBiddingBox();	
 		}
 		var selector = ".bw-bidding-box-field-calls-" + call;
 		$( selector ).addClass( "selected" );
 		$( "#bw-voting-problem-button-vote" ).removeClass( "ui-disabled" );	
-	});		
+	});	
 	
-	$( "#" + this.containerID ).on( "click", ".bw-card-deck-field-cards", { problem: this }, function( e ) {
-		var problem = e.data.problem;
-		if ( problem.selectedCard ) {
-			$( "[data-card='" + problem.selectedCard + "']" ).removeClass( "bw-card-deck-selected" );
-		}
-		problem.selectedCard = $( this ).data( "card" );
-		problem.selectedCardOrder = $( this ).data( "card-order" );
-		$( "[data-card='" + problem.selectedCard + "']" ).addClass( "bw-card-deck-selected" );
-		$( "#bw-voting-problem-button-vote" ).removeClass( "ui-disabled" );
-	});
-	$( "#bw-voting-problem-button-vote" ).click( { problem: this }, function( e ) {
+	// Abstain vote	
+	$( document ).on( "click", "#bw-voting-problem-button-abstain", { problem: this }, function( e ) {
+		var answerPublic = $( "#bw-voting-problem-public" ).prop( "checked" );
+		e.data.problem.vote( null, answerPublic );
+	});	
+	
+	// Actual vote
+	$( document ).on( "click", "#bw-voting-problem-button-vote", { problem: this }, function( e ) {
 		var answerPublic = $( "#bw-voting-problem-public" ).prop( "checked" );
 		var problem = e.data.problem;
 		if ( problem.type === "bidding" ) {
@@ -532,6 +522,22 @@ BW.VotingProblem.prototype.enableClicksAndSwipes = function() {
 			e.data.problem.vote( answer, answerPublic );
 		}
 	});	
+	
+	// Lead vote
+	$( document ).on( "click",  "#bw-voting-problem-hand .bw-hand-images-field-cards", { problem: this }, function( e ) {
+		if ( e.data.problem.type === "lead" ) {
+			var problem = e.data.problem;
+			if ( problem.selectedCard ) {
+				var card = $( "[data-card='" + problem.selectedCard + "']" );
+				card.removeClass( "bw-card-selected" );
+			}
+			problem.selectedCard = $( this ).data( "card" );
+			problem.selectedCardOrder = $( this ).data( "card-order" );
+			var card = $( "[data-card='" + problem.selectedCard + "']" );
+			card.addClass( "bw-card-selected" );
+			$( "#bw-voting-problem-button-vote" ).removeClass( "ui-disabled" );
+		}
+	});		
 	
 };
 

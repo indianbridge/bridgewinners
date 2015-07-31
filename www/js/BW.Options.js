@@ -7,7 +7,7 @@ if ( typeof BW === "undefined" ) BW = {};
 BW.Options = function() {
 	this.prefix = "bw-option-";	
 	this.localStorageVariableName = null;
-	$( ".bw-options" ).on( "change", { options : this }, function( e ) {
+	$( document ).on( "change", ".bw-options", { options : this }, function( e ) {
 		var options = e.data.options;
 		var name = $( this ).attr( "name" );
 		var type = $( this ).attr( "type" )
@@ -73,7 +73,6 @@ BW.Options.prototype.loadAll = function( username ) {
 	for( var option in this.values ) {
 		this.load( option );
 	}
-	this.initializeAll();
 };
 
 /**

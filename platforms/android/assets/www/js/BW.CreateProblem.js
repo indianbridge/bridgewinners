@@ -5,6 +5,8 @@ if ( typeof BW === "undefined" ) BW = {};
  * A class to represent a bidding or lead problem to be voted on
  */
 BW.CreateProblem = function( containerID, username ) {
+	
+	this.dealID = "bw-create-problem-id";
 	this.stages = [
 		{ name: "type", next: "Hand", previous: "Nothing back there" },
 		{ name: "hand", next: "Scoring/Vul/Dealer", previous: "Type" },
@@ -16,27 +18,16 @@ BW.CreateProblem = function( containerID, username ) {
 	this.containerID = containerID;
 	this.itemName = "bw_" + username + "_currentCreateProblem";
 	
-	// Resolutions
-	this.maxResizing = 414;
-	this.biddingBoxFieldClass = ".bw-bidding-box-full-field";
-	this.biddingBoxDimensions = null;	
-	
-	// Window resize or orientation change
-	this.resizeCardDeck();
-	this.resizeBiddingBox();
-	$( window ).on( "orientationchange", { problem: this }, function( e ) {
-		e.data.problem.resizeCardDeck();
-		e.data.problem.resizeBiddingBox();
-	});
-	
-	$( "#next-stage-button" ).click( { problem: this }, function( e ) {
+	$( document ).on( "click", "#next-stage-button", { problem: this }, function( e ) {
 		e.data.problem.nextStage();
 	});
-	$( "#previous-stage-button" ).click( { problem: this }, function( e ) {
+	$( document ).click( "click", "#previous-stage-button", { problem: this }, function( e ) {
 		e.data.problem.previousStage();
 	});	
 		
-	this.loadProblem();
+	//this.loadProblem();
+	//this.initializeData();
+	this.setupEventHandlers();
 };
 
 /** 
@@ -45,7 +36,6 @@ BW.CreateProblem = function( containerID, username ) {
 BW.CreateProblem.prototype.clearLocalStorage = function() {
 	localStorage.removeItem( this.itemName );
 };
-
 
 /**
  * Mimicking an enum for stages
@@ -66,7 +56,7 @@ BW.CreateProblem.prototype.loadProblem = function() {
 	this.handDirection = 's';
 	this.type = "bidding";
 	this.stage = BW.CreateProblem.Stages.TYPE;
-	this.deal = new Bridge.Deal();
+	this.deal = new Bridge.Deal( this.dealID );
 	this.deal.disableEventTrigger();
 	this.deal.setScoring( "Matchpoints" );
 	this.deal.enableEventTrigger();	
@@ -86,9 +76,9 @@ BW.CreateProblem.prototype.loadProblem = function() {
  */
 BW.CreateProblem.prototype.initialize = function() {
 	$( "#bw-create-problem-loading" ).show();
-	$( "div[data-stage]" ).hide();					
-	this.initializeData();
-	this.setupEventHandlers();
+	$( "div[data-stage]" ).hide();		
+	this.loadProblem();
+	this.initializeData();				
 	this.loadStage();
 };
 
@@ -166,75 +156,37 @@ BW.CreateProblem.prototype.previousStage = function() {
 };
 
 /**
- * Position hand diagram with overlapping cards
- */
-BW.CreateProblem.prototype.resizeCardDeck = function() {	
-	var styleID = "bw-create-problem-deck-style";
-	if ( $( "#" + styleID ).length <= 0 ) {
-		$( document.head ).append( "<style id='" + styleID + "'></style>" );
-	}
-	var styleElement = $( "#" + styleID );		
-	var screenWidth = $( window ).width();
-	var cardWidth = 158;
-	var cardHeight = 220;
-	var fullWidth = 13 * cardWidth;
-	var scalingFactor = screenWidth/fullWidth;
-	if ( scalingFactor > 1 ) scalingFactor = 1;
-	var newWidth = cardWidth * scalingFactor;
-	var newHeight = cardHeight * scalingFactor;
-	var style = ".bw-card-deck-field-cards {width:" + newWidth + "px; height:" + newHeight + "px;}";
-	styleElement.empty().append( style );
-};
-
-/**
- * Resize the bidding box
- */
-BW.CreateProblem.prototype.resizeBiddingBox = function() {
-	var styleID = "bw-create-problem-bb-style";
-	if ( $( "#" + styleID ).length <= 0 ) {
-		$( document.head ).append( "<style id='" + styleID + "'></style>" );
-	}
-	var styleElement = $( "#" + styleID );	
-	var screenWidth = $( window ).width();
-	if ( screenWidth > 375 ) screenWidth = 375;
-	var heightRatio = 35/50;
-	var fontRatio = 20/50;
-	var width = screenWidth/5;
-	var height = width * heightRatio;
-	var fontSize = width * fontRatio;
-	var style = this.biddingBoxFieldClass + " {";
-	style += "width: " + width + "px;";
-	style += "height: " + height + "px;"
-	style += "line-height: " + height + "px;";
-	style += "font-size: " + fontSize + "px;";
-	style += "} ";	
-	
-	width = screenWidth/3;
-	var suffixes = [ 'p', 'x', 'r', 'allpass', 'reset', 'undo' ];
-	for( var i = 0; i < suffixes.length; ++i ) {
-		suffixes[i] = this.biddingBoxFieldClass + '-calls-' + suffixes[i];
-	}
-	style += " " + suffixes.join( ',' ) + " {";
-	style += "width: " + width + "px;";
-	style += "height: " + height + "px;"
-	style += "line-height: " + height + "px;";
-	style += "font-size: " + fontSize + "px;";
-	style += "}";
-	styleElement.empty().append( style );	
-};
-
-/**
  * Initialize data in all fields,
  * Setup change handlers
  */
 BW.CreateProblem.prototype.initializeData = function() {
 	// type
+	var prefix = "bw-create-problem-"
 	var field = "type";
 	var value = this.type;
-	var fieldClass = "bw-create-problem-" + field
+	var fieldClass = prefix + field
 	$( '.' + fieldClass ).prop( "checked", false );	
-	$( '#' + fieldClass + '-' + value ).prop( "checked", true );
-	$( '#' + fieldClass ).trigger( "create" );			
+	$( '#' + fieldClass + '-' + value ).prop( "checked", true );	
+	
+	// Scoring and Info
+	var fields = [ "scoring", "notes" ];
+	for( var i = 0; i < fields.length; ++i ) {
+		var field = fields[i];
+		var fieldClass = prefix + field;
+		$( '#' + fieldClass ).val( this.deal.get( field ) );
+	}
+	$( '#' + prefix + 'scoring' ).selectmenu( "refresh" );
+	
+	// Dealer and Vul
+	var fields = [ "dealer", "vulnerability" ];
+	_.each ( fields, function( field ) {
+		var value = this.deal.get( field );
+		var fieldClass = prefix + field;
+		$( '.' + fieldClass ).prop( "checked", false );	
+		$( '#' + fieldClass + '-' + value ).prop( "checked", true );
+		$( '#' + fieldClass ).trigger( "create" );						
+	}, this );
+	$( '.' + prefix + "controlgroup" ).controlgroup( "refresh" );		
 	
 	//hand
 	var hand = this.deal.getHand( this.handDirection );
@@ -268,29 +220,8 @@ BW.CreateProblem.prototype.initializeData = function() {
 		registerChangeHandler: true
 	};	
 	this.deal.toCardDeck( config );	
-	//this.setCardSize();
-	
-	// Scoring and Info
-	var fields = [ "scoring", "notes" ];
-	for( var i = 0; i < fields.length; ++i ) {
-		var field = fields[i];
-		var fieldClass = "bw-create-problem-" + field;
-		$( '#' + fieldClass ).val( this.deal.get( field ) );
-	}
-	
-	// Dealer and Vul
-	var fields = [ "dealer", "vulnerability" ];
-	_.each ( fields, function( field ) {
-		var value = this.deal.get( field );
-		var fieldClass = "bw-create-problem-" + field;
-		$( '.' + fieldClass ).prop( "checked", false );	
-		$( '#' + fieldClass + '-' + value ).prop( "checked", true );
-		$( '#' + fieldClass ).trigger( "create" );						
-	}, this );
-	
 	
 	// Auction
-	// Get the auction
 	var auction = this.deal.getAuction();
 	config = {
 		prefix: "bw-auction-diagram",
@@ -315,21 +246,16 @@ BW.CreateProblem.prototype.initializeData = function() {
 		registerChangeHandler: true
 	};		
 	auction.toBiddingBox( config );
-	//this.resizeBiddingBox();
-	
-	// Text
-	var field = "notes";
-	$( '#' + field ).val( this.deal.get( field ) );
 };
 
 
 BW.CreateProblem.prototype.setupEventHandlers = function() {
 	var selector = ".bw-create-problem-type";
-	$( selector ).change( { problem: this }, function ( e ) {
+	$( document ).on( "change", selector, { problem: this }, function ( e ) {
 		e.data.problem.type = $( this ).data( "type" );
 		e.data.problem.save();
 	});	
-	$( ".bw-create-problem-field" ).change( { deal: this.deal }, function( e ) {
+	$( document ).on( "change", ".bw-create-problem-field", { deal: this.deal }, function( e ) {
 		var field = $( this ).data( "field" );
 		if ( field === "notes" || field === "scoring" ) {
 			var value = $( this ).val();
@@ -474,7 +400,7 @@ BW.CreateProblem.prototype.enableClicksAndSwipes = function() {
 				disabled = true;
 				text = "Auction incomplete!";		
 			}
-			else if ( contract.getLeader() !== this.handDirection ) {
+			else if ( !contract.declarer || contract.getLeader() !== this.handDirection ) {
 				disabled = true;
 				text = Bridge.directions[ this.handDirection ].name + " is not on lead";					
 			}				

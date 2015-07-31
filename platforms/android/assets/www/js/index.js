@@ -81,9 +81,6 @@ BW.initialize = function() {
 	// Assume that south is hand shown. It should not matter (famous last words)
 	BW.handDirection = 's';
 	
-	// A cache to store loaded html files
-	BW.pageCache = {};		
-	
 	// The address of the BW server
 	BW.sitePrefix = "https://108.166.89.84/";
 	// the version of the api being used
@@ -91,6 +88,7 @@ BW.initialize = function() {
 	
 	// Manage active tab
 	BW.lastNavbarItem = "vote";
+	BW.currentPage = "vote";
 	BW.disableNavbar();
 	// This is necessary to have the last active navbar item still be active after a popup
 	$( "#bw-popup-menu" ).popup( {
@@ -100,15 +98,42 @@ BW.initialize = function() {
 	});
 	
 	// Load the different pages from menu
+	BW.pageCache = {
+		"login" : {
+			"page": "login.html",
+			"html": null			
+		},
+		"error" : {
+			"page": "error.html",
+			"html": null			
+		},		
+		"vote" : {
+			"page": "vote.html",
+			"html": null
+		},
+		"create" : {
+			"page": "create.html",
+			"html": null
+		},		
+		"view" : {
+			"page": "view.html",
+			"html": null
+		},
+		"profile" : {
+			"page": "profile.html",
+			"html": null
+		},
+		"about" : {
+			"page": "about.html",
+			"html": null
+		},
+		"options" : {
+			"page": "options.html",
+			"html": null
+		}		
+	}
+	;	
 	$( "body" ).on( "click", "a[role='page'], img[role='page']", function() {
-		/*$( "#bw-poll-votes" ).popup( "close" );
-		var page = $( this ).data("page");
-		var parameterNames = [ "slug", "back_name", "back_page", "back_html" ];
-		parameters = {};
-		for( var i = 0; i < parameterNames.length; ++i ) {
-			var parameterValue = $( this ).data( parameterNames[i] );
-			if ( parameterValue ) parameters[ parameterNames[i] ] = parameterValue;
-		}*/
 		BW.loadPage( $( this ).data() );
 	});
 	
@@ -123,6 +148,9 @@ BW.initialize = function() {
 		$( "#bw-poll-votes" ).popup( "open" );
 	});
 	
+	// Resize event
+	BW.resizeHandler( true );
+	$( window ).on( "orientationchange", function() { BW.resizeHandler( false ); } );
 	
 	// Loaded problems
 	BW.problems = {};
@@ -130,15 +158,11 @@ BW.initialize = function() {
 	// Show empty screen
 	BW.showOneSection( "default" );
 	
-	// Card dimension ratio
-	BW.cardDimensionRatio = 1.3924;
-	
 	// Load the current user
 	BW.currentUser = new BW.User( BW.contentID );
 	
 	// Try again button
 	$( document ).on( "click", "#bw-connect-server", { user: BW.currentUser }, function( e ) {
-		alert("test");
 		$( document ).trigger( "BW.loginStatus:changed", [e.data.user] );	
 		return false;		
 	});		
@@ -186,6 +210,7 @@ else {
  * Perform an Ajax request.
  */
 BW.ajax = function( parameters ) {
+	console.log( parameters.urlSuffix );
 	var url = encodeURI( BW.sitePrefix + BW.restAPIPrefix + parameters.urlSuffix );
 	var showDialog = !parameters.hasOwnProperty( "showDialog" ) || parameters.showDialog;
 	if ( showDialog ) {
@@ -215,7 +240,7 @@ BW.ajax = function( parameters ) {
 	});
 	request.fail( function( jqXHR, textStatus, errorThrown ) {
 		if ( showDialog ) BW.hideLoadingDialog();
-		BW.showConnectionError();
+		BW.loadPage( "error" );
 	});	
 	return false;
 };
@@ -233,30 +258,65 @@ BW.showConnectionError = function() {
  */
 BW.loadPage = function( parameters ) {	
 	BW.closeAllPopups();
-	var page = parameters.page;
-	if ( BW.lastNavbarItem === "vote" ) BW.showOneSection( "default" );
-	if ( page !== "more" ) $( "#bw-recent-vote" ).hide();
+	if ( typeof parameters === "string" ) {
+		var page = parameters;
+	}
+	else {
+		var page = parameters.page;
+	}
+	BW.currentPage = page;
+	if (!BW.currentUser.isAuthenticated) page = "login";
+	if ( BW.pageCache.hasOwnProperty( page ) && !BW.pageCache[ page ].html ) {
+		BW.showLoadingDialog( "Loading " + BW.pageCache[ page ].page );
+		$.get( BW.pageCache[ page ].page, function( html ) {
+			BW.pageCache[ page ].html = html;
+			BW.hideLoadingDialog();
+			BW.loadPage( parameters );
+		});
+		return;
+	}
 	switch( page ) {
+		case "login" :
+			BW.disableNavbar();
+			$( '#' + BW.contentID ).empty().append( BW.pageCache[ page ].html );
+			$( '#' + BW.contentID ).trigger( "create" );
+			break;
+		case "error" :
+			BW.disableNavbar();
+			$( '#' + BW.contentID ).empty().append( BW.pageCache[ page ].html );
+			$( '#' + BW.contentID ).trigger( "create" );
+			break;			
 		case "vote" :
+			BW.setNavbarActiveItem( "vote" );
+			$( '#' + BW.contentID ).empty().append( BW.pageCache[ page ].html );
+			$( '#' + BW.contentID ).trigger( "create" );		
+			BW.showOneSection( "bw_voting_problem_default" );	
 			BW.showRecentVote();
-			BW.votingProblem.load();
-			BW.setNavbarActiveItem( "vote" );			
+			BW.votingProblem.load();					
 			break;
 		case "create" :
-			BW.showOneSection( "bw_create_problem" );
 			BW.setNavbarActiveItem( "create" );
-			BW.createProblem.initialize();		
+			$( '#' + BW.contentID ).empty().append( BW.pageCache[ page ].html );
+			$( '#' + BW.contentID ).trigger( "create" );			
+			BW.createProblem.initialize();
+			BW.showOneSection( "bw_create_problem" );		
 			break;
 		case "view" :
 			BW.setNavbarActiveItem( "view" );
 			if ( parameters.slug ) {
-				if ( parameters.source === "view") parameters[ "back-button-html" ] = "Back to Recently Voted List";
+				page = "vote";
+				BW.currentPage = page;
+				/*if ( parameters.source === "view") parameters[ "back-button-html" ] = "Back to Recently Voted List";
 				else if ( parameters.source === "profile") parameters[ "back-button-html" ] = "Back to Recently Published List";
-				else if ( parameters.source === "vote" ) parameters[ "back-button-html" ] = "Back to Voting Problem";
+				else if ( parameters.source === "vote" ) parameters[ "back-button-html" ] = "Back to Voting Problem";*/
+				$( '#' + BW.contentID ).empty().append( BW.pageCache[ page ].html );
+				$( '#' + BW.contentID ).trigger( "create" );		
+				BW.showOneSection( "bw_voting_problem_default" );	
 				BW.votingProblem.load( parameters );
 			}
 			else {
-				BW.showOneSection( "bw_problem_list" );
+				$( '#' + BW.contentID ).empty().append( BW.pageCache[ page ].html );
+				$( '#' + BW.contentID ).trigger( "create" );				
 				var listParameters = {
 					source: "view",
 					type: "voted",
@@ -267,7 +327,7 @@ BW.loadPage = function( parameters ) {
 			break;
 		case "profile":
 			BW.setNavbarActiveItem( "profile" );
-			BW.showOneSection( "bw_profile" );
+			$( '#' + BW.contentID ).empty().append( BW.pageCache[ page ].html );	
 			BW.currentUser.loadProfile();
 			var listParameters = {
 				source: "profile",
@@ -281,17 +341,24 @@ BW.loadPage = function( parameters ) {
 			break;
 		case "about" :
 			BW.setNavbarActiveItem( "more" );
-			BW.showOneSection( "bw_about" );		
+			$( '#' + BW.contentID ).empty().append( BW.pageCache[ page ].html );		
 			break;
 		case "options" :
 			BW.setNavbarActiveItem( "more" );
-			BW.showOneSection( "bw_options" );
+			$( '#' + BW.contentID ).empty().append( BW.pageCache[ page ].html );
+			$( '#' + BW.contentID ).trigger( "create" );
+			BW.currentOptions.initializeAll();
 			break;
 		default:
 			alert( "Cannot load unknown section " + page );
 			break;
 	}
+};
 
+
+/** Load page content from cache */
+BW.loadContent = function( page, parameters ) {
+	
 };
 
 /**
@@ -300,7 +367,7 @@ BW.loadPage = function( parameters ) {
 BW.showProblemList = function( parameters ) {
 	data = {
 		start:0,
-		end: 9
+		end: 4
 	};
 	if ( parameters.type === "published" ) {
 		var urlSuffix = "get-recent-published/";
@@ -340,6 +407,7 @@ BW.showProblemList = function( parameters ) {
 					html += '<img src="' + icon + '" class="ui-li-icon"/>';
 					html += '<div>';
 					var hand = new Bridge.Hand( 'n' );
+					hand.disableEventTrigger();
 					hand.setHand(answer.lin_str);
 					html += hand.toHTML();
 					html += '</div>';
@@ -358,6 +426,8 @@ BW.showProblemList = function( parameters ) {
 			var list = $( this.parameters.containerID );
 			list.empty().append( html );	
 			list.trigger( "create" );
+			//if ( source === "profile" ) BW.showOneSection( "bw_profile" );
+			//else if ( source === "view" ) BW.showOneSection( "bw_problem_list" );
 		},
 		failCallback: function( message ) { 
 			$( "#bw-error-message" ).empty().append( message );
@@ -392,6 +462,7 @@ BW.showRecentVote = function() {
 				var answer = answers[0];
 				BW.problems[ answer.slug ] = answer;
 				var hand = new Bridge.Hand( 'n' );
+				hand.disableEventTrigger();
 				hand.setHand( answer.lin_str );
 				html = "";
 				html += hand.toHTML();
@@ -402,11 +473,10 @@ BW.showRecentVote = function() {
 				}
 				else html +=  ' ' + answer.answer;
 				//html = '<a class="bw-no-margin-top ui-btn" role="page" data-name="view" data-page="view" data-slug="' + answer.slug + '">' + html + '</a>';
-				html = '<a class="ui-btn ui-icon-carat-d ui-btn-icon-right bw-no-margin-top bw-problem-summary-button" data-source="vote" data-page="view" data-slug="' + answer.slug + '">' + html + '</a>';
+				html = '<a class="ui-btn ui-icon-carat-d ui-btn-icon-right bw-no-margin bw-no-padding bw-problem-summary-button" data-source="vote" data-page="view" data-slug="' + answer.slug + '">' + html + '</a>';
 				$( container ).empty().append( html );
-				// Redraw cards
-				BW.votingProblem.positionCards();
 			}
+			BW.hideLoadingDialog();
 		},
 		failCallback: function( message ) { 
 			$( container ).empty().append( "Unable to load Recent Vote" ); 
@@ -482,101 +552,96 @@ BW.getAvatarLink = function( avatar ) {
 
 
 /**
- * The hash change handler.
- * Dispatches to appropriate handler based on action and passes the hash parameters
+ * Things to do when resize happens
  */
-BW.loadPage1 = function( page, parameters ) {	
-	$( "#bw-voting-problem-recent" ).hide();
-	$( "#popupMenu" ).popup( "close" );
-	BW.showLoadingDialog( "Loading Page" );
-	if ( BW.currentUser.isLoggedIn ) {
-		$( "a[role='page']" ).removeClass( "ui-disabled" );
-		var pages = [ "vote.html", "options.html", "create.html", "view.html", "profile.html", "more.html", "about.html" ];
-		if ( !_.indexOf( pages, page ) === -1 ) {
-			BW.hideLoadingDialog();
-			alert( "Unknown page : " + page );
-			return;
-		}
-		if ( page === "more.html" ) {
-			BW.hideLoadingDialog();
-			$( "#popupMenu" ).popup( "open", { positionTo: "#more-tab" } );
-		}
-		else {
-			if ( _.has( BW.pageCache, page ) ) {
-				$( '#' + BW.contentID ).empty().append( BW.pageCache[ page ] );
-				BW.hideLoadingDialog();
-				BW.pageLoaded( page, parameters );
-			}
-			else {
-				$.get( page, function( html ) {
-					BW.pageCache[ page ] = html;
-					$( '#' + BW.contentID ).empty().append( BW.pageCache[ page ] );
-					BW.hideLoadingDialog();
-					BW.pageLoaded( page, parameters );
-				});
-			}	
-		}		
+BW.resizeHandler = function( initial ) {
+	if ( typeof initial === "undefined" ) initial = false;
+	var styleElement = $( "#bw-computed-styles" );
+	var style = "\n";
+	var screenWidth = $( window ).width();
+	var cardWidth = 158;
+	var cardHeight = 220;
+	
+	// Card Deck
+	var fullWidth = 13 * cardWidth;
+	var scalingFactor = screenWidth/fullWidth;
+	if ( scalingFactor > 1 ) scalingFactor = 1;
+	var newWidth = cardWidth * scalingFactor;
+	var newHeight = cardHeight * scalingFactor;
+	style += "\t.bw-card-deck-field-cards {\n";
+	style += "\t\twidth:" + newWidth + "px;\n";
+	style += "\t\theight:" + newHeight + "px;\n";
+	style += "\t}\n";
+	
+	// Hand diagram
+	var overlap = 0.75;
+	var fullWidth = (1-overlap) * 12 * cardWidth + cardWidth;
+	var scalingFactor = screenWidth/fullWidth;
+	if ( scalingFactor > 1 ) scalingFactor = 1;
+	var classPrefix = ".bw-hand-images-field-cards";
+	style += "\t" + classPrefix + " {\n";
+	style += "\t\twidth: " + ( cardWidth * scalingFactor ) + "px;\n";
+	style += "\t\theight: " + ( cardHeight * scalingFactor ) + "px;\n";
+	style += "\t}\n";
+	var overlapWidth = overlap * cardWidth * scalingFactor;
+	var left = 0;
+	for( var i = 1; i <= 12; ++i ) {
+		left += overlapWidth;
+		style += "\t" + classPrefix + "-" + i + " {\n";
+		style += "\t\tleft: -" + left + "px;\n";
+		style += "\t}\n";
+	}	
+	style += "\n";	
+	
+	screenWidth = screenWidth - 20;
+	var maxWidth = 394;
+	// Concise bidding box
+	classPrefix = ".bw-bidding-box-field";
+	if ( screenWidth > maxWidth ) screenWidth = maxWidth;
+	var heightRatio = 40/40;
+	var fontRatio = 28/40;
+	var width = screenWidth/8;
+	var height = width * heightRatio;
+	var fontSize = width * fontRatio;
+	style += "\t" + classPrefix + " {\n";
+	style += "\t\twidth: " + width + "px;\n";
+	style += "\t\theight: " + height + "px;\n"
+	style += "\t\tline-height: " + height + "px;\n";
+	style += "\t\tfont-size: " + fontSize + "px;\n";
+	style += "\t}\n";
+	
+	// Full bidding box	
+	classPrefix = ".bw-bidding-box-full-field";
+	heightRatio = 35/50;
+	fontRatio = 20/50;
+	width = screenWidth/5;
+	height = width * heightRatio;
+	fontSize = width * fontRatio;
+	style += "\t" + classPrefix + " {\n";
+	style += "\t\twidth: " + width + "px;\n";
+	style += "\t\theight: " + height + "px;\n"
+	style += "\t\tline-height: " + height + "px;\n";
+	style += "\t\tfont-size: " + fontSize + "px;\n";
+	style += "\t}\n";	
+	
+	width = screenWidth/3;
+	var suffixes = [ 'p', 'x', 'r', 'allpass', 'reset', 'undo' ];
+	for( var i = 0; i < suffixes.length; ++i ) {
+		suffixes[i] = classPrefix + '-calls-' + suffixes[i];
 	}
-	else {
-		$( "a[role='page']" ).addClass( "ui-disabled" );
-		BW.hideLoadingDialog();
-		BW.currentUser.showLoginForm();
+	style += "\t" + suffixes.join( ',' ) + " {\n";
+	style += "\t\twidth: " + width + "px;\n";
+	style += "\t\theight: " + height + "px;\n"
+	style += "\t\tline-height: " + height + "px;\n";
+	style += "\t\tfont-size: " + fontSize + "px;\n";
+	style += "\t}\n";
+		
+	styleElement.empty().append( style );
+	
+	if ( !initial ) {
+		if ( BW.currentPage === "vote" ) BW.votingProblem.resize();
 	}
 };
-
-/**
- * Actions after page is loaded.
- * @param {object} parameters the associative array of hash parameters
- */
-BW.pageLoaded1 = function( page, parameters ) {
-	if ( page === "options.html" ) {
-		BW.currentOptions.initializeAll();
-		$( ".bw-options" ).change( function() {
-			var name = $( this ).attr( "name" );
-			var type = $( this ).attr( "type" )
-			if ( type === "checkbox" ) {
-				var value = $( this ).prop( "checked" );
-			}
-			else {
-				var value = $( this ).val();
-			}
-			BW.currentOptions.change( name, value );		
-		});
-		BW.setNavbarActiveItem( "more.html" );
-	}
-	else if ( page === "vote.html" ) {
-		BW.setNavbarActiveItem( "vote.html" );
-		BW.votingProblem.initialize();
-	}
-	else if ( page === "create.html" ) {
-		BW.setNavbarActiveItem( "create.html" );
-		BW.createProblem.initialize();
-	}
-	else if ( page === "profile.html" ) {
-		BW.setNavbarActiveItem( "profile.html" );
-		BW.currentUser.loadProfile();
-		BW.recentlyPublishedProblems.showRecentlyPublishedList();
-	}
-	else if ( page === "view.html" ) {
-		BW.setNavbarActiveItem( "view.html" );
-		if ( parameters.hasOwnProperty( "slug" ) ) {
-			BW.viewProblem.initialize( parameters );
-		}
-		else {
-			BW.viewProblem.showList();
-		}
-	}
-	else if ( page === "about.html" ) {
-		BW.setNavbarActiveItem( "more.html" );
-	}	
-	else {
-		alert( "Unknown page : " + page );
-		return;
-	}	
-	$( '#' + BW.contentID ).trigger( "create" );
-};
-
-
 
 
 

@@ -7,11 +7,6 @@ if ( typeof BW === "undefined" ) BW = {};
 BW.VotingProblem = function( containerID ) {
 	this.containerID = containerID;
 	this.containerPrefix = "bw-voting-problem";
-
-	// Resolutions
-	this.maxResizing = 414;
-	this.biddingBoxFieldClass = ".bw-bidding-box-field";
-	this.biddingBoxDimensions = null;
 	
 	// used by bidding box
 	this.selectedLevel = null;
@@ -28,15 +23,330 @@ BW.VotingProblem = function( containerID ) {
 	this.backButtonParameters = null;
 	
 	
-	/** All clicks and event handlers */
-	// Window resize or orientation change
-	this.resizeBiddingBox();
-	this.resizeCards();
-	$( window ).on( "orientationchange", { problem: this }, function( e ) {
-		e.data.problem.resizeCards();
-		e.data.problem.resizeBiddingBox();
-	});	
+	/** All clicks and event handlers */	
+	this.enableClicksAndSwipes();
+};
+
+/**
+ * Construct the id based on prefix and passed name
+ */
+BW.VotingProblem.prototype.getID = function( name, addHash ) {
+	if ( typeof addHash === "undefined" ) addHash = true;
+	var id = ( addHash ? '#' : '' ) + this.containerPrefix + '-' + name;
+	return id;
+};
+
+/**
+ * Load a problem
+ */
+BW.VotingProblem.prototype.load = function( parameters) {
+	if ( typeof parameters === "undefined" ) parameters = {};
+	this.parameters = parameters;
+	data = {};
+	if ( parameters.hasOwnProperty( "exclude" ) ) data[ "exclude" ] = parameters.exclude;
+	if ( parameters.hasOwnProperty( "slug") ) {
+		var urlSuffix = "get-problem/" + parameters.slug + '/';
+		var method = "GET";
+	}
+	else {
+		var urlSuffix = "get-voting-problem/";
+		var method = "POST";
+	}
 	
+	var restParameters = {
+		urlSuffix: urlSuffix,
+		loadingMessage: "Getting Problem",
+		method: method,
+		context: this,
+		data: data,
+		successCallback: function( data ) {
+			if ( data.hasOwnProperty( "alldone" ) && data.alldone ) {
+				BW.showOneSection( "bw_voting_problem_empty" );
+			}
+			else {
+				BW.showOneSection( "bw_voting_problem" );
+				this.context.show( data );
+			}			
+		},
+		failCallback: function( message ) { 
+			$( "#bw-error-message" ).empty().append( message );
+			BW.showOneSection( "bw_error" );
+		}
+	};
+	BW.ajax( restParameters );
+	return false;		
+};
+
+/**
+ * Show the problem info
+ */
+BW.VotingProblem.prototype.showInfo = function() {
+	var deal = this.deal;
+	var next = deal.getAuction().getNextToCall();
+	// Image
+	$( this.getID( "author-image" ) ).attr( "src", this.avatarLink).attr( "alt", this.author );
+	
+	var seats = [ "1st", "2nd", "3rd", "4th" ];
+	var position = 0;
+	var dealer = deal.getDealer();
+	while( dealer !== next ) {
+		position++;
+		dealer = Bridge.getLHO( dealer );
+	}
+	var fields = {
+		"author-name": this.author + " asks...",
+		"dealer": seats[ position ] + " Seat",
+		"scoring": BW.scoringTypes[ deal.getScoring() ],
+		"vulnerability": Bridge.vulnerabilities[ deal.getVulnerability() ].name + " Vul",
+		"description": deal.getNotes()
+	};
+	for( var field in fields ) {
+		var selector = this.getID( field );
+		$( selector ).empty().append( fields[ field ] );		
+	}	
+};
+
+
+/**
+ * Show the problem hand
+ */
+BW.VotingProblem.prototype.showHand = function() {
+	var deal = this.deal;
+	var hand = deal.getHand( this.direction );
+	var config = {
+		prefix: "bw-hand-images",
+		alternateSuitColor: true,
+		show: {
+			direction: false,
+			name: false,
+			text: false,
+			suit: false
+		},
+		tags: Bridge.getSpanConfig( "bw-hand-images" ),
+		data: {},
+		classes: {},
+		idPrefix: "h",
+		containerID: this.getID( "hand", false ),
+		registerChangeHandler: false
+	};		
+	hand.toHTML( config );
+};
+
+
+/**
+ * Show the problem auction
+ */
+BW.VotingProblem.prototype.showAuction = function() {
+	var deal = this.deal;
+	var auction = deal.getAuction();	
+	var config = {
+		prefix: "bw-auction-diagram",
+		show: {
+			direction: true
+		},
+		tags: Bridge.getDivConfig( "bw-auction-diagram" ),
+		data: {},
+		classes: {},
+		idPrefix: "a",
+		containerID: this.getID( "auction", false ),
+		registerChangeHandler: false,
+		addQuestionMark: true
+	};	
+	var aID = config.idPrefix + "-" + config.prefix;	
+	auction.toHTML( config );	
+};
+
+/**
+ * Show bidding box
+ */
+BW.VotingProblem.prototype.showBiddingBox = function() {
+	
+	if ( this.type === "lead" ) {
+		$( this.getID( "call" ) ).hide();
+		return;
+	}
+	else $( this.getID( "call" ) ).show();
+	var deal = this.deal;
+	var auction = deal.getAuction();
+	var prefix = "bw-bidding-box";
+	var config = { 
+		prefix: prefix,
+		layout: "concise-level", 
+		containerID: this.getID( "bidding-box-level", false ), 
+		idPrefix: "l",
+		show: { allpass: false, undo: false, reset: false },
+		tags: Bridge.getSpanConfig( prefix ),
+		registerChangeHandler: false
+	};		
+	auction.toBiddingBox( config );
+	config = { 
+		prefix: prefix,
+		layout: "concise-calls", 
+		containerID: this.getID( "bidding-box-strain", false ), 
+		idPrefix: "s",
+		show: { allpass: false, undo: false, reset: false },
+		tags: Bridge.getSpanConfig( prefix ),
+		registerChangeHandler: false
+	};		
+	auction.toBiddingBox( config );	
+};
+
+/**
+ * Show the problem auction
+ */
+BW.VotingProblem.prototype.showQuestion = function( show ) {
+	if ( typeof show === "undefined" ) show = true;
+	var id = this.getID( "question" );
+	if ( !show ) $( id ).hide();
+	else {
+		var question = '';
+		var changeVote = ( this.data.hasOwnProperty( "my_answer" ) && this.data[ "my_answer" ] );
+		question += ( changeVote ? "Change" : "What is");
+		question += " your " + ( this.data.type.toLowerCase() === "bidding" ? "Call" : "Lead" ) + "?";
+		$( id ).empty().append( question ).show();	
+	}
+};
+
+/**
+ * Show the problem auction
+ */
+BW.VotingProblem.prototype.showAnswerPublicly = function( show ) {
+	var id = this.getID( "answer-publicly" );
+	if ( typeof show === "undefined" ) show = true;
+	$( id ).prop( "checked", BW.currentOptions.get( "bw-option-answerPublicly" ) );
+	if ( show ) $( id ).show();
+	else $( id ).hide();
+};
+
+/**
+ * Show buttons
+ */
+BW.VotingProblem.prototype.showButtons = function() {
+	var voteButton = $( this.getID( "button-vote" ) );
+	var abstainButton = $( this.getID( "button-abstain" ) );
+	var skipButton = $( this.getID( "button-skip" ) );
+	
+	voteButton.addClass( "ui-disabled" ).show();
+	
+	if ( this.type === "bidding" ) abstainButton.show();
+	else abstainButton.hide();
+	
+	if ( this.parameters.hasOwnProperty( "slug") ) skipButton.hide();
+	else skipButton.show();
+};
+
+/**
+ * Show back button or not
+ */
+BW.VotingProblem.prototype.showBackButton = function() {
+	var id = $( this.getID( "button-back" ) );
+	if ( this.parameters.hasOwnProperty( "source" ) ) {
+		id.data( "page", this.parameters[ "source" ] ).empty().append( this.parameters[ "back-button-html" ] ).show();
+	}
+	else {
+		id.hide();
+	}
+};
+
+/**
+ * Show the votes
+ */
+BW.VotingProblem.prototype.showVotes = function() {
+	$( this.getID( "votes-container" ) ).show();
+	var votesTable = BW.VotingProblem.getVotesTable( this.data );
+	$( this.getID( "votes" ) ).empty().html( votesTable );
+	$( this.getID( "public" ) ).prop( "checked", this.data.my_answer.public ).checkboxradio('refresh');
+	var showResponsesButton = $( this.getID( "votes-button" ) );
+	if ( this.data.my_answer.public ) {
+		showResponsesButton .show();
+	}
+	else {
+		showResponsesButton.hide();
+	}	
+};
+
+/**
+ * Show the VotingProblem
+ * @param {string} data - the data returned for voting problem
+ */
+BW.VotingProblem.prototype.show = function( data ) {
+	this.data = data;
+	this.selectedLevel = null;
+	this.selectedCall = null;
+	this.selectedCard = null;
+	this.selectedCardOrder = null;
+	var deal = new Bridge.Deal();
+	deal.disableEventTrigger();
+	deal.setDealer( data.dealer );
+	deal.setVulnerability( data.vulnerability );
+	deal.getAuction().fromString( data.auction );
+	var next = deal.getAuction().getNextToCall();
+	this.direction = next;
+	deal.getHand( next ).setHand( data.lin_str );
+	deal.setNotes( data.description );
+	deal.setScoring( data.scoring );
+	this.slug = data.slug;
+	this.type = data.type.toLowerCase();
+	this.author = data.author;
+	this.avatarLink = BW.getAvatarLink( data.avatar );
+	this.deal = deal;
+	
+	//this.showBackButton();
+	this.showInfo();
+	this.showAuction();
+	this.showHand();
+	this.showQuestion( false );
+	this.showBiddingBox();
+	this.showAnswerPublicly( false );
+	this.showButtons();
+	var alreadyVoted = ( this.data.hasOwnProperty( "my_answer" ) && this.data[ "my_answer" ] );	
+	if ( !alreadyVoted ) {
+		$( this.getID( "votes-container" ) ).hide();
+		
+	}
+	else {
+		this.showVotes();
+	}
+	this.resize( alreadyVoted );
+};
+
+BW.VotingProblem.prototype.resize = function() {
+	var alreadyVoted = ( this.data.hasOwnProperty( "my_answer" ) && this.data[ "my_answer" ] );	
+	var totalContentHeight = $(window).height() - ( $("#myheader").height() + $("#myfooter").height() + 7);
+	var ids = [ "bw-voting-problem-call", "bw-voting-problem-info", "bw-voting-problem-buttons"];
+	if ( !this.parameters.hasOwnProperty( "slug") ) ids.push( "bw-recent-vote-container" );
+	if ( alreadyVoted ) ids.push( "bw-voting-problem-votes-container" );
+	var fixedHeight = 0;
+	_.each( ids, function( id ) {
+		console.log( id + " = " + $( "#" + id ).height() )
+		fixedHeight += $( "#" + id ).height();
+	}, this );
+	var fluidHeight = totalContentHeight - fixedHeight;
+	console.log( "total = " + totalContentHeight );
+	console.log( "fixed = " + fixedHeight );
+	console.log( "fluid = " + fluidHeight );
+	$( "#bw-voting-problem-hand" ).height( fluidHeight/2 );
+	$( "#bw-voting-problem-auction-description" ).height( fluidHeight/2 );
+	var cardHeight = $( ".bw-hand-images-field-cards" ).height();
+	var containerHeight = fluidHeight / 2;
+	if ( containerHeight > 220 ) containerHeight = 220;
+	$( ".bw-hand-images-field-cards" ).height( containerHeight );
+	console.log( "auction = " + $( "#bw-voting-problem-hand" ).height() );
+	console.log( "hand = " + $( "#bw-voting-problem-auction-description" ).height() );
+};
+
+/**
+ * Get the auction for this problem.
+ */
+BW.VotingProblem.prototype.getAuction = function() {
+	return this.deal.getAuction();
+};
+
+
+/**
+ * Enable/Disable previous/next clicks and swipes
+ */
+BW.VotingProblem.prototype.enableClicksAndSwipes = function() {
 	// Show public responses.
 	$( document ).on( "click", "#bw-voting-problem-public-votes-button", { problem: this }, function( e ) {
 		data = {};
@@ -179,429 +489,7 @@ BW.VotingProblem = function( containerID ) {
 			card.addClass( "bw-card-selected" );
 			$( "#bw-voting-problem-button-vote" ).removeClass( "ui-disabled" );
 		}
-	});	
-};
-
-/**
- * Construct the id based on prefix and passed name
- */
-BW.VotingProblem.prototype.getID = function( name, addHash ) {
-	if ( typeof addHash === "undefined" ) addHash = true;
-	var id = ( addHash ? '#' : '' ) + this.containerPrefix + '-' + name;
-	return id;
-};
-
-/**
- * Load a problem
- */
-BW.VotingProblem.prototype.load = function( parameters) {
-	if ( typeof parameters === "undefined" ) parameters = {};
-	this.parameters = parameters;
-	data = {};
-	if ( parameters.hasOwnProperty( "exclude" ) ) data[ "exclude" ] = parameters.exclude;
-	if ( parameters.hasOwnProperty( "slug") ) {
-		var urlSuffix = "get-problem/" + parameters.slug + '/';
-		var method = "GET";
-	}
-	else {
-		var urlSuffix = "get-voting-problem/";
-		var method = "POST";
-	}
-	
-	var restParameters = {
-		urlSuffix: urlSuffix,
-		loadingMessage: "Getting Problem",
-		method: method,
-		context: this,
-		data: data,
-		successCallback: function( data ) {
-			if ( data.hasOwnProperty( "alldone" ) && data.alldone ) {
-				BW.showOneSection( "bw_voting_problem_empty" );
-			}
-			else {
-				BW.showOneSection( "bw_voting_problem" );
-				this.context.show( data );
-			}			
-		},
-		failCallback: function( message ) { 
-			$( "#bw-error-message" ).empty().append( message );
-			BW.showOneSection( "bw_error" );
-		}
-	};
-	BW.ajax( restParameters );
-	return false;		
-};
-
-/**
- * Show the problem info
- */
-BW.VotingProblem.prototype.showInfo = function() {
-	var deal = this.deal;
-	var next = deal.getAuction().getNextToCall();
-	// Image
-	$( this.getID( "author-image" ) ).attr( "src", this.avatarLink).attr( "alt", this.author );
-	
-	var seats = [ "1st", "2nd", "3rd", "4th" ];
-	var position = 0;
-	var dealer = deal.getDealer();
-	while( dealer !== next ) {
-		position++;
-		dealer = Bridge.getLHO( dealer );
-	}
-	var fields = {
-		"author-name": this.author + " asks...",
-		"dealer": seats[ position ] + " Seat",
-		"scoring": BW.scoringTypes[ deal.getScoring() ],
-		"vulnerability": Bridge.vulnerabilities[ deal.getVulnerability() ].name + " Vul",
-		"description": deal.getNotes()
-	};
-	for( var field in fields ) {
-		var selector = this.getID( field );
-		$( selector ).empty().append( fields[ field ] );		
-	}	
-};
-
-
-/**
- * Show the problem hand
- */
-BW.VotingProblem.prototype.showHand = function() {
-	var deal = this.deal;
-	var hand = deal.getHand( this.direction );
-	var config = {
-		prefix: "bw-hand-images",
-		alternateSuitColor: true,
-		show: {
-			direction: false,
-			name: false,
-			text: false,
-			suit: false
-		},
-		tags: Bridge.getSpanConfig( "bw-hand-images" ),
-		data: {},
-		classes: {},
-		idPrefix: "h",
-		containerID: this.getID( "hand", false ),
-		registerChangeHandler: false
-	};		
-	hand.toHTML( config );
-};
-
-
-/**
- * Position hand diagram with overlapping cards
- */
-BW.VotingProblem.prototype.resizeCards = function( parameters ) {
-	var styleID = "bw-voting-problem-hand-style";
-	if ( $( "#" + styleID ).length <= 0 ) {
-		$( document.head ).append( "<style id='" + styleID + "'></style>" );
-	}
-	var styleElement = $( "#" + styleID );	
-	if ( typeof parameters === "undefined" ) parameters = {};
-	if ( !parameters.container ) parameters.container = window;
-	var screenWidth = $( parameters.container ).width();
-	var cardWidth = (parameters.width ? parameters.width : 158);
-	var cardHeight = (parameters.height ? parameters.height : 220);
-	var overlap = (parameters.overlap ? parameters.overlap : 0.75);
-	var fullWidth = (1-overlap) * 12 * cardWidth + cardWidth;
-	var scalingFactor = screenWidth/fullWidth;
-	if ( scalingFactor > 1 ) scalingFactor = 1;
-	var classPrefix = (parameters.classPrefix ? parameters.classPrefix : ".bw-hand-images-field-cards");
-	var style = classPrefix + " { ";
-	style += "width: " + ( cardWidth * scalingFactor ) + "px;";
-	style += "height: " + ( cardHeight * scalingFactor ) + "px;";
-	style += "} ";
-	var overlapWidth = overlap * cardWidth * scalingFactor;
-	var left = 0;
-	for( var i = 1; i <= 12; ++i ) {
-		left += overlapWidth;
-		style += classPrefix + "-" + i + "{ left: -" + left + "px;} ";
-	}	
-	styleElement.empty().append( style );	
-};
-
-/**
- * Show the problem auction
- */
-BW.VotingProblem.prototype.showAuction = function() {
-	var deal = this.deal;
-	var auction = deal.getAuction();	
-	var config = {
-		prefix: "bw-auction-diagram",
-		show: {
-			direction: true
-		},
-		tags: Bridge.getDivConfig( "bw-auction-diagram" ),
-		data: {},
-		classes: {},
-		idPrefix: "a",
-		containerID: this.getID( "auction", false ),
-		registerChangeHandler: false,
-		addQuestionMark: true
-	};	
-	var aID = config.idPrefix + "-" + config.prefix;	
-	auction.toHTML( config );	
-};
-
-/**
- * Show bidding box
- */
-BW.VotingProblem.prototype.showBiddingBox = function() {
-	
-	if ( this.type === "lead" ) {
-		$( this.getID( "call" ) ).hide();
-		return;
-	}
-	else $( this.getID( "call" ) ).show();
-	var deal = this.deal;
-	var auction = deal.getAuction();
-	var prefix = "bw-bidding-box";
-	var config = { 
-		prefix: prefix,
-		layout: "concise-level", 
-		containerID: this.getID( "bidding-box-level", false ), 
-		idPrefix: "l",
-		show: { allpass: false, undo: false, reset: false },
-		tags: Bridge.getSpanConfig( prefix ),
-		registerChangeHandler: false
-	};		
-	auction.toBiddingBox( config );
-	config = { 
-		prefix: prefix,
-		layout: "concise-calls", 
-		containerID: this.getID( "bidding-box-strain", false ), 
-		idPrefix: "s",
-		show: { allpass: false, undo: false, reset: false },
-		tags: Bridge.getSpanConfig( prefix ),
-		registerChangeHandler: false
-	};		
-	auction.toBiddingBox( config );	
-	//this.resizeBiddingBox();
-};
-
-/**
- * Resize the bidding box
- */
-BW.VotingProblem.prototype.resizeBiddingBox = function() {
-	var styleID = "bw-voting-problem-bb-style";
-	if ( $( "#" + styleID ).length <= 0 ) {
-		$( document.head ).append( "<style id='" + styleID + "'></style>" );
-	}
-	var styleElement = $( "#" + styleID );
-	var screenWidth = $( window ).width();
-	if ( screenWidth > 375 ) screenWidth = 375;
-	var heightRatio = 40/40;
-	var fontRatio = 28/40;
-	var width = screenWidth/8;
-	var height = width * heightRatio;
-	var fontSize = width * fontRatio;
-	var style = this.biddingBoxFieldClass + " {";
-	style += "width: " + width + "px;";
-	style += "height: " + height + "px;"
-	style += "line-height: " + height + "px;";
-	style += "font-size: " + fontSize + "px;";
-	style += "}";
-	styleElement.empty().append( style );		
-};
-
-/**
- * Show the problem auction
- */
-BW.VotingProblem.prototype.showQuestion = function() {
-	var question = '';
-	var changeVote = ( this.data.hasOwnProperty( "my_answer" ) && this.data[ "my_answer" ] );
-	question += ( changeVote ? "Change" : "What is");
-	question += " your " + ( this.data.type.toLowerCase() === "bidding" ? "Call" : "Lead" ) + "?";
-	$( this.getID( "question" ) ).empty().append( question );	
-};
-
-/**
- * Show the problem auction
- */
-BW.VotingProblem.prototype.showAnswerPublicly = function( show ) {
-	var id = this.getID( "answer-publicly" );
-	if ( typeof show === "undefined" ) show = true;
-	$( id ).prop( "checked", BW.currentOptions.get( "bw-option-answerPublicly" ) );
-	if ( show ) $( id ).show();
-	else $( id ).hide();
-};
-
-/**
- * Show buttons
- */
-BW.VotingProblem.prototype.showButtons = function() {
-	var voteButton = $( this.getID( "button-vote" ) );
-	var abstainButton = $( this.getID( "button-abstain" ) );
-	var skipButton = $( this.getID( "button-skip" ) );
-	
-	voteButton.addClass( "ui-disabled" ).show();
-	
-	if ( this.type === "bidding" ) abstainButton.show();
-	else abstainButton.hide();
-	
-	if ( this.parameters.hasOwnProperty( "slug") ) skipButton.hide();
-	else skipButton.show();
-};
-
-/**
- * Show back button or not
- */
-BW.VotingProblem.prototype.showBackButton = function() {
-	var id = $( this.getID( "button-back" ) );
-	if ( this.parameters.hasOwnProperty( "source" ) ) {
-		id.data( "page", this.parameters[ "source" ] ).empty().append( this.parameters[ "back-button-html" ] ).show();
-	}
-	else {
-		id.hide();
-	}
-};
-
-/**
- * Show the votes
- */
-BW.VotingProblem.prototype.showVotes = function() {
-	var alreadyVoted = ( this.data.hasOwnProperty( "my_answer" ) && this.data[ "my_answer" ] );	
-	if ( !alreadyVoted ) {
-		$( this.getID( "votes-container" ) ).hide();
-		return;
-	}
-	$( this.getID( "votes-container" ) ).show();
-	var votesTable = BW.VotingProblem.getVotesTable( this.data );
-	$( this.getID( "votes" ) ).empty().html( votesTable );
-	$( this.getID( "public" ) ).prop( "checked", this.data.my_answer.public ).checkboxradio('refresh');
-	var showResponsesButton = $( this.getID( "votes-button" ) );
-	if ( this.data.my_answer.public ) {
-		showResponsesButton .show();
-	}
-	else {
-		showResponsesButton.hide();
-	}	
-};
-
-/**
- * Show the VotingProblem
- * @param {string} data - the data returned for voting problem
- */
-BW.VotingProblem.prototype.show = function( data ) {
-	this.data = data;
-	this.selectedLevel = null;
-	this.selectedCall = null;
-	this.selectedCard = null;
-	this.selectedCardOrder = null;
-	var deal = new Bridge.Deal();
-	deal.setDealer( data.dealer );
-	deal.setVulnerability( data.vulnerability );
-	deal.getAuction().fromString( data.auction );
-	var next = deal.getAuction().getNextToCall();
-	this.direction = next;
-	deal.getHand( next ).setHand( data.lin_str );
-	deal.setNotes( data.description );
-	deal.setScoring( data.scoring );
-	this.slug = data.slug;
-	this.type = data.type.toLowerCase();
-	this.author = data.author;
-	this.avatarLink = BW.getAvatarLink( data.avatar );
-	this.deal = deal;
-	
-	this.showBackButton();
-	this.showInfo();
-	this.showHand();
-	this.showAuction();
-	this.showQuestion();
-	this.showBiddingBox();
-	this.showAnswerPublicly( false );
-	this.showButtons();
-	this.showVotes();
-};
-
-
-/**
- * Get the auction for this problem.
- */
-BW.VotingProblem.prototype.getAuction = function() {
-	return this.deal.getAuction();
-};
-
-
-/**
- * Enable/Disable previous/next clicks and swipes
- */
-BW.VotingProblem.prototype.enableClicksAndSwipes = function() {
-	$( "#bw-voting-problem-call" ).on( "click", ".bw-bidding-box-field-level.enabled", { problem: this }, function( e ) {
-		var level = _.parseInt( $( this ).data( "level" ) );
-		if ( e.data.problem.selectedLevel === level ) return;
-		var auction = e.data.problem.getAuction();
-		$( "#bw-voting-problem-button-vote" ).addClass( "ui-disabled" );	
-		auction.setSelectedLevel( level );
-		e.data.problem.selectedCall = null;
-		e.data.problem.selectedLevel = level;
-		auction.toBiddingBox( e.data.problem.bbConfig );		
-		
-	});
-	$( "#bw-voting-problem-button-abstain" ).click( { problem: this }, function( e ) {
-		var answerPublic = $( "#bw-voting-problem-public" ).prop( "checked" );
-		e.data.problem.abstain( answerPublic );
-	});	
-	$( "#bw-voting-problem-call" ).on( "click", ".bw-bidding-box-field-calls.enabled", { problem: this }, function( e ) {
-		var call = $( this ).data( "suit" );
-		if ( e.data.problem.selectedCall ) {
-			var selector = ".bw-bidding-box-field-calls-" + e.data.problem.selectedCall;
-			$( selector ).removeClass( "selected" );
-		}
-		var auction = e.data.problem.getAuction();
-		e.data.problem.selectedCall = call;
-		if ( !Bridge.isStrain( call ) ) {
-			e.data.problem.selectedLevel = null;
-			auction.unsetSelectedLevel();
-			auction.toBiddingBox( e.data.problem.bbConfig );	
-		}
-		var selector = ".bw-bidding-box-field-calls-" + call;
-		$( selector ).addClass( "selected" );
-		$( "#bw-voting-problem-button-vote" ).removeClass( "ui-disabled" );	
 	});		
-	
-	$( "#" + this.containerID ).on( "click", ".bw-card-deck-field-cards", { problem: this }, function( e ) {
-		var problem = e.data.problem;
-		if ( problem.selectedCard ) {
-			$( "[data-card='" + problem.selectedCard + "']" ).removeClass( "bw-card-deck-selected" );
-		}
-		problem.selectedCard = $( this ).data( "card" );
-		problem.selectedCardOrder = $( this ).data( "card-order" );
-		$( "[data-card='" + problem.selectedCard + "']" ).addClass( "bw-card-deck-selected" );
-		$( "#bw-voting-problem-button-vote" ).removeClass( "ui-disabled" );
-	});
-	$( "#bw-voting-problem-button-vote" ).click( { problem: this }, function( e ) {
-		var answerPublic = $( "#bw-voting-problem-public" ).prop( "checked" );
-		var problem = e.data.problem;
-		if ( problem.type === "bidding" ) {
-			var answer = 0;
-			var strain = problem.selectedCall;
-			if ( strain === 'p' ) answer = 37;
-			else if ( strain === 'x' ) answer = 35;
-			else if ( strain === 'r' ) answer = 36;
-			else {
-				answer = (problem.selectedLevel - 1) * 5;
-				switch ( strain ) {
-					case 'n' : 
-						answer++;
-					case 's' : 
-						answer++;			
-					case 'h' : 
-						answer++;			
-					case 'd' : 
-						answer++;	
-					default:
-						break;
-				}
-			}
-			e.data.problem.vote( answer, answerPublic );
-		}
-		else {
-			var answer = e.data.problem.selectedCardOrder;
-			var answerPublic = $( "#bw-voting-problem-public" ).prop( "checked" );
-			e.data.problem.vote( answer, answerPublic );
-		}
-	});	
 	
 };
 
