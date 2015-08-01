@@ -1,13 +1,10 @@
 <div data-section="bw_create_problem">
 	<div id="bw-create-problem">		
-		<div id="bw-create-problem-loading">
-			<img class="center" src="img/ajax-loader.gif"/>
-		</div>
 		<div id="bw-create-problem-hand-diagram-container">
 			<legend>You are South. You Hold:</legend>
 			<div id="bw-create-problem-hand-diagram" class="bw-create-problem-row bw-create-problem-hand-diagram"></div>
 		</div>
-		<div data-stage="type" id="bw-create-problem-type" class="ui-field-contain">
+		<div data-stage="type" id="bw-create-problem-type" class="bw-create-problem-content ui-field-contain">
 			<fieldset data-role="controlgroup" data-type="horizontal" class="bw-create-problem-controlgroup">
 				<legend>Choose Problem Type:</legend>
 				<label for="bw-create-problem-type-bidding">Bidding</label>
@@ -16,11 +13,11 @@
 				<input data-type="lead" class="bw-create-problem-type" type="radio" name="bw-create-problem-type" id="bw-create-problem-type-lead">	
 			</fieldset>
 		</div>		
-		<div data-stage="hand" id="bw-create-problem-hand" class="ui-field-contain">
-			<legend>Set Hand:</legend>
+		<div data-stage="hand" id="bw-create-problem-hand" class="bw-create-problem-content ui-field-contain">
+			<legend id="bw-create-problem-card-deck-text">Set Hand:</legend>
 			<div id="bw-create-problem-card-deck" class="bw-create-problem-row bw-create-problem-card-deck"></div>	
 		</div>
-		<div data-stage="scoring" id="bw-create-problem-scoring-container">
+		<div data-stage="scoring" id="bw-create-problem-scoring-container" class="bw-create-problem-content">
 			<fieldset class="ui-field-contain">
 				<label for="bw-create-problem-scoring">Form of Scoring:</label>
 				<select data-field="scoring" class="bw-create-problem-field " id="bw-create-problem-scoring" name="bw-create-problem-scoring">
@@ -64,56 +61,51 @@
 			</div>				
 		
 		</div>	
-		<div data-stage="auction" id="bw-create-problem-auction" class="ui-field-contain">
+		<div data-stage="auction" id="bw-create-problem-auction" class="bw-create-problem-content ui-field-contain">
 			<legend>Set Auction:</legend>
 			<div id="bw-create-problem-auction-diagram" class="bw-create-problem-row bw-create-problem-auction-diagram"></div>
 			<div id="bw-create-problem-bidding-box" class="center bw-create-problem-row bw-create-problem-bidding-box"></div>	
 		</div>		
-		<div data-stage="text" id="bw-create-problem-text" class="ui-field-contain">
+		<div data-stage="text" id="bw-create-problem-text" class="bw-create-problem-content ui-field-contain">
 			<fieldset>
 				<label for="bw-create-problem-description">Extra Information:</label>
 				<textarea placeholder="Provide any additional information that might be relevant to the problem like meaning of bids etc." data-field="notes" class="bw-create-problem-field bw-create-problem-notes" id="bw-create-problem-notes" name="bw-create-problem-description"></textarea>	
 			</fieldset>	
 		</div>		
-		<div data-stage="preview" id="bw-create-problem-preview-container" class="ui-field-contain">
-			<legend>Preview:</legend>
-			<div id="bw-create-problem-preview" class="bw-create-problem-row bw-create-problem-preview">
-				<ul class="bw-create-problem-preview" data-role="listview" data-inset="true">
-					<li>
-						<img id="bw-create-problem-preview-author-image" class="bw-create-problem-preview-author-image"/>
-						<div id="bw-create-problem-preview-author-name" class="bw-create-problem-preview-row bw-create-problem-preview-author-name">
-						</div>
-						<div class="bw-create-problem-preview-row bw-create-problem-preview-information">
-							<span id="bw-create-problem-preview-dealer" class="bw-create-problem-preview-row bw-create-problem-preview-information-field">
-							</span>, 
-							<span id="bw-create-problem-preview-scoring" class="bw-create-problem-preview-row bw-create-problem-preview-information-field">
-							</span>, 
-							<span id="bw-create-problem-preview-vulnerability" class="bw-create-problem-preview-row bw-create-problem-preview-information-field">
-							</span>						
-						</div>
-					</li>
-					<li>
-						You Hold:
-						<div id="bw-create-problem-preview-hand" class="bw-create-problem-preview-hand"></div>		
-					</li>
-					<li>
-						<div id="bw-create-problem-preview-description" class="bw-create-problem-preview-row bw-create-problem-preview-description"></div>
-					</li>
-					<li>
-						<div id="bw-create-problem-preview-auction" class="bw-create-problem-preview-auction"></div>
-						<div id="bw-create-problem-preview-question" class="bw-create-problem-preview-row bw-create-problem-preview-question"></div>						
-					</li>
-				</ul>
+		<div data-stage="preview" id="bw-create-problem-preview-container" class="bw-create-problem-content ui-field-contain">
+			<legend id="bw-create-problem-preview-text">Preview:</legend>
+			<div id="bw-create-problem-preview-info">
+				<img id="bw-create-problem-preview-author-image" class="float-left bw-create-problem-preview-author-image"/>
+				<div id="bw-create-problem-preview-author-name" class="bw-create-problem-preview-row bw-create-problem-preview-author-name"></div>
+				<div class="bw-create-problem-preview-row bw-create-problem-preview-information">
+					<span id="bw-create-problem-preview-scoring" class="bw-create-problem-preview-row bw-create-problem-preview-information-field">
+					</span>,			
+					<span id="bw-create-problem-preview-dealer" class="bw-create-problem-preview-row bw-create-problem-preview-information-field">
+					</span>,  
+					<span id="bw-create-problem-preview-vulnerability" class="bw-create-problem-preview-row bw-create-problem-preview-information-field">
+					</span>	
+					you hold:					
+				</div>
 			</div>
+			<div id="bw-create-problem-preview-auction-description">
+				<span id="bw-create-problem-preview-auction" class="float-left bw-create-problem-preview-auction"></span>
+				<span id="bw-create-problem-preview-description" class=" bw-create-problem-preview-row bw-create-problem-preview-description"></span>					
+			</div>		
+			<div class="clearfix"></div>				
+			<div id="bw-create-problem-preview-hand" class="bw-create-problem-preview-hand"></div>		
+			<div id="bw-create-problem-preview-call" class="bw-create-problem-preview-row bw-create-problem-preview-call">
+				<div id="bw-create-problem-preview-bidding-box-level" class="center"></div>
+				<div id="bw-create-problem-preview-bidding-box-strain" class="center"></div>
+			</div>		
 		</div>					
 	</div>	
-	<div class="ui-grid-a">
+	<div id="bw-create-problem-previous-next-buttons" class="ui-grid-a bw-no-text-shadow">
 		<div class="ui-block-a">
-			<a id="previous-stage-button" class="ui-disabled ui-btn ui-corner-all ui-shadow ui-icon-arrow-l ui-btn-icon-left">Previous</a>
+			<a id="previous-stage-button" class="bw-no-margin ui-disabled ui-btn ui-corner-all ui-shadow ui-icon-arrow-l ui-btn-icon-left">Previous</a>
 		</div>
 
 		<div class="ui-block-b">
-			<a id="next-stage-button" class="ui-btn ui-corner-all ui-shadow ui-icon-arrow-r ui-btn-icon-right">Next</a>				
+			<a id="next-stage-button" class="bw-no-margin ui-btn ui-corner-all ui-shadow ui-icon-arrow-r ui-btn-icon-right">Next</a>				
 		</div>
 	</div>	
 </div>

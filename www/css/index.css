@@ -10,6 +10,10 @@ body {
 	border: 2px solid red; 
 }
 
+.bw-create-hand-images-column-cards {
+	display: inline-block;
+}
+
 #bw-create-problem-auction-diagram {
 	overflow:auto;
 	height: 104px;

@@ -373,12 +373,12 @@ BW.CreateProblem.prototype.resizeHandImages = function( height ) {
 	var fullWidth = (1-overlap) * 12 * cardWidth + cardWidth;
 	var scalingFactor = screenWidth/fullWidth;
 	if ( scalingFactor > 1 ) scalingFactor = 1;
+	var overlapWidth = overlap * cardWidth * scalingFactor;
 	var classPrefix = ".bw-create-hand-images-field-cards";
 	style += "\t" + classPrefix + " {\n";
 	style += "\t\twidth: " + ( cardWidth * scalingFactor ) + "px;\n";
 	style += "\t\theight: " + ( cardHeight * scalingFactor ) + "px;\n";
 	style += "\t}\n";
-	var overlapWidth = overlap * cardWidth * scalingFactor;
 	var left = 0;
 	for( var i = 1; i <= 12; ++i ) {
 		left += overlapWidth;
@@ -386,8 +386,9 @@ BW.CreateProblem.prototype.resizeHandImages = function( height ) {
 		style += "\t\tleft: -" + left + "px;\n";
 		style += "\t}\n";
 	}	
-	style += "\n";		
+	style += "\n";	
 	styleElement.empty().append( style );	
+	$( "#bw-create-problem-hand-diagram" ).height( cardHeight * scalingFactor + 5 );
 };
 
 BW.CreateProblem.prototype.resizeFullBiddingBox = function( height ) {

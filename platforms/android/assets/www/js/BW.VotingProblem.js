@@ -307,32 +307,80 @@ BW.VotingProblem.prototype.show = function( data ) {
 	else {
 		this.showVotes();
 	}
-	this.resize( alreadyVoted );
+	this.resize();
+};
+
+BW.VotingProblem.prototype.resizeBiddingBox = function() {
+	var styleElement = $( "#bw-voting-bidding-box-computed-styles" );
+	var style = "\n";
+	var screenWidth = $( window ).width();
+	var cardWidth = 158;
+	var cardHeight = 220;
+	screenWidth = screenWidth - 20;
+	var maxWidth = 394;
+	if ( screenWidth > maxWidth ) screenWidth = maxWidth;
+	// Concise bidding box
+	classPrefix = ".bw-bidding-box-field";
+	var heightRatio = 40/40;
+	var fontRatio = 28/40;
+	var width = screenWidth/8;
+	var height = width * heightRatio;
+	var fontSize = width * fontRatio;
+	style += "\t" + classPrefix + " {\n";
+	style += "\t\twidth: " + width + "px;\n";
+	style += "\t\theight: " + height + "px;\n"
+	style += "\t\tline-height: " + height + "px;\n";
+	style += "\t\tfont-size: " + fontSize + "px;\n";
+	style += "\t}\n";
+	styleElement.empty().append( style );	
+};
+
+BW.VotingProblem.prototype.resizeHandImages = function( height ) {
+	var styleElement = $( "#bw-voting-hand-images-computed-styles" );
+	var style = "\n";
+	var screenWidth = $( window ).width();
+	var cardWidth = 158;
+	var cardHeight = 220;	
+	var overlap = 0.75;
+	var fullWidth = (1-overlap) * 12 * cardWidth + cardWidth;
+	var scalingFactor = screenWidth/fullWidth;
+	if ( scalingFactor > 1 ) scalingFactor = 1;
+	var newWidth = cardWidth * scalingFactor;
+	var newHeight = height;
+	if ( newHeight > cardHeight ) newHeight = cardHeight;
+	var classPrefix = ".bw-hand-images-field-cards";
+	style += "\t" + classPrefix + " {\n";
+	style += "\t\twidth: " + newWidth + "px;\n";
+	style += "\t\theight: " + newHeight + "px;\n";
+	style += "\t}\n";
+	var overlapWidth = overlap * cardWidth * scalingFactor;
+	var left = 0;
+	for( var i = 1; i <= 12; ++i ) {
+		left += overlapWidth;
+		style += "\t" + classPrefix + "-" + i + " {\n";
+		style += "\t\tleft: -" + left + "px;\n";
+		style += "\t}\n";
+	}	
+	style += "\n";	
+	styleElement.empty().append( style );	
 };
 
 BW.VotingProblem.prototype.resize = function() {
+	this.resizeBiddingBox();
 	var alreadyVoted = ( this.data.hasOwnProperty( "my_answer" ) && this.data[ "my_answer" ] );	
 	var totalContentHeight = $(window).height() - ( $("#myheader").height() + $("#myfooter").height() + 7);
-	var ids = [ "bw-voting-problem-call", "bw-voting-problem-info", "bw-voting-problem-buttons"];
+	var ids = [ "bw-voting-problem-info", "bw-voting-problem-buttons"];
+	if ( this.type === "bidding" ) ids.push( "bw-voting-problem-call" );
 	if ( !this.parameters.hasOwnProperty( "slug") ) ids.push( "bw-recent-vote-container" );
 	if ( alreadyVoted ) ids.push( "bw-voting-problem-votes-container" );
 	var fixedHeight = 0;
 	_.each( ids, function( id ) {
-		console.log( id + " = " + $( "#" + id ).height() )
 		fixedHeight += $( "#" + id ).height();
 	}, this );
 	var fluidHeight = totalContentHeight - fixedHeight;
-	console.log( "total = " + totalContentHeight );
-	console.log( "fixed = " + fixedHeight );
-	console.log( "fluid = " + fluidHeight );
 	$( "#bw-voting-problem-hand" ).height( fluidHeight/2 );
+	this.resizeHandImages( fluidHeight/2 );
 	$( "#bw-voting-problem-auction-description" ).height( fluidHeight/2 );
-	var cardHeight = $( ".bw-hand-images-field-cards" ).height();
-	var containerHeight = fluidHeight / 2;
-	if ( containerHeight > 220 ) containerHeight = 220;
-	$( ".bw-hand-images-field-cards" ).height( containerHeight );
-	console.log( "auction = " + $( "#bw-voting-problem-hand" ).height() );
-	console.log( "hand = " + $( "#bw-voting-problem-auction-description" ).height() );
 };
 
 /**

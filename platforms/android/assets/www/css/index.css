@@ -10,7 +10,16 @@ body {
 	border: 2px solid red; 
 }
 
-#bw-voting-problem-auction-description {
+.bw-create-hand-images-column-cards {
+	display: inline-block;
+}
+
+#bw-create-problem-auction-diagram {
+	overflow:auto;
+	height: 104px;
+}
+
+#bw-voting-problem-auction-description, #bw-create-problem-preview-auction-description {
 	overflow:auto;
 }
 
@@ -22,6 +31,9 @@ body {
 	margin: 0;
 }
 
+#bw-create-problem-notes {
+	overflow: auto;
+}
 
 #mycontent {
 	padding: 0;
@@ -95,6 +107,12 @@ body {
 	color: #ffffff;
 }
 
+.bw-create-problem-content {
+	border: none;
+	padding: 0;
+	margin: 0;
+}
+
 .bw-hand-images-field-cards- {
 	position: static;
 }
@@ -103,7 +121,7 @@ body {
 	background-color: #cccccc;
 }
 
-.bw-voting-problem-row {
+.bw-voting-problem-row, .bw-create-problem-preview-row {
 	white-space : normal;
 }
 
@@ -188,11 +206,8 @@ span.bw-auction-diagram-field {
 	line-height: 35px;
 	text-align: center;
 	font-weight: bold;
-	border: 1px solid blue;
+	border: 1px solid black;
 	background: #ccf;
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
-	border-radius: 3px;
 }
 
 
@@ -351,7 +366,7 @@ span.bw-auction-diagram-field {
 
 .bw-card-deck-field-cards.assigned {
 	background-image: url(img/cards/logo_card_white.png);
-	background-size: contain;
+	background-size: cover;
 }
 
 .bw-card-deck-field-reset {
@@ -367,7 +382,7 @@ span.bw-auction-diagram-field {
 	color: #FFFFFF;
 }
 
-#bw-voting-problem-hand, #bw-create-problem-card-deck, #bw-create-problem-hand-diagram, #bw-voting-problem-call, #bw-create-problem-bidding-box  {
+#bw-voting-problem-hand, #bw-create-problem-preview-hand, #bw-create-problem-card-deck, #bw-create-problem-hand-diagram, #bw-voting-problem-call, #bw-create-problem-bidding-box  {
 	white-space:nowrap;
 }
 
@@ -430,5 +445,9 @@ span.bw-auction-diagram-field {
 
 .bw-no-padding {
 	padding: 0;
+}
+
+.bw-no-text-shadow {
+	text-shadow: none;
 }
 

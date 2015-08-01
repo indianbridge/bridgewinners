@@ -149,8 +149,8 @@ BW.initialize = function() {
 	});
 	
 	// Resize event
-	BW.resizeHandler( true );
-	$( window ).on( "orientationchange", function() { BW.resizeHandler( false ); } );
+	//BW.resizeHandler( true );
+	$( window ).on( "orientationchange", function() { BW.resizeHandler(); } );
 	
 	// Loaded problems
 	BW.problems = {};
@@ -210,7 +210,6 @@ else {
  * Perform an Ajax request.
  */
 BW.ajax = function( parameters ) {
-	console.log( parameters.urlSuffix );
 	var url = encodeURI( BW.sitePrefix + BW.restAPIPrefix + parameters.urlSuffix );
 	var showDialog = !parameters.hasOwnProperty( "showDialog" ) || parameters.showDialog;
 	if ( showDialog ) {
@@ -275,6 +274,7 @@ BW.loadPage = function( parameters ) {
 		});
 		return;
 	}
+	var totalContentHeight = $(window).height() - ( $("#myheader").height() + $("#myfooter").height() + 5);
 	switch( page ) {
 		case "login" :
 			BW.disableNavbar();
@@ -324,6 +324,7 @@ BW.loadPage = function( parameters ) {
 				};				
 				BW.showProblemList( listParameters );
 			}
+			$( "#mycontent" ).css( { "min-height": totalContentHeight } );
 			break;
 		case "profile":
 			BW.setNavbarActiveItem( "profile" );
@@ -335,6 +336,7 @@ BW.loadPage = function( parameters ) {
 				containerID: "#bw-published-problem-list-contents"
 			};
 			BW.showProblemList( listParameters );
+			$( "#mycontent" ).css( { "min-height": totalContentHeight } );
 			break;
 		case "more" :
 			$( "#bw-popup-menu" ).popup( "open" );
@@ -555,92 +557,8 @@ BW.getAvatarLink = function( avatar ) {
  * Things to do when resize happens
  */
 BW.resizeHandler = function( initial ) {
-	if ( typeof initial === "undefined" ) initial = false;
-	var styleElement = $( "#bw-computed-styles" );
-	var style = "\n";
-	var screenWidth = $( window ).width();
-	var cardWidth = 158;
-	var cardHeight = 220;
-	
-	// Card Deck
-	var fullWidth = 13 * cardWidth;
-	var scalingFactor = screenWidth/fullWidth;
-	if ( scalingFactor > 1 ) scalingFactor = 1;
-	var newWidth = cardWidth * scalingFactor;
-	var newHeight = cardHeight * scalingFactor;
-	style += "\t.bw-card-deck-field-cards {\n";
-	style += "\t\twidth:" + newWidth + "px;\n";
-	style += "\t\theight:" + newHeight + "px;\n";
-	style += "\t}\n";
-	
-	// Hand diagram
-	var overlap = 0.75;
-	var fullWidth = (1-overlap) * 12 * cardWidth + cardWidth;
-	var scalingFactor = screenWidth/fullWidth;
-	if ( scalingFactor > 1 ) scalingFactor = 1;
-	var classPrefix = ".bw-hand-images-field-cards";
-	style += "\t" + classPrefix + " {\n";
-	style += "\t\twidth: " + ( cardWidth * scalingFactor ) + "px;\n";
-	style += "\t\theight: " + ( cardHeight * scalingFactor ) + "px;\n";
-	style += "\t}\n";
-	var overlapWidth = overlap * cardWidth * scalingFactor;
-	var left = 0;
-	for( var i = 1; i <= 12; ++i ) {
-		left += overlapWidth;
-		style += "\t" + classPrefix + "-" + i + " {\n";
-		style += "\t\tleft: -" + left + "px;\n";
-		style += "\t}\n";
-	}	
-	style += "\n";	
-	
-	screenWidth = screenWidth - 20;
-	var maxWidth = 394;
-	// Concise bidding box
-	classPrefix = ".bw-bidding-box-field";
-	if ( screenWidth > maxWidth ) screenWidth = maxWidth;
-	var heightRatio = 40/40;
-	var fontRatio = 28/40;
-	var width = screenWidth/8;
-	var height = width * heightRatio;
-	var fontSize = width * fontRatio;
-	style += "\t" + classPrefix + " {\n";
-	style += "\t\twidth: " + width + "px;\n";
-	style += "\t\theight: " + height + "px;\n"
-	style += "\t\tline-height: " + height + "px;\n";
-	style += "\t\tfont-size: " + fontSize + "px;\n";
-	style += "\t}\n";
-	
-	// Full bidding box	
-	classPrefix = ".bw-bidding-box-full-field";
-	heightRatio = 35/50;
-	fontRatio = 20/50;
-	width = screenWidth/5;
-	height = width * heightRatio;
-	fontSize = width * fontRatio;
-	style += "\t" + classPrefix + " {\n";
-	style += "\t\twidth: " + width + "px;\n";
-	style += "\t\theight: " + height + "px;\n"
-	style += "\t\tline-height: " + height + "px;\n";
-	style += "\t\tfont-size: " + fontSize + "px;\n";
-	style += "\t}\n";	
-	
-	width = screenWidth/3;
-	var suffixes = [ 'p', 'x', 'r', 'allpass', 'reset', 'undo' ];
-	for( var i = 0; i < suffixes.length; ++i ) {
-		suffixes[i] = classPrefix + '-calls-' + suffixes[i];
-	}
-	style += "\t" + suffixes.join( ',' ) + " {\n";
-	style += "\t\twidth: " + width + "px;\n";
-	style += "\t\theight: " + height + "px;\n"
-	style += "\t\tline-height: " + height + "px;\n";
-	style += "\t\tfont-size: " + fontSize + "px;\n";
-	style += "\t}\n";
-		
-	styleElement.empty().append( style );
-	
-	if ( !initial ) {
-		if ( BW.currentPage === "vote" ) BW.votingProblem.resize();
-	}
+	if ( BW.currentPage === "vote" ) BW.votingProblem.resize();
+	if ( BW.currentPage === "create" ) BW.createProblem.resize();
 };
 
 
