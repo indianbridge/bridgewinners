@@ -1,3 +1,49 @@
+body {
+    overflow: visible;
+}
+
+.green-border { 
+	border: 2px solid #006600; 
+}
+
+.red-border { 
+	border: 2px solid red; 
+}
+
+.bw-create-hand-images-column-cards {
+	display: inline-block;
+}
+
+#bw-create-problem-auction-diagram {
+	overflow:auto;
+	height: 104px;
+}
+
+#bw-voting-problem-auction-description, #bw-create-problem-preview-auction-description {
+	overflow:auto;
+}
+
+#bw-voting-problem-hand {
+	margin-top: 2px;
+}
+
+#bw-voting-problem-description p:first-child {
+	margin: 0;
+}
+
+#bw-create-problem-notes {
+	overflow: auto;
+}
+
+#mycontent {
+	padding: 0;
+}
+
+#bw-voting-problem-info {
+	white-space: nowrap;
+}
+
+
 .center {
 	display:block;
 	margin-left: auto;
@@ -41,10 +87,6 @@
 	background-color: #006600;
 }
 
-#mycontent {
-	padding: 0.1em;
-}
-
 /** Fix to hide vertical scrollbar */
 .ui-content .ui-listview, .ui-panel-inner>.ui-listview { margin:0em}
 
@@ -65,18 +107,21 @@
 	color: #ffffff;
 }
 
+.bw-create-problem-content {
+	border: none;
+	padding: 0;
+	margin: 0;
+}
+
+.bw-hand-images-field-cards- {
+	position: static;
+}
+
 .bw-voting-problem-recent {
 	background-color: #cccccc;
 }
 
-.bw-voting-problem-information-field1 {
-	margin:right: 2px;
-	-webkit-box-shadow: 0 0 12px rgba(0,0,0,.6);
-	-moz-box-shadow: 0 0 12px rgba(0,0,0,.6);
-	box-shadow: 0 0 12px rgba(0,0,0,.6);
-}
-
-.bw-voting-problem-row {
+.bw-voting-problem-row, .bw-create-problem-preview-row {
 	white-space : normal;
 }
 
@@ -90,7 +135,6 @@
 
 .bw-voting-problem-question {
 	font-weight: bold;
-	/*color: blue;*/
 }
 
 .bw-auction-diagram {
@@ -159,14 +203,11 @@ span.bw-auction-diagram-field {
 	font-size: 20px;
 	height: 35px;
 	width: 50px;
-	line-height: 30px;
+	line-height: 35px;
 	text-align: center;
 	font-weight: bold;
-	border: 1px solid blue;
+	border: 1px solid black;
 	background: #ccf;
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
-	border-radius: 3px;
 }
 
 
@@ -224,17 +265,17 @@ span.bw-auction-diagram-field {
 }
 .bw-bidding-box-field {
 	display: inline-block;
-	width: 40px;
-	height: 40px;
-	line-height: 40px;
+	width: 49px;
+	height: 49px;
+	line-height: 49px;
 	text-align: center;
-	font-size: 28px;
+	font-size: 34px;
 	font-weight: bold;
-	border: 1px solid blue;
+	border: 1px solid black;
 	background: #ccf;
-	-moz-border-radius: 3px;
+	/*-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
-	border-radius: 3px;
+	border-radius: 3px;*/
 }
 
 .bw-bidding-box-field.disabled {
@@ -313,7 +354,9 @@ span.bw-auction-diagram-field {
 	color: #000000;	
 }
 
-.bw-card-deck-field-cards {
+
+
+.sriram-card-deck-field-cards {
 	display: inline-block;
 	position: relative;
 	width: 37px;
@@ -322,8 +365,8 @@ span.bw-auction-diagram-field {
 }
 
 .bw-card-deck-field-cards.assigned {
-	background-image: url(img/cards/cb.png);
-	background-size: contain;
+	background-image: url(img/cards/logo_card_white.png);
+	background-size: cover;
 }
 
 .bw-card-deck-field-reset {
@@ -339,291 +382,16 @@ span.bw-auction-diagram-field {
 	color: #FFFFFF;
 }
 
-.bw-card-deck-selected {
+#bw-voting-problem-hand, #bw-create-problem-preview-hand, #bw-create-problem-card-deck, #bw-create-problem-hand-diagram, #bw-voting-problem-call, #bw-create-problem-bidding-box  {
+	white-space:nowrap;
+}
+
+.bw-card-selected {
 	top: -10px;
 	-webkit-filter: sepia(1);
 	filter: sepia(1);
 }
 
-.bw-card-deck-field-cards-s-a {
-        background-image: url(img/cards/sa.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-s-k {
-        background-image: url(img/cards/sk.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-s-q {
-        background-image: url(img/cards/sq.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-s-j {
-        background-image: url(img/cards/sj.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-s-t {
-        background-image: url(img/cards/st.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-s-9 {
-        background-image: url(img/cards/s9.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-s-8 {
-        background-image: url(img/cards/s8.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-s-7 {
-        background-image: url(img/cards/s7.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-s-6 {
-        background-image: url(img/cards/s6.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-s-5 {
-        background-image: url(img/cards/s5.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-s-4 {
-        background-image: url(img/cards/s4.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-s-3 {
-        background-image: url(img/cards/s3.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-s-2 {
-        background-image: url(img/cards/s2.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-s-x {
-        background-image: url(img/cards/sx.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-h-a {
-        background-image: url(img/cards/ha.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-h-k {
-        background-image: url(img/cards/hk.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-h-q {
-        background-image: url(img/cards/hq.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-h-j {
-        background-image: url(img/cards/hj.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-h-t {
-        background-image: url(img/cards/ht.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-h-9 {
-        background-image: url(img/cards/h9.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-h-8 {
-        background-image: url(img/cards/h8.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-h-7 {
-        background-image: url(img/cards/h7.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-h-6 {
-        background-image: url(img/cards/h6.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-h-5 {
-        background-image: url(img/cards/h5.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-h-4 {
-        background-image: url(img/cards/h4.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-h-3 {
-        background-image: url(img/cards/h3.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-h-2 {
-        background-image: url(img/cards/h2.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-h-x {
-        background-image: url(img/cards/hx.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-d-a {
-        background-image: url(img/cards/da.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-d-k {
-        background-image: url(img/cards/dk.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-d-q {
-        background-image: url(img/cards/dq.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-d-j {
-        background-image: url(img/cards/dj.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-d-t {
-        background-image: url(img/cards/dt.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-d-9 {
-        background-image: url(img/cards/d9.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-d-8 {
-        background-image: url(img/cards/d8.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-d-7 {
-        background-image: url(img/cards/d7.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-d-6 {
-        background-image: url(img/cards/d6.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-d-5 {
-        background-image: url(img/cards/d5.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-d-4 {
-        background-image: url(img/cards/d4.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-d-3 {
-        background-image: url(img/cards/d3.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-d-2 {
-        background-image: url(img/cards/d2.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-d-x {
-        background-image: url(img/cards/dx.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-c-a {
-        background-image: url(img/cards/ca.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-c-k {
-        background-image: url(img/cards/ck.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-c-q {
-        background-image: url(img/cards/cq.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-c-j {
-        background-image: url(img/cards/cj.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-c-t {
-        background-image: url(img/cards/ct.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-c-9 {
-        background-image: url(img/cards/c9.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-c-8 {
-        background-image: url(img/cards/c8.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-c-7 {
-        background-image: url(img/cards/c7.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-c-6 {
-        background-image: url(img/cards/c6.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-c-5 {
-        background-image: url(img/cards/c5.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-c-4 {
-        background-image: url(img/cards/c4.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-c-3 {
-        background-image: url(img/cards/c3.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-c-2 {
-        background-image: url(img/cards/c2.png);
-        background-size: contain;
-}
-
-.bw-card-deck-field-cards-c-x {
-        background-image: url(img/cards/cx.png);
-        background-size: contain;
-}
 
 .bw-problem-answer {
 	text-align: right;
@@ -669,5 +437,17 @@ span.bw-auction-diagram-field {
 
 .bw-no-margin-top {
 	margin-top: 0;
+}
+
+.bw-no-margin {
+	margin: 0;
+}
+
+.bw-no-padding {
+	padding: 0;
+}
+
+.bw-no-text-shadow {
+	text-shadow: none;
 }
 
