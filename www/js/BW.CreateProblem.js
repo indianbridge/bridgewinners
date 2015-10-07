@@ -616,7 +616,7 @@ BW.CreateProblem.prototype.enableClicksAndSwipes = function() {
 	}
 	if ( this.stage !== BW.CreateProblem.Stages.PREVIEW ) text = "Continue";
 	this.updateButton( id, text, disabled );
-	if ( !disabled ) {
+	if ( !disabled && this.stage !== BW.CreateProblem.Stages.PREVIEW ) {
 		$( '#' + this.containerID ).on( "swipeleft", { problem: this }, function( e ) {
 			e.data.problem.nextStage();
 		});			
