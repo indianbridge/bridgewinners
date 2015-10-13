@@ -8,17 +8,24 @@ BW.User = function( containerID ) {
 	this.accessTokenLocalStorageVariableName = "BW.accessToken";
 	this.accessToken = localStorage.getItem( this.accessTokenLocalStorageVariableName );
 	this.containerID = containerID;
-	this.username = null;
+	//this.username = null;
 	this.isLoggedIn = false;
+	this.isAuthenticated = false;
 	this.userInfo = null;
+	this.userName = null;
 	
 	// Setup login and logout submit button handler
-	$( document ).on( "click", "#logout-submit-button", { user: this }, function( e ) {
-		e.data.user.logout();
-		event.preventDefault();
-		event.stopPropagation();
-		return false;			
+	$( document ).on( "click", "#login-submit-button", { user: this }, function( e ) {
+		var username = $( "#username" ).val();
+		var password = $( "#password" ).val();		
+		e.data.user.login( username, password );
+		return false;		
 	});	
+	
+	$( document ).on( "click", "#logout-submit-button" , { user: this }, function( e ) {
+		e.data.user.logout();
+		return false;			
+	});
 	
 	// Login Status change handler
 	$( document ).on( "BW.loginStatus:changed", function( e, user ) {
@@ -36,22 +43,12 @@ BW.User.prototype.initialize = function() {
 	}
 	else {
 		this.isLoggedIn = false;
-		BW.loadPage( "vote.html" );
+		BW.disableNavbar();
+		BW.hideLoadingDialog();
+		BW.loadPage( { page: "login" } );
+		//BW.showOneSection( "bw_login" );
+		//this.showLoginForm();
 	}
-};
-
-/**
- * Get Link to avatar
- */
-BW.User.prototype.getAvatarLink = function() {
-	return BW.sitePrefix + this.userInfo.avatar;
-};
-
-/**
- * Get Name
- */
-BW.User.prototype.getName = function() {
-	return this.userInfo.name;
 };
 
 /**
@@ -60,7 +57,7 @@ BW.User.prototype.getName = function() {
 BW.User.prototype.authenticateAccessToken = function() {
 	// Connect to BW server to check if access token is still ok
 	var parameters = {
-		urlSuffix: "rest-api/v1/get-profile/",
+		urlSuffix: "get-profile/",
 		loadingMessage: "Authenticating Access",
 		method: "GET",
 		context: this,
@@ -78,11 +75,19 @@ BW.User.prototype.authenticateAccessToken = function() {
 BW.User.prototype.authenticationSuccessCallback = function( data ) {
 	var user = this.context;
 	user.isLoggedIn = true;
+	user.isAuthenticated = true;
 	user.userInfo = data;
 	user.username = data.username;
-	var avatarLink = user.getAvatarLink();
+	var avatarLink = BW.getAvatarLink( user.userInfo.avatar );
 	$( "#header-avatar" ).attr( "src", avatarLink );
-	BW.loadPage( "vote.html" );
+	user.updateButtonStatus();
+	var parameters = {
+		page: "vote",
+		slug: null
+	}
+	BW.enableNavbar();
+	BW.currentOptions.loadAll( user.username );
+	BW.loadPage( parameters );
 };
 
 /**
@@ -95,21 +100,6 @@ BW.User.prototype.authenticationFailCallback = function( message ) {
 	user.accessToken = null;
 	$( "#login-submit-button" ).prop( "disabled", false );
 	$( document ).trigger( "BW.loginStatus:changed", [user] );	
-};
-
-
-/**
- * Get access token
- */
-BW.User.prototype.getAccessToken = function() {
-	return this.accessToken;
-};
-
-/**
- * Get the locat storage variable name
- */
-BW.User.prototype.getLocalStorageVariableName = function( itemName ) {
-	return "BW::" + this.username + "_" + itemName;
 };
 
 
@@ -147,13 +137,31 @@ BW.User.prototype.showLoginForm = function() {
 	$( "#" + this.containerID ).empty().append( html );
 	//if ( this.username ) $( "#username" ).val(  this.username );
 	$( "#" + this.containerID ).trigger( "create" );
-	$( "#login-submit-button").click( { user: this }, function( e ) {
-		var username = $( "#username" ).val();
-		var password = $( "#password" ).val();		
-		e.data.user.login( username, password );
-		return false;		
-	});	
+	
 };
+
+/**
+ * Get the avatar link for current user.
+ */
+BW.User.prototype.getAvatarLink = function() {
+	var userInfo = this.userInfo;
+	return BW.getAvatarLink( userInfo.avatar );	
+};
+
+/**
+ * Load the user profile information.
+ * @param {object} userInfo json object containing user information to be displayed.
+ */
+BW.User.prototype.loadProfile = function() {
+	var userInfo = this.userInfo;
+	var html = "";
+	var avatarLink = BW.getAvatarLink( userInfo.avatar );
+	html += "<img style='vertical-align:middle;' height='25px' src='" + avatarLink + "'/>Welcome " + userInfo.name;
+	$( "#profile-content" ).empty().html( html );
+};
+
+
+/** LOGIN and LOGOUT */
 
 /**
  * Try to login to BW server.
@@ -161,9 +169,8 @@ BW.User.prototype.showLoginForm = function() {
  * @param {string} password the password to use to login
  */
 BW.User.prototype.login = function( username, password ) {
-	$( "#login-submit-button" ).prop( "disabled", true );
 	var parameters = {
-		urlSuffix: "rest-api/v1/get-auth-token/",
+		urlSuffix: "get-auth-token/",
 		loadingMessage: "Logging In",
 		method: "POST",
 		context: this,
@@ -184,7 +191,6 @@ BW.User.prototype.loginSuccessCallback = function( data ) {
 	user.isLoggedIn = true;
 	user.accessToken = data[ "token" ];
 	localStorage.setItem( user.accessTokenLocalStorageVariableName, user.accessToken );
-	$( "#login-submit-button" ).prop( "disabled", false );
 	$( document ).trigger( "BW.loginStatus:changed", [user] );
 };
 
@@ -196,7 +202,6 @@ BW.User.prototype.loginFailCallback = function( message ) {
 	alert( message ); 
 	user.isLoggedIn = false;
 	user.accessToken = null;
-	$( "#login-submit-button" ).prop( "disabled", false );
 	$( document ).trigger( "BW.loginStatus:changed", [user] );	
 };
 
@@ -206,21 +211,34 @@ BW.User.prototype.loginFailCallback = function( message ) {
 BW.User.prototype.logout = function() {
 	this.isLoggedIn = false;
 	this.accessToken = null;
+	this.isAuthenticated = false;
 	this.userInfo = null;
 	localStorage.removeItem( this.accessTokenLocalStorageVariableName );
 	$( "#header-avatar" ).attr( "src", "" );
+	this.updateButtonStatus();
 	$( document ).trigger( "BW.loginStatus:changed", [this] );
 };
 
+
+/** UTILITIES */
+
 /**
- * Load the user profile information.
- * @param {object} userInfo json object containing user information to be displayed.
+ * Get access token
+ * Used by all ajax requests
  */
-BW.User.prototype.loadProfile = function() {
-	var userInfo = this.userInfo;
-	var html = "";
-	var avatarLink = BW.sitePrefix + this.userInfo.avatar;
-	html += "<img style='vertical-align:middle;' height='25px' src='" + avatarLink + "'/>Welcome " + userInfo.name;
-	$( "#profile-content" ).empty().html( html );
+BW.User.prototype.getAccessToken = function() {
+	return this.accessToken;
 };
 
+/**
+ * Get Name
+ */
+BW.User.prototype.getName = function() {
+	return this.userInfo.name;
+};
+
+/** Update the login/logout button status */
+BW.User.prototype.updateButtonStatus = function() {
+	$( "#logout-submit-button" ).prop( "disabled", !this.isLoggedIn );
+	$( "#login-submit-button" ).prop( "disabled", this.isLoggedIn );
+};
