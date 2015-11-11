@@ -1,14 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget android-versionCode="7" id="com.bridgewinners.mobile" ios-CFBundleVersion="0.0.1" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <preference name="loglevel" value="DEBUG" />
-    <feature name="SplashScreen">
-        <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
-        <param name="onload" value="true" />
-    </feature>
-    <feature name="StatusBar">
-        <param name="android-package" value="org.apache.cordova.statusbar.StatusBar" />
-        <param name="onload" value="true" />
-    </feature>
     <icon density="hdpi" src="res/android/drawable-hdpi/Icon.png" />
     <icon density="ldpi" src="res/android/drawable-ldpi/Icon.png" />
     <icon density="mdpi" src="res/android/drawable-mdpi/Icon.png" />

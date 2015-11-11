@@ -1,0 +1,231 @@
+.bw-create-hand-images-field-cards, .bw-hand-images-field-cards, .bw-card-deck-field-cards {
+	display: inline-block;
+	position: relative;
+	width: 0px;
+	height: 0px;
+	cursor: pointer;
+}
+.bw-create-hand-images-field-cards-s-a, .bw-hand-images-field-cards-s-a, .bw-card-deck-field-cards-s-a {
+	background-image: url(img/cards/sa.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-s-k, .bw-hand-images-field-cards-s-k, .bw-card-deck-field-cards-s-k {
+	background-image: url(img/cards/sk.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-s-q, .bw-hand-images-field-cards-s-q, .bw-card-deck-field-cards-s-q {
+	background-image: url(img/cards/sq.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-s-j, .bw-hand-images-field-cards-s-j, .bw-card-deck-field-cards-s-j {
+	background-image: url(img/cards/sj.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-s-t, .bw-hand-images-field-cards-s-t, .bw-card-deck-field-cards-s-t {
+	background-image: url(img/cards/st.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-s-9, .bw-hand-images-field-cards-s-9, .bw-card-deck-field-cards-s-9 {
+	background-image: url(img/cards/s9.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-s-8, .bw-hand-images-field-cards-s-8, .bw-card-deck-field-cards-s-8 {
+	background-image: url(img/cards/s8.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-s-7, .bw-hand-images-field-cards-s-7, .bw-card-deck-field-cards-s-7 {
+	background-image: url(img/cards/s7.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-s-6, .bw-hand-images-field-cards-s-6, .bw-card-deck-field-cards-s-6 {
+	background-image: url(img/cards/s6.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-s-5, .bw-hand-images-field-cards-s-5, .bw-card-deck-field-cards-s-5 {
+	background-image: url(img/cards/s5.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-s-4, .bw-hand-images-field-cards-s-4, .bw-card-deck-field-cards-s-4 {
+	background-image: url(img/cards/s4.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-s-3, .bw-hand-images-field-cards-s-3, .bw-card-deck-field-cards-s-3 {
+	background-image: url(img/cards/s3.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-s-2, .bw-hand-images-field-cards-s-2, .bw-card-deck-field-cards-s-2 {
+	background-image: url(img/cards/s2.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-s-x, .bw-hand-images-field-cards-s-x, .bw-card-deck-field-cards-s-x {
+	background-image: url(img/cards/sx.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-h-a, .bw-hand-images-field-cards-h-a, .bw-card-deck-field-cards-h-a {
+	background-image: url(img/cards/ha.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-h-k, .bw-hand-images-field-cards-h-k, .bw-card-deck-field-cards-h-k {
+	background-image: url(img/cards/hk.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-h-q, .bw-hand-images-field-cards-h-q, .bw-card-deck-field-cards-h-q {
+	background-image: url(img/cards/hq.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-h-j, .bw-hand-images-field-cards-h-j, .bw-card-deck-field-cards-h-j {
+	background-image: url(img/cards/hj.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-h-t, .bw-hand-images-field-cards-h-t, .bw-card-deck-field-cards-h-t {
+	background-image: url(img/cards/ht.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-h-9, .bw-hand-images-field-cards-h-9, .bw-card-deck-field-cards-h-9 {
+	background-image: url(img/cards/h9.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-h-8, .bw-hand-images-field-cards-h-8, .bw-card-deck-field-cards-h-8 {
+	background-image: url(img/cards/h8.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-h-7, .bw-hand-images-field-cards-h-7, .bw-card-deck-field-cards-h-7 {
+	background-image: url(img/cards/h7.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-h-6, .bw-hand-images-field-cards-h-6, .bw-card-deck-field-cards-h-6 {
+	background-image: url(img/cards/h6.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-h-5, .bw-hand-images-field-cards-h-5, .bw-card-deck-field-cards-h-5 {
+	background-image: url(img/cards/h5.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-h-4, .bw-hand-images-field-cards-h-4, .bw-card-deck-field-cards-h-4 {
+	background-image: url(img/cards/h4.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-h-3, .bw-hand-images-field-cards-h-3, .bw-card-deck-field-cards-h-3 {
+	background-image: url(img/cards/h3.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-h-2, .bw-hand-images-field-cards-h-2, .bw-card-deck-field-cards-h-2 {
+	background-image: url(img/cards/h2.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-h-x, .bw-hand-images-field-cards-h-x, .bw-card-deck-field-cards-h-x {
+	background-image: url(img/cards/hx.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-d-a, .bw-hand-images-field-cards-d-a, .bw-card-deck-field-cards-d-a {
+	background-image: url(img/cards/da.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-d-k, .bw-hand-images-field-cards-d-k, .bw-card-deck-field-cards-d-k {
+	background-image: url(img/cards/dk.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-d-q, .bw-hand-images-field-cards-d-q, .bw-card-deck-field-cards-d-q {
+	background-image: url(img/cards/dq.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-d-j, .bw-hand-images-field-cards-d-j, .bw-card-deck-field-cards-d-j {
+	background-image: url(img/cards/dj.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-d-t, .bw-hand-images-field-cards-d-t, .bw-card-deck-field-cards-d-t {
+	background-image: url(img/cards/dt.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-d-9, .bw-hand-images-field-cards-d-9, .bw-card-deck-field-cards-d-9 {
+	background-image: url(img/cards/d9.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-d-8, .bw-hand-images-field-cards-d-8, .bw-card-deck-field-cards-d-8 {
+	background-image: url(img/cards/d8.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-d-7, .bw-hand-images-field-cards-d-7, .bw-card-deck-field-cards-d-7 {
+	background-image: url(img/cards/d7.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-d-6, .bw-hand-images-field-cards-d-6, .bw-card-deck-field-cards-d-6 {
+	background-image: url(img/cards/d6.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-d-5, .bw-hand-images-field-cards-d-5, .bw-card-deck-field-cards-d-5 {
+	background-image: url(img/cards/d5.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-d-4, .bw-hand-images-field-cards-d-4, .bw-card-deck-field-cards-d-4 {
+	background-image: url(img/cards/d4.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-d-3, .bw-hand-images-field-cards-d-3, .bw-card-deck-field-cards-d-3 {
+	background-image: url(img/cards/d3.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-d-2, .bw-hand-images-field-cards-d-2, .bw-card-deck-field-cards-d-2 {
+	background-image: url(img/cards/d2.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-d-x, .bw-hand-images-field-cards-d-x, .bw-card-deck-field-cards-d-x {
+	background-image: url(img/cards/dx.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-c-a, .bw-hand-images-field-cards-c-a, .bw-card-deck-field-cards-c-a {
+	background-image: url(img/cards/ca.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-c-k, .bw-hand-images-field-cards-c-k, .bw-card-deck-field-cards-c-k {
+	background-image: url(img/cards/ck.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-c-q, .bw-hand-images-field-cards-c-q, .bw-card-deck-field-cards-c-q {
+	background-image: url(img/cards/cq.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-c-j, .bw-hand-images-field-cards-c-j, .bw-card-deck-field-cards-c-j {
+	background-image: url(img/cards/cj.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-c-t, .bw-hand-images-field-cards-c-t, .bw-card-deck-field-cards-c-t {
+	background-image: url(img/cards/ct.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-c-9, .bw-hand-images-field-cards-c-9, .bw-card-deck-field-cards-c-9 {
+	background-image: url(img/cards/c9.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-c-8, .bw-hand-images-field-cards-c-8, .bw-card-deck-field-cards-c-8 {
+	background-image: url(img/cards/c8.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-c-7, .bw-hand-images-field-cards-c-7, .bw-card-deck-field-cards-c-7 {
+	background-image: url(img/cards/c7.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-c-6, .bw-hand-images-field-cards-c-6, .bw-card-deck-field-cards-c-6 {
+	background-image: url(img/cards/c6.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-c-5, .bw-hand-images-field-cards-c-5, .bw-card-deck-field-cards-c-5 {
+	background-image: url(img/cards/c5.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-c-4, .bw-hand-images-field-cards-c-4, .bw-card-deck-field-cards-c-4 {
+	background-image: url(img/cards/c4.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-c-3, .bw-hand-images-field-cards-c-3, .bw-card-deck-field-cards-c-3 {
+	background-image: url(img/cards/c3.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-c-2, .bw-hand-images-field-cards-c-2, .bw-card-deck-field-cards-c-2 {
+	background-image: url(img/cards/c2.png);
+	background-size: cover;
+}
+.bw-create-hand-images-field-cards-c-x, .bw-hand-images-field-cards-c-x, .bw-card-deck-field-cards-c-x {
+	background-image: url(img/cards/cx.png);
+	background-size: cover;
+}

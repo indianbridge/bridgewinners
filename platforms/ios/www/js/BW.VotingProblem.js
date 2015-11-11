@@ -211,9 +211,11 @@ BW.VotingProblem.prototype.showQuestion = function( show ) {
  * Show the problem auction
  */
 BW.VotingProblem.prototype.showAnswerPublicly = function( show ) {
-	var id = this.getID( "answer-publicly" );
+	var id = this.getID( "answer-publicly-checkbox" );
 	if ( typeof show === "undefined" ) show = true;
-	$( id ).prop( "checked", BW.currentOptions.get( "bw-option-answerPublicly" ) );
+	var answerPublicly = BW.currentOptions.get( "bw-option-answerPublicly" );
+	$( id ).prop( "checked", answerPublicly );
+	id = this.getID( "answer-publicly" );
 	if ( show ) $( id ).show();
 	else $( id ).hide();
 };
@@ -255,7 +257,7 @@ BW.VotingProblem.prototype.showVotes = function() {
 	$( this.getID( "votes-container" ) ).show();
 	var votesTable = BW.VotingProblem.getVotesTable( this.data );
 	$( this.getID( "votes" ) ).empty().html( votesTable );
-	$( this.getID( "public" ) ).prop( "checked", this.data.my_answer.public ).checkboxradio('refresh');
+	$( this.getID( "answer-publicly-checkbox" ) ).prop( "checked", this.data.my_answer.public ).checkboxradio('refresh');
 	var showResponsesButton = $( this.getID( "votes-button" ) );
 	if ( this.data.my_answer.public ) {
 		showResponsesButton .show();
@@ -485,14 +487,17 @@ BW.VotingProblem.prototype.enableClicksAndSwipes = function() {
 	
 	// Abstain vote	
 	$( document ).on( "click", "#bw-voting-problem-button-abstain", { problem: this }, function( e ) {
-		var answerPublic = $( "#bw-voting-problem-public" ).prop( "checked" );
-		e.data.problem.vote( null, answerPublic );
+		var problem = e.data.problem;
+		//var answerPublic = $( problem.getID( "answer-publicly-checkbox" ) ).prop( "checked" );
+		var answerPublic = BW.currentOptions.get( "bw-option-answerPublicly" );
+		problem.vote( null, answerPublic );
 	});	
 	
 	// Actual vote
 	$( document ).on( "click", "#bw-voting-problem-button-vote", { problem: this }, function( e ) {
-		var answerPublic = $( "#bw-voting-problem-public" ).prop( "checked" );
 		var problem = e.data.problem;
+		//var answerPublic = $( problem.getID( "answer-publicly-checkbox" ) ).prop( "checked" );
+		var answerPublic = BW.currentOptions.get( "bw-option-answerPublicly" );
 		if ( problem.type === "bidding" ) {
 			var answer = 0;
 			var strain = problem.selectedCall;
@@ -518,7 +523,8 @@ BW.VotingProblem.prototype.enableClicksAndSwipes = function() {
 		}
 		else {
 			var answer = e.data.problem.selectedCardOrder;
-			var answerPublic = $( "#bw-voting-problem-public" ).prop( "checked" );
+			//var answerPublic = $( "#bw-voting-problem-public" ).prop( "checked" );
+			var answerPublic = BW.currentOptions.get( "bw-option-answerPublicly" );
 			e.data.problem.vote( answer, answerPublic );
 		}
 	});	
