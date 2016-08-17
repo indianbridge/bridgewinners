@@ -82,7 +82,7 @@ BW.initialize = function() {
 	BW.handDirection = 's';
 	
 	// The address of the BW server
-	BW.sitePrefix = "https://108.166.89.84/";
+	BW.sitePrefix = "https://52.4.5.8/";
 	// the version of the api being used
 	BW.restAPIPrefix = "rest-api/v1/";
 	
