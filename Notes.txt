@@ -1,0 +1,2 @@
+Add adjustPan for android to avoid resizing when keyboard opens
+Add hacks to ignore SSL warning when testing on devserver since certificate is not signed by trusted authority.
