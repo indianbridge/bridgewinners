@@ -1,20 +1,9 @@
-<div data-role="header">
-	<h4>Sign In to access features of this app</h4>
+<link rel="stylesheet" type="text/css" href="css/login.css">
+<div data-enhance="false">
+  <img class="bw-logo" src="img/bw_logo.png" />
+	<input class="username" type="text" name="username" id="username" value="" placeholder="Email or Username" />
+	<input class="password" type="password" name="password" id="password" value="" placeholder="Password" />
+  <button id="login-submit-button" class="clickable bridgewinners">Log In</button>
+  <button class="facebook">Log in with Facebook</button>
+  <button class="google">Log in with Google+</button>
 </div>
-<div data-role="main" class="ui-content">
-	<ul data-role="listview" data-inset="true">
-		<li>
-			<form id="loginForm" data-ajax="false">
-				<div data-role="fieldcontain" class="ui-hide-label">
-					<label for="username">Username:</label>
-					<input type="text" name="username" id="username" value="" placeholder="Email or Username" />
-				</div>
-				<div data-role="fieldcontain" class="ui-hide-label">
-					<label for="password">Password:</label>
-					<input type="password" name="password" id="password" value="" placeholder="Password" />
-				</div>
-				<input type="submit" value="LOG IN" id="login-submit-button">
-			</form>
-		</li>
-	</ul>
-</div>	

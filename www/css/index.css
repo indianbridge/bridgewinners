@@ -1,48 +1,39 @@
+* {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+html {
+   margin: 0px;
+   height: 100%;
+   width: 100%;
+}
+
 body {
-    overflow: visible;
+   margin: 0px;
+   height: 100%;
+   min-height: 100%;
+   width: 100%;
+   font-size: 2.99vh;
+   overflow-y: hidden;
 }
 
-.green-border { 
-	border: 2px solid #006600; 
+#mypage {
+  height: 100%;
 }
 
-.red-border { 
-	border: 2px solid red; 
+.background {
+  background: url(img/bw_background.png) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
-.bw-create-hand-images-column-cards {
-	display: inline-block;
+.no-background {
+  background-image:none;
 }
-
-#bw-create-problem-auction-diagram {
-	overflow:auto;
-	height: 104px;
-}
-
-#bw-voting-problem-auction-description, #bw-create-problem-preview-auction-description {
-	overflow:auto;
-}
-
-#bw-voting-problem-hand {
-	margin-top: 2px;
-}
-
-#bw-voting-problem-description p:first-child {
-	margin: 0;
-}
-
-#bw-create-problem-notes {
-	overflow: auto;
-}
-
-#mycontent {
-	padding: 0;
-}
-
-#bw-voting-problem-info {
-	white-space: nowrap;
-}
-
 
 .center {
 	display:block;
@@ -51,403 +42,10 @@ body {
 	text-align:center;
 }
 
-.float-left {
-	float: left;
-	margin-right: 5px;
+.clickable {
+  cursor: pointer;
 }
 
-.clearfix:after {
-	visibility: hidden;
-	display: block;
-	font-size: 0;
-	content: " ";
-	clear: both;
-	height: 0;
-	}
-* html .clearfix             { zoom: 1; } /* IE6 */
-*:first-child+html .clearfix { zoom: 1; } /* IE7 */
-
-.margin-bottom {
-	margin-bottom:5px;
+.not-clickable {
+  cursor: not-allowed;
 }
-
-
-.clear {
-	clear: both;
-	margin: 0;
-}
-
-.hidden {
-	display: none;
-	visibility: hidden;
-}
-
-#next-stage-button {
-	color: #FFFFFF;
-	background-color: #006600;
-}
-
-/** Fix to hide vertical scrollbar */
-.ui-content .ui-listview, .ui-panel-inner>.ui-listview { margin:0em}
-
-.suit-spades, .suit-clubs, .suit-NT, .bw_spades, .bw_clubs {
-	color: #000000;
-}
-
-.suit-hearts, .suit-diamonds, .bw_diams, .bw_hearts {
-	color: #CB0000;
-}	
-
-.bid-pass { color: #006600; }
-.bid-double { color: #990000; }
-.bid-redouble { color: #000099; }
-
-.vulnerable {
-	background-color: #cc0000;
-	color: #ffffff;
-}
-
-.bw-create-problem-content {
-	border: none;
-	padding: 0;
-	margin: 0;
-}
-
-.bw-hand-images-field-cards- {
-	position: static;
-}
-
-.bw-voting-problem-recent {
-	background-color: #cccccc;
-}
-
-.bw-voting-problem-row, .bw-create-problem-preview-row {
-	white-space : normal;
-}
-
-.bw-published-problem-information { 
-	white-space: normal;
-}
-
-.bw-create-problem-notes {
-	min-height: 100px;
-}
-
-.bw-voting-problem-question {
-	font-weight: bold;
-}
-
-.bw-auction-diagram {
-	display:inline-block;
-	border: 2px solid #006600;
-	font-size: 16px;
-	font-weight: bold;
-	font-family: arial; 
-	border-collapse: collapse;  
-}
-
-span.bw-auction-diagram-field {
-	display: inline-block;
-	width: 32px;
-	text-align:center;
-}
-
-.bw-auction-diagram-content {
-	background-color: #99cccc;
-}
-
-.bw-hand-diagram {
-	display:inline-block;
-	border-right: 2px solid #006600;
-	border-left: 2px solid #006600;
-	border-bottom: 2px solid #006600;
-	font-size: 16px;
-	font-weight: bold;
-	font-family: arial; 
-	border-collapse: collapse;  
-	min-width: 128px;
-}
-
-.hand-diagram-column-suit {
-	padding-left: 5px;
-}
-
-.bw-hand-diagram-field-direction {
-	display: inline-block;
-	width: 32px;
-	text-align:center;
-	background: #336799;
-	color: #FFFFFF;  
-}
-
-.bw-hand-diagram-border-top {
-	border-top: 2px solid #006600;
-}
-
-.bw-hand-diagram-content {
-	background-color: #E2E1B5;
-}
-
-.bw-hand-diagram-field-suit {
-	display: inline-block;
-	width: 32px;
-	text-align:center;
-}
-
-.bw-hand-diagram-field-cards {
-	padding-right: 2px;
-}
-
-.bw-bidding-box-full-field {
-	display: inline-block;
-	font-size: 20px;
-	height: 35px;
-	width: 50px;
-	line-height: 35px;
-	text-align: center;
-	font-weight: bold;
-	border: 1px solid black;
-	background: #ccf;
-}
-
-
-.bw-bidding-box-full-field-calls-p {
-	width: 100px;
-	background-color: #006600;
-	color: #FFFFFF;
-}
-
-.bw-bidding-box-full-field-calls-x {
-	width: 75px;
-	background-color: #990000;
-	color: #FFFFFF;
-	margin-left:2px;
-}
-
-.bw-bidding-box-full-field-calls-r {
-	width: 75px;
-	background-color: #000099;
-	color: #FFFFFF;
-	margin-left:2px;
-}
-
-.bw-bidding-box-full-field-calls-allpass {
-	width: 100px;
-	background-color: #006600;
-	color: #FFFFFF;
-}
-
-.bw-bidding-box-full-field-calls-undo {
-	width: 75px;
-	background-color: #000000;
-	color: #FFFFFF;
-	margin-left:2px;
-}
-
-.bw-bidding-box-full-field-calls-reset {
-	width: 75px;
-	background-color: #000000;
-	color: #FFFFFF;
-	margin-left:2px;
-}
-
-
-
-
-.bw-bidding-box-full-field.disabled {
-	opacity: 0.25;
-    filter: Alpha(opacity=25); /* IE8 and earlier */
-	cursor: not-allowed;
-}
-
-.bw-bidding-box-full-field.enabled {
-	cursor: pointer;
-}
-.bw-bidding-box-field {
-	display: inline-block;
-	width: 49px;
-	height: 49px;
-	line-height: 49px;
-	text-align: center;
-	font-size: 34px;
-	font-weight: bold;
-	border: 1px solid black;
-	background: #ccf;
-	/*-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
-	border-radius: 3px;*/
-}
-
-.bw-bidding-box-field.disabled {
-	opacity: 0.25;
-    filter: Alpha(opacity=25); /* IE8 and earlier */
-	cursor: not-allowed;
-}
-
-.bw-bidding-box-field.enabled {
-	cursor: pointer;
-}
-
-.bw-bidding-box-field-level-0 {
-	border-style:none;
-	cursor: none;
-	height:0;
-}
-
-.bw-bidding-box-field-calls-p {
-	background-color: #006600;
-	color: #FFFFFF;
-}
-
-.bw-bidding-box-field-calls-x {
-	background-color: #990000;
-	color: #FFFFFF;
-}
-
-.bw-bidding-box-field-calls-r {
-	background-color: #000099;
-	color: #FFFFFF;
-}
-
-.selected {
-	background-color: #FFCE00;
-}
-
-.bw-card-deck-text-row {
-	padding-bottom: 5px;
-}
-	
-.bw-card-deck-text-field-cards {
-	display: inline-block;
-	font-weight: bold;
-	font-size: 16px;
-	width: 24px;
-	margin-right: 5px;
-	margin-bottom: 5px;
-	font-family: arial; 
-    text-align: center;	
-    border-radius:5px;
-    border: 1px solid gray;
-    cursor: pointer;
-}
-
-.bw-card-deck-text-field-reset {
-	display: inline-block;
-	font-weight: bold;
-	font-size: 16px;
-	font-family: arial; 
-    text-align: center;	
-    border-radius:5px;
-    border: 1px solid gray;
-    cursor: pointer; 
-	background-color: #000000;
-	color: #FFFFFF;
-}
-
-.bw-card-deck-text-field-cards.unassigned {
-	opacity: 0.50;
-    filter: Alpha(opacity=50); /* IE8 and earlier */
-}
-
-.bw-card-deck-text-field-cards.assigned {
-	background-color: #99cccc;
-	color: #000000;	
-}
-
-
-
-.sriram-card-deck-field-cards {
-	display: inline-block;
-	position: relative;
-	width: 37px;
-	height: 50px;
-    cursor: pointer;
-}
-
-.bw-card-deck-field-cards.assigned {
-	background-image: url(img/cards/logo_card_white.png);
-	background-size: cover;
-}
-
-.bw-card-deck-field-reset {
-	display: inline-block;
-	font-weight: bold;
-	font-size: 16px;
-	font-family: arial; 
-    text-align: center;	
-    border-radius:5px;
-    border: 1px solid gray;
-    cursor: pointer; 
-	background-color: #000000;
-	color: #FFFFFF;
-}
-
-#bw-voting-problem-hand, #bw-create-problem-preview-hand, #bw-create-problem-card-deck, #bw-create-problem-hand-diagram, #bw-voting-problem-call, #bw-create-problem-bidding-box  {
-	white-space:nowrap;
-}
-
-.bw-card-selected {
-	top: -10px;
-	-webkit-filter: sepia(1);
-	filter: sepia(1);
-}
-
-
-.bw-problem-answer {
-	text-align: right;
-}
-
-.bw-problem-vote {
-	display: inline-block;
-	height: 1em;
-}
-
-.bw-problem-vote-container {
-	width: 100%;
-}
-
-.bw-problem-vote-title {
-	font-weight: bold;
-	font-style: italic;
-}
-
-.bw-problem-my-answer {
-  color: red;
-  font-style: italic;
-}
-
-.bw-problem-my-answer .suit-NT, .bw-problem-my-answer .suit-spades, .bw-problem-my-answer .suit-clubs  {
-  color: red;
-  font-style: italic;
-}
-.bw-private-response {
-    border: 1px solid #a1a1a1;
-    padding: 2px; 
-    background: #333333;
-    color: white;
-    border-radius: 10px;
-}
-
-.bw-public-response {
-    border: 1px solid #a1a1a1;
-    padding: 2px; 
-    background: #dddddd;
-    border-radius: 10px;
-}
-
-.bw-no-margin-top {
-	margin-top: 0;
-}
-
-.bw-no-margin {
-	margin: 0;
-}
-
-.bw-no-padding {
-	padding: 0;
-}
-
-.bw-no-text-shadow {
-	text-shadow: none;
-}
-

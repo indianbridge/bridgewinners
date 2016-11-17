@@ -1,6 +1,30 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget android-versionCode="7" id="com.bridgewinners.mobile" ios-CFBundleVersion="0.0.1" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <preference name="loglevel" value="DEBUG" />
+    <feature name="NetworkStatus">
+        <param name="android-package" value="org.apache.cordova.networkinformation.NetworkManager" />
+    </feature>
+    <feature name="SplashScreen">
+        <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
+        <param name="onload" value="true" />
+    </feature>
+    <feature name="StatusBar">
+        <param name="android-package" value="org.apache.cordova.statusbar.StatusBar" />
+        <param name="onload" value="true" />
+    </feature>
+    <feature name="Whitelist">
+        <param name="android-package" value="org.apache.cordova.whitelist.WhitelistPlugin" />
+        <param name="onload" value="true" />
+    </feature>
+    <name>Bridge Winners</name>
+    <description>
+     The Bridge Winners Mobile App
+  </description>
+    <author email="indianbridge@gmail.com" href="http://bridgewinners.com">
+      Bridge Winners Mobile app Team
+  </author>
+    <content src="index.html" />
+    <access origin="*" />
+    <icon src="res/icon.png" />
     <icon density="hdpi" src="res/android/drawable-hdpi/Icon.png" />
     <icon density="ldpi" src="res/android/drawable-ldpi/Icon.png" />
     <icon density="mdpi" src="res/android/drawable-mdpi/Icon.png" />
@@ -15,22 +39,13 @@
     <splash density="port-ldpi" src="res/android/drawable-ldpi/splash.png" />
     <splash density="port-mdpi" src="res/android/drawable-mdpi/splash.png" />
     <splash density="port-xhdpi" src="res/android/drawable-xhdpi/splash.png" />
-    <name>Bridge Winners</name>
-    <description>
-       The Bridge Winners Mobile App
-    </description>
-    <author email="indianbridge@gmail.com" href="http://bridgewinners.com">
-        Bridge Winners Mobile app Team
-    </author>
-    <content src="index.html" />
-    <access origin="*" />
-    <icon src="res/icon.png" />
+    <preference name="loglevel" value="DEBUG" />
     <preference name="LoadingDialog" value="Please wait for Bridge Winners Awesomeness to begin..." />
     <preference name="AutoHideSplashScreen" value="false" />
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="10000" />
     <preference name="StatusBarOverlaysWebView" value="false" />
-    <preference name="StatusBarBackgroundColor" value="#000000" />
+    <preference name="StatusBarBackgroundColor" value="#2a5461" />
     <preference name="StatusBarStyle" value="lightcontent" />
     <preference name="Orientation" value="portrait" />
 </widget>

@@ -4,86 +4,33 @@
     Authors: Sriram Narasimhan
 -->
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <meta name="format-detection" content="telephone=no" />
-        <meta name="msapplication-tap-highlight" content="no" />
-        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, usr-scalable=no">
-        <link id="jqm-stylesheet" rel="stylesheet" type="text/css" href="css/themes/bootstrap/jquery.mobile.bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="css/index.css">
-        <link rel="stylesheet" type="text/css" href="css/card_images.css">
-        <style id="bw-computed-styles"></style>
-        <style id="bw-voting-hand-images-computed-styles"></style>
-        <style id="bw-voting-bidding-box-computed-styles"></style>
-        <style id="bw-full-bidding-box-computed-styles"></style>
-        <style id="bw-create-hand-images-computed-styles"></style>
-        <style id="bw-create-card-deck-computed-styles"></style>
-		<script src="js/jquery.min.js"></script>
-		<script src="js/jquery.mobile-1.4.5.min.js"></script>        
-		<script src="js/fastclick.min.js"></script>     
-        <title>BridgeWinners Mobile App Login Page</title>
-    </head>
-    <body>
-		
-		<div data-role="page" id="index">		
-			<div id="myheader" data-role="header">
-				<span class="center"><img style="vertical-align:middle;" height="25px" src="img/icon.png"/>Bridge Winners</span>
-				<img role="page" data-page="profile" id="header-avatar" style="vertical-align:middle;" class="ui-btn-right" height="21px" src=""/>
-			</div>		
-			<div data-role="content" id="mycontent" class="ui-content">
-				<div data-section="bw_empty"></div>				
-				<div data-section="bw_error">
-					<h4 id="bw-error-message" class="center"></h4>		
-				</div>								
-				<div data-role="popup" id="bw-popup-menu" data-history="false" data-position-to="#more-tab">
-					<ul data-role="listview" data-inset="true">
-						<li data-icon="gear"><a role="page" data-page="options" data-icon="gear">Options</a></li>
-						<li data-icon="info"><a role="page" data-page="about" data-icon="info">About Us</a></li>
-					</ul>
-				</div>	
-				<div data-role="popup" id="loading-popup" class="ui-content" data-dismissible="false" data-history="false">
-					<img class="center" src="img/ajax-loader.gif"/>
-					<div class="center" id="loading-popup-content">Loading...</div>
-				</div>	
-				<div data-role="popup" id="bw-poll-votes" data-overlay-theme="b" data-history="false">
-					<div data-role="header"><h1>Current Poll Results</h1></div>
-					<div data-role="main" class="ui-content">
-						<a id="bw-poll-votes-close-button" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
-						<div id="bw-poll-votes-content"></div>
-					</div>
-				</div>									
-				<div data-role="popup" id="bw-poll-responses" data-overlay-theme="b" data-history="false">
-					<div data-role="header"><h1>Poll Responses</h1></div>
-					<div data-role="main" class="ui-content">
-						<a href="#" id="bw-poll-responses-close-button" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
-						<div id="bw-poll-responses-content"></div>
-					</div>
-				</div>		
-					
+  <head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, usr-scalable=no">
+    <link id="jqm-stylesheet" rel="stylesheet" type="text/css" href="css/themes/bridgewinners/bridgewinners.css">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <script src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script src="js/index.js"></script>
+		<script src="js/jquery.mobile-1.4.5.min.js"></script>
+    <title>BridgeWinners Mobile App Login Page</title>
+  </head>
+  <body >
+    <div id="mypage" data-role="page" class="background">
+      <div id="content">
 			</div>
-			
-			<div id="myfooter" data-role="footer" data-position="fixed" data-tap-toggle="false" style="text-align:center;">
-				<div data-role="navbar">
-					<ul>
-						<li><a data-type="navbar-item" class="ui-btn-active" role="page" data-page="vote" data-icon="check">Vote</a></li>
-						<li><a data-type="navbar-item" role="page" data-page="create" data-icon="edit">Create</a></li>
-						<li><a data-type="navbar-item" role="page" data-page="view" data-icon="eye">View</a></li>
-						<li><a data-type="navbar-item" role="page" data-page="profile" data-icon="user">Profile</a></li>
-						<li><a id="more-tab" data-type="navbar-item" role="page" data-page="more" data-icon="bars">More</a></li>
-					</ul>
-				</div>	
-			</div>			
-		</div>
-		
-		
-		<script type="text/javascript" src="cordova.js"></script>
-		<script type="text/javascript" src="js/lodash.min.js"></script>
-		<script type="text/javascript" src="js/bridge.min.js"></script>
-		<script type="text/javascript" src="js/BW.Options.js"></script>
-		<script type="text/javascript" src="js/BW.VotingProblem.js"></script>
-		<script type="text/javascript" src="js/BW.CreateProblem.js"></script>
-        <script type="text/javascript" src="js/BW.User.js"></script>
-        <script type="text/javascript" src="js/index.js"></script>
-    </body>
+      <div data-role="popup" id="loading-popup" class="ui-content" data-dismissible="false" data-history="false">
+        <img class="center" src="img/ajax-loader.gif"/>
+        <div class="center" id="loading-popup-content">Loading...</div>
+      </div>
+      <div data-role="popup" id="error-popup" class="ui-content" data-dismissible="true" data-overlay-theme="a" data-history="false">
+        <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+        <img class="center" src="img/danger.png"/>
+        <div class="center" id="error-popup-content">Error</div>
+      </div>
+    </div>
+  </body>
 </html>
