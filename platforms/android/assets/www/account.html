@@ -1,27 +1,23 @@
-<link rel="stylesheet" type="text/css" href="css/account.css">
-<div data-enhance="false">
-	<div class="account-header">
-		<div class="header-text">Account</div>
-	</div>
-	<div id="account-main-page" data-role="section" data-name="account-main-page">
-		<div id="profile">
-			<div id="avatar"></div>
-			<div id="name">Bridge Winners</div>
-			<div id="edit-profile-button" class="clickable">Edit Profile</div>
-		</div>
-		<div id="account-options">
-			<div data-role="section-change" data-section="account-about-page" class="list clickable"><div>Find Friends<span class="carat-right"></span></div></div>
-			<div data-role="section-change" data-section="account-options-page" class="list clickable"><div>Settings<span class="carat-right"></span></div></div>
-			<div data-role="section-change" data-section="account-about-page" class="list clickable"><div>About the App<span class="carat-right"></span></div></div>
-		</div>
-		<div id="logout-submit-button" class="logout clickable">Log Out</div>
-	</div>
-	<div id="account-options-page" data-role="section" data-name="account-options-page">
-		<div id="options-list">Options</div>
-		<div data-role="section-change" data-section="account-main-page" >Back</div>
-	</div>
-	<div id="account-about-page" data-role="section" data-name="account-about-page">
-		<div id="about-app">About</div>
-		<div data-role="section-change" data-section="account-main-page" >Back</div>
-	</div>
+<div id="account-page" class="main-page">
+  <div id="account-main-page" data-role="section" data-name="account-main-page">
+    <div id="profile">
+      <div id="avatar"></div>
+      <div id="name">Bridge Winners</div>
+      <div id="edit-profile-button" class="clickable">Edit Profile</div>
+    </div>
+    <div id="account-options">
+      <div data-role="section-change" data-section="account-about-page" class="list clickable carat-right"><div>Find Friends</div></div>
+      <div data-role="section-change" data-section="account-options-page" class="list clickable carat-right"><div>Settings</div></div>
+      <div data-role="section-change" data-section="account-about-page" class="list clickable carat-right"><div>About the App</div></div>
+    </div>
+    <div id="logout-submit-button" class="logout clickable">Log Out</div>
+  </div>
+  <div id="account-options-page" data-role="section" data-name="account-options-page">
+    <div id="options-list">Options</div>
+    <div data-role="section-change" data-section="account-main-page" >Back</div>
+  </div>
+  <div id="account-about-page" data-role="section" data-name="account-about-page">
+    <div id="about-app">About</div>
+    <div data-role="section-change" data-section="account-main-page" >Back</div>
+  </div>
 </div>

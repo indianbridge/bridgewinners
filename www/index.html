@@ -9,28 +9,43 @@
     <meta name="format-detection" content="telephone=no" />
     <meta name="msapplication-tap-highlight" content="no" />
     <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, usr-scalable=no">
-    <link id="jqm-stylesheet" rel="stylesheet" type="text/css" href="css/themes/bridgewinners/bridgewinners.css">
-    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, usr-scalable=no">
+    <!--<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, target-densitydpi=device-dpi" />-->
+    <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.min.css">
+    <link rel="stylesheet" type="text/css" href="css/bridgewinners.css">
     <script src="js/jquery.min.js"></script>
     <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/oauth.min.js"></script>
     <script src="js/index.js"></script>
-		<script src="js/jquery.mobile-1.4.5.min.js"></script>
-    <title>BridgeWinners Mobile App Login Page</title>
+    <script src="js/lodash.min.js"></script>
+    <script src="js/bridge.all.js"></script>
+    <script src="js/jquery.mobile-1.4.5.min.js"></script>
+    <title>BridgeWinners Mobile App</title>
   </head>
   <body >
-    <div id="mypage" data-role="page" class="background">
-      <div id="content">
-			</div>
-      <div data-role="popup" id="loading-popup" class="ui-content" data-dismissible="false" data-history="false">
-        <img class="center" src="img/ajax-loader.gif"/>
-        <div class="center" id="loading-popup-content">Loading...</div>
+    <div id="all-content">
+      <div id="header">
+        <div class="header-container">
+          <div class="header-text"><span id="back-button" data-role="section-change" data-section="main-page" class="carat-left">Back</span><span id="header-text">Account<span></div>
+        </div>
       </div>
-      <div data-role="popup" id="error-popup" class="ui-content" data-dismissible="true" data-overlay-theme="a" data-history="false">
-        <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
-        <img class="center" src="img/danger.png"/>
-        <div class="center" id="error-popup-content">Error</div>
+      <div id="content"></div>
+      <div id="footer">
+        <div class="footer-inner-container">
+          <div data-item="vote" class="menu-item vote-icon not-selected"></div><div data-item="create" class="menu-item create-icon not-selected"></div><div data-item="history" class="menu-item history-icon not-selected"></div><div data-item="alerts" class="menu-item alerts-icon not-selected"></div><div data-item="account" class="menu-item account-icon not-selected"></div>
+        </div>
+        <div class="footer-outer-container">
+          <div data-item="vote" class="menu-item not-selected"><div class="menu-icon vote-icon"></div></div><div data-item="create" class="menu-item not-selected"><div class="menu-icon create-icon"></div></div><div data-item="history" class="menu-item not-selected"><div class="menu-icon history-icon"></div></div><div data-item="alerts" class="menu-item not-selected"><div class="menu-icon alerts-icon"></div></div><div data-item="account" class="menu-item not-selected"><div class="menu-icon account-icon"></div></div>
+        </div>
       </div>
+    </div>
+    <div data-role="popup" id="loading-popup" class="ui-content" data-theme="b" data-dismissible="false" data-history="false">
+      <img class="center" src="css/img/ajax-loader.gif"/>
+      <div class="center" id="loading-popup-content">Loading...</div>
+    </div>
+    <div data-role="popup" id="message-popup" class="ui-content" data-theme="b" data-dismissible="false" data-history="false">
+      <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+      <div class="center" id="message-popup-content">Loading...</div>
     </div>
   </body>
 </html>
