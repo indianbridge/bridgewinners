@@ -65,8 +65,8 @@ var Bridge = {
 
 	vulnerabilities : {
 		'-' : { name: 'None', index: 0, html: 'None' },
-		'n' : { name: 'NS', index: 0, html: 'North-South' },
-		'e' : { name: 'EW', index: 0, html: 'East-West' },
+		'n' : { name: 'NS', index: 0, html: 'Us' },
+		'e' : { name: 'EW', index: 0, html: 'Them' },
 		'b' : { name: 'Both', index: 0, html: 'Both' }
 	}
 };
@@ -177,120 +177,7 @@ Bridge.enums = {
 Bridge.options = {
 	// Should error message include context?
 	useContextInErrorMessage: false,
-	// Which classes of logs to enable
-	log: {
-		EVENT: { name: "events", enabled: true },
-		DEBUG: { name: "debug", enabled: false }
-	},
-	// Global flag to determine if events will be triggered or not.
-	// Setting this to false will disable all events for all deals
-	raiseEvents: true
 };
-
-/**
- * Convenience function to enable all event triggers.
- */
-Bridge.enableAllEventTriggers = function() {
-	Bridge.options.raiseEvents = true;
-};
-
-/**
- * Convenience function to disable all event triggers.
- */
-Bridge.disableAllEventTriggers = function() {
-	Bridge.options.raiseEvents = false;
-};
-
-/**
- * Constants used all over the code.
- * Use this instead of "magic" numbers/strings etc.
- */
-Bridge.CONSTANTS = {
-	// The delimiter used in event names
-	eventNameDelimiter: ':',
-	// Name of event raised by all objects when something changes.
-	changedEventName: "changed",
-	// Name of event raised when something needs to be changed in an object.
-	changeEventName: "change",
-};
-
-
-/**
- * Use the event delimiter to create event name.
- * @param {Array of string} items the items to join to construct event name.
- * @return {string} the event name with delimiters added.
- */
-Bridge.getEventName = function getEventName(items) {
-	return items.join(Bridge.CONSTANTS.eventNameDelimiter);
-};
-
-/**
- * Trigger events with a payload attached.
- * @param {object} raiser - the object raising the event
- * @param {string} operation - the operation (event) that is causing this trigger
- * @param {mixed} parameters - Any relevant parameters used in the operation
- */
-Bridge._raiseEvents = function( raiser, operation, parameters ) {
-	// Raise only one event based on id which should be the same for all
-	// objects (hand, auction, play etc.) in a deal.
-	if ( Bridge.options.raiseEvents && raiser.raiseEvents ) {
-		var delimiter = Bridge.CONSTANTS.eventNameDelimiter;
-		var eventName = raiser.id + delimiter + Bridge.CONSTANTS.changedEventName;
-		$( document ).trigger( eventName,  {
-			"raisedBy": raiser,
-			"action": operation,
-			"parameters": parameters
-		});
-		Bridge._logEvent( eventName + " - " + operation );
-	}
-};
-
-/**
- * Trigger one event in a set of events
- * @param {object} raiser - the object raising the event
- * @param {string} operation - the operation (event) that is causing this trigger
- * @param {mixed} parameters - Any relevant parameters used in the operation
- */
-Bridge._triggerOneEvent = function( eventName, raiser, operation, parameters ) {
-	var delimiter = Bridge.CONSTANTS.eventNameDelimiter;
-	$( document ).trigger( eventName,  {
-		"raisedBy": raiser,
-		"action": operation,
-		"parameters": parameters
-	});
-	Bridge._logEvent( eventName + " - " + operation );
-	eventName = raiser.id + delimiter + eventName;
-	$( document ).trigger( eventName,  {
-		"raisedBy": raiser,
-		"action": operation,
-		"parameters": parameters
-	});
-	Bridge._logEvent( eventName + " - " + operation );
-};
-
-
-
-/**
- * Log some information.
- * options are used to determine how the message is logged.
- * @param {string} message - the message to log
- * @param {string} logClass - the class that this log message belongs to
- */
-Bridge._log = function( message, logClass ) {
-	if ( !logClass || logClass.enabled ) {
-		if ( $.type(logClass) === "string" ) var name = logClass;
-		else var name = logClass.name || "unknown";
-		if ( console ) console.log( name + " : " + message );
-	}
-};
-
-Bridge._logEvent = function( message ) {
-	Bridge._log( message, Bridge.options.log.EVENT );
-}
-
-Bridge._logDebug = function( message ) {
-	Bridge._log( message, Bridge.options.log.DEBUG );
-}
 
 /**
  * Does the first rank beat the second rank?
@@ -366,14 +253,20 @@ Bridge.arePartners = function( direction1, direction2 ) {
 	return Bridge.getPartner( direction1 ) === direction2;
 };
 
-
 /**
- * Convert text to a valid identifier.
- * @param {string} text - the text to make an identifier
- * @return {string} the text stripped of invalid id characters
- */
-Bridge.makeIdentifier = function(text) {
-  return text.trim().replace(/[^a-zA-Z0-9]+/g,'_');
+ * Get the 4 directions starting from specified start direction.
+ * @param {string} startDirection the optional direction to start from. Defaults to w.
+ * @return {array of string} the order of directions in which bidding will/has proceed.
+ **/
+Bridge.getDirectionOrder = function getDirectionOrder(startDirection) {
+  startDirection = startDirection || 'w';
+  directions = [];
+  direction = startDirection;
+  for(var i = 0; i < 4; ++i) {
+    directions.push(direction);
+    direction = Bridge.getLHO(direction);
+  }
+  return directions;
 };
 
 /**
@@ -734,36 +627,100 @@ Bridge._checkIndex = function( items, index, context ) {
 };
 
 /**
- * Maintains a list of used IDs and generates a new one on demand.
+ * Maintains a list of unique IDs and generates a new (unique) one on demand.
  */
-Bridge.IDManager = {
-	usedIDs: {}
+Bridge.IDManager = new function() {
+	this.IDs = {};
+	/**
+	 * Generate a new ID.
+	 * Check if an id exists and throw an exception if it does
+	 * @param {string} id - a string identifier.
+	 * @return {string} a new id if none already specified.
+	 * @throws id already exists
+	 */
+	this.generateID = function(id) {
+		if ( !id ) {
+			var date = new Date();
+			var base_id = date.toJSON();
+			id = this.makeIdentifier_(base_id);
+			var counter = 1;
+			while (id in this.IDs) {
+				id = this.makeIdentifier_(base_id + '-' + counter);
+				counter++;
+			}
+			this.IDs[id] = true;
+			return id;
+		}
+		var prefix = "In Bridge.IDManager.generateID";
+		if ( id in this.IDs ) {
+			Bridge._reportError( id + " is an already existing ID.", prefix );
+		}
+		return id;
+	};
+
+	/**
+	 * Convert text to a valid identifier.
+	 * @param {string} text - the text to make an identifier
+	 * @return {string} the text stripped of invalid id characters
+	 */
+	this.makeIdentifier_ = function(text) {
+	  return text.trim().replace(/[^a-zA-Z0-9]+/g,'_');
+	};
 };
 
 /**
- * Generate a new ID.
- * Check if an id exists and throw an exception if it does
- * @param {string} id - a string identifier.
- * @return {string} a new id if none already specified.
- * @throws id already exists
+ * Rudimentary logging mechanism.
  */
-Bridge.IDManager.getID = function( id ) {
-	if ( !id ) {
-		var date = new Date();
-		var base_id = date.toJSON();
-		id = Bridge.makeIdentifier( base_id );
-		var counter = 1;
-		while ( id in Bridge.IDManager.usedIDs ) {
-			id = base_id + '-' + counter;
+Bridge.logging = new function() {
+	this.enabled = {
+		"event": true,
+		"debug": true,
+		"info": true,
+		"error": true,
+		"warn": true,
+	};
+	this.enable = function(logClass) {
+		this[logClass] = true;
+	};
+	this.disable = function() {
+		this[logClass] = false;
+	};
+	this.log = function(message, logClass) {
+		if (logClass in this.enabled && this.enabled[logClass]) {
+			var fullMessage = logClass ? logClass + " : " + message : message;
+			if (window.console) console.log(fullMessage);
 		}
-		return id;
-	}
-	var prefix = "In Bridge.IDManager.getID";
-	if ( id in Bridge.IDManager.usedIDs ) {
-		Bridge._reportError( id + " is an already existing ID.", prefix );
-	}
-	return id;
-
+	};
+	this.event = function(message) {
+		var logClass = "event";
+		if (logClass in this.enabled && this.enabled[logClass]) {
+			if (window.console) console.debug("Event - " + message);
+		}
+	};
+	this.debug = function(message) {
+		var logClass = "debug";
+		if (logClass in this.enabled && this.enabled[logClass]) {
+			if (window.console) console.debug(message);
+		}
+	};
+	this.info = function(message) {
+		var logClass = "info";
+		if (logClass in this.enabled && this.enabled[logClass]) {
+			if (window.console) console.info(message);
+		}
+	};
+	this.error = function(message) {
+		var logClass = "error";
+		if (logClass in this.enabled && this.enabled[logClass]) {
+			if (window.console) console.error(message);
+		}
+	};
+	this.warn = function(message) {
+		var logClass = "warn";
+		if (logClass in this.enabled && this.enabled[logClass]) {
+			if (window.console) console.warn(message);
+		}
+	};
 };
 
 /**
@@ -784,25 +741,13 @@ Bridge.Deal = function( id ) {
 	 * Optional Unique id to identify this deal.
 	 * @member {string}
 	 */
-	this.id = Bridge.IDManager.getID( id );
+	this.id = Bridge.IDManager.generateID(id);
 
 	/**
 	 * The type of this object.
 	 * @member {string}
 	 */
 	this.type = "Deal";
-
-	/**
-	 * Should events be triggered for this object.
-	 * @member {bool}
-	 */
-	this.raiseEvents = true;
-
-	/**
-	 * Should this object respond to events?
-	 * @member {bool}
-	 */
-	this.respondToEvents = true;
 
 	/**
 	 * The 52 card objects
@@ -825,40 +770,6 @@ Bridge.Deal = function( id ) {
 		this.hands[ direction ] = new Bridge.Hand( direction, this );
 	}
 
-	/** The currently active hand. */
-	this._activeHand = 'n';
-
-	/**
-	 * The board number of this deal.
-	 * @member {number}
-	 */
-	this.board = 1;
-
-	/**
-	 * The vulnerability of this deal.
-	 * @member {string}
-	 */
-	this.vulnerability = '-';
-
-	/**
-	 * The dealer of this deal.
-	 * @member {string}
-	 */
-	this.dealer = 'n';
-	this.getHand( 'n' ).makeActive();
-
-	/**
-	 * The form of scoring for this deal.
-	 * @member {string}
-	 */
-	this.scoring = "KO";
-
-	/**
-	 * Any notes associated with this deal.
-	 * @member {string}
-	 */
-	this.notes = "";
-
 	/**
 	 * The auction associated with this deal.
 	 * @member {object}
@@ -871,14 +782,62 @@ Bridge.Deal = function( id ) {
 	 */
 	this.play = new Bridge.Play( this );
 
-  /**
-	 * Should events be triggered for this object.
-	 * @member {bool}
-	 */
-	this.raiseEvents = true;
+	// callbacks to called when things change.
+	this.callbacks = {
+		"": [],
+	};
 
-	/** Setup event responder handlers. */
-	this.onChanged();
+	// Initialize default values.
+	this.init();
+};
+
+/**
+ * Setup default values for all properties.
+ */
+Bridge.Deal.prototype.init = function init() {
+	this.eventTriggersEnabled = false;
+	/** The currently active hand. */
+	this.setActiveHand('n');
+
+	/**
+	 * The board number of this deal.
+	 * @member {number}
+	 */
+	this.setBoard(1);
+
+	/**
+	 * The vulnerability of this deal.
+	 * @member {string}
+	 */
+	this.setVulnerability('-');
+
+	/**
+	 * The dealer of this deal.
+	 * @member {string}
+	 */
+	this.setDealer('n');
+
+	/**
+	 * The form of scoring for this deal.
+	 * @member {string}
+	 */
+	this.setScoring("KO");
+
+	/**
+	 * Any notes associated with this deal.
+	 * @member {string}
+	 */
+	this.setNotes("");
+	this.eventTriggersEnabled = true;
+};
+
+// Register a callback.
+Bridge.Deal.prototype.registerCallback = function(callback, operation) {
+	operation = operation || "";
+	if (!(operation in this.callbacks)) {
+		this.callbacks[operation] = [];
+	}
+	this.callbacks[operation].push(callback);
 };
 
 //
@@ -910,7 +869,9 @@ Bridge.Deal.prototype.setActiveHand = function setActiveHand(direction) {
 		direction = direction.direction;
 	}
 	Bridge._checkDirection(direction);
-	this.getHand(this.getActiveHand()).makeInactive();
+	if (this.getActiveHand()) {
+		this.getHand(this.getActiveHand()).makeInactive();
+	}
 	this._activeHand = direction;
 	this.getHand(direction).makeActive();
 	this.onChange("setActiveHand", direction);
@@ -946,11 +907,14 @@ Bridge.Deal.prototype.getDealer = function() { return this.dealer; }
  * @param {string} dealer - the dealer
  */
 Bridge.Deal.prototype.setDealer = function( dealer ) {
+	if (_.isObject(dealer)) {
+		dealer = dealer.dealer;
+	}
 	dealer = dealer.toLowerCase();
 	Bridge._checkDirection( dealer );
 	this.dealer = dealer;
 	this.getAuction().setDealer( dealer );
-	this.onChange( "setDealer", dealer );
+	//On change event will be generated by auction.
 };
 
 /**
@@ -964,12 +928,15 @@ Bridge.Deal.prototype.getVulnerability = function() { return this.vulnerability;
  * @param {string} vulnerability - the vulnerability
  */
 Bridge.Deal.prototype.setVulnerability = function( vulnerability ) {
+	if (_.isObject(vulnerability)) {
+		vulnerability = vulnerability.vulnerability;
+	}
 	vulnerability = vulnerability.toLowerCase();
 	if ( vulnerability === "0" ) vulnerability = "-";
 	Bridge._checkVulnerability( vulnerability );
 	this.vulnerability = vulnerability;
 	this.getAuction().setVulnerability( vulnerability );
-	this.onChange( "setVulnerability", vulnerability );
+	//On change event will be generated by auction.
 };
 
 /**
@@ -983,6 +950,9 @@ Bridge.Deal.prototype.getScoring = function() { return this.scoring; }
  * @param {string} scoring - the scoring
  */
 Bridge.Deal.prototype.setScoring = function( scoring ) {
+	if (_.isObject(scoring)) {
+		scoring = scoring.scoring;
+	}
 	Bridge._checkRequiredArgument( scoring );
 	this.scoring = scoring;
 	this.onChange( "setScoring", scoring );
@@ -1095,8 +1065,8 @@ Bridge.Deal.prototype.rotateClockwise = function() {
 	this.setVulnerability(rotateVulnerabilities[this.getVulnerability()]);
 	// Rotate dealer.
 	var auction = this.getAuction();
-	var newDealer = Bridge.getLHO(auction.getDealer());
-	auction.setDealer(newDealer);
+	var newDealer = Bridge.getLHO(this.getDealer());
+	this.setDealer(newDealer);
 };
 
 
@@ -1434,24 +1404,24 @@ Bridge.Deal.prototype.fromLIN = function( lin ) {
 	this.onChange( "setDeal", this.toString() );
 };
 
-/**
- * A event requesting a change has been raised. Respond if response is enabled.
- */
-Bridge.Deal.prototype.onChanged = function() {
-	if (this.respondToEvents) {
-		var eventName = Bridge.getEventName([this.getID(), Bridge.CONSTANTS.changeEventName, 'deal']);
-		$(document).on(eventName, {"deal": this}, function(e, config) {
-			e.data.deal[config.operation](config.parameters);
+
+Bridge.Deal.prototype.runCallbacks = function runCallbacks(operation, parameter) {
+	if (operation in this.callbacks) {
+		_.each(this.callbacks[operation], function(callback) {
+			callback(operation, parameter);
 		});
 	}
+	_.each(this.callbacks[""], function(callback) {
+		callback(operation, parameter);
+	});
 };
 
 /**
  * Something in this deal has changed.
- * Raise an event
+ * Run callbacks.
  */
-Bridge.Deal.prototype.onChange = function( operation, parameter ) {
-	Bridge._raiseEvents( this, operation, parameter );
+Bridge.Deal.prototype.onChange = function(operation, parameter) {
+	this.runCallbacks(operation, parameter);
 };
 
 /**
@@ -1646,25 +1616,13 @@ Bridge.Hand = function( direction, deal ) {
 	 * Optional Unique id to identify this hand.
 	 * @member {string}
 	 */
-	this.id = deal ? deal.id : Bridge.IDManager.getID();
+	this.id = deal ? deal.id : Bridge.IDManager.generateID();
 
 	/**
 	 * The type of this object.
 	 * @member {string}
 	 */
 	this.type = "Hand";
-
-	/**
-	 * Should events be raised for this object?
-	 * @member {bool}
-	 */
-	this.raiseEvents = true;
-
-	/**
-	 * Should this object respond to events?
-	 * @member {bool}
-	 */
-	this.respondToEvents = true;
 
 	/**
 	 * The direction of this hand
@@ -1711,8 +1669,45 @@ Bridge.Hand = function( direction, deal ) {
 	/** Is this the active hand? */
 	this._isActive = false;
 
-	/** Setup event responder handlers. */
-	this.onChanged();
+	/** A card that has been selected to be played if any. */
+	this.selectedCard = null;
+
+	// callbacks to called when things change.
+	this.callbacks = {
+		"": [],
+	};
+};
+
+// Register a callback.
+Bridge.Hand.prototype.registerCallback = function(callback, operation) {
+	operation = operation || "";
+	if (!(operation in this.callbacks)) {
+		this.callbacks[operation] = [];
+	}
+	this.callbacks[operation].push(callback);
+};
+
+Bridge.Hand.prototype.setSelectedCard = function selectCard(suit, rank) {
+	if (_.isObject(suit)) {
+		rank = suit.rank;
+		suit = suit.suit;
+	}
+	Bridge._checkSuit(suit);
+	Bridge._checkRank(rank);
+	var prefix = "In Hand.selectCard";
+	if ( !this.cards[ suit ][ rank ] ) {
+		Bridge._reportError( suit + rank + " is not assigned to " + this.direction + ". Cannot select", prefix );
+	}
+	this.selectedCard = suit + rank;
+	this.onChange("setSelectedCard", this.selectedCard);
+};
+
+Bridge.Hand.prototype.isSelectedCard = function isSelectedCard(suit, rank) {
+	return (suit + rank === this.getSelectedCard());
+};
+
+Bridge.Hand.prototype.getSelectedCard = function getSelectedCard() {
+	return this.selectedCard;
 };
 
 //
@@ -1816,7 +1811,7 @@ Bridge.Hand.prototype.isActive = function() {
  * Get the cards in a specific suit
  * @return {string} the cards in string format
  */
-Bridge.Hand.prototype.getCards = function( suit ) {
+Bridge.Hand.prototype.getCardsInSuit = function( suit ) {
 	Bridge._checkSuit( suit );
 	var output = "";
 	_.each( Bridge.rankOrder, function( rank ) {
@@ -2131,9 +2126,9 @@ Bridge.Hand.prototype.getRanks = function( suit ) {
  */
 Bridge.Hand.prototype.getCards = function() {
 	out = [];
-	_.each( Bridge.suitOrder, function( suit ) {
-		_.each( Bridge.rankOrder, function( rank ) {
-			if ( this.cards[ suit ][ rank ] ) {
+	_.each( this.getSuits(/*alternating=*/true), function( suit ) {
+		_.each( Bridge.rankOrder, function( actualRank ) {
+			if ( this.cards[ suit ][ actualRank ] ) {
 				var rank = this.showAsX[ suit ][ actualRank ] ? 'x' : actualRank;
 				var rankHTML = this.showAsX[ suit ][ actualRank ] ? 'x' : Bridge.ranks[ rank ].html;
 				out.push( { "suit": suit, "rank": rank, "html": rankHTML } );
@@ -2184,23 +2179,21 @@ Bridge.Hand.prototype.fromJSON = function( handString ) {
 };
 
 /**
- * A event requesting a change has been raised. Respond if response is enabled.
- */
-Bridge.Hand.prototype.onChanged = function() {
-	if (this.respondToEvents) {
-		var eventName = Bridge.getEventName([this.getID(), Bridge.CONSTANTS.changeEventName, 'hand', this.getDirection()]);
-		$( document ).on(eventName, {"hand": this}, function(e, config) {
-			e.data.hand[config.operation](config.parameters);
-		});
-	}
-};
-
-/**
  * Something in this hand has changed.
- * Raise an event
+ * Run all callbacks.
  */
 Bridge.Hand.prototype.onChange = function( operation, parameter ) {
-	Bridge._raiseEvents( this, operation, parameter );
+	if (operation in this.callbacks) {
+		_.each(this.callbacks[operation], function(callback) {
+			callback(operation, parameter);
+		});
+	}
+	_.each(this.callbacks[""], function(callback) {
+		callback(operation, parameter);
+	});
+	if (this.deal) {
+		this.deal.runCallbacks(operation, parameter);
+	}
 };
 
 /**
@@ -2405,26 +2398,13 @@ Bridge.Auction = function( deal ) {
 	 * A unique id to identify this auction.
 	 * @member {string}
 	 */
-	this.id = deal ? deal.id : Bridge.IDManager.getID();
+	this.id = deal ? deal.id : Bridge.IDManager.generateID();
 
 	/**
 	 * The type of this object.
 	 * @member {string}
 	 */
 	this.type = "Auction";
-
-
-	/**
-	 * Should events be triggered for this object.
-	 * @member {bool}
-	 */
-	this.raiseEvents = true;
-
-	/**
-	 * Should this object respond to events?
-	 * @member {bool}
-	 */
-	this.respondToEvents = true;
 
 	/**
 	 * The dealer for this auction.
@@ -2464,6 +2444,8 @@ Bridge.Auction = function( deal ) {
 	 * @todo This probably does not belong in this class.
 	 */
 	this.selectedLevel = 0;
+	this.selectedBid = '';
+	this.selectedCall = '';
 
 	/**
 	 * The current call index when trying to step through the auction.
@@ -2471,8 +2453,19 @@ Bridge.Auction = function( deal ) {
 	 */
 	this.currentAuctionIndex = -1;
 
-	/** Setup event responder handlers. */
-	this.onChanged();
+	// callbacks to called when things change.
+	this.callbacks = {
+		"": [],
+	};
+};
+
+// Register a callback.
+Bridge.Auction.prototype.registerCallback = function(callback, operation) {
+	operation = operation || "";
+	if (!(operation in this.callbacks)) {
+		this.callbacks[operation] = [];
+	}
+	this.callbacks[operation].push(callback);
 };
 
 //
@@ -2558,7 +2551,32 @@ Bridge.Auction.prototype.setSelectedLevel = function(level) {
 	if (_.isObject(level)) level = level.level;
 	Bridge._checkLevel( level );
 	this.selectedLevel = level;
+	this.selectedCall = '';
+	this.selectedBid = '';
 	this.onChange( "setSelectedLevel", level );
+};
+
+Bridge.Auction.prototype.setSelectedCall = function setSelectedCall(call, bid) {
+	if (_.isObject(call)) {
+		bid = call.bid;
+		call = call.call;
+	}
+	Bridge._checkCall(call);
+	Bridge._checkBid(bid);
+	if (bid === call) {
+		this.selectedLevel = 0;
+	}
+	this.selectedBid = bid;
+	this.selectedCall = call;
+	this.onChange("setSelectedCall", call);
+};
+
+Bridge.Auction.prototype.getSelectedBid = function() {
+	return this.selectedBid;
+};
+
+Bridge.Auction.prototype.getSelectedCall = function() {
+	return this.selectedCall;
 };
 
 /**
@@ -2607,28 +2625,12 @@ Bridge.Auction.prototype.getName = function getName(direction) {
 };
 
 /**
- * Get the 4 directions starting from specified start direction.
- * @param {string} startDirection the optional direction to start from. Defaults to w.
- * @return {array of string} the order of directions in which bidding will/has proceed.
- **/
-Bridge.Auction.prototype.getDirectionOrder = function getDirectionOrder(startDirection) {
-  startDirection = startDirection || 'w';
-  directions = [];
-  direction = startDirection;
-  for(var i = 0; i < 4; ++i) {
-    directions.push(direction);
-    direction = Bridge.getLHO(direction);
-  }
-  return directions;
-};
-
-/**
  * Get the calls in this auction.
  * @param {string} startDirection the optional direction to start from. Defaults to w.
  * @param {bool} addQuestionMark should a question mark be added at the end if the auction is not complete.
  * @return {array of Bridge.Call} the calls.
  **/
-Bridge.Auction.prototype.getCalls = function getDirectionOrder(startDirection, addQuestionMark) {
+Bridge.Auction.prototype.getCalls = function getCalls(startDirection, addQuestionMark) {
   startDirection = startDirection || 'w';
   addQuestionMark = addQuestionMark || false;
   calls = [];
@@ -2705,6 +2707,13 @@ Bridge.Auction.prototype.getContract = function() {
 	var numCalls = this.calls.length;
 	if ( numCalls === 0 ) return new Bridge.Contract();
 	return this.contracts[ numCalls - 1 ];
+};
+
+/**
+ * Is the auction complete?
+ */
+Bridge.Auction.prototype.isComplete = function() {
+	this.getContract().isComplete;
 };
 
 /**
@@ -3015,23 +3024,21 @@ Bridge.Auction.prototype.toJSON = function( ) {
 };
 
 /**
- * A event requesting a change has been raised. Respond if response is enabled.
- */
-Bridge.Auction.prototype.onChanged = function() {
-	if (this.respondToEvents) {
-		var eventName = Bridge.getEventName([this.getID(), Bridge.CONSTANTS.changeEventName, 'auction']);
-		$(document).on(eventName, {"auction": this}, function(e, config) {
-			e.data.auction[config.operation](config.parameters);
-		});
-	}
-};
-
-/**
  * Something in this auction has changed.
- * Raise an event
+ * Run callbacks.
  */
 Bridge.Auction.prototype.onChange = function( operation, parameter ) {
-	Bridge._raiseEvents( this, operation, parameter );
+	if (operation in this.callbacks) {
+		_.each(this.callbacks[operation], function(callback) {
+			callback(operation, parameter);
+		});
+	}
+	_.each(this.callbacks[""], function(callback) {
+		callback(operation, parameter);
+	});
+	if (this.deal) {
+		this.deal.runCallbacks(operation, parameter);
+	}
 };
 
 /**
@@ -3247,25 +3254,13 @@ Bridge.Play = function( deal ) {
 	 * A unique id to identify this play.
 	 * @member {string}
 	 */
-	this.id = Bridge._generateID( deal );
+	this.id = deal ? deal.id : Bridge.IDManager.generateID();
 
 	/**
 	 * The type of this object.
 	 * @member {string}
 	 */
 	this.type = "Play";
-
-  /**
-	 * Should events be triggered for this object.
-	 * @member {bool}
-	 */
-	this.raiseEvents = true;
-
-	/**
-	 * Should this object respond to events?
-	 * @member {bool}
-	 */
-	this.respondToEvents = true;
 
 	/**
 	 * The cards that are in this play
@@ -3324,6 +3319,19 @@ Bridge.Play = function( deal ) {
 
 	this.initialize();
 
+	// callbacks to called when things change.
+	this.callbacks = {
+		"": [],
+	};
+};
+
+// Register a callback.
+Bridge.Play.prototype.registerCallback = function(callback, operation) {
+	operation = operation || "";
+	if (!(operation in this.callbacks)) {
+		this.callbacks[operation] = [];
+	}
+	this.callbacks[operation].push(callback);
 };
 
 /**
@@ -3721,10 +3729,20 @@ Bridge.Play.prototype.toJSON = function( ) {
 
 /**
  * Something in this play has changed.
- * Raise an event
+ * run callbacks.
  */
 Bridge.Play.prototype.onChange = function( operation, parameter ) {
-	Bridge._raiseEvents( this, operation, parameter );
+	if (operation in this.callbacks) {
+		_.each(this.callbacks[operation], function(callback) {
+			callback(operation, parameter);
+		});
+	}
+	_.each(this.callbacks[""], function(callback) {
+		callback(operation, parameter);
+	});
+	if (this.deal) {
+		this.deal.runCallbacks(operation, parameter);
+	}
 };
 
 /**
@@ -4150,87 +4168,208 @@ _.mixin(templateRegistry);
 // Get Namespace.
 var Bridge = Bridge || {};
 
-/**
- * Register a template to display hands.
- * @param {string} name - the name of this template.
- * @param {string} template - the lodash/underscore template string.
- */
-Bridge.Hand.registerTemplate = function registerTemplate(name, template) {
-	_.declareTemplate("hand." + name, template);
+Bridge.getCardHTML = function(card) {
+  return "<suit data-suit='" + card[0].toLowerCase() + "'>" + Bridge.suits[ card[0].toLowerCase() ].html + "</suit><rank data-rank='" + card[1] + "'>" + card[1] + "</rank>";
+};
+
+Bridge.getBidHTML = function(bid) {
+  if (bid.length < 2) return bid;
+  return bid[0] + "<suit data-suit='" + bid[1].toLowerCase() + "'>" + Bridge.calls[bid[1].toLowerCase()].html + "</suit>";
 };
 
 /**
- * Utility to add a div wrapper around html with an auto generated id.
- * @param {object} config the object that has all configuration parameters
- * @param {string} html the html to wrap
- * @return {string} the wrapped html
+ * Render a template.
  */
-Bridge._addWrapper = function( config, html ) {
-	if (config.wrapperID) return html;
-	config.wrapperID = Bridge.IDManager.getID();
-  config.wrapperClass = config.wrapperClass || "standard";
-	return "<section id='" + config.wrapperID + "' class='" + config.wrapperClass + "'>" + html + "</section>";
-};
-
-/**
- * Register a  clickcallback handler.
- * @param {object} owner - the object registering the handler
- * @param {object} config - config object passed to the handler
- * @param {function} callback - the callback method to call
- */
-Bridge._registerClickHandler = function( owner, config, objectType ) {
-	// No op if flag is not set
-	if (config.handlers && config.handlers.click) {
-    var selector = '#' + config.wrapperID + ' .enabled';
-    $(selector).one("click", {owner: owner}, function(e) {
-      var eventName = Bridge.getEventName([owner.getID(), Bridge.CONSTANTS.changeEventName, objectType]);
-      var operation = $(this).data("operation");
-      if (operation) {
-        $(document).trigger( eventName, { "operation" : operation, "parameters": $(this).data()});
+Bridge.toHTML = function toHTML(self, config, parameters, operation) {
+  config = Bridge._cloneConfig(config);
+  _.defaults(config, {
+    registerClickHandlers: true,
+    registerChangeHandlers: true,
+  });
+	var html = _.renderTemplate(config.template, parameters);
+  var wrapperID = Bridge.IDManager.generateID();
+  html = "<section id='" + wrapperID + "'>" + html + "</section>";
+  if (config.containerID) {
+    var container = $('#' + config.containerID);
+    if (container.length) {
+      container.empty().append(html);
+      if (config.registerChangeHandlers) {
+        self.registerCallback(function() {
+          var wrapper = $('#' + wrapperID);
+          if (wrapper.length) {
+            var html = _.renderTemplate(config.template, parameters);
+    			  wrapper.empty().append(html);
+          }
+        }, operation);
       }
-    });
-	}
-};
-
-/**
- * Register a change callback handler.
- * @param {object} owner - the object registering the handler
- * @param {object} config - config object passed to the handler
- * @param {function} callback - the callback method to call
- */
-Bridge._registerChangeHandler = function( owner, config, callback ) {
-	// No op if flag is not set
-	if (config.handlers && config.handlers.change) {
-		var eventName = Bridge.getEventName([owner.getID(), Bridge.CONSTANTS.changedEventName]) + '.' + config.wrapperID;
-		$(document).one(eventName, { config: config, owner: owner, callback: callback }, function(e, args) {
-			var id = e.data.config.wrapperID;
-			if ( $( '#' + id ).length === 0 ) {
-				// block is not in dom. Turn off event handler.
-				return;
-			}
-			e.data.owner[e.data.callback](e.data.config);
-		});
-	}
-};
-
-/**
- * Perform additional operations with html like adding wrapper, embedding in container.
- * @param {string} html the html to wrap and embed.
- * @param {Object} config some configuration options.
- * @return {string} the wrapped html. Side effect is embedding of html in containerID if specified.
- */
-Bridge._wrapAndEmbedHTML = function _wrapAndEmbedHTML(html, config) {
-  if (config.wrapperID) {
-    $('#' + config.wrapperID).empty().append(html);
-  }
-  else {
-    html = Bridge._addWrapper(config, html);
-    if (config.containerID) {
-      $('#' + config.containerID).empty().append(html);
+      if (config.registerClickHandlers) {
+        // Register a  click callback handler.
+        var selector = '#' + wrapperID + ' [data-operation].enabled';
+        $(document).on("click", selector, function() {
+          self[$(this).data("operation")]($(this).data());
+        });
+      }
     }
   }
-  return html;
+	return html;
 };
+
+/**
+ * Render a deal template.
+ */
+Bridge.Deal.prototype.toHTML = function toHTML(config, operation) {
+  return Bridge.toHTML(this, config, { "deal": this, "config": config }, operation);
+};
+
+/**
+ * Generate html to show card deck based on configuration options.
+ * If nothing is specified defaults are used.
+ * @param {string} containerID the id of the container to embed html in
+ * @param {object} config the configuration options to use
+ * @return {string} html display of this deal's card deck using the passed template.
+ */
+ Bridge.Deal.prototype.showCardDeck = function showCardDeck(containerID, config) {
+   config = config || {};
+   _.defaults(config, {
+     containerID: containerID,
+     template: "deal.card-deck.rows",
+   });
+   return this.toHTML(config);
+ };
+
+/**
+ * Generate html to show vulnerability info based on configuration options.
+ * If nothing is specified defaults are used.
+ * @param {string} containerID the id of the container to embed html in
+ * @param {object} config the configuration options to use
+ * @return {string} html display of this deal's vulnerability using the passed template.
+ */
+Bridge.Deal.prototype.showVulnerability = function showVulnerability(containerID, config) {
+  config = config || {};
+  _.defaults(config, {
+    containerID: containerID,
+    template: "deal.vulnerability",
+  });
+  return this.toHTML(config, "setVulnerability");
+};
+
+/*
+ * Generate html to show dealer info based on configuration options.
+ * If nothing is specified defaults are used.
+ * @param {string} containerID the id of the container to embed html in
+ * @param {object} config the configuration options to use
+ * @return {string} html display of this deal's dealer using the passed template.
+ */
+Bridge.Deal.prototype.showDealer = function showDealer(containerID, config) {
+  config = config || {};
+  _.defaults(config, {
+    containerID: containerID,
+    template: "deal.dealer",
+  });
+  return this.toHTML(config, "setDealer");
+};
+
+/*
+ * Generate html to show scoring info based on configuration options.
+ * If nothing is specified defaults are used.
+ * @param {string} containerID the id of the container to embed html in
+ * @param {object} config the configuration options to use
+ * @return {string} html display of this deal's scoring type using the passed template.
+ */
+Bridge.Deal.prototype.showScoring = function showScoring(containerID, config) {
+  config = config || {};
+  _.defaults(config, {
+    containerID: containerID,
+    template: "deal.scoring",
+    scoringTypes: [
+      "MPs",
+      "IMPs",
+      "BAM",
+      "Total",
+    ],
+  });
+  return this.toHTML(config, "setScoring");
+};
+
+
+/**
+ * Render a hand template.
+ */
+Bridge.Hand.prototype.toHTML = function toHTML(config, operation) {
+  return Bridge.toHTML(this, config, { "hand": this, "config": config }, operation);
+};
+
+/**
+ * Generate html to show hand based on passed template name (which should be registered) and config.
+ * If nothing is specified defaults are used.
+ * @param {string} containerID the id of the container to embed html in
+ * @param {object} config the configuration options to use
+ * @return {string} html display of this hand using the passed template.
+ */
+Bridge.Hand.prototype.showHand = function showHand(containerID, config) {
+  config = config || {};
+  _.defaults(config, {
+    containerID: containerID,
+    template: "hand.cards",
+  });
+  return this.toHTML(config);
+};
+
+/**
+ * Generate html to show hand that is on leadbased on passed template name (which should be registered) and config.
+ * If nothing is specified defaults are used.
+ * @param {string} containerID the id of the container to embed html in
+ * @param {object} config the configuration options to use
+ * @return {string} html display of this hand using the passed template.
+ */
+Bridge.Hand.prototype.showLead = function showHand(containerID, config) {
+  config = config || {};
+  _.defaults(config, {
+    containerID: containerID,
+    template: "hand.lead",
+  });
+  return this.toHTML(config);
+};
+
+/**
+ * Render a auction template.
+ */
+Bridge.Auction.prototype.toHTML = function toHTML(config, operation) {
+  return Bridge.toHTML(this, config, { "auction": this, "config": config }, operation);
+};
+
+/**
+ * Generate html to show auction based on passed template name (which should be registered) and config.
+ * If nothing is specified defaults are used.
+ * @param {string} containerID the id of the container to embed html in
+ * @param {object} config the configuration options to use
+ * @return {string} html display of this auction using the passed template.
+ */
+Bridge.Auction.prototype.showAuction = function showAuction(containerID, config) {
+  config = config || {};
+  _.defaults(config, {
+    containerID: containerID,
+    template: "auction.full",
+    "addQuestionMark": true,
+  });
+  return this.toHTML(config);
+};
+
+/**
+ * Generate html to show bidding box based on configuration options.
+ * If nothing is specified defaults are used.
+ * @param {string} containerID the id of the container to embed html in
+ * @param {object} config the configuration options to use
+ * @return {string} html display of this auction's bidding box using the passed template.
+ */
+ Bridge.Auction.prototype.showBiddingBox = function showBiddingBox(containerID, config) {
+   config = config || {};
+   _.defaults(config, {
+     containerID: containerID,
+     template: "auction.bidding-box.concise",
+   });
+   return this.toHTML(config);
+ };
 
 /**
  * Make a deep copy of the config.
@@ -4242,167 +4381,146 @@ Bridge._cloneConfig = function _cloneConfig(config) {
   else return {};
 };
 
-/**
- * Generate html to show hand based on passed template name (which should be registered) and config.
- * If nothing is specified defaults are used.
- * @param {Object} config custom configuration options.
- * @return {string} html display of this hand using the passed template.
- */
-Bridge.Hand.prototype.showHand = function showHand(config) {
-	config = Bridge._cloneConfig(config);
-	config.template = config.template || "standard";
-  var template = "hand." + config.template;
-	var html = _.renderTemplate(template, { "hand": this, "config": config });
-  Bridge._wrapAndEmbedHTML(html, config);
-	Bridge._registerChangeHandler(this, config, 'toHTML');
-	return html;
-};
-Bridge.Hand.prototype.toHTML = Bridge.Hand.prototype.showHand;
+/** HAND TEMPLATES */
 
-/**
- * Generate html to show auction based on passed template name (which should be registered) and config.
- * If nothing is specified defaults are used.
- * @param {Object} config custom configuration options.
- * @return {string} html display of this auction using the passed template.
- */
-Bridge.Auction.prototype.showAuction = function showAuction(config) {
-	config = Bridge._cloneConfig(config);
-	config.template = config.template || "standard";
-  var template = "auction." + config.template;
-	var html = _.renderTemplate(template, { "auction": this, "config": config });
-	Bridge._wrapAndEmbedHTML(html, config);
-	Bridge._registerChangeHandler(this, config, 'toHTML');
-	return html;
-};
-Bridge.Auction.prototype.toHTML = Bridge.Auction.prototype.showAuction;
+_.declareTemplate("deal.vulnerability", `<vulnerabilities><%
+  var currentVulnerability = deal.getVulnerability();
+  var names = {
+    '-': "None",
+    'n': "Us",
+    'e': "Them",
+    'b': "Both",
+  };
+  if (Bridge.isEastWest(deal.getActiveHand())) {
+    names['n'] = "Them";
+    names['e'] = "Us";
+  }
+  _.each(Bridge.vulnerabilities, function(item, vulnerability) {
+    %><vulnerability data-operation="setVulnerability" data-vulnerability=<%=vulnerability%> <%
+    if (vulnerability != currentVulnerability) {
+      %>class="enabled" <%
+    } else {
+      %>class="disabled current" <%
+    }
+    %>><%=names[vulnerability]%></vulnerability><%
+  });
+  %></vulnerabilities>`);
 
-/**
- * Generate html to show bidding box based on configuration options.
- * If nothing is specified defaults are used.
- * @param {Object} config custom configuration options.
- * @return {string} html display of this auction's bidding box using the passed template.
- */
-Bridge.Auction.prototype.showBiddingBox = function showBiddingBox(config) {
-	config = Bridge._cloneConfig(config);
-	config.template = config.template || "standard";
-  var template = "auction.bidding-box." + config.template;
-	var html = _.renderTemplate(template, { "auction": this, "config": config });
-	Bridge._wrapAndEmbedHTML(html, config);
-	Bridge._registerChangeHandler(this, config, 'showBiddingBox');
-  Bridge._registerClickHandler(this, config, 'auction');
-	return html;
-};
+_.declareTemplate("deal.scoring", `<scoringtypes><%
+  var currentScoring = deal.getScoring();
+  _.each(config.scoringTypes, function(scoringType) {
+    %><scoringtype data-operation="setScoring" data-scoring=<%=scoringType%> <%
+    if (scoringType != currentScoring) {
+      %>class="enabled" <%
+    } else {
+      %>class="disabled current" <%
+    }
+    %>><%=scoringType%></scoringtype><%
+  });
+  %></scoringtypes>`);
 
-/**
- * Generate html to show card deck based on configuration options.
- * If nothing is specified defaults are used.
- * @param {Object} config custom configuration options.
- * @return {string} html display of this deal's card deck using the passed template.
- */
-Bridge.Deal.prototype.showCardDeck = function showCardDeck(config) {
-	config = Bridge._cloneConfig(config);
-	config.template = config.template || "standard";
-  var template = "deal.card-deck." + config.template;
-	var html = _.renderTemplate(template, { "deal": this, "config": config });
-	Bridge._wrapAndEmbedHTML(html, config);
-	Bridge._registerChangeHandler(this, config, 'showCardDeck');
-  Bridge._registerClickHandler(this, config, 'deal');
-	return html;
-};
+_.declareTemplate("deal.dealer", `<directions><%
+  var currentDealer = deal.getDealer();
+  var activeHand = deal.getActiveHand();
+  var dealers = {};
+  dealers[activeHand] = "Me";
+  dealers[Bridge.getLHO(activeHand)] = "LHO";
+  dealers[Bridge.getRHO(activeHand)] = "RHO";
+  dealers[Bridge.getPartner(activeHand)] = "Partner";
+  _.each(Bridge.getDirectionOrder(Bridge.getLHO(activeHand)), function(direction) {
+    %><direction data-operation="setDealer" data-dealer=<%=direction%> <%
+    if (direction != currentDealer) {
+      %>class="enabled" <%
+    } else {
+      %>class="disabled current" <%
+    }
+    %>><%=dealers[direction]%></direction><%
+  });
+  %></directions>`);
 
-/**
- * Generate html to show deal based on configuration options.
- * If nothing is specified defaults are used.
- * @param {Object} config custom configuration options.
- * @return {string} html display of this deal using the passed template.
- */
-Bridge.Deal.prototype.showDeal = function showDeal(config) {
-	config = Bridge._cloneConfig(config);
-	config.template = config.template || "standard";
-  var template = "deal." + config.template;
-	var html = _.renderTemplate(template, { "deal": this, "config": config });
-	Bridge._wrapAndEmbedHTML(html, config);
-	Bridge._registerChangeHandler(this, config, 'showDeal');
-  Bridge._registerClickHandler(this, config, 'deal');
-	return html;
-};
-Bridge.Deal.prototype.toHTML = Bridge.Deal.prototype.showDeal;
-
-/**
- * @fileOverview Lodash templates for hand diagrams, auctions etc.
- * @author Sriram Narasimhan
- * @version 1.0.0
- */
+_.declareTemplate("deal.card-deck.rows", `<card-deck><%
+  var activeHand = deal.getActiveHand();
+  var count = 0;
+  %><content><%
+  _.each(Bridge.suitOrder, function(suit) {
+    %><row data-suit=<%=suit%>><%
+    _.each(Bridge.rankOrder, function(rank) {
+      var assignedTo = deal.cards[suit][rank].getDirection();
+      count++;
+      %><card data-card-number="<%=count%>" <% if (assignedTo) {
+        if (assignedTo === activeHand) {
+          %>class="enabled assigned" data-operation=removeCard data-direction=<%=activeHand%> <%
+        } else {
+          %>class="disabled assigned" <%
+        }
+        %>data-assigned=<%=assignedTo%> <%
+      } else {
+        if (deal.getHand(activeHand).getCount() < 13) {
+          %> class="enabled unassigned" data-operation=addCard data-direction=<%=activeHand%> <%
+        } else {
+          %> class="disabled unassigned" data-operation=addCard data-direction=<%=activeHand%> <%
+        }
+        %> class="enabled unassigned" data-operation=addCard data-direction=<%=activeHand%> <%
+      }
+      %>data-suit=<%=suit%> data-rank=<%=rank%>></card><%
+    });
+    %></row><%
+  });
+  %></content></card-deck>`);
 
 /** HAND TEMPLATES */
-_.declareTemplate("hand.cards.suit.rank",
-	`<rank data-suit="<%=suit%>" data-rank="<%=rank%>"><%=html%></rank>`);
-
-_.declareTemplate("hand.cards.suit.ranks", `
-	<ranks data-suit="<%=suit%>"><%
+_.declareTemplate( "hand.concise", `<cards><%
+	_.each(Bridge.suitOrder, function(suit) {
+    %><row><suit data-suit="<%=suit%>"><%=Bridge.suits[ suit ].html%></suit><%
 		_.each( hand.getRanks(suit), function( item ) {
-			html = _.renderTemplate("hand.cards.suit.rank", {"suit": suit, "rank": item.rank, "html": item.html});
-			%><%=html%><%
+				%><rank data-suit="<%=suit%>" data-rank="<%=item.rank%>"><%=item.html%></rank><%
 		});
-	%></ranks>
-`);
-
-_.declareTemplate("hand.cards.suit", `<%
-	count=hand.getCount(suit);
-	empty = (count <= 0) ? "" : "data-empty";
-	%><cards data-count="<%=count%>" <%=empty%>><%
-	%><suit data-suit="<%=suit%>"><%=Bridge.suits[ suit ].html%></suit><%
-	html = _.renderTemplate("hand.cards.suit.ranks", {"hand": hand, "config": config, "suit": suit});
-	%><%=html%></cards>`);
-
-_.declareTemplate( "hand.cards", `<%
-	_.each( hand.getSuits(config.alternateSuitColor), function( suit ) {
-		html = _.renderTemplate( "hand.cards.suit", {"hand": hand, "config": config, "suit": suit});
-		%><%=html%><%
+    %></row><%
 	});
-%>`);
-
-_.declareTemplate( "hand.cards.concise", `<cards><%
-	var count = 0;
-	_.each( hand.getSuits(config.alternateSuitColor), function( suit ) {
-		_.each( hand.getRanks(suit), function( item ) {
-			if (item.rank !== "-") {
-				count++;
-				%><card data-card-number="<%=count%>" data-suit="<%=suit%>" data-rank="<%=item.rank%>"><%=item.html%></card><%
-			}
-		});
-	});
-	while (count < 13) {
-		count++;
-		%><card data-card-number="<%=count%>" class="unassigned"></card><%
-	}
 %></cards>`);
+_.declareTemplate( "hand.cards",`<hand><content><%
+    var cards = hand.getCards();
+    var count = 0;
+    _.each(cards, function(card) {
+      count++;
+      %><card class="enabled<%
+      if (hand.isSelectedCard(card.suit, card.rank)) {
+        %> selected<%
+      }
+      %>" data-operation="removeCard" data-card-number="<%=count%>" data-suit="<%=card.suit%>" data-rank="<%=card.rank%>"></card><%
+    });
+    while (count < 13) {
+  		count++;
+  		%><card data-card-number="<%=count%>" class="unassigned"></card><%
+  	}
+	%></content></hand>`);
 
-_.declareTemplate( "hand.concise",`<hand><content><%
-	html = _.renderTemplate("hand.cards.concise", {"hand": hand, "config": config});
-	%><%=html%></content></hand>`);
-
-_.declareTemplate( "hand.full",`<hand<%if (hand.isActive()){%> class="active"<%}%>><header><%
-		%><direction><%= hand.getDirection() %></direction><%
-		%><name class="enabled" data-direction=<%= hand.getDirection() %> data-operation=setActiveHand><%= hand.getName() %></name><%
-	%></header><content><%
-	html = _.renderTemplate("hand.cards", {"hand": hand, "config": config});
-	%><%=html%></content></hand>`);
-
-_.declareTemplate( "hand.standard",`<%
-	html = _.renderTemplate("hand.full", {"hand": hand, "config": config});
-	%><%=html%>`);
+_.declareTemplate( "hand.lead",`<hand><content><%
+    var cards = hand.getCards();
+    var count = 0;
+    _.each(cards, function(card) {
+      count++;
+      %><card class="enabled<%
+      if (hand.isSelectedCard(card.suit, card.rank)) {
+        %> selected<%
+      }
+      %>" data-operation="setSelectedCard" data-card-number="<%=count%>" data-suit="<%=card.suit%>" data-rank="<%=card.rank%>"></card><%
+    });
+    while (count < 13) {
+  		count++;
+  		%><card data-card-number="<%=count%>" class="unassigned"></card><%
+  	}
+	%></content></hand>`);
 
 /** AUCTION TEMPLATES */
 _.declareTemplate("auction.directions", `
 	<directions><%
-		_.each(auction.getDirectionOrder(config.startDirection), function(direction) {
+		_.each(Bridge.getDirectionOrder(config.startDirection), function(direction) {
 			var name = auction.getName(direction);
       %><direction <% if (auction.isVulnerable(direction)) {%>data-vulnerable<%}
       %> data-direction="<%=direction%>"><%=name%></direction><%
 		});
-	%></directions>
-`);
+	%></directions>`);
 
 _.declareTemplate("call", `<call data-call="<%=call.toString()%>"><%
     if (call.call.length === 1) {
@@ -4434,19 +4552,11 @@ _.declareTemplate( "auction.calls", `
   %></calls>
 `);
 
-_.declareTemplate("auction.concise", `<auction><content><%
-	html = _.renderTemplate("auction.calls", {"auction": auction, "config": config});
-	%><%=html%></content></auction>`);
-
 _.declareTemplate("auction.full", `<auction><header><%
     html = _.renderTemplate("auction.directions", {"auction": auction, "config": config});
   %><%=html%></header><content><%
 	  html = _.renderTemplate("auction.calls", {"auction": auction, "config": config});
 	%><%=html%></content></auction>`);
-
-_.declareTemplate( "auction.standard",`<%
-	html = _.renderTemplate("auction.full", {"auction": auction, "config": config});
-	%><%=html%>`);
 
 _.declareTemplate("auction.bidding-box.levels", `<levels><%
   var selectedLevel = auction.getSelectedLevel();
@@ -4461,16 +4571,18 @@ _.declareTemplate("auction.bidding-box.levels", `<levels><%
   %></levels>`);
 
 _.declareTemplate("auction.bidding-box.calls", `<calls><%
+  var selectedCall = auction.getSelectedCall();
   var selectedLevel = auction.getSelectedLevel();
   var allowedCalls = auction.getContract().allowedCalls(auction.nextToCall);
 	var pass = ['p'];
 	var double = allowedCalls['r'] ? ['r'] : ['x'];
   var callOrder = pass.concat(double, ['c', 'd', 'h', 's', 'n']);
-  _.each(callOrder, function(suit) {
-    var call = ( Bridge.isStrain(suit) ? selectedLevel + suit : suit );
-    %><call data-operation=addCall data-call=<%=call%> data-suit=<%=suit%> class="<%
-		if (allowedCalls[call]) {%> enabled<%} else {%> disabled<%}
-		%>"><%=Bridge.calls[suit].html%></call><%
+  _.each(callOrder, function(call) {
+    var bid = ( Bridge.isStrain(call) ? selectedLevel + call : call );
+    %><call data-operation="setSelectedCall" data-call=<%=call%> data-bid=<%=bid%> class="<%
+		if (allowedCalls[bid]) {%> enabled<%} else {%> disabled<%}
+    if (selectedCall == call) {%> selected<%}
+		%>"><suit data-suit="<%=call%>"><%=Bridge.calls[call].html%></suit></call><%
   });
   %></calls>`);
 
@@ -4480,7 +4592,7 @@ _.declareTemplate("auction.bidding-box.concise", `<bidding-box class="concise"><
     html = _.renderTemplate("auction.bidding-box.calls", {"auction": auction, "config": config});
   %><%=html%></content></bidding-box>`);
 
-_.declareTemplate("auction.bidding-box.levels+suits", `<calls><%
+_.declareTemplate("auction.bidding-box.full", `<bidding-box class="full"><content><calls><%
   var selectedLevel = auction.getSelectedLevel();
   var allowedCalls = auction.getContract().allowedCalls(auction.nextToCall);
   var minimumAllowedLevel = allowedCalls["minimum_level"];
@@ -4489,7 +4601,7 @@ _.declareTemplate("auction.bidding-box.levels+suits", `<calls><%
     var callOrder = ['c', 'd', 'h', 's', 'n'];
     _.each(callOrder, function(suit) {
       var call = level + suit;
-      %><call data-operation=addCall data-call=<%=call%> class="<%
+      %><call data-operation="addCall" data-call=<%=call%> class="<%
 			if (allowedCalls[call]) {%> enabled<%} else {%> disabled<%}
 			%>"><%
       %><level data-level="<%=level%>"><%=level%></level><%
@@ -4497,142 +4609,22 @@ _.declareTemplate("auction.bidding-box.levels+suits", `<calls><%
     });
     %></row><%
   });
-  %></calls>`);
-_.declareTemplate("auction.bidding-box.utilities", `<row><%
-  var allowedCalls = auction.getContract().allowedCalls(auction.nextToCall);
-  var callOrder = [
-    {call: 'p', 'text': 'all pass', 'operation': 'addAllPass'},
-    {call: 'u', 'text': 'undo', 'operation': 'removeCall'},
-    {call: 'u', 'text': 'reset', 'operation': 'clearCalls'},
-  ];
-  _.each(callOrder, function(bid) {
-    var call = bid.call;
-    var text = bid.text;
-    %><call data-operation=<%=bid.operation%> data-call=<%=call%> class="<%
-		if (allowedCalls[call]) {%> enabled<%} else {%> disabled<%}
-		%>"><%=text%></call><%
-  });
-  %></row>`);
+  %></calls></content></bidding-box>`);
+
 _.declareTemplate("auction.bidding-box.special_calls", `<row><%
   var allowedCalls = auction.getContract().allowedCalls(auction.nextToCall);
-  var callOrder = [
-    {call: 'p', 'text': 'pass'},
-    {call: 'x', 'text': 'x'},
-    {call: 'r', 'text': 'xx'},
-  ];
-  _.each(callOrder, function(bid) {
-    var call = bid.call;
-    var text = bid.text;
-    %><call data-operation=addCall data-call=<%=call%> class="<%
-		if (allowedCalls[call]) {%> enabled<%} else {%> disabled<%}
-		%>"><%=text%></call><%
-  });
-  %></row>`);
-_.declareTemplate("auction.bidding-box.full", `<bidding-box class="full"><header><%
-  html = _.renderTemplate("auction.bidding-box.special_calls", {"auction": auction, "config": config});
-  %><%=html%></header><content><%
-    html = _.renderTemplate("auction.bidding-box.levels+suits", {"auction": auction, "config": config});
-  %><%=html%></content><%
-  if (config.showUtilities) {
-    html = _.renderTemplate("auction.bidding-box.utilities", {"auction": auction, "config": config});
-    %><footer><%=html%></footer><%
+  %><call data-operation="removeCall" data-call="u" class="<%
+  if (allowedCalls["u"]) {%> enabled<%} else {%> disabled<%}
+  %>"><suit data-suit="u">Undo</suit></call><%
+  if (allowedCalls['r']) {
+  %><call data-operation="addCall" data-call="r" class="<%
+  if (allowedCalls["r"]) {%> enabled<%} else {%> disabled<%}
+  %>">Redouble</call><%
+  } else {
+  %><call data-operation="addCall" data-call="x" class="<%
+  if (allowedCalls["x"]) {%> enabled<%} else {%> disabled<%}
+  %>">Double</call><%
   }
-  %></bidding-box>`);
-
-_.declareTemplate("deal.card-deck.standard", `<card-deck><%
-  var activeHand = deal.getActiveHand();
-  %><header>Active Hand: <%=deal.getHand(activeHand).getName()%></header><content><%
-	_.each(Bridge.suitOrder, function(suit) {
-		%><row data-suit=<%=suit%>><%
-		_.each(Bridge.rankOrder, function(rank) {
-			var assignedTo = deal.cards[suit][rank].getDirection();
-			%><card <% if (assignedTo) {
-				if (assignedTo === activeHand) {
-					%>class="enabled" data-operation=removeCard data-direction=<%=activeHand%> <%
-				} else {
-					%>data-disabled <%
-				}
-				%>data-assigned=<%=assignedTo%> <%
-			} else {
-				%> class="enabled" data-operation=addCard data-direction=<%=activeHand%> <%
-			}
-			%>data-suit=<%=suit%> data-rank=<%=rank%>><%
-			%><suit data-suit=<%=suit%>><%=Bridge.suits[suit].html%></suit><%
-			%><rank data-rank=<%=rank%>><%=Bridge.ranks[rank].html%></rank><%
-			%></card><%
-		});
-		var rank = 'x';
-		%><card class="enabled" data-operation=addCard data-direction=<%=activeHand%> <%
-		%>data-suit=<%=suit%> data-rank=<%=rank%>><%
-		%><suit data-suit=<%=suit%>><%=Bridge.suits[suit].html%></suit><%
-		%><rank data-rank=<%=rank%>><%=rank%></rank><%
-		%></card><%
-		%></row><%
-	});
-  %></content></card-deck>`);
-
-	_.declareTemplate("deal.card-deck.rows", `<card-deck><%
-	  var activeHand = deal.getActiveHand();
-		var count = 0;
-	  %><content><%
-		_.each(Bridge.suitOrder, function(suit) {
-			%><row data-suit=<%=suit%>><%
-			_.each(Bridge.rankOrder, function(rank) {
-				var assignedTo = deal.cards[suit][rank].getDirection();
-				count++;
-				%><card data-card-number="<%=count%>" <% if (assignedTo) {
-					if (assignedTo === activeHand) {
-						%>class="enabled assigned" data-operation=removeCard data-direction=<%=activeHand%> <%
-					} else {
-						%>class="disabled assigned" <%
-					}
-					%>data-assigned=<%=assignedTo%> <%
-				} else {
-					if (deal.getHand(activeHand).getCount() < 13) {
-						%> class="enabled unassigned" data-operation=addCard data-direction=<%=activeHand%> <%
-					} else {
-						%> class="disabled unassigned" data-operation=addCard data-direction=<%=activeHand%> <%
-					}
-					%> class="enabled unassigned" data-operation=addCard data-direction=<%=activeHand%> <%
-				}
-				%>data-suit=<%=suit%> data-rank=<%=rank%>></card><%
-			});
-			%></row><%
-		});
-	  %></content></card-deck>`);
-
-_.declareTemplate("deal.standard", `<deal><%
-	%><section><%
-		%><block><%
-		%></block><%
-		%><block><%
-			var hand = deal.getHand('n');
-			html = _.renderTemplate("hand.standard", {"hand": hand, "config": config});
-		%><%=html%></block><%
-		%><block><%
-			html = _.renderTemplate("auction.standard", {"auction": deal.getAuction(), "config": config});
-		%><%=html%></block><%
-	%></section><%
-	%><section><%
-		%><block><%
-			var hand = deal.getHand('w');
-			html = _.renderTemplate("hand.standard", {"hand": hand, "config": config});
-		%><%=html%></block><%
-		%><block><%
-		%></block><%
-		%><block><%
-			var hand = deal.getHand('e');
-			html = _.renderTemplate("hand.standard", {"hand": hand, "config": config});
-		%><%=html%></block><%
-	%></section><%
-	%><section><%
-		%><block><%
-		%></block><%
-		%><block><%
-			var hand = deal.getHand('s');
-			html = _.renderTemplate("hand.standard", {"hand": hand, "config": config});
-		%><%=html%></block><%
-		%><block><%
-		%></block><%
-	%></row><%
-	%></section>`);
+  %><call data-operation="addCall" data-call="p" class="<%
+  if (allowedCalls["p"]) {%> enabled<%} else {%> disabled<%}
+  %>">Pass</call></row>`);

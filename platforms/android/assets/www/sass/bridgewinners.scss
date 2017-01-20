@@ -9,8 +9,18 @@
 html {
   box-sizing: border-box;
 }
-html, body {
-  height: calc(100% - 0px);
+// html, body {
+//   height: calc(100% - 0px);
+// }
+html,
+body {
+height: 100%;
+min-height: 100%;
+}
+
+.full-screen {
+height: 100%;
+min-height: 100%;
 }
 *, *:before, *:after {
   box-sizing: inherit;
@@ -22,6 +32,7 @@ $TextColor: #ffffff;
 $BWSeaGreen: #2a5461;
 $BWRed: #9a032e;
 $BWSlate: #416757;
+$slateGreen: #698f64;
 $BWLightBlue: #ade7ed;
 $FBBlue: #3b5998;
 $GoogleRed: #dd4b39;
@@ -36,7 +47,7 @@ $suitRed: #cb1517;
 $white: #ffffff;
 $black: #000000;
 $brightRed: #d0021b;
-$selectedLevelColor: #cc0;
+$selectedLevelColor: $BWSeaGreen;
 $menu_items: vote create history alerts account;
 
 @mixin top($top) {
@@ -123,6 +134,11 @@ $menu_items: vote create history alerts account;
   margin: 0 auto;
 }
 
+#alerts-list {
+  @include location(80px);
+  width: 100%;
+}
+
 .center {
   display: block;
 	@extend %horizontal-center;
@@ -141,6 +157,885 @@ $menu_items: vote create history alerts account;
 #vote-page.lead {
   #description {
     @include location(259px, 57px, 375px);
+  }
+}
+
+#create-page {
+  #hand-header {
+    @include location(54px, 20px, 360px, 15px);
+    @include font(17px);
+    letter-spacing: -0.4px;
+    color: $darkGrey;
+    text-align: left;
+  }
+  #hand {
+    @include location(89px, 66px, 345px, 15px);
+    z-index: -2;
+    hand, content {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    cards {
+      display: inline-block;
+      height: 100%;
+    }
+    card {
+        position: absolute;
+        color: transparent;
+        text-indent: -9999px;
+        @include height(66px);
+        @include width(48px);
+        cursor: pointer;
+    }
+    card.unassigned {
+      @include border-radius(5px);
+      background-color: $lightGrey;
+      border: solid 1px #979797;
+    }
+    $suits: s h d c;
+    $ranks: a k q j t 9 8 7 6 5 4 3 2;
+    [data-suit][data-rank] {
+      @include background-cover();
+    }
+    @each $suit in $suits {
+      [data-suit="#{$suit}"][data-rank="x"] {
+        background-image: url("img/#{$suit}2.png");
+      }
+      @each $rank in $ranks {
+        [data-suit="#{$suit}"][data-rank="#{$rank}"] {
+          background-image: url("img/#{$suit}#{$rank}.png");
+        }
+      }
+    }
+    @for $i from 1 through 13 {
+      [data-card-number="#{$i}"] {
+        $left: ($i - 1) * 25px;
+        @include left($left);
+      }
+    }
+  }
+  #deck-header {
+    @include location(184px, 20px, 360px, 15px);
+    @include font(17px);
+    letter-spacing: -0.4px;
+    color: $darkGrey;
+    text-align: left;
+  }
+  #deck {
+    card-deck, content {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    card {
+        position: absolute;
+        color: transparent;
+        text-indent: -9999px;
+        @include height(66px);
+        @include width(48px);
+        cursor: pointer;
+    }
+    $suits: s h d c;
+    $ranks: a k q j t 9 8 7 6 5 4 3 2;
+    [data-suit][data-rank] {
+      @include background-cover();
+    }
+    @each $suit in $suits {
+      [data-suit="#{$suit}"][data-rank="x"].unassigned {
+        background-image: url("img/#{$suit}2.png");
+      }
+      @each $rank in $ranks {
+        [data-suit="#{$suit}"][data-rank="#{$rank}"].unassigned {
+          background-image: url("img/#{$suit}#{$rank}.png");
+        }
+      }
+    }
+    card.assigned {
+      @include border-radius(5px);
+      background-color: $lightGrey;
+      border: solid 1px #979797;
+    }
+    @for $i from 1 through 52 {
+      [data-card-number="#{$i}"] {
+        $left: (($i - 1) % 13) * 25px + 15px;
+        $row_num: 0;
+        @if $i > 39 {
+          $row_num: 3;
+        }
+        @else if $i > 26 {
+          $row_num: 2;
+        }
+        @else if $i > 13 {
+          $row_num: 1;
+        }
+        @else {
+          $row_num: 0;
+        }
+        @include left($left);
+        @include top(($row_num * 80px) + 170px);
+      }
+    }
+  }
+  #scoring-header, #vulnerability-header, #dealer-header, #description-header {
+    @include font(17px);
+    font-weight: 600;
+    letter-spacing: -0.4px;
+    color: $darkGrey;
+    text-align: left;
+  }
+  #scoring-header {
+    @include location(264px, 20px, 345px, 15px);
+  }
+  #scoring {
+    scoringtypes{
+      @include location(289px, 44px, 345px, 15px);
+      display: table;
+      @include border-radius(5px);
+      border: solid 1px #979797;
+      background-color: $deactiveGrey;
+    }
+    scoringtype {
+      display: table-cell;
+      vertical-align: middle;
+      @include font(17px);
+      font-weight: 600;
+      letter-spacing: 0.6px;
+      color: $darkGrey;
+      cursor: pointer;
+    }
+    scoringtype:not(:last-child) {
+      border-right: solid 1px #979797;
+    }
+    scoringtype.current {
+      background-color: $BWSeaGreen;
+      color: $white;
+      cursor:default;
+    }
+  }
+  #vulnerability-header {
+    @include location(353px, 20px, 345px, 15px);
+  }
+  #vulnerability {
+    vulnerabilities {
+      @include location(378px, 44px, 345px, 15px);
+      display: table;
+      @include border-radius(5px);
+      border: solid 1px #979797;
+      background-color: $deactiveGrey;
+    }
+    vulnerability {
+      display: table-cell;
+      vertical-align: middle;
+      @include font(17px);
+      font-weight: 600;
+      letter-spacing: 0.6px;
+      color: $darkGrey;
+      cursor: pointer;
+    }
+    vulnerability:not(:last-child) {
+      border-right: solid 1px #979797;
+    }
+    vulnerability.current {
+      background-color: $BWSeaGreen;
+      color: $white;
+      cursor:default;
+    }
+  }
+  #dealer-header {
+    @include location(442px, 20px, 360px, 15px);
+  }
+  #dealer {
+    directions {
+      @include location(467px, 44px, 345px, 15px);
+      display: table;
+      @include border-radius(5px);
+      border: solid 1px #979797;
+      background-color: $deactiveGrey;
+    }
+    direction {
+      display: table-cell;
+      vertical-align: middle;
+      @include font(17px);
+      font-weight: 600;
+      letter-spacing: 0.6px;
+      color: $darkGrey;
+      cursor: pointer;
+    }
+    direction:not(:last-child) {
+      border-right: solid 1px #979797;
+    }
+    direction.current {
+      background-color: $BWSeaGreen;
+      color: $white;
+      cursor:default;
+    }
+  }
+  #hand-hider {
+    @include location(129px, 36px, 375px, 15px);
+    z-index: -1;
+  }
+  #auction {
+    @include location(138px, 130px, 230px, 15px);
+    @include font(20px);
+    background-color: $white;
+    border: solid 2px $BWSlate;
+    directions, calls {
+      display: table;
+      table-layout: fixed;
+      width: 100%;
+    }
+    directions {
+      @include font(20px);
+      height: 18.5%;
+      border-bottom: solid 2px $BWSlate;
+    }
+    calls {
+      @include font(18px);
+      height: 81.5%;
+    }
+    row {
+      display: table-row;
+      width: 100%;
+    }
+    direction, call {
+      display: table-cell;
+    }
+    direction {
+      font-weight: 600;
+      letter-spacing: -0.8px;
+      text-align: center;
+      color: $black;
+      background-color: $white;
+    }
+    direction[data-vulnerable] {
+      color: $white;
+      background-color: $brightRed;
+    }
+    call {
+      font-weight: 600;
+      letter-spacing: -0.5px;
+      text-transform: uppercase;
+    }
+  }
+  #special_calls {
+    call {
+      @extend %flex-vertical-center;
+      @include border-radius(5px);
+      @include font(17px);
+      font-weight: 600;
+      letter-spacing: 0.6px;
+      cursor: not-allowed;
+    }
+    call.enabled {
+      cursor: pointer;
+    }
+    call[data-call="u"] {
+      @include location(138px, 40px, 105px, 255px);
+      background-color: $darkGrey;
+      color: $deactiveGrey;
+    }
+    call[data-call="x"] {
+      @include location(183px, 40px, 105px, 255px);
+      background-color: $doubleRed;
+      color: $white;
+    }
+    call[data-call="r"] {
+      @include location(183px, 40px, 105px, 255px);
+      background-color: $redoubleBlue;
+      color: $white;
+    }
+    call[data-call="p"] {
+      @include location(228px, 40px, 105px, 255px);
+      background-color: $passGreen;
+      color: $white;
+    }
+  }
+  #bidding-box {
+    @include location(283px, 245px, 345px, 15px);
+    @include font(18px);
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    color: $black;
+    row {
+      display: table;
+      table-layout: fixed;
+      width: 100%;
+    }
+    call {
+      @include height(35px);
+      display: table-cell;
+      vertical-align: middle;
+      border: solid 1px $BWSeaGreen;
+      background-color: $blueGrey;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+    call.disabled {
+      cursor: not-allowed;
+      opacity: 0.4;
+    }
+  }
+  #description-header {
+    @include location(259px, 20px, 360px, 15px);
+  }
+  #description {
+    @include location(284px, 240px, 376px);
+  }
+  .button {
+    @include font(17px);
+    @include border-radius(5px);
+    color: $darkGrey;
+    background-color: $lightGrey;
+  }
+  .button.enabled {
+    color: $white;
+    background-color: $BWRed;
+    cursor: pointer;
+  }
+  #create-reset-button {
+    @extend %flex-vertical-center;
+    @include location(535px, 44px, 169px, 15px);
+  }
+  #create-continue-button {
+    @extend %flex-vertical-center;
+    @include location(535px, 44px, 169px, 191px);
+  }
+  #create-review-page {
+    #avatar-review {
+      $height: 35px;
+      @include location(59px, $height, $height, 15px);
+      // Width should be same as height. So this hack.
+      width: $height/$ref_height * 100vh;
+      background-color: #d8d8d8;
+      border: solid 2px $BWSlate;
+      @include border-radius(50%);
+      @include background-contain();
+    }
+    #name-review {
+      @extend %flex-vertical-center2;
+      @include location(59px, 35px, 200px, 56px);
+      @include font(17px);
+      text-align: left;
+      color: $darkGrey;
+    }
+    #user-review {
+      color: $BWRed;
+      font-weight: 600;
+      margin-right: 5px;
+    }
+    #auction-review {
+      @include location(109px, 135px, 230px, 15px);
+      @include font(20px);
+      background-color: $white;
+      border: solid 2px $BWSlate;
+      directions, calls {
+        display: table;
+        table-layout: fixed;
+        width: 100%;
+      }
+      directions {
+        @include font(20px);
+        height: 17.77%;
+        border-bottom: solid 2px $BWSlate;
+      }
+      calls {
+        @include font(18px);
+        height: 82.23%;
+      }
+      row {
+        display: table-row;
+        width: 100%;
+      }
+      direction, call {
+        display: table-cell;
+      }
+      direction {
+        font-weight: 600;
+        letter-spacing: -0.8px;
+        text-align: center;
+        color: $black;
+        background-color: $white;
+      }
+      direction[data-vulnerable] {
+        color: $white;
+        background-color: $brightRed;
+      }
+      call {
+        font-weight: 600;
+        letter-spacing: -0.5px;
+        text-transform: uppercase;
+      }
+    }
+    #vulnerability-review {
+      [data-vulnerable="yes"] {
+        color: $white;
+        background-color: $brightRed;
+      }
+      [data-vulnerable="no"] {
+        color: $black;
+        background-color: $white;
+      }
+      #info-wrapper {
+        @include location(109px, 135px, 105px, 255px);
+        background-color: $lightGrey;
+        border: solid 2px $BWSlate;
+      }
+      #vul-e {
+        @include location(139px, 76px, 21px, 332px);
+        border: solid 2px $BWSlate;
+        border-left: 0;
+      }
+      #vul-w {
+        @include location(139px, 76px, 21px, 262px);
+        border: solid 2px $BWSlate;
+        border-right: 0;
+      }
+      .vulnerability {
+        @extend %flex-vertical-center;
+        text-align: center;
+      }
+      #scoring-review {
+        @include location(139px, 76px, 53.1px, 281px);
+        @extend %flex-vertical-center;
+        background-color: $BWLightBlue;
+        border: solid 2px $BWSlate;
+        text-align: center;
+        color: $black;
+        z-index: 1;
+        word-wrap: break-word;
+      }
+      #vul-n {
+        @include location(116px, 25px, 53.1px, 281px);
+        border: solid 2px $BWSlate;
+        border-bottom: 0;
+      }
+      #vul-s {
+        @include location(213px, 25px, 53.1px, 281px);
+        border: solid 2px $BWSlate;
+        border-top: 0;
+      }
+    }
+    #description-review {
+      @include location(339px, 57px, 375px);
+      @include font(17px);
+      color: $darkGrey;
+      text-align: justify;
+      padding: 5px;
+      background-color: $white;
+      border: solid 1px $deactiveGrey;
+      overflow-y: hidden;
+      padding-right: 7vw;
+    }
+    #hand-review {
+      @include location(258px, 66px, 349px, 13px);
+    }
+    #hand-review {
+      hand, content {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+      cards {
+        display: inline-block;
+        height: 100%;
+      }
+      card {
+          position: absolute;
+          color: transparent;
+          text-indent: -9999px;
+          @include height(66px);
+          @include width(48px);
+          cursor: pointer;
+      }
+      card.selected {
+        -webkit-filter: sepia(1);
+        filter: sepia(1);
+      }
+      $suits: s h d c;
+      $ranks: a k q j t 9 8 7 6 5 4 3 2;
+      [data-suit][data-rank] {
+        @include background-cover();
+      }
+      @each $suit in $suits {
+        [data-suit="#{$suit}"][data-rank="x"] {
+          background-image: url("img/#{$suit}2.png");
+        }
+        @each $rank in $ranks {
+          [data-suit="#{$suit}"][data-rank="#{$rank}"] {
+            background-image: url("img/#{$suit}#{$rank}.png");
+          }
+        }
+      }
+    }
+    #hand-review {
+      @for $i from 1 through 13 {
+        [data-card-number="#{$i}"] {
+          $left: ($i - 1) * 25px;
+          @include left($left);
+        }
+      }
+    }
+    #create-save-button {
+      @extend %flex-vertical-center;
+      @include location(535px, 44px, 169px, 15px);
+    }
+    #create-publish-button {
+      @extend %flex-vertical-center;
+      @include location(535px, 44px, 169px, 191px);
+    }
+  }
+}
+
+#footer {
+  #account-avatar-inner, #account-avatar-outer {
+    @extend %horizontal-center;
+    $height: 30px;
+    height: $height/$ref_height * 100vh;
+    // Width should be same as height. So this hack.
+    width: $height/$ref_height * 100vh;
+    background-color: #d8d8d8;
+    background-position: top center;
+    border: solid 2px $BWSlate;
+    @include border-radius(50%);
+    @include background-contain();
+    z-index: 5;
+  }
+}
+#account-avatar-inner {
+  margin-top:3px/$ref_height * 100vh;
+}
+#account-avatar-outer {
+  margin-top:5px/$ref_height * 100vh;
+}
+
+#history-page {
+  #history-results-page {
+    #avatar-results {
+      $height: 35px;
+      @include location(59px, $height, $height, 15px);
+      // Width should be same as height. So this hack.
+      width: $height/$ref_height * 100vh;
+      background-color: #d8d8d8;
+      border: solid 2px $BWSlate;
+      @include border-radius(50%);
+      @include background-contain();
+    }
+    #name-results {
+      @extend %flex-vertical-center2;
+      @include location(59px, 35px, 200px, 56px);
+      @include font(17px);
+      text-align: left;
+      color: $darkGrey;
+    }
+    #user-results {
+      color: $BWRed;
+      font-weight: 600;
+      margin-right: 5px;
+    }
+    #comments-results {
+      @extend %flex-vertical-center2;
+      @include location(59px, 35px, 40px, 262px);
+      @include font(17px);
+      color: $BWRed;
+      font-weight: 600;
+    }
+    #comments-results:before {
+        content: "";
+        display: block;
+        background: url("img/comments.png") no-repeat;
+        @include background-contain();
+        width: 20px;
+        height: 20px;
+        float: left;
+        margin-right: 5px;
+    }
+    #likes-results {
+      @extend %flex-vertical-center2;
+      @include location(59px, 35px, 40px, 316px);
+      @include font(17px);
+      color: $BWRed;
+      font-weight: 600;
+    }
+    #likes-results:before {
+        content: "";
+        display: block;
+        background: url("img/likes.png") no-repeat;
+        @include background-contain();
+        width: 20px;
+        height: 20px;
+        float: left;
+        margin-right: 5px;
+    }
+    #auction-results {
+      @include location(109px, 135px, 230px, 15px);
+      @include font(20px);
+      background-color: $white;
+      border: solid 2px $BWSlate;
+      directions, calls {
+        display: table;
+        table-layout: fixed;
+        width: 100%;
+      }
+      directions {
+        @include font(20px);
+        height: 17.77%;
+        border-bottom: solid 2px $BWSlate;
+      }
+      calls {
+        @include font(18px);
+        height: 82.23%;
+      }
+      row {
+        display: table-row;
+        width: 100%;
+      }
+      direction, call {
+        display: table-cell;
+      }
+      direction {
+        font-weight: 600;
+        letter-spacing: -0.8px;
+        text-align: center;
+        color: $black;
+        background-color: $white;
+      }
+      direction[data-vulnerable] {
+        color: $white;
+        background-color: $brightRed;
+      }
+      call {
+        font-weight: 600;
+        letter-spacing: -0.5px;
+        text-transform: uppercase;
+      }
+    }
+    #vulnerability-results {
+      [data-vulnerable="yes"] {
+        color: $white;
+        background-color: $brightRed;
+      }
+      [data-vulnerable="no"] {
+        color: $black;
+        background-color: $white;
+      }
+      #info-wrapper-results {
+        @include location(109px, 135px, 105px, 255px);
+        background-color: $lightGrey;
+        border: solid 2px $BWSlate;
+      }
+      #vul-e-results {
+        @include location(139px, 76px, 21px, 332px);
+        border: solid 2px $BWSlate;
+        border-left: 0;
+      }
+      #vul-w-results {
+        @include location(139px, 76px, 21px, 262px);
+        border: solid 2px $BWSlate;
+        border-right: 0;
+      }
+      .vulnerability {
+        @extend %flex-vertical-center;
+        text-align: center;
+      }
+      #scoring-results {
+        @include location(139px, 76px, 53.1px, 281px);
+        @extend %flex-vertical-center;
+        background-color: $BWLightBlue;
+        border: solid 2px $BWSlate;
+        text-align: center;
+        color: $black;
+        z-index: 1;
+        word-wrap: break-word;
+      }
+      #vul-n-results {
+        @include location(116px, 25px, 53.1px, 281px);
+        border: solid 2px $BWSlate;
+        border-bottom: 0;
+      }
+      #vul-s-results {
+        @include location(213px, 25px, 53.1px, 281px);
+        border: solid 2px $BWSlate;
+        border-top: 0;
+      }
+    }
+    #description-results {
+      @include location(339px, 57px, 375px);
+      @include font(17px);
+      color: $darkGrey;
+      text-align: justify;
+      padding: 5px;
+      background-color: $white;
+      border: solid 1px $deactiveGrey;
+      overflow-y: hidden;
+      padding-right: 7vw;
+    }
+    #hand-results {
+      @include location(258px, 66px, 349px, 13px);
+    }
+    #hand-results {
+      hand, content {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+      cards {
+        display: inline-block;
+        height: 100%;
+      }
+      card {
+          position: absolute;
+          color: transparent;
+          text-indent: -9999px;
+          @include height(66px);
+          @include width(48px);
+          cursor: pointer;
+      }
+      card.selected {
+        -webkit-filter: sepia(1);
+        filter: sepia(1);
+      }
+      $suits: s h d c;
+      $ranks: a k q j t 9 8 7 6 5 4 3 2;
+      [data-suit][data-rank] {
+        @include background-cover();
+      }
+      @each $suit in $suits {
+        [data-suit="#{$suit}"][data-rank="x"] {
+          background-image: url("img/#{$suit}2.png");
+        }
+        @each $rank in $ranks {
+          [data-suit="#{$suit}"][data-rank="#{$rank}"] {
+            background-image: url("img/#{$suit}#{$rank}.png");
+          }
+        }
+      }
+    }
+    #hand-results {
+      @for $i from 1 through 13 {
+        [data-card-number="#{$i}"] {
+          $left: ($i - 1) * 25px;
+          @include left($left);
+        }
+      }
+    }
+    #answers-results {
+      @include location(400px, 130px, 375px);
+      display: table;
+    }
+    .button {
+      @include font(17px);
+      @include border-radius(5px);
+      color: $darkGrey;
+      background-color: $lightGrey;
+    }
+    .button.enabled {
+      color: $white;
+      background-color: $BWRed;
+      cursor: pointer;
+    }
+    #history-revote-button {
+      @extend %flex-vertical-center;
+      @include location(535px, 44px, 169px, 15px);
+    }
+    #history-voters-button {
+      @extend %flex-vertical-center;
+      @include location(535px, 44px, 169px, 191px);
+    }
+  }
+  #history-menu {
+    @include location(44px, 44px, 375px);
+    @include font(17px);
+    font-weight: 600;
+    letter-spacing: -0.4px;
+    color: $darkGrey;
+    background-color: $lightGrey;
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+  }
+  .history-menu-item {
+    display: table-cell;
+    vertical-align: middle;
+    cursor: pointer;
+  }
+  .history-menu-item.selected {
+    background-color: $slateGreen;
+    color: $white;
+  }
+  .history-header {
+    @include location(88px, 90px, 375px);
+    @include font(17px);
+    text-align: left;
+    background-color: $white;
+    border: solid 0.5px $deactiveGrey;
+    letter-spacing: -0.4px;
+    color: $darkGrey;
+    padding: 10px;
+  }
+  .history-list {
+    @include location(178px, 400px, 375px);
+    section {
+      display: inline-block;
+    }
+    p {
+      margin: 0;
+    }
+    rank[data-suit="d"], rank[data-suit="h"] {
+      color: $black;
+    }
+    rank, suit {
+      @include font(12px);
+      font-weight: 600;
+    }
+    rank {
+      color: $darkGrey;
+      text-transform: uppercase;
+    }
+    row {
+      margin-right: 10px;
+    }
+    .avatar {
+      $height: 20px;
+      height: $height/$ref_height * 100vh;
+      // Width should be same as height. So this hack.
+      width: $height/$ref_height * 100vh;
+      border: solid 2px $BWSlate;
+      @include border-radius(50%);
+      vertical-align: middle;
+    }
+    .name {
+      @include font(13px);
+      font-weight: 600;
+      color: $darkGrey;
+      margin-left: 10px;
+    }
+    .answer, .percentage {
+      float:right;
+      @include font(12px);
+      font-weight: 600;
+      color: $darkGrey;
+    }
+    .percentage {
+      @include width(40px);
+    }
+    .stats {
+      @include font(12px);
+      font-weight: 600;
+      color: $darkGrey;
+      margin-right: 10px;
+    }
+    .icon {
+      $height: 12px;
+      height: $height/$ref_height * 100vh;
+      // Width should be same as height. So this hack.
+      width: $height/$ref_height * 100vh;
+      vertical-align: middle;
+      margin-right: 2px;
+    }
+    .ui-btn {
+      background-color: $white;
+    }
   }
 }
 
@@ -226,7 +1121,6 @@ $menu_items: vote create history alerts account;
       width: 100%;
     }
     direction, call {
-      $width: 25%;
       display: table-cell;
     }
     direction {
@@ -242,7 +1136,6 @@ $menu_items: vote create history alerts account;
     }
     call {
       font-weight: 600;
-      line-height: 1.28;
       letter-spacing: -0.5px;
       text-transform: uppercase;
     }
@@ -335,7 +1228,6 @@ $menu_items: vote create history alerts account;
         cursor: pointer;
     }
     card.selected {
-      top: -10px;
       -webkit-filter: sepia(1);
       filter: sepia(1);
     }
@@ -375,6 +1267,10 @@ $menu_items: vote create history alerts account;
         $angle: ($i - 1) * $increment_angle - $end_angle;
         transform: rotate($angle);
       }
+      [data-card-number="#{$i}"].selected {
+        $angle: ($i - 1) * $increment_angle - $end_angle;
+        transform: rotate($angle) translateY(-10px) ;
+      }
     }
   }
   #bidding-box {
@@ -389,7 +1285,6 @@ $menu_items: vote create history alerts account;
       width: 100%;
     }
     level, call {
-      $width: 100%/7%;
       display: table-cell;
       height: 50%;
       border: solid 1px $BWSeaGreen;
@@ -401,20 +1296,23 @@ $menu_items: vote create history alerts account;
       cursor: not-allowed;
       opacity: 0.4;
     }
-    call[data-suit="p"] {
+    call[data-call="p"] {
       background-color: $passGreen;
       color: $white;
     }
-    call[data-suit="x"] {
+    call[data-call="x"] {
       background-color: $doubleRed;
       color: $white;
     }
-    call[data-suit="r"] {
+    call[data-call="r"] {
       background-color: $redoubleBlue;
       color: $white;
     }
     level.selected, call.selected {
-      background-color: $selectedLevelColor;
+      background-color: $BWSeaGreen;
+    }
+    level.selected {
+      color: $white;
     }
   }
   .button {
@@ -492,17 +1390,44 @@ body.ui-mobile-viewport {
   overflow-x: visible !important;
 }
 
+.hide {
+  display: none;
+  visibility: hidden;
+}
+
+.carat-right {
+  padding-right: 7vw;
+  background-image: url('images/icons-png/carat-r-black.png');
+  background-repeat: no-repeat;
+  background-position: right 5px center;
+}
+
+.carat-left {
+  padding-left: 4vw;
+  background-image: url('images/icons-png/carat-l-white.png');
+  background-repeat: no-repeat;
+  background-position: left 5px center;
+}
+
 .header-container {
   @include font(17px);
   background-color: $BWSeaGreen;
   @include location(0px, 44px, 375px);
   @extend %flex-vertical-center;
   font-weight: 600;
+  color: $TextColor;
+  text-transform: capitalize;
 }
 
 .header-text {
   color: $TextColor;
   text-transform: capitalize;
+}
+
+#back-button {
+  color: $TextColor;
+  float: left;
+  cursor: pointer;
 }
 
 /* Footer styles. */
@@ -529,6 +1454,9 @@ body.ui-mobile-viewport {
     }
   }
 }
+.footer-inner-container.ios {
+  bottom: 20px;
+}
 .footer-outer-container {
   @extend %footer-container;
   @include height(55px);
@@ -554,6 +1482,9 @@ body.ui-mobile-viewport {
       }
     }
   }
+}
+.footer-outer-container.ios {
+  bottom: 20px;
 }
 
 #account-page {
@@ -614,6 +1545,7 @@ body.ui-mobile-viewport {
     text-align: left;
     color: $darkGrey;
     padding-left: 4%;
+    cursor: pointer;
   }
 
   .list {
@@ -621,23 +1553,7 @@ body.ui-mobile-viewport {
     margin-left: 15px/$ref_width * 100vw;
     height: 44px/$ref_height * 100vh;
     border-bottom: solid 0.5px $deactiveGrey;
-  }
-
-  .carat-right {
-    padding-right: 7vw;
-    background-image: url('images/icons-png/carat-r-black.png');
-    background-repeat: no-repeat;
-    background-position: right 5px center;
-  }
-
-  .carat-right1 {
-    display: inline-block;
-    padding-left: 15px/$ref_width * 100vw;
-    float: right;
-    @include height(13px);
-    @include width(8px);
-    background-image: url('img/carat_right.png');
-    @include background-contain();
+    cursor: pointer;
   }
 
   #account-options-page, #account-about-page {

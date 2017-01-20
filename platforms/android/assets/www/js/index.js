@@ -40,6 +40,10 @@ BW.app = new function() {
     if ( navigator && navigator.splashscreen ) {
       navigator.splashscreen.hide();
     }
+    if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
+      $(".footer-inner-container").addClass("ios");
+      $(".footer-outer-container").addClass("ios");
+    }
     BW.loadingDialog = new BW.dialog("loading-popup", true);
     BW.messageDialog = new BW.dialog("message-popup", true);
     $("#message-popup").on("popupafterclose", function() {
@@ -47,9 +51,12 @@ BW.app = new function() {
     });
     BW.errorDialog = new BW.dialog("error-popup", true);
     BW.utils.init();
-    BW.page.init();
     BW.user.init();
     BW.vote.init();
+    BW.create.init();
+    BW.history.init();
+    BW.alerts.init();
+    BW.page.init();
   };
   /**
    * Utility function to check if running in a browser as oppose to mobile app.
@@ -69,6 +76,9 @@ BW.utils = new function() {
   //this.sitePrefix = "https://127.0.0.1:8000";
   this.init = function() {
     // Nothing to do yet.
+  };
+  this.capitalize = function(str) {
+    return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
   };
   this.getAvatarLink = function(avatar) {
     return this.sitePrefix + avatar;
@@ -141,6 +151,536 @@ BW.dialog = function(container, disableContent) {
 };
 
 /**
+ * Alerts page.
+ */
+BW.alerts = new function() {
+  this.init = function() {
+    this.setupClickHandlers();
+  };
+  this.setupClickHandlers = function() {};
+  this.load = function() {
+    $("#header-text").empty().append("Alerts");
+    $( "#mylist" ).listview();
+  };
+};
+
+/**
+ * History page.
+ */
+BW.history = new function() {
+  this.currentSection = null;
+  this.init = function() {
+    var self = this;
+    this.setupClickHandlers();
+  };
+  this.setupClickHandlers = function() {
+    var self = this;
+    // $(document).on("tap", "li[data-slug]", function() {
+    //   var slug = $(this).data("slug");
+    //   alert(slug);
+    // });
+    // section changed
+    _.each(["history-voted-page", "history-published-page", "history-drafts-page"], function(sectionName) {
+      BW.page.registerSectionChangeCallback(sectionName, function(section) {
+        $("#back-button").addClass("hide");
+        $("#history-menu").removeClass("hide");
+        self.currentSection = section;
+        $(".history-menu-item").removeClass("selected");
+        $("[data-section='" + section + "'").addClass("selected");
+        switch(section) {
+          case "history-drafts-page":
+            self.loadDrafts();
+            break;
+          case "history-voted-page":
+            self.loadRecentlyVoted();
+            break;
+          case "history-published-page":
+            self.loadRecentlyPublished();
+            break;
+          default:
+            break;
+        }
+      });
+    });
+    BW.page.registerSectionChangeCallback("history-results-page", function(section, parameters) {
+      $("#back-button").removeClass("hide").data("section", parameters.back);
+      $("#history-menu").addClass("hide");
+      self.loadProblem(parameters.slug);
+    });
+  };
+  this.loadProblem = function(slug) {
+    BW.loadingDialog.show("Getting Problem Details...");
+  	var ajaxRequest = new BW.ajax();
+    var self = this;
+    $.when(ajaxRequest.done).then(function() {
+      BW.loadingDialog.hide();
+      if (ajaxRequest.requestFailed || ajaxRequest.hasError) {
+        alert("Error " + ajaxRequest.errorMessage);
+      }
+      else {
+        self.showProblem(ajaxRequest.data);
+      }
+    });
+    ajaxRequest.send({
+  		urlSuffix: "get-voting-problem/",
+      data: {"slug": slug},
+  	});
+  	return false;
+  };
+  this.showProblem = function(data) {
+    BW.loadingDialog.show("Displaying Problem...");
+    var type = data.type.toLowerCase();
+  	var deal = new Bridge.Deal();
+  	deal.setDealer(data.dealer);
+  	deal.setVulnerability(data.vulnerability);
+  	deal.getAuction().fromString(data.auction);
+    if (type === "bidding") {
+    	while(deal.getAuction().getNextToCall() != 's') {
+        deal.rotateClockwise();
+      }
+    }
+    var hand = deal.getHand(deal.getAuction().getNextToCall());
+  	hand.setHand( data.lin_str );
+  	deal.setScoring(data.scoring);
+    deal.getHand('n').setName("Pard");
+    deal.getHand('e').setName("RHO");
+    deal.getHand('s').setName("You");
+    deal.getHand('w').setName("LHO");
+    $("#avatar-results").css("background-image", "url(" + BW.utils.getAvatarLink(data.author.avatar) + ")");
+    $("#user-results").empty().append(data.author.name);
+    $("#comments-results").empty().append(data.num_comments);
+    $("#likes-results").empty().append(data.num_likes);
+    var auction = deal.getAuction();
+    auction.showAuction("auction-results");
+    for(var direction in Bridge.directions) {
+      var value = deal.isVulnerable(direction) ? "yes" : "no";
+      $("#vul-" + direction + "-results").attr("data-vulnerable", value).data("vulnerable", value).empty();
+    }
+    $("#vul-" + deal.getDealer() + "-results").empty().append("D");
+    $("#scoring-results").empty().append(data.scoring);
+    hand.showHand("hand-results");
+    $("#description-results").empty().append(data.description);
+    // if (type == "bidding") {
+    //   $("#hand").show();
+    //   hand.showHand("hand");
+    // }
+    // else {
+    //   $("#hand").empty().hide();
+    // }
+    // var auction = deal.getAuction();
+    // auction.showAuction("auction");
+  	// this.slug = data.slug;
+    // if (this.type == "bidding") {
+    //   $("bidding-box").show();
+    //   auction.showBiddingBox("bidding-box");
+    //   deal.registerCallback(function() {
+    //     $("#vote-submit-button").removeClass("disabled").addClass("enabled");
+    //   }, "setSelectedCall");
+    //   deal.registerCallback(function() {
+    //     $("#vote-submit-button").addClass("disabled").removeClass("enabled");
+    //   }, "setSelectedLevel");
+    //   $("#lead-box").empty().hide();
+    // } else {
+    //   $("#lead-box").show();
+    //   hand.showLead("lead-box");
+    //   deal.registerCallback(function() {
+    //     $("#vote-submit-button").removeClass("disabled").addClass("enabled");
+    //   }, "setSelectedCard");
+    //   $("bidding-box").empty().hide();
+    // }
+    // this.deal = deal;
+    // $("#header-text").empty().append(BW.utils.capitalize(this.type + " problem"));
+    // for(var direction in Bridge.directions) {
+    //   var value = deal.isVulnerable(direction) ? "yes" : "no";
+    //   $("#vul-" + direction).attr("data-vulnerable", value).data("vulnerable", value);
+    // }
+    // $("#vul-" + deal.getDealer()).empty().append("D");
+    // $("#scoring").empty().append(data.scoring);
+    //
+    // $("#description").empty().append(data.description);
+    BW.loadingDialog.hide();
+  };
+  this.loadDrafts = function() {
+  };
+  this.getHTML = function(data, sectionName, showAuthor, showAnswer, showStats) {
+    var html = "";
+    _.each(data.polls, function(item) {
+      var hand = new Bridge.Hand('s');
+      hand.fromString(item.lin_str);
+      var handHtml = hand.toHTML({
+        template: "hand.concise",
+        registerClickHandlers: false,
+        registerChangeHandlers: false
+      });
+      html += "<li class='enabled' data-role='section-change' data-section='history-results-page' ";
+      html += "data-back='" + sectionName + "' data-slug='" + item.slug + "'><a href='#'>";
+      html += "<img class='ui-li-icon problem-type' src='";
+      if (item.type === "Bidding") {
+        html += "css/img/bidding.png";
+      } else {
+        html += "css/img/lead.png";
+      }
+      html += "'/>";
+      if (showAuthor) {
+        html += "<p>";
+        html += "<img class='avatar' src='" + BW.utils.getAvatarLink(item.author.avatar) + "'/>";
+        html += "<span class='name'>" + item.author.name + "</span>";
+        html += "</p>";
+      }
+      html += handHtml;
+      if (showAnswer) {
+        if (item.my_answer) {
+          if (item.my_answer.answer !== "Abstain") {
+            html += "<span class='percentage'>" + item.my_answer.percent + "%</span>";
+            if (item.type === "Bidding") {
+              html += "<span class='answer'>" + Bridge.getBidHTML(item.my_answer.answer) + "</span>";
+            } else {
+              html += "<span class='answer'>" + Bridge.getCardHTML(item.my_answer.answer) + "</span>";
+            }
+          } else {
+            html += "<span class='percentage'>-</span>";
+            html += "<span class='answer'>" + item.my_answer.answer + "</span>";
+          }
+        } else {
+          html += "<span class='percentage'>-</span>";
+          html += "<span class='answer'>-</span>";
+        }
+      }
+      html += "<p>";
+      html += "<img class='icon' src='css/img/comments_black.png'><span class='stats num_comments'>" + item.num_comments + "</span>"
+      html += "<img class='icon' src='css/img/likes_black.png'><span class='stats num_likes'>" + item.num_likes + "</span>"
+      html += "<img class='icon' src='css/img/answers_black.png'><span class='stats num_answers'>" + item.num_answers + "</span>"
+      html += "</p>";
+      html += "</a></li>";
+    });
+    return html;
+  };
+  this.getRecent = function(pollType) {
+    if (pollType === "voted") {
+      var url = "get-recent-answers/";
+      var sectionName = "history-voted-page";
+      var message = "Getting Recently Voted Problems...";
+      var showAuthor = true;
+      var showAnswer = true;
+    } else {
+      var url = "get-recent-published/";
+      var sectionName = "history-published-page";
+      var message = "Getting Recently Published Problems...";
+      var showAuthor = false;
+      var showAnswer = false;
+    }
+    var container = $("#history-" + pollType + "-list");
+    BW.loadingDialog.show(message);
+    var ajaxRequest = new BW.ajax();
+    var self = this;
+    $.when(ajaxRequest.done).then(function() {
+      BW.loadingDialog.hide();
+      if (ajaxRequest.requestFailed || ajaxRequest.hasError) {
+        BW.messageDialog.show("Error " + ajaxRequest.errorMessage);
+      }
+      else {
+        var html = self.getHTML(ajaxRequest.data, sectionName, showAuthor, showAnswer);
+        //var html = "";
+        container.empty().append(html);
+        container.listview("refresh");
+      }
+    });
+    ajaxRequest.send({
+  		urlSuffix: url,
+      data: {
+    		start:0,
+    		end: 4
+      },
+  	});
+  	return false;
+  };
+  this.loadRecentlyVoted = function() {
+    return this.getRecent("voted");
+  };
+  this.loadRecentlyPublished = function() {
+    return this.getRecent("published");
+  };
+
+  this.load = function() {
+    $("#header-text").empty().append("History");
+    $(".history-list").listview();
+    BW.page.showSection("history-published-page");
+  };
+};
+
+/**
+ * Create is used to create a voting problem.
+ */
+BW.create = new function() {
+  this.deal = null;
+  this.handDirection = 's';
+  this.savedDealName = "create-deal-saved-name";
+  this.savedSectionName = "create-section-saved-name";
+  this.savedDraftsName = "create-drafts-saved-name";
+  //localStorage.removeItem(this.savedDraftsName);
+  this.drafts = [];
+  this.init = function() {
+    this.loadDrafts();
+    this.setupClickHandlers();
+  };
+  this.loadDrafts = function() {
+    var savedDrafts = localStorage.getItem(this.savedDraftsName);
+    if (savedDrafts) {
+      var drafts = JSON.parse(savedDrafts);
+      _.each(drafts, function(draft){
+        var deal = new Bridge.Deal();
+        deal.fromJSON(draft.deal);
+        this.drafts.push({
+          "section": draft.section,
+          "deal": deal,
+        });
+      }, this);
+    } else {
+      this.drafts = [
+        {
+          "section": "create-hand-page",
+          "deal": this.createNewDeal(),
+        }
+      ];
+      this.saveDrafts();
+    }
+  };
+  this.createNewDeal = function() {
+    var deal = new Bridge.Deal();
+    deal.setScoring("MPs");
+    deal.getHand('n').setName("Pard");
+    deal.getHand('e').setName("RHO");
+    deal.getHand('s').setName("You");
+    deal.getHand('w').setName("LHO");
+    return deal;
+  };
+  this.saveDrafts = function() {
+    var drafts = [];
+    _.each(this.drafts, function(draft){
+      drafts.push({
+        "section": draft.section,
+        "deal": draft.deal.toJSON(),
+      });
+    }, this);
+    localStorage.setItem(this.savedDraftsName, JSON.stringify(drafts));
+  };
+  this.sections = {
+    "create-hand-page": {
+      back: "",
+      forward: "create-info-page",
+    },
+    "create-info-page": {
+      back: "create-hand-page",
+      forward: "create-auction-page",
+    },
+    "create-auction-page": {
+      back: "create-info-page",
+      forward: "create-description-page",
+    },
+    "create-description-page": {
+      back: "create-auction-page",
+      forward: "create-review-page",
+    },
+    "create-review-page": {
+      back: "create-description-page",
+      forward: "",
+    },
+  };
+  this.getSection = function() {
+    return this.currentDraft.section;
+  };
+  this.setSection = function(section) {
+    this.currentDraft.section = section;
+    this.saveDrafts();
+  };
+  this.setupClickHandlers = function() {
+    var self = this;
+    // reset clicked
+    $(document).on("tap", "#create-reset-button.enabled", function(e) {
+      self.reset();
+    });
+    // Description changed
+    $(document).on("input", "#create-description-page #description", function(e) {
+      self.deal.setNotes($("#create-description-page #description").val());
+    });
+    // publish clicked
+    $(document).on("tap", "#create-publish-button.enabled", function(e) {
+      self.publish();
+    });
+    // section changed
+    for (var sectionName in this.sections) {
+      BW.page.registerSectionChangeCallback(sectionName, function(section) {
+        self.setSection(section);
+        var sectionConfig = self.sections[section];
+        if (sectionConfig["back"]) {
+          $("#back-button").removeClass("hide").data("section", sectionConfig["back"]);
+        } else {
+          $("#back-button").addClass("hide");
+        }
+        if (sectionConfig["forward"]) {
+          $("#create-continue-button").data("section", sectionConfig["forward"]);
+        } else {
+          $("#create-continue-button").data("section", "");
+        }
+        self.updateStatus();
+      });
+    }
+  };
+  this.reset = function() {
+    this.currentDraft.section = "create-hand-page";
+    this.currentDraft.deal = this.createNewDeal();
+    this.saveDrafts();
+    // localStorage.removeItem(this.savedSectionName);
+    // localStorage.removeItem(this.savedDealName);
+    this.load();
+  };
+  /**
+   * Publish this problem on the BW Server
+   */
+  this.publish = function() {
+  	var deal = this.deal;
+  	var data = {};
+    data[ "type" ] = "Bidding";
+  	// if ( this.type === "bidding" ) data[ "type" ] = "Bidding";
+  	// else data[ "type" ] = "Lead";
+    var scoringMapping = {
+      "MPs": "Matchpoints",
+      "IMPs": "KO",
+      "BAM": "BAM",
+      "Total": "TP",
+    };
+  	data[ "scoring" ] = scoringMapping[deal.getScoring()];
+  	data[ "vul" ] = deal.getVulnerability();
+  	if ( data[ "vul" ] === '-' ) data[ "vul" ] = 0;
+  	data[ "dealer" ] = deal.getDealer().toUpperCase();
+  	data[ "auction" ] = deal.getAuction().toString().toUpperCase();
+  	data[ "description" ] = deal.getNotes();
+  	var hand = deal.getHand( this.handDirection );
+  	for( var i = 0; i < Bridge.suitOrder.length; ++i ) {
+  		var field = "hand_" + i;
+  		data[ field ] = hand.getCardsInSuit( Bridge.suitOrder[i] );
+  	}
+    BW.loadingDialog.show("Submitting New Problem...");
+    var ajaxRequest = new BW.ajax();
+    var self = this;
+    $.when(ajaxRequest.done).then(function() {
+      BW.loadingDialog.hide();
+      if (ajaxRequest.requestFailed || ajaxRequest.hasError) {
+        alert("Error " + ajaxRequest.errorMessage);
+      }
+      else {
+        BW.messageDialog.show("Problem Published");
+        self.reset();
+      }
+    });
+    ajaxRequest.send({
+  		urlSuffix: "create-problem/",
+      data: data,
+  	});
+  	return false;
+  };
+  this.updateStatus = function() {
+    if (!this.deal) return;
+    $("#hand-header").show();
+    $("#hand").show();
+    $("#create-buttons").show();
+    var section = this.getSection();
+    if (section == "create-hand-page") {
+      $("#header-text").empty().append("Create");
+      var currentHand = this.deal.getHand(this.handDirection);
+      var count = currentHand.getCount();
+      if (count == 13) {
+        $("#create-continue-button").removeClass("disabled").addClass("enabled");
+      } else {
+        $("#create-continue-button").removeClass("enabled").addClass("disabled");
+      }
+    } else if (section == "create-info-page") {
+      $("#header-text").empty().append("Create");
+      $("#create-continue-button").removeClass("disabled").addClass("enabled");
+    } else if (section == "create-auction-page") {
+      $("#header-text").empty().append("Create");
+      var auction = this.deal.getAuction();
+      if (auction.getContract().isComplete || auction.getNextToCall() !== this.handDirection) {
+        $("#create-continue-button").removeClass("enabled").addClass("disabled");
+      }
+      else {
+        $("#create-continue-button").removeClass("disabled").addClass("enabled");
+      }
+    } else if (section == "create-description-page") {
+      $("#header-text").empty().append("Add Problem Description");
+      $("#create-continue-button").removeClass("disabled").addClass("enabled");
+    } else if (section == "create-review-page") {
+      $("#header-text").empty().append("Final Review");
+      $("#hand-header").hide();
+      $("#hand").hide();
+      $("#create-buttons").hide();
+    }
+    else {
+    }
+  };
+  this.load = function(draftNumber) {
+    draftNumber = draftNumber || 0;
+    this.currentDraftNumber = draftNumber;
+    this.currentDraft = this.drafts[draftNumber];
+    //this.section = localStorage.getItem(this.savedSectionName) || "create-hand-page";
+    //this.section = this.currentDraft.section;
+    BW.page.showSection(this.currentDraft.section);
+    var self = this;
+    $("#header-text").empty().append("Create");
+    var deal = this.currentDraft.deal;
+    deal.setActiveHand(this.handDirection);
+    deal.getHand(this.handDirection).showHand("hand", {
+      registerClickHandlers: false,
+    });
+    deal.showCardDeck("deck");
+    deal.showScoring("scoring");
+    deal.showVulnerability("vulnerability");
+    deal.showDealer("dealer");
+    var auction = deal.getAuction();
+    auction.showAuction("auction");
+    auction.toHTML({
+      containerID: "special_calls",
+      template: "auction.bidding-box.special_calls",
+    });
+    auction.toHTML({
+      containerID: "bidding-box",
+      template: "auction.bidding-box.full",
+    });
+    $("#create-description-page #description").val(deal.getNotes());
+    deal.getHand(this.handDirection).showHand("hand-review", {
+      registerClickHandlers: false,
+    });
+    var auction = deal.getAuction();
+    auction.showAuction("auction-review");
+    for(var direction in Bridge.directions) {
+      var value = deal.isVulnerable(direction) ? "yes" : "no";
+      $("#vul-" + direction).attr("data-vulnerable", value).data("vulnerable", value);
+      $("#vul-" + direction).empty();
+    }
+    $("#vul-" + deal.getDealer()).empty().append("D");
+    $("#scoring-review").empty().append(deal.getScoring());
+    $("#avatar-review").css("background-image", "url(" + BW.utils.getAvatarLink(BW.user.userInfo.avatar) + ")");
+    $("#description-review").empty().append(deal.getNotes());
+    this.deal = deal;
+    this.updateStatus();
+    deal.registerCallback(function() {
+      self.saveDrafts();
+      // var dealJSON = self.deal.toJSON();
+      // localStorage.setItem(self.savedDealName, JSON.stringify(dealJSON));
+      for(var direction in Bridge.directions) {
+        var value = deal.isVulnerable(direction) ? "yes" : "no";
+        $("#vul-" + direction).attr("data-vulnerable", value).data("vulnerable", value);
+        $("#vul-" + direction).empty();
+      }
+      $("#vul-" + deal.getDealer()).empty().append("D");
+      $("#scoring-review").empty().append(deal.getScoring());
+      $("#description-review").empty().append(deal.getNotes());
+      self.updateStatus();
+    });
+  };
+};
+
+/**
  * Vote is used to load the voting problem.
  */
 BW.vote = new function() {
@@ -187,58 +727,16 @@ BW.vote = new function() {
       e.data.self.vote(/*abstain=*/false);
     });
     // Description clicked
-    $(document).on("tap", "#description", {self: this}, function(e) {
-      BW.messageDialog.show($("#description").html());
-    });
-    // level clicked
-    $(document).on("tap", "#bidding-box level.enabled", {self: this}, function(e) {
-      var level = _.parseInt($(this).data("level"));
-      e.data.self.setLevel(level);
-    });
-    // call clicked
-    $(document).on("tap", "#bidding-box call.enabled", {self: this}, function(e) {
-      $("#bidding-box call").removeClass("selected");
-      $(this).addClass("selected");
-      e.data.self.setCall($(this).data("suit"), $(this).data("call"));
-    });
-    // card clicked
-    $(document).on("tap", "#lead-box card", {self: this}, function(e) {
-      $("#lead-box card").removeClass("selected");
-      $(this).addClass("selected");
-      e.data.self.setCard($(this).data("suit"), $(this).data("rank"));
-    });
+    // $(document).on("tap", "#description", {self: this}, function(e) {
+    //   BW.messageDialog.show($("#description").html());
+    // });
   };
   this.getLeadAnswer = function() {
-    return this.lead_answers_idx[this.selectedCard];
+    var next = this.deal.getAuction().getNextToCall();
+    return this.lead_answers_idx[this.deal.getHand(next).getSelectedCard()];
   };
   this.getBiddingAnswer = function() {
-    return this.bidding_answers_idx[this.selectedCall];
-  };
-  /** Set the call */
-  this.setCard = function(suit, rank) {
-    var card = suit + rank;
-    if (this.selectedCard == card) return;
-    this.selectedCard = card;
-    $("#vote-submit-button").removeClass("disabled").addClass("enabled");
-  };
-  /** Set the call */
-  this.setCall = function(suit, call) {
-    if (this.selectedSuit == suit) return;
-    this.selectedSuit = suit;
-    this.selectedCall = call;
-    $("#vote-submit-button").removeClass("disabled").addClass("enabled");
-  };
-  /** Set the level **/
-  this.setLevel = function(level) {
-    if (this.selectedLevel == level) return;
-    this.selectedLevel = level;
-    var auction = this.deal.getAuction();
-    auction.setSelectedLevel(level);
-    auction.showBiddingBox({
-      "template": "concise",
-      "containerID": "bidding-box",
-    });
-    $("#vote-submit-button").removeClass("enabled").addClass("disabled");
+    return this.bidding_answers_idx[this.deal.getAuction().getSelectedBid()];
   };
 
   /**
@@ -276,7 +774,8 @@ BW.vote = new function() {
   	});
   	return false;
   };
-  this.load = function(data) {
+  this.load = function(slug) {
+    $("#back-button").addClass("hide");
     BW.loadingDialog.show("Getting voting problem...");
   	var ajaxRequest = new BW.ajax();
     var self = this;
@@ -289,9 +788,14 @@ BW.vote = new function() {
         self.show(ajaxRequest.data);
       }
     });
+    if (slug) {
+      var data = {"slug": slug};
+    }
     ajaxRequest.send({
   		urlSuffix: "get-voting-problem/",
+      //data: data,
       data: data || {"slug": "lead-problem-529"},
+      //data: data || {"slug": "bidding-problem-11998"},
   	});
   	return false;
   };
@@ -305,16 +809,14 @@ BW.vote = new function() {
     this.selectedCall = null;
   	this.selectedCard = null;
   	var deal = new Bridge.Deal();
-    Bridge.disableAllEventTriggers();
   	deal.setDealer(data.dealer);
   	deal.setVulnerability(data.vulnerability);
   	deal.getAuction().fromString(data.auction);
   	while(deal.getAuction().getNextToCall() != 's') {
       deal.rotateClockwise();
     }
-    var next = deal.getAuction().getNextToCall();
-  	this.direction = next;
-  	deal.getHand(next).setHand( data.lin_str );
+    var hand = deal.getHand(deal.getAuction().getNextToCall());
+  	hand.setHand( data.lin_str );
   	deal.setScoring(data.scoring);
     deal.getHand('n').setName("Pard");
     deal.getHand('e').setName("RHO");
@@ -322,52 +824,44 @@ BW.vote = new function() {
     deal.getHand('w').setName("LHO");
     if (this.type == "bidding") {
       $("#hand").show();
-      deal.getHand(next).toHTML({
-  			"template": "concise",
-  			"wrapperClass": "images",
-  			"alternateSuitColor": true,
-  			"containerID": "hand",
-  		});
+      hand.showHand("hand");
     }
     else {
       $("#hand").empty().hide();
     }
     var auction = deal.getAuction();
-    auction.toHTML({
-			"template": "full",
-			"addQuestionMark": true,
-			"containerID": "auction",
-		});
+    auction.showAuction("auction");
   	this.slug = data.slug;
     if (this.type == "bidding") {
       $("bidding-box").show();
-      auction.showBiddingBox({
-  			"template": "concise",
-  			"containerID": "bidding-box",
-  		});
+      auction.showBiddingBox("bidding-box");
+      deal.registerCallback(function() {
+        $("#vote-submit-button").removeClass("disabled").addClass("enabled");
+      }, "setSelectedCall");
+      deal.registerCallback(function() {
+        $("#vote-submit-button").addClass("disabled").removeClass("enabled");
+      }, "setSelectedLevel");
       $("#lead-box").empty().hide();
     } else {
       $("#lead-box").show();
-      deal.getHand(next).toHTML({
-  			"template": "concise",
-  			"wrapperClass": "images",
-  			"alternateSuitColor": true,
-  			"containerID": "lead-box",
-  		});
+      hand.showLead("lead-box");
+      deal.registerCallback(function() {
+        $("#vote-submit-button").removeClass("disabled").addClass("enabled");
+      }, "setSelectedCard");
       $("bidding-box").empty().hide();
     }
     this.deal = deal;
-    $("#header-text").empty().append(this.type + " problem");
+    $("#header-text").empty().append(BW.utils.capitalize(this.type + " problem"));
     for(var direction in Bridge.directions) {
       var value = deal.isVulnerable(direction) ? "yes" : "no";
-      $("#vul-" + direction).attr("data-vulnerable", value);
+      $("#vul-" + direction).attr("data-vulnerable", value).data("vulnerable", value);
     }
     $("#vul-" + deal.getDealer()).empty().append("D");
     $("#scoring").empty().append(data.scoring);
-    $("#avatar").css("background-image", "url(" + BW.utils.getAvatarLink(data.avatar) + ")");
+    $("#avatar").css("background-image", "url(" + BW.utils.getAvatarLink(data.author.avatar) + ")");
     $("#comments").empty().append(data.num_comments);
     $("#likes").empty().append(data.num_likes);
-    $("#user").empty().append(data.author);
+    $("#user").empty().append(data.author.name);
     $("#description").empty().append(data.description);
     BW.loadingDialog.hide();
   };
@@ -394,22 +888,39 @@ BW.page = new function() {
   this.pageContents = {};
   // Callbacks when specific pages are loaded.
   this.pageLoadedCallbacks = {};
+  // Callbacks when section changes.
+  this.sectionChangeCallbacks = {};
+  this.registerSectionChangeCallback = function(section, callback) {
+    this.sectionChangeCallbacks[section] = callback;
+  };
+  this.showSection = function(section, parameters) {
+    $("[data-role='section']").hide();
+    $("[data-role='section'][data-name='" + section + "']").show();
+    if (section in this.sectionChangeCallbacks) {
+      this.sectionChangeCallbacks[section](section, parameters);
+    }
+  };
   this.setupClickHandlers = function() {
+    var self = this;
     // Menu item change
-    $(document).on("tap", ".footer-outer-container .menu-item", {self: this}, function(e) {
+    $(document).on("tap", ".footer-outer-container .menu-item", function() {
       var item = $(this).data("item");
-      BW.page.load(item + ".html", function() {
-        e.data.self.setActiveTab(item);
-      });
+      if (self.activeTab != item) {
+        BW.page.load(item + ".html", function() {
+          self.setActiveTab(item);
+        });
+      }
     });
     // Section change
-    $(document).on("tap", "[data-role='section-change']", function(e) {
-      $("[data-role='section']").hide();
+    $(document).on("tap", "[data-role='section-change'].enabled", function(e) {
       var section = $(this).data("section");
-      $("[data-role='section'][data-name='" + section + "']").show();
+      if (section && section != "") {
+        self.showSection(section, $(this).data());
+      }
     });
   };
   this.init = function() {
+    $("#back-button").addClass("hide");
     this.setupClickHandlers();
     this.registerCallbacks();
     for(var page in this.pages) {
@@ -441,31 +952,41 @@ BW.page = new function() {
   this.registerCallbacks = function() {
     this.pageLoadedCallbacks["account.html"] = BW.user.loadAccount.bind(BW.user);
     this.pageLoadedCallbacks["vote.html"] = BW.vote.load.bind(BW.vote);
+    this.pageLoadedCallbacks["create.html"] = BW.create.load.bind(BW.create);
+    this.pageLoadedCallbacks["history.html"] = BW.history.load.bind(BW.history);
+    this.pageLoadedCallbacks["alerts.html"] = BW.alerts.load.bind(BW.alerts);
   };
 
   /**
    * Set active tab.
    */
   this.setActiveTab = function(item) {
+    this.activeTab = item;
+    if (item === "account") {
+      $("#account-avatar-outer").show();
+      $("#account-avatar-inner").hide();
+    } else {
+      $("#account-avatar-inner").show();
+      $("#account-avatar-outer").hide();
+    }
     $(".footer-outer-container .menu-item").removeClass("selected").addClass("not-selected");
     $(".footer-outer-container [data-item='" + item + "']").removeClass("not-selected").addClass("selected");
     $(".footer-inner-container .menu-item").removeClass("selected").addClass("not-selected");
     $(".footer-inner-container [data-item='" + item + "']").removeClass("not-selected").addClass("selected");
   };
 
-  this.load = function(pageName, callback) {
+  this.load = function(pageName, callback, parameters) {
     BW.loadingDialog.show("Loading Page...");
     var self = this;
     var promise = this.get(pageName, function(html) {
       $("#content").empty().append(html);
       BW.loadingDialog.hide();
       if (pageName in self.pageLoadedCallbacks) {
-        self.pageLoadedCallbacks[pageName]();
+        self.pageLoadedCallbacks[pageName](parameters);
       }
       if (callback) {
         callback();
       }
-
     });
     if (!promise) {
       BW.loadingDialog.hide();
@@ -493,11 +1014,37 @@ BW.user = new function() {
   this.accessTokenName = "BW.accessToken";
   this.accessToken = localStorage.getItem(this.accessTokenName);
   this.userInfo = null;
+  this.sections = {
+    "account-main-page": {
+      back: "",
+    },
+    "account-friends-page": {
+      back: "account-main-page",
+    },
+    "account-options-page": {
+      back: "account-main-page",
+    },
+    "account-about-page": {
+      back: "account-main-page",
+    },
+  };
   /**
    * Load a user if there is an accessToken, else show login page.
    */
   this.init = function() {
+    var self = this;
     this.setupClickHandlers();
+    // section changed
+    for (var sectionName in this.sections) {
+      BW.page.registerSectionChangeCallback(sectionName, function(section) {
+        var sectionConfig = self.sections[section];
+        if (sectionConfig["back"]) {
+          $("#back-button").removeClass("hide").data("section", sectionConfig["back"]);
+        } else {
+          $("#back-button").addClass("hide");
+        }
+      });
+    }
     if (!this.accessToken) {
       BW.page.hideHeaderFooter();
       BW.page.load("login.html");
@@ -519,10 +1066,12 @@ BW.user = new function() {
    */
   this.loadAccount = function() {
     $("[data-role='section']").hide();
-    $("#header-text").empty().append("account");
+    $("#header-text").empty().append("Account");
+    $("#account-list").listview();
     $("#name").empty().append(this.userInfo.name);
     $("#avatar").css("background-image", "url(" + BW.utils.getAvatarLink(this.userInfo.avatar) + ")");
-    $("[data-role='section'][data-name='account-main-page']").show();
+    BW.page.showSection("account-main-page");
+    //$("[data-role='section'][data-name='account-main-page']").show();
   };
 
   /**
@@ -605,9 +1154,11 @@ BW.user = new function() {
    */
   this.authenticationSuccessCallback = function(data) {
     this.userInfo = data;
+    $("#account-avatar-inner").css("background-image", "url(" + BW.utils.getAvatarLink(this.userInfo.avatar) + ")");
+    $("#account-avatar-outer").css("background-image", "url(" + BW.utils.getAvatarLink(this.userInfo.avatar) + ")");
     BW.page.showHeaderFooter();
-    BW.page.load("vote.html", function() {
-      BW.page.setActiveTab("vote");
+    BW.page.load("history.html", function() {
+      BW.page.setActiveTab("history");
     });
   };
 

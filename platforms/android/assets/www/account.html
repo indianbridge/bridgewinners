@@ -6,18 +6,24 @@
       <div id="edit-profile-button" class="clickable">Edit Profile</div>
     </div>
     <div id="account-options">
-      <div data-role="section-change" data-section="account-about-page" class="list clickable carat-right"><div>Find Friends</div></div>
-      <div data-role="section-change" data-section="account-options-page" class="list clickable carat-right"><div>Settings</div></div>
-      <div data-role="section-change" data-section="account-about-page" class="list clickable carat-right"><div>About the App</div></div>
+      <ul id="account-list" data-role="listview">
+        <li><a data-role="section-change" data-section="account-friends-page" class="enabled clickable" href="#">Find Friends</a></li>
+        <li><a data-role="section-change" data-section="account-options-page" class="enabled clickable" href="#">Settings</a></li>
+        <li><a data-role="section-change" data-section="account-about-page" class="enabled clickable" href="#">About the App</a></li>
+      </ul>
+      <!-- <div data-role="section-change" data-section="account-friends-page" class="enabled list clickable carat-right"><div>Find Friends</div></div>
+      <div data-role="section-change" data-section="account-options-page" class="enabled list clickable carat-right"><div>Settings</div></div>
+      <div data-role="section-change" data-section="account-about-page" class="enabled list clickable carat-right"><div>About the App</div></div> -->
     </div>
     <div id="logout-submit-button" class="logout clickable">Log Out</div>
   </div>
-  <div id="account-options-page" data-role="section" data-name="account-options-page">
-    <div id="options-list">Options</div>
-    <div data-role="section-change" data-section="account-main-page" >Back</div>
+  <div id="account-friends-page" data-role="section" data-name="account-friends-page" data-section-back="account-main-page">
+    <div id="options-list">Friends</div>
   </div>
-  <div id="account-about-page" data-role="section" data-name="account-about-page">
+  <div id="account-options-page" data-role="section" data-name="account-options-page" data-section-back="account-main-page">
+    <div id="options-list">Options</div>
+  </div>
+  <div id="account-about-page" data-role="section" data-name="account-about-page" data-section-back="account-main-page">
     <div id="about-app">About</div>
-    <div data-role="section-change" data-section="account-main-page" >Back</div>
   </div>
 </div>

@@ -1,1 +1,42 @@
-<div class="main-page">History</div>
+<div id="history-page" class="main-page">
+  <div id="history-menu">
+    <div class="history-menu-item enabled" data-role="section-change" data-section="history-voted-page">Voted On</div>
+    <div class="history-menu-item enabled" data-role="section-change" data-section="history-published-page">Published</div>
+    <!-- <div class="history-menu-item enabled" data-role="section-change" data-section="history-drafts-page">Drafts</div> -->
+  </div>
+  <div id="history-voted-page" data-role="section" data-name="history-voted-page">
+    <div class="history-header">Problems you recently voted on.</div>
+    <ul id="history-voted-list" class="history-list" data-role="listview">
+    </ul>
+  </div>
+  <div id="history-published-page" data-role="section" data-name="history-published-page">
+    <div class="history-header">Problems you recently published.</div>
+    <ul id="history-published-list" class="history-list" data-role="listview">
+    </ul>
+  </div>
+  <div id="history-results-page" data-role="section" data-name="history-results-page">
+    <div id="asks-results">
+      <div id="avatar-results"></div>
+      <div id="name-results"><span id="user-results">You </span>Asks...</div>
+      <div id="comments-results">245</div>
+      <div id="likes-results">125</div>
+    </div>
+    <div id="auction-results"></div>
+    <div id="vulnerability-results">
+      <div id="info-wrapper-results"></div>
+      <div id="scoring-results"></div>
+      <div id="vul-n-results" class="vulnerability"></div>
+      <div id="vul-e-results" class="vulnerability"></div>
+      <div id="vul-s-results" class="vulnerability"></div>
+      <div id="vul-w-results" class="vulnerability"></div>
+    </div>
+    <div id="hand-results"></div>
+    <div id="description-results"></div>
+    <div id="answers-results"></div>
+    <div id="history-revote-button" class="button clickable bridgewinners enabled">Re-vote</div>
+    <div id="history-voters-button" class="button clickable bridgewinners enabled">Voters</div>
+  </div>
+  <!-- <div id="history-drafts-page" data-role="section" data-name="history-drafts-page">
+    <div class="history-header">Your drafts.</div>
+  </div> -->
+</div>

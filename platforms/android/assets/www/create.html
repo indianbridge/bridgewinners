@@ -1,1 +1,49 @@
-<div class="main-page">Create</div>
+<div id="create-page" class="main-page">
+  <div id="hand-header">You are South, you hold:</div>
+  <div id="hand"></div>
+  <div id="create-hand-page" data-role="section" data-name="create-hand-page">
+    <div id="deck-header">Set Hand:</div>
+    <div id="deck"></div>
+  </div>
+  <div id="create-info-page" data-role="section" data-name="create-info-page">
+    <div id="scoring-header">Form of Scoring:</div>
+    <div id="scoring"></div>
+    <div id="vulnerability-header">Vulnerability:</div>
+    <div id="vulnerability"></div>
+    <div id="dealer-header">Dealer:</div>
+    <div id="dealer"></div>
+  </div>
+  <div id="create-auction-page" data-role="section" data-name="create-auction-page">
+    <div id="hand-hider" class="ui-page-theme-a"></div>
+    <div id="auction"></div>
+    <div id="special_calls"></div>
+    <div id="bidding-box"></div>
+  </div>
+  <div id="create-description-page" data-role="section" data-name="create-description-page">
+    <div id="description-header">Problem Description:</div>
+    <textarea id="description" placeholder="Provide any additional information that might be relevant to the problem, like meaning of bids, etc."></textarea>
+  </div>
+  <div id="create-review-page" data-role="section" data-name="create-review-page">
+    <div id="asks-review">
+      <div id="avatar-review"></div>
+      <div id="name-review"><span id="user-review">You </span>Ask...</div>
+    </div>
+    <div id="auction-review"></div>
+    <div id="vulnerability-review">
+      <div id="info-wrapper"></div>
+      <div id="scoring-review"></div>
+      <div id="vul-n" class="vulnerability"></div>
+      <div id="vul-e" class="vulnerability"></div>
+      <div id="vul-s" class="vulnerability"></div>
+      <div id="vul-w" class="vulnerability"></div>
+    </div>
+    <div id="hand-review"></div>
+    <div id="description-review"></div>
+    <div id="create-save-button" class="button clickable bridgewinners enabled">Save Draft</div>
+    <div id="create-publish-button" class="button clickable bridgewinners enabled">Publish</div>
+  </div>
+  <div id="create-buttons" class="buttons">
+    <div id="create-reset-button" class="button clickable bridgewinners enabled">Reset/Clear</div>
+    <div id="create-continue-button" data-role="section-change" data-section="create-info-page" class="button clickable bridgewinners disabled">Continue</div>
+  </div>
+</div>
