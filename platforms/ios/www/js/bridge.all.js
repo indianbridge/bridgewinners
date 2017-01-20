@@ -4174,7 +4174,7 @@ Bridge.getCardHTML = function(card) {
 
 Bridge.getBidHTML = function(bid) {
   if (bid.length < 2) return bid;
-  return bid[0] + Bridge.calls[bid[1].toLowerCase()].html;
+  return bid[0] + "<suit data-suit='" + bid[1].toLowerCase() + "'>" + Bridge.calls[bid[1].toLowerCase()].html + "</suit>";
 };
 
 /**

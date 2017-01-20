@@ -1,0 +1,40 @@
+Login
+  Missing Features
+    No Social (all social changes will be one release - call it social release)
+    No Signup (part of future release - signup release)
+    Find friends etc. (social release)
+
+Vote
+  Questions
+    How do we show full description (currently scrolling)
+    Need a card image for x (action item for Jessica)
+    Do we need to show likes, comments and votes (currently showing all three)
+  Missing Features
+    Confirmation when skipping. Do we really need it?
+    Go to results page after voting (working on it)
+    No comments (will be part of future release - comments release)
+    Look at other user profiles (part of future release - user profile release)
+
+Create
+  Questions
+    We dont have a way to specify lead problems. Need design to select type of problem (action item for Jessica)
+  Missing Features
+    Save Draft. Need to discuss how saving and retrieving drafts work. When you are creating a problem progress is saved automatically so what does save draft do?
+    No follow/following when showing public answers (user profile release)
+
+History
+  Questions
+    How many items in history list?
+  Missing Features
+    What does Next button do when looking at result from one history item?
+
+Account
+  Questions
+    What do we show in options page?
+    What do we show in about page?
+    Maybe the logout button should look like a button (like login button but different color scheme?)
+  Missing Features
+    Find Friends (social release)
+
+Miscellaneous
+  There seems to be an issue on issue with the menu bar on the bottom. If you start from the login screen it looks ok. But if you get automatically logged in the menu gets pushed down (logging out and logging back in fixes it)

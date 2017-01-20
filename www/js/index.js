@@ -41,8 +41,8 @@ BW.app = new function() {
       navigator.splashscreen.hide();
     }
     if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
-      $(".footer-inner-container").addClass("ios");
-      $(".footer-outer-container").addClass("ios");
+      $(".footer-inner-container").addClass("ios1");
+      $(".footer-outer-container").addClass("ios1");
     }
     BW.loadingDialog = new BW.dialog("loading-popup", true);
     BW.messageDialog = new BW.dialog("message-popup", true);
@@ -233,7 +233,7 @@ BW.history = new function() {
         $("#history-menu").removeClass("hide");
         self.currentSection = section;
         $(".history-menu-item").removeClass("selected");
-        $("[data-section='" + section + "'").addClass("selected");
+        $("[data-section='" + section + "']").addClass("selected");
         switch(section) {
           case "history-drafts-page":
             self.loadDrafts();
@@ -373,7 +373,6 @@ BW.history = new function() {
     for(var direction in Bridge.directions) {
       var value = deal.isVulnerable(direction) ? "yes" : "no";
       BW.utils.setAttribute($("#vul-" + direction + "-results"), "vulnerable", value);
-      //$("#vul-" + direction + "-results").attr("data-vulnerable", value).data("vulnerable", value).empty();
     }
     $("#vul-" + deal.getDealer() + "-results").empty().append("D");
     $("#scoring-results").empty().append(data.scoring);
@@ -412,8 +411,6 @@ BW.history = new function() {
     BW.utils.setAttribute($("#history-voters-button"), "slug", data.slug);
     BW.utils.setAttribute($("#history-voters-button"), "back", $("#back-button").data("section"));
     BW.loadingDialog.hide();
-  };
-  this.loadDrafts = function() {
   };
   this.getHTML = function(data, sectionName, showAuthor, showAnswer, showStats) {
     var html = "";
@@ -1187,7 +1184,6 @@ BW.user = new function() {
         if (sectionConfig["back"]) {
           $("#back-button").removeClass("hide");
           BW.utils.setAttribute($("#back-button"), "section", sectionConfig["back"]);
-          //.data("section", sectionConfig["back"]);
         } else {
           $("#back-button").addClass("hide");
         }
@@ -1198,15 +1194,20 @@ BW.user = new function() {
       BW.page.load("login.html");
     }
     else {
-      return this.authenticateAccessToken();
+      BW.page.hideHeaderFooter();
+      BW.page.load("login.html", function() {
+        self.authenticateAccessToken();
+      });
+      return false;
     }
   };
   this.setupClickHandlers = function() {
-    $(document).on( "tap", "#login-submit-button", {self: this}, function( e ) {
-      return e.data.self.login($( "#username" ).val(), $( "#password" ).val());
+    var self = this;
+    $(document).on( "tap", "#login-submit-button", function() {
+      return self.login($( "#username" ).val(), $( "#password" ).val());
   	});
-    $(document).on( "tap", "#logout-submit-button", {self: this}, function( e ) {
-  		return e.data.self.logout();
+    $(document).on( "tap", "#logout-submit-button", function() {
+  		return self.logout();
   	});
   };
   /**
@@ -1303,9 +1304,10 @@ BW.user = new function() {
     this.userInfo = data;
     $("#account-avatar-inner").css("background-image", "url(" + BW.utils.getAvatarLink(this.userInfo.avatar) + ")");
     $("#account-avatar-outer").css("background-image", "url(" + BW.utils.getAvatarLink(this.userInfo.avatar) + ")");
-    BW.page.showHeaderFooter();
-    BW.page.load("history.html", function() {
-      BW.page.setActiveTab("history");
+    //BW.page.showHeaderFooter();
+    BW.page.load("vote.html", function() {
+      BW.page.setActiveTab("vote");
+      BW.page.showHeaderFooter();
     });
   };
 

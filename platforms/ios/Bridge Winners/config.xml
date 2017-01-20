@@ -30,6 +30,9 @@
         <param name="ios-package" value="CDVInAppBrowser" />
     </feature>
     <access origin="https://oauth.io" />
+    <feature name="Console">
+        <param name="ios-package" value="CDVLogger" />
+    </feature>
     <name>Bridge Winners</name>
     <description>
      The Bridge Winners Mobile App

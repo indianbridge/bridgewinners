@@ -49,6 +49,22 @@ module.exports = [
         "merges": [
             "OAuth"
         ]
+    },
+    {
+        "id": "cordova-plugin-console.console",
+        "file": "plugins/cordova-plugin-console/www/console-via-logger.js",
+        "pluginId": "cordova-plugin-console",
+        "clobbers": [
+            "console"
+        ]
+    },
+    {
+        "id": "cordova-plugin-console.logger",
+        "file": "plugins/cordova-plugin-console/www/logger.js",
+        "pluginId": "cordova-plugin-console",
+        "clobbers": [
+            "cordova.logger"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -59,7 +75,8 @@ module.exports.metadata =
     "cordova-plugin-statusbar": "2.2.0",
     "cordova-plugin-whitelist": "1.3.0",
     "cordova-plugin-inappbrowser": "1.5.0",
-    "com.oauthio.plugins.oauthio": "0.2.4"
+    "com.oauthio.plugins.oauthio": "0.2.4",
+    "cordova-plugin-console": "1.0.5"
 };
 // BOTTOM OF METADATA
 });

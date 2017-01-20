@@ -134,11 +134,6 @@ $menu_items: vote create history alerts account;
   margin: 0 auto;
 }
 
-#alerts-list {
-  @include location(80px);
-  width: 100%;
-}
-
 .center {
   display: block;
 	@extend %horizontal-center;
@@ -709,6 +704,43 @@ $menu_items: vote create history alerts account;
   margin-top:5px/$ref_height * 100vh;
 }
 
+
+#alerts-page {
+  #alerts-list {
+    @include location(44px, 550px);
+    @include font(12px);
+    width: 100%;
+  }
+  .alert {
+    display: table;
+    table-layout: fixed;
+  }
+  p {
+    margin: 0;
+  }
+
+  .avatar-alert {
+    display: table-cell;
+    $height: 25px;
+    height: $height/$ref_height * 100vh;
+    // Width should be same as height. So this hack.
+    width: $height/$ref_height * 100vh;
+    border: solid 2px $BWSlate;
+    @include border-radius(50%);
+    vertical-align: middle;
+  }
+  .text-alert {
+    display:table-cell;
+    padding-left: 5px;
+    white-space: normal;
+    vertical-align: middle;
+  }
+  .name-alert {
+    font-weight: 600;
+    color: $BWRed;
+  }
+}
+
 #history-page {
   #history-results-page {
     #avatar-results {
@@ -733,9 +765,26 @@ $menu_items: vote create history alerts account;
       font-weight: 600;
       margin-right: 5px;
     }
-    #comments-results {
+    #votes-results {
       @extend %flex-vertical-center2;
       @include location(59px, 35px, 40px, 262px);
+      @include font(17px);
+      color: $BWRed;
+      font-weight: 600;
+    }
+    #votes-results:before {
+        content: "";
+        display: block;
+        background: url("img/answers_black.png") no-repeat;
+        @include background-contain();
+        width: 20px;
+        height: 20px;
+        float: left;
+        margin-right: 5px;
+    }
+    #comments-results {
+      @extend %flex-vertical-center2;
+      @include location(59px, 35px, 40px, 302px);
       @include font(17px);
       color: $BWRed;
       font-weight: 600;
@@ -752,7 +801,7 @@ $menu_items: vote create history alerts account;
     }
     #likes-results {
       @extend %flex-vertical-center2;
-      @include location(59px, 35px, 40px, 316px);
+      @include location(59px, 35px, 40px, 342px);
       @include font(17px);
       color: $BWRed;
       font-weight: 600;
@@ -921,7 +970,35 @@ $menu_items: vote create history alerts account;
     }
     #answers-results {
       @include location(400px, 130px, 375px);
+      overflow-y: scroll;
+      overflow-x: hidden;
+      .my_answer {
+        font-weight: bold;
+        color: $BWRed;
+      }
+    }
+    .answer-result {
       display: table;
+      table-layout: fixed;
+      width: 100%;
+    }
+    .answer-result-column {
+      display: table-cell;
+      vertical-align: middle;
+      text-align: center;
+      text-transform: uppercase;
+    }
+    .answer-result-avatar {
+      text-align: left;
+    }
+    .avatar-result {
+      $height: 20px;
+      height: $height/$ref_height * 100vh;
+      // Width should be same as height. So this hack.
+      width: $height/$ref_height * 100vh;
+      border: solid 2px $BWSlate;
+      @include border-radius(50%);
+      vertical-align: middle;
     }
     .button {
       @include font(17px);
@@ -954,7 +1031,56 @@ $menu_items: vote create history alerts account;
     table-layout: fixed;
     width: 100%;
   }
-  .history-menu-item {
+  #history-responses-menu {
+    @include location(44px, 44px, 375px);
+    @include font(17px);
+    line-height: 1.59;
+    letter-spacing: -0.5px;
+    color: $darkGrey;
+    background-color: $white;
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+    border-bottom: solid 0.5px $deactiveGrey;
+    text-transform: uppercase;
+  }
+  #history-responses-sections {
+    @include location(96px, 22px, 349px, 13px);
+    @include font(17px);
+    line-height: 1.29;
+    letter-spacing: -0.4px;
+    color: $darkGrey;
+    text-align: left;
+  }
+  .history-response-voters {
+    @include location(120px, 460px, 349px, 13px);
+    @include font(13px);
+    font-weight: 600;
+    color: $BWRed;
+    overflow-x: hidden;
+    overflow-y: auto;
+    a {
+      padding: 5px;
+    }
+    p {
+      margin: 0;
+    }
+    .avatar-response {
+      $height: 25px;
+      height: $height/$ref_height * 100vh;
+      // Width should be same as height. So this hack.
+      width: $height/$ref_height * 100vh;
+      border: solid 2px $BWSlate;
+      @include border-radius(50%);
+      vertical-align: middle;
+    }
+    .name-response {
+      margin-left: 5px;
+      font-weight: 600;
+      color: $BWRed;
+    }
+  }
+  .history-menu-item, .history-response-item {
     display: table-cell;
     vertical-align: middle;
     cursor: pointer;
@@ -962,6 +1088,13 @@ $menu_items: vote create history alerts account;
   .history-menu-item.selected {
     background-color: $slateGreen;
     color: $white;
+  }
+  .history-response-item.my_answer {
+    font-weight: bold;
+    color: $BWRed;
+  }
+  .history-response-item.selected {
+    border-bottom: solid 3px $BWRed;
   }
   .history-header {
     @include location(88px, 90px, 375px);
@@ -977,6 +1110,9 @@ $menu_items: vote create history alerts account;
     @include location(178px, 400px, 375px);
     section {
       display: inline-block;
+    }
+    a {
+      padding-bottom: 5px;
     }
     p {
       margin: 0;
@@ -1201,6 +1337,8 @@ $menu_items: vote create history alerts account;
     background-image: url('images/icons-png/carat-d-black.png');
     background-repeat: no-repeat;
     background-position: right 5px top 5px;
+    overflow-x: hidden;
+    overflow-y: auto;
     //@include background_size(13px, 8px);
   }
   #hand {
@@ -1310,6 +1448,7 @@ $menu_items: vote create history alerts account;
     }
     level.selected, call.selected {
       background-color: $BWSeaGreen;
+      color: $white;
     }
     level.selected {
       color: $white;
@@ -1537,7 +1676,7 @@ body.ui-mobile-viewport {
 
   #logout-submit-button {
     @extend %flex-vertical-center;
-    @include location(542px, 44px);
+    @include location(502px, 44px);
     width: 100vw;
     background-color: $white;
     border: solid 0.5px $deactiveGrey;

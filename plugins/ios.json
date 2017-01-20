@@ -18,6 +18,9 @@
         },
         "com.oauthio.plugins.oauthio": {
             "PACKAGE_NAME": "com.bridgewinners.mobile"
+        },
+        "cordova-plugin-console": {
+            "PACKAGE_NAME": "com.bridgewinners.mobile"
         }
     },
     "dependent_plugins": {

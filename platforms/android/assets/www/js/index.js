@@ -51,12 +51,12 @@ BW.app = new function() {
     });
     BW.errorDialog = new BW.dialog("error-popup", true);
     BW.utils.init();
-    BW.user.init();
+    BW.page.init();
     BW.vote.init();
     BW.create.init();
     BW.history.init();
     BW.alerts.init();
-    BW.page.init();
+    BW.user.init();
   };
   /**
    * Utility function to check if running in a browser as oppose to mobile app.
@@ -86,6 +86,15 @@ BW.utils = new function() {
   this.getRestUrl = function(suffix) {
     return this.sitePrefix + "/rest-api/v1/" + suffix;
   };
+  this.setAttribute = function(element, attributeName, attributeValue) {
+    element.data(attributeName, attributeValue).attr("data-" + attributeName, attributeValue);
+  };
+  this.setSectionValue = function(element, sectionName) {
+    this.setAttribute(element, "section", sectionName);
+  };
+  this.setBackValue = function(element, value) {
+    this.setAttribute(element, "back", value);
+  };
 };
 
 
@@ -100,7 +109,7 @@ BW.ajax = function() {
   this.data = null;
   this.send = function(parameters) {
     _.defaults(parameters, {
-      method: "POST",
+      method: "GET",
       headers: BW.user.getHeader(),
       timeout: 5000,
       data: {},
@@ -160,7 +169,44 @@ BW.alerts = new function() {
   this.setupClickHandlers = function() {};
   this.load = function() {
     $("#header-text").empty().append("Alerts");
-    $( "#mylist" ).listview();
+    BW.loadingDialog.show("Getting Alerts...");
+    var ajaxRequest = new BW.ajax();
+    var self = this;
+    $.when(ajaxRequest.done).then(function() {
+      BW.loadingDialog.hide();
+      if (ajaxRequest.requestFailed || ajaxRequest.hasError) {
+        BW.messageDialog.show("Error " + ajaxRequest.errorMessage);
+      }
+      else {
+        var html = "";
+        if (ajaxRequest.data.alerts.length > 0) {
+          _.each(ajaxRequest.data.alerts, function(alert) {
+            html += "<li data-icon='false'><a href='#'>";
+            html += "<p class='alert'>";
+            html += "<img class='avatar-alert' src='" + BW.utils.getAvatarLink(alert.instigator_avatar) + "'/>";
+            var text = alert.blurb.replace("a href", "a1 href");
+            text = text.replace("</a>", "</a1>");
+            text = text.replace("<strong>", "<span class='name-alert'>");
+            text = text.replace("</strong>", "</span>");
+            html += "<span class='text-alert'>" + text + "</span>";
+            html += "</p>";
+            html += "</a></li>";
+          });
+        } else {
+          html += "You have no alerts.";
+        }
+        $("#alerts-list").empty().append(html);
+        $("#alerts-list").listview();
+      }
+    });
+    ajaxRequest.send({
+  		urlSuffix: "get-alerts/",
+      data: {
+    		start:0,
+    		end: 4
+      },
+  	});
+  	return false;
   };
 };
 
@@ -175,10 +221,11 @@ BW.history = new function() {
   };
   this.setupClickHandlers = function() {
     var self = this;
-    // $(document).on("tap", "li[data-slug]", function() {
-    //   var slug = $(this).data("slug");
-    //   alert(slug);
-    // });
+    $(document).on("tap", "#history-revote-button.enabled", function() {
+      BW.page.load("vote.html", function() {
+        BW.page.setActiveTab("vote");
+      }, {"slug": self.slug});
+    });
     // section changed
     _.each(["history-voted-page", "history-published-page", "history-drafts-page"], function(sectionName) {
       BW.page.registerSectionChangeCallback(sectionName, function(section) {
@@ -203,28 +250,99 @@ BW.history = new function() {
       });
     });
     BW.page.registerSectionChangeCallback("history-results-page", function(section, parameters) {
-      $("#back-button").removeClass("hide").data("section", parameters.back);
-      $("#history-menu").addClass("hide");
-      self.loadProblem(parameters.slug);
+      self.loadProblem(parameters.slug, parameters.back);
+    });
+    BW.page.registerSectionChangeCallback("history-responses-page", function(section, parameters) {
+      self.loadResponses(parameters.slug, parameters.back);
     });
   };
-  this.loadProblem = function(slug) {
-    BW.loadingDialog.show("Getting Problem Details...");
-  	var ajaxRequest = new BW.ajax();
+  this.showResponses = function(slug, backPage) {
+    $("#back-button").removeClass("hide");
+    BW.utils.setAttribute($("#back-button"), "section", "history-results-page");
+    BW.utils.setAttribute($("#back-button"), "slug", slug);
+    BW.utils.setAttribute($("#back-button"), "back", backPage);
+    $("#history-menu").addClass("hide");
+    var poll = this.polls[slug];
+    var html = "";
+    if (poll.all_answers.length > 0) {
+      _.each(poll.all_answers, function(answer){
+        var answerClass = "";
+        if (poll.my_answer.answer === answer.text) {
+          answerClass = "my_answer";
+        }
+        html += "<div class='history-response-item enabled " + answerClass + "' data-role='sub-section-change' data-section='history-response-page-" + answer.text + "'>";
+        if (poll.type.toLowerCase() === "bidding") {
+          html += Bridge.getBidHTML(answer.text);
+        } else {
+          html += Bridge.getCardHTML(answer.text);
+        }
+        html += "</div>";
+      });
+      $("#history-responses-menu").empty().append(html);
+      html = "";
+      _.each(poll.all_answers, function(answer){
+        var sectionName = "history-response-page-" + answer.text;
+        html += "<div id='" + sectionName + "' data-name='" + sectionName + "' data-role='sub-section'>";
+        html += "<div class='history-response-summary'>";
+        html += answer.count + " Votes (" + answer.percent + "%)";
+        html += "</div>";
+        html += "<div class='history-response-voters'>";
+        html += "</div>";
+        html += "<ul class='history-response-voters'>";
+        _.each(answer.public_responses, function(response) {
+          html += "<li data-icon='false'><a href='#'>";
+          html += "<p>";
+          html += "<img class='avatar-response' src='" + BW.utils.getAvatarLink(response.avatar) + "'/>";
+          html += "<span class='name-response'>" + response.name + "</span>";
+          html += "</p>";
+          html += "</a></li>";
+        });
+        html += "</ul>";
+        html += "</div>";
+      });
+      $("#history-responses-sections").empty().append(html);
+      $(".history-response-voters").listview();
+      var shownSectionName = "history-response-page-" + poll.all_answers[0].text;
+    } else {
+      var shownSectionName = "history-response-page-empty";
+      var html = ""
+      html += "<div class='history-no-responses'>No responses have been submitted yet.</div>";
+      $("#history-responses-menu").empty().append(html);
+    }
+    BW.page.showSubSection(shownSectionName);
+  };
+  this.loadResponses = function(slug, backPage) {
+    BW.loadingDialog.show("Getting Responses...");
+    var ajaxRequest = new BW.ajax();
     var self = this;
     $.when(ajaxRequest.done).then(function() {
       BW.loadingDialog.hide();
       if (ajaxRequest.requestFailed || ajaxRequest.hasError) {
-        alert("Error " + ajaxRequest.errorMessage);
+        BW.messageDialog.show("Error " + ajaxRequest.errorMessage);
       }
       else {
-        self.showProblem(ajaxRequest.data);
+        self.polls[ajaxRequest.data.slug] = ajaxRequest.data;
+        self.polls[ajaxRequest.data.slug].all_answers.sort(function(a,b) {
+          return b.percent - a.percent;
+        });
+        self.showResponses(slug, backPage);
       }
     });
     ajaxRequest.send({
-  		urlSuffix: "get-voting-problem/",
-      data: {"slug": slug},
-  	});
+      urlSuffix: "get-voting-problem/",
+      data: {
+        slug: slug,
+      },
+    });
+    return false;
+
+  };
+  this.loadProblem = function(slug, backPage) {
+    $("#back-button").removeClass("hide");
+    BW.utils.setAttribute($("#back-button"), "section", backPage);
+    $("#history-menu").addClass("hide");
+    this.slug = slug;
+    this.showProblem(this.polls[slug]);
   	return false;
   };
   this.showProblem = function(data) {
@@ -254,50 +372,45 @@ BW.history = new function() {
     auction.showAuction("auction-results");
     for(var direction in Bridge.directions) {
       var value = deal.isVulnerable(direction) ? "yes" : "no";
-      $("#vul-" + direction + "-results").attr("data-vulnerable", value).data("vulnerable", value).empty();
+      BW.utils.setAttribute($("#vul-" + direction + "-results"), "vulnerable", value);
+      //$("#vul-" + direction + "-results").attr("data-vulnerable", value).data("vulnerable", value).empty();
     }
     $("#vul-" + deal.getDealer() + "-results").empty().append("D");
     $("#scoring-results").empty().append(data.scoring);
-    hand.showHand("hand-results");
+    hand.showHand("hand-results", {
+      registerClickHandlers: false,
+    });
     $("#description-results").empty().append(data.description);
-    // if (type == "bidding") {
-    //   $("#hand").show();
-    //   hand.showHand("hand");
-    // }
-    // else {
-    //   $("#hand").empty().hide();
-    // }
-    // var auction = deal.getAuction();
-    // auction.showAuction("auction");
-  	// this.slug = data.slug;
-    // if (this.type == "bidding") {
-    //   $("bidding-box").show();
-    //   auction.showBiddingBox("bidding-box");
-    //   deal.registerCallback(function() {
-    //     $("#vote-submit-button").removeClass("disabled").addClass("enabled");
-    //   }, "setSelectedCall");
-    //   deal.registerCallback(function() {
-    //     $("#vote-submit-button").addClass("disabled").removeClass("enabled");
-    //   }, "setSelectedLevel");
-    //   $("#lead-box").empty().hide();
-    // } else {
-    //   $("#lead-box").show();
-    //   hand.showLead("lead-box");
-    //   deal.registerCallback(function() {
-    //     $("#vote-submit-button").removeClass("disabled").addClass("enabled");
-    //   }, "setSelectedCard");
-    //   $("bidding-box").empty().hide();
-    // }
-    // this.deal = deal;
-    // $("#header-text").empty().append(BW.utils.capitalize(this.type + " problem"));
-    // for(var direction in Bridge.directions) {
-    //   var value = deal.isVulnerable(direction) ? "yes" : "no";
-    //   $("#vul-" + direction).attr("data-vulnerable", value).data("vulnerable", value);
-    // }
-    // $("#vul-" + deal.getDealer()).empty().append("D");
-    // $("#scoring").empty().append(data.scoring);
-    //
-    // $("#description").empty().append(data.description);
+    var html = "";
+    _.each(data.all_answers, function(answer){
+      var answerClass = "";
+      if (data.my_answer.answer === answer.text) {
+        answerClass = "my_answer";
+      }
+      html += "<div class='answer-result'>";
+      html += "<div class='answer-result-column " + answerClass + "'>";
+      if (data.type.toLowerCase() === "bidding") {
+        html += Bridge.getBidHTML(answer.text);
+      } else {
+        html += Bridge.getCardHTML(answer.text);
+      }
+      html += "</div>";
+      html += "<div class='answer-result-column " + answerClass + "'>";
+      html += answer.count;
+      html += "</div>";
+      html += "<div class='answer-result-column'>";
+      html += "(" + answer.percent + "%)";
+      html += "</div>";
+      html += "<div class='answer-result-column answer-result-avatar'>";
+      _.each(answer.public_responses.slice(0,3), function(response) {
+        html += "<img class='avatar-result' src='" + BW.utils.getAvatarLink(response.avatar) + "'/>";
+      });
+      html += "</div>";
+      html += "</div>";
+    });
+    $("#answers-results").empty().append(html);
+    BW.utils.setAttribute($("#history-voters-button"), "slug", data.slug);
+    BW.utils.setAttribute($("#history-voters-button"), "back", $("#back-button").data("section"));
     BW.loadingDialog.hide();
   };
   this.loadDrafts = function() {
@@ -362,12 +475,14 @@ BW.history = new function() {
       var message = "Getting Recently Voted Problems...";
       var showAuthor = true;
       var showAnswer = true;
+      var emptyText = "You have not voted on any problems yet.";
     } else {
       var url = "get-recent-published/";
       var sectionName = "history-published-page";
       var message = "Getting Recently Published Problems...";
       var showAuthor = false;
       var showAnswer = false;
+      var emptyText = "You have not published any problems yet.";
     }
     var container = $("#history-" + pollType + "-list");
     BW.loadingDialog.show(message);
@@ -379,8 +494,18 @@ BW.history = new function() {
         BW.messageDialog.show("Error " + ajaxRequest.errorMessage);
       }
       else {
-        var html = self.getHTML(ajaxRequest.data, sectionName, showAuthor, showAnswer);
-        //var html = "";
+        self.polls = {};
+        if (ajaxRequest.data.polls.length > 0) {
+          _.each(ajaxRequest.data.polls, function(poll) {
+            poll.all_answers.sort(function(a,b) {
+              return b.percent - a.percent;
+            });
+            self.polls[poll.slug] = poll;
+          });
+          var html = self.getHTML(ajaxRequest.data, sectionName, showAuthor, showAnswer);
+        } else {
+          var html = "<li>" + emptyText + "</li>";
+        }
         container.empty().append(html);
         container.listview("refresh");
       }
@@ -389,7 +514,8 @@ BW.history = new function() {
   		urlSuffix: url,
       data: {
     		start:0,
-    		end: 4
+    		end: 4,
+        num_responses: 3,
       },
   	});
   	return false;
@@ -414,18 +540,17 @@ BW.history = new function() {
 BW.create = new function() {
   this.deal = null;
   this.handDirection = 's';
-  this.savedDealName = "create-deal-saved-name";
-  this.savedSectionName = "create-section-saved-name";
-  this.savedDraftsName = "create-drafts-saved-name";
-  //localStorage.removeItem(this.savedDraftsName);
   this.drafts = [];
   this.init = function() {
-    this.loadDrafts();
     this.setupClickHandlers();
   };
+  this.getSavedDraftsName = function() {
+    return BW.user.getUserName() + "-create-drafts-saved-name";
+  };
   this.loadDrafts = function() {
-    var savedDrafts = localStorage.getItem(this.savedDraftsName);
+    var savedDrafts = localStorage.getItem(this.getSavedDraftsName());
     if (savedDrafts) {
+      this.drafts = [];
       var drafts = JSON.parse(savedDrafts);
       _.each(drafts, function(draft){
         var deal = new Bridge.Deal();
@@ -462,7 +587,7 @@ BW.create = new function() {
         "deal": draft.deal.toJSON(),
       });
     }, this);
-    localStorage.setItem(this.savedDraftsName, JSON.stringify(drafts));
+    localStorage.setItem(this.getSavedDraftsName(), JSON.stringify(drafts));
   };
   this.sections = {
     "create-hand-page": {
@@ -513,15 +638,18 @@ BW.create = new function() {
         self.setSection(section);
         var sectionConfig = self.sections[section];
         if (sectionConfig["back"]) {
-          $("#back-button").removeClass("hide").data("section", sectionConfig["back"]);
+          $("#back-button").removeClass("hide");
+          BW.utils.setAttribute($("#back-button"), "section", sectionConfig["back"]);
+          //.data("section", sectionConfig["back"]);
         } else {
           $("#back-button").addClass("hide");
         }
         if (sectionConfig["forward"]) {
-          $("#create-continue-button").data("section", sectionConfig["forward"]);
+          var backSection = sectionConfig["forward"];
         } else {
-          $("#create-continue-button").data("section", "");
+          var backSection = "";
         }
+        BW.utils.setAttribute($("#create-continue-button"), "section", backSection);
         self.updateStatus();
       });
     }
@@ -530,8 +658,6 @@ BW.create = new function() {
     this.currentDraft.section = "create-hand-page";
     this.currentDraft.deal = this.createNewDeal();
     this.saveDrafts();
-    // localStorage.removeItem(this.savedSectionName);
-    // localStorage.removeItem(this.savedDealName);
     this.load();
   };
   /**
@@ -575,6 +701,7 @@ BW.create = new function() {
     });
     ajaxRequest.send({
   		urlSuffix: "create-problem/",
+      method: "POST",
       data: data,
   	});
   	return false;
@@ -619,11 +746,10 @@ BW.create = new function() {
     }
   };
   this.load = function(draftNumber) {
+    this.loadDrafts();
     draftNumber = draftNumber || 0;
     this.currentDraftNumber = draftNumber;
     this.currentDraft = this.drafts[draftNumber];
-    //this.section = localStorage.getItem(this.savedSectionName) || "create-hand-page";
-    //this.section = this.currentDraft.section;
     BW.page.showSection(this.currentDraft.section);
     var self = this;
     $("#header-text").empty().append("Create");
@@ -654,7 +780,8 @@ BW.create = new function() {
     auction.showAuction("auction-review");
     for(var direction in Bridge.directions) {
       var value = deal.isVulnerable(direction) ? "yes" : "no";
-      $("#vul-" + direction).attr("data-vulnerable", value).data("vulnerable", value);
+      BW.utils.setAttribute($("#vul-" + direction), "vulnerable", value);
+      //$("#vul-" + direction).attr("data-vulnerable", value).data("vulnerable", value);
       $("#vul-" + direction).empty();
     }
     $("#vul-" + deal.getDealer()).empty().append("D");
@@ -665,11 +792,9 @@ BW.create = new function() {
     this.updateStatus();
     deal.registerCallback(function() {
       self.saveDrafts();
-      // var dealJSON = self.deal.toJSON();
-      // localStorage.setItem(self.savedDealName, JSON.stringify(dealJSON));
       for(var direction in Bridge.directions) {
         var value = deal.isVulnerable(direction) ? "yes" : "no";
-        $("#vul-" + direction).attr("data-vulnerable", value).data("vulnerable", value);
+        BW.utils.setAttribute($("#vul-" + direction), "vulnerable", value);
         $("#vul-" + direction).empty();
       }
       $("#vul-" + deal.getDealer()).empty().append("D");
@@ -714,22 +839,19 @@ BW.vote = new function() {
     this.setupClickHandlers();
   };
   this.setupClickHandlers = function() {
+    var self = this
     // Skip clicked
-    $(document).on("tap", "#skip-submit-button.enabled", {self: this}, function(e) {
-      e.data.self.load({"exclude": e.data.self.slug});
+    $(document).on("tap", "#skip-submit-button.enabled", function() {
+      self.load({"exclude": self.slug});
     });
     // Abstain clicked
-    $(document).on("tap", "#abstain-submit-button.enabled", {self: this}, function(e) {
-      e.data.self.vote(/*abstain=*/true);
+    $(document).on("tap", "#abstain-submit-button.enabled", function() {
+      self.vote(/*abstain=*/true);
     });
     // Vote clicked
-    $(document).on("tap", "#vote-submit-button.enabled", {self: this}, function(e) {
-      e.data.self.vote(/*abstain=*/false);
+    $(document).on("tap", "#vote-submit-button.enabled", function() {
+      self.vote(/*abstain=*/false);
     });
-    // Description clicked
-    // $(document).on("tap", "#description", {self: this}, function(e) {
-    //   BW.messageDialog.show($("#description").html());
-    // });
   };
   this.getLeadAnswer = function() {
     var next = this.deal.getAuction().getNextToCall();
@@ -743,7 +865,10 @@ BW.vote = new function() {
    * Send abstain as vote for this problem to BW server
    */
   this.vote = function(abstain) {
-    var data = {"public": true};
+    var data = {
+      "public": true,
+      "slug": this.slug,
+    };
     BW.loadingDialog.show("Submitting vote...");
     if (abstain) {
       data["Abstain"] = true;
@@ -769,12 +894,18 @@ BW.vote = new function() {
       }
     });
     ajaxRequest.send({
-  		urlSuffix: "poll-answer/" + this.slug + "/",
+  		urlSuffix: "poll-answer/",
+      method: "POST",
       data: data,
   	});
   	return false;
   };
-  this.load = function(slug) {
+  this.load = function(data) {
+    data = data || {};
+    _.defaults(data, {
+      "num_responses": 0,
+      //"slug": "lead-problem-529",
+    });
     $("#back-button").addClass("hide");
     BW.loadingDialog.show("Getting voting problem...");
   	var ajaxRequest = new BW.ajax();
@@ -788,14 +919,9 @@ BW.vote = new function() {
         self.show(ajaxRequest.data);
       }
     });
-    if (slug) {
-      var data = {"slug": slug};
-    }
     ajaxRequest.send({
   		urlSuffix: "get-voting-problem/",
-      //data: data,
-      data: data || {"slug": "lead-problem-529"},
-      //data: data || {"slug": "bidding-problem-11998"},
+      data: data,
   	});
   	return false;
   };
@@ -854,7 +980,8 @@ BW.vote = new function() {
     $("#header-text").empty().append(BW.utils.capitalize(this.type + " problem"));
     for(var direction in Bridge.directions) {
       var value = deal.isVulnerable(direction) ? "yes" : "no";
-      $("#vul-" + direction).attr("data-vulnerable", value).data("vulnerable", value);
+      BW.utils.setAttribute($("#vul-" + direction), "vulnerable", value);
+      //$("#vul-" + direction).attr("data-vulnerable", value).data("vulnerable", value);
     }
     $("#vul-" + deal.getDealer()).empty().append("D");
     $("#scoring").empty().append(data.scoring);
@@ -900,6 +1027,15 @@ BW.page = new function() {
       this.sectionChangeCallbacks[section](section, parameters);
     }
   };
+  this.showSubSection = function(section, parameters) {
+    $("[data-role='sub-section']").hide();
+    $("[data-role='sub-section'][data-name='" + section + "']").show();
+    $("[data-role='sub-section-change']").removeClass("selected");
+    $("[data-role='sub-section-change'][data-section='" + section + "']").addClass("selected");
+    if (section in this.sectionChangeCallbacks) {
+      this.sectionChangeCallbacks[section](section, parameters);
+    }
+  };
   this.setupClickHandlers = function() {
     var self = this;
     // Menu item change
@@ -916,6 +1052,13 @@ BW.page = new function() {
       var section = $(this).data("section");
       if (section && section != "") {
         self.showSection(section, $(this).data());
+      }
+    });
+    // Sub section change
+    $(document).on("tap", "[data-role='sub-section-change'].enabled", function(e) {
+      var section = $(this).data("section");
+      if (section && section != "") {
+        self.showSubSection(section, $(this).data());
       }
     });
   };
@@ -1028,6 +1171,9 @@ BW.user = new function() {
       back: "account-main-page",
     },
   };
+  this.getUserName = function() {
+    return this.userInfo.username;
+  }
   /**
    * Load a user if there is an accessToken, else show login page.
    */
@@ -1039,7 +1185,9 @@ BW.user = new function() {
       BW.page.registerSectionChangeCallback(sectionName, function(section) {
         var sectionConfig = self.sections[section];
         if (sectionConfig["back"]) {
-          $("#back-button").removeClass("hide").data("section", sectionConfig["back"]);
+          $("#back-button").removeClass("hide");
+          BW.utils.setAttribute($("#back-button"), "section", sectionConfig["back"]);
+          //.data("section", sectionConfig["back"]);
         } else {
           $("#back-button").addClass("hide");
         }
@@ -1071,7 +1219,6 @@ BW.user = new function() {
     $("#name").empty().append(this.userInfo.name);
     $("#avatar").css("background-image", "url(" + BW.utils.getAvatarLink(this.userInfo.avatar) + ")");
     BW.page.showSection("account-main-page");
-    //$("[data-role='section'][data-name='account-main-page']").show();
   };
 
   /**
@@ -1094,6 +1241,7 @@ BW.user = new function() {
     });
     ajaxRequest.send({
   		urlSuffix: "get-auth-token/",
+      method: "POST",
   		data: { username: username, password: password },
   		headers: {},
   	});
@@ -1145,7 +1293,6 @@ BW.user = new function() {
     });
     ajaxRequest.send({
   		urlSuffix: "get-profile/",
-  		method: "GET",
   	});
   	return false;
   };
@@ -1157,8 +1304,8 @@ BW.user = new function() {
     $("#account-avatar-inner").css("background-image", "url(" + BW.utils.getAvatarLink(this.userInfo.avatar) + ")");
     $("#account-avatar-outer").css("background-image", "url(" + BW.utils.getAvatarLink(this.userInfo.avatar) + ")");
     BW.page.showHeaderFooter();
-    BW.page.load("history.html", function() {
-      BW.page.setActiveTab("history");
+    BW.page.load("vote.html", function() {
+      BW.page.setActiveTab("vote");
     });
   };
 

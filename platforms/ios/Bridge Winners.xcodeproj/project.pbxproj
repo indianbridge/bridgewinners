@@ -24,6 +24,7 @@
 		F0C0BD30976E4E94BFE53E79 /* CDVViewController+SplashScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = 98CFC290E6474CB19C4645D1 /* CDVViewController+SplashScreen.m */; };
 		EB4CFE76186E421E8F71BEC2 /* CDVStatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 38B28A2B2423402E97FB4F7F /* CDVStatusBar.m */; };
 		E4D9B5E9B6E749BCA7114FCE /* CDVInAppBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 47D50169E065456095A1E1F0 /* CDVInAppBrowser.m */; };
+		0278E7BF92244CFFBAFAF222 /* CDVLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FF101CA39C45B78776F53A /* CDVLogger.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,6 +79,8 @@
 		433B1370EA564AD7A723C3AF /* CDVStatusBar.h */ = {isa = PBXFileReference; name = "CDVStatusBar.h"; path = "cordova-plugin-statusbar/CDVStatusBar.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
 		47D50169E065456095A1E1F0 /* CDVInAppBrowser.m */ = {isa = PBXFileReference; name = "CDVInAppBrowser.m"; path = "cordova-plugin-inappbrowser/CDVInAppBrowser.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
 		7127EC816B384C7A8B24AFB9 /* CDVInAppBrowser.h */ = {isa = PBXFileReference; name = "CDVInAppBrowser.h"; path = "cordova-plugin-inappbrowser/CDVInAppBrowser.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
+		12FF101CA39C45B78776F53A /* CDVLogger.m */ = {isa = PBXFileReference; name = "CDVLogger.m"; path = "cordova-plugin-console/CDVLogger.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
+		64BA949E653C44B9B6D5C0D4 /* CDVLogger.h */ = {isa = PBXFileReference; name = "CDVLogger.h"; path = "cordova-plugin-console/CDVLogger.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -197,6 +200,8 @@
 				433B1370EA564AD7A723C3AF /* CDVStatusBar.h */,
 				47D50169E065456095A1E1F0 /* CDVInAppBrowser.m */,
 				7127EC816B384C7A8B24AFB9 /* CDVInAppBrowser.h */,
+				12FF101CA39C45B78776F53A /* CDVLogger.m */,
+				64BA949E653C44B9B6D5C0D4 /* CDVLogger.h */,
 			);
 			name = Plugins;
 			path = "Bridge Winners/Plugins";
@@ -315,6 +320,7 @@
 				F0C0BD30976E4E94BFE53E79 /* CDVViewController+SplashScreen.m in Sources */,
 				EB4CFE76186E421E8F71BEC2 /* CDVStatusBar.m in Sources */,
 				E4D9B5E9B6E749BCA7114FCE /* CDVInAppBrowser.m in Sources */,
+				0278E7BF92244CFFBAFAF222 /* CDVLogger.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
