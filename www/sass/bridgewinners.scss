@@ -1001,7 +1001,7 @@ $menu_items: vote create history alerts account;
       text-align: left;
     }
     .avatar-result {
-      $height: 20px;
+      $height: 30px;
       height: $height/$ref_height * 100vh;
       // Width should be same as height. So this hack.
       width: $height/$ref_height * 100vh;

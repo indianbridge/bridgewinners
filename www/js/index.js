@@ -75,8 +75,8 @@ BW.app.start();
  * Some utility functions.
  */
 BW.utils = new function() {
-  //this.sitePrefix = "https://52.4.5.8";
-  this.sitePrefix = "https://127.0.0.1:8000";
+  this.sitePrefix = "https://52.4.5.8";
+  //this.sitePrefix = "https://127.0.0.1:8000";
   this.init = function() {
     // Nothing to do yet.
   };
@@ -1222,6 +1222,16 @@ BW.user = new function() {
     $(document).on( "tap", "#logout-submit-button", function() {
   		return self.logout();
   	});
+    $(document).on("keypress", "#username", function(e) {
+      if (e.which === 13) {
+        $("#password").focus();
+      }
+    });
+    $(document).on("keypress", "#password", function(e) {
+      if (e.which === 13) {
+        return self.login($( "#username" ).val(), $( "#password" ).val());
+      }
+    });
   };
   /**
    * Load user info into account page.
