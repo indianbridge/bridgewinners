@@ -1272,7 +1272,7 @@ BW.user = new function() {
   this.loginFailCallback = function(message) {
     this.accessToken = null;
     localStorage.removeItem(this.accessTokenName);
-    BW.loadingDialog.show("Unable to Login: " + message);
+    BW.messageDialog.show(message);
   };
 
   /**

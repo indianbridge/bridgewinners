@@ -1571,7 +1571,7 @@ body.ui-mobile-viewport {
 
 /* Footer styles. */
 %footer-container {
-  position: absolute;
+  position: fixed;
   width: 100vw;
   bottom: 0vh;
 }

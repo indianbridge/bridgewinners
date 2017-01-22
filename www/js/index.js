@@ -40,6 +40,9 @@ BW.app = new function() {
     if ( navigator && navigator.splashscreen ) {
       navigator.splashscreen.hide();
     }
+    // enable fast click
+  	var attachFastClick = Origami.fastclick;
+  	attachFastClick(document.body);
     if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
       $(".footer-inner-container").addClass("ios1");
       $(".footer-outer-container").addClass("ios1");
@@ -72,8 +75,8 @@ BW.app.start();
  * Some utility functions.
  */
 BW.utils = new function() {
-  this.sitePrefix = "https://52.4.5.8";
-  //this.sitePrefix = "https://127.0.0.1:8000";
+  //this.sitePrefix = "https://52.4.5.8";
+  this.sitePrefix = "https://127.0.0.1:8000";
   this.init = function() {
     // Nothing to do yet.
   };
@@ -286,9 +289,7 @@ BW.history = new function() {
         html += "<div class='history-response-summary'>";
         html += answer.count + " Votes (" + answer.percent + "%)";
         html += "</div>";
-        html += "<div class='history-response-voters'>";
-        html += "</div>";
-        html += "<ul class='history-response-voters'>";
+        html += "<ul class='history-response-voters scrollable'>";
         _.each(answer.public_responses, function(response) {
           html += "<li data-icon='false'><a href='#'>";
           html += "<p>";
@@ -373,11 +374,13 @@ BW.history = new function() {
     for(var direction in Bridge.directions) {
       var value = deal.isVulnerable(direction) ? "yes" : "no";
       BW.utils.setAttribute($("#vul-" + direction + "-results"), "vulnerable", value);
+      $("#vul-" + direction).empty();
     }
     $("#vul-" + deal.getDealer() + "-results").empty().append("D");
     $("#scoring-results").empty().append(data.scoring);
     hand.showHand("hand-results", {
       registerClickHandlers: false,
+      registerChangeHandlers: false,
     });
     $("#description-results").empty().append(data.description);
     var html = "";
@@ -511,7 +514,7 @@ BW.history = new function() {
   		urlSuffix: url,
       data: {
     		start:0,
-    		end: 4,
+    		end: 9,
         num_responses: 3,
       },
   	});
@@ -527,7 +530,7 @@ BW.history = new function() {
   this.load = function() {
     $("#header-text").empty().append("History");
     $(".history-list").listview();
-    BW.page.showSection("history-published-page");
+    BW.page.showSection("history-voted-page");
   };
 };
 
@@ -752,9 +755,7 @@ BW.create = new function() {
     $("#header-text").empty().append("Create");
     var deal = this.currentDraft.deal;
     deal.setActiveHand(this.handDirection);
-    deal.getHand(this.handDirection).showHand("hand", {
-      registerClickHandlers: false,
-    });
+    deal.getHand(this.handDirection).showHand("hand");
     deal.showCardDeck("deck");
     deal.showScoring("scoring");
     deal.showVulnerability("vulnerability");
@@ -772,13 +773,13 @@ BW.create = new function() {
     $("#create-description-page #description").val(deal.getNotes());
     deal.getHand(this.handDirection).showHand("hand-review", {
       registerClickHandlers: false,
+      registerChangeHandlers: false,
     });
     var auction = deal.getAuction();
     auction.showAuction("auction-review");
     for(var direction in Bridge.directions) {
       var value = deal.isVulnerable(direction) ? "yes" : "no";
       BW.utils.setAttribute($("#vul-" + direction), "vulnerable", value);
-      //$("#vul-" + direction).attr("data-vulnerable", value).data("vulnerable", value);
       $("#vul-" + direction).empty();
     }
     $("#vul-" + deal.getDealer()).empty().append("D");
@@ -901,7 +902,7 @@ BW.vote = new function() {
     data = data || {};
     _.defaults(data, {
       "num_responses": 0,
-      //"slug": "lead-problem-529",
+      //"slug": "lead-problem-986",
     });
     $("#back-button").addClass("hide");
     BW.loadingDialog.show("Getting voting problem...");
@@ -935,8 +936,14 @@ BW.vote = new function() {
   	deal.setDealer(data.dealer);
   	deal.setVulnerability(data.vulnerability);
   	deal.getAuction().fromString(data.auction);
-  	while(deal.getAuction().getNextToCall() != 's') {
-      deal.rotateClockwise();
+    if (this.type == "bidding") {
+    	while(deal.getAuction().getNextToCall() != 's') {
+        deal.rotateClockwise();
+      }
+    } else {
+      while(deal.getAuction().getContract().getDeclarer() != 'e') {
+        deal.rotateClockwise();
+      }
     }
     var hand = deal.getHand(deal.getAuction().getNextToCall());
   	hand.setHand( data.lin_str );
@@ -947,13 +954,19 @@ BW.vote = new function() {
     deal.getHand('w').setName("LHO");
     if (this.type == "bidding") {
       $("#hand").show();
-      hand.showHand("hand");
+      hand.showHand("hand", {
+        registerClickHandlers: false,
+        registerChangeHandlers: false,
+      });
     }
     else {
       $("#hand").empty().hide();
     }
     var auction = deal.getAuction();
-    auction.showAuction("auction");
+    auction.showAuction("auction", {
+      registerClickHandlers: false,
+      registerChangeHandlers: false,
+    });
   	this.slug = data.slug;
     if (this.type == "bidding") {
       $("bidding-box").show();
@@ -978,7 +991,7 @@ BW.vote = new function() {
     for(var direction in Bridge.directions) {
       var value = deal.isVulnerable(direction) ? "yes" : "no";
       BW.utils.setAttribute($("#vul-" + direction), "vulnerable", value);
-      //$("#vul-" + direction).attr("data-vulnerable", value).data("vulnerable", value);
+      $("#vul-" + direction).empty();
     }
     $("#vul-" + deal.getDealer()).empty().append("D");
     $("#scoring").empty().append(data.scoring);
@@ -1272,7 +1285,7 @@ BW.user = new function() {
   this.loginFailCallback = function(message) {
     this.accessToken = null;
     localStorage.removeItem(this.accessTokenName);
-    BW.loadingDialog.show("Unable to Login: " + message);
+    BW.messageDialog.show(message);
   };
 
   /**

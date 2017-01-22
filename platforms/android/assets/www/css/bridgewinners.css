@@ -4016,7 +4016,7 @@ body.ui-mobile-viewport {
 /* Footer styles. */
 /* line 1573, ../sass/bridgewinners.scss */
 .footer-inner-container, .footer-outer-container {
-  position: absolute;
+  position: fixed;
   width: 100vw;
   bottom: 0vh;
 }

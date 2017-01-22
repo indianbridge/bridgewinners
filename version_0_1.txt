@@ -1,3 +1,5 @@
+
+
 Login
   Missing Features
     No Social (all social changes will be one release - call it social release)
@@ -27,6 +29,10 @@ History
     How many items in history list?
   Missing Features
     What does Next button do when looking at result from one history item?
+Alerts
+  Questions
+    How many alerts to show?
+    What happens when clicking on alerts?
 
 Account
   Questions
@@ -35,6 +41,3 @@ Account
     Maybe the logout button should look like a button (like login button but different color scheme?)
   Missing Features
     Find Friends (social release)
-
-Miscellaneous
-  There seems to be an issue on issue with the menu bar on the bottom. If you start from the login screen it looks ok. But if you get automatically logged in the menu gets pushed down (logging out and logging back in fixes it)
