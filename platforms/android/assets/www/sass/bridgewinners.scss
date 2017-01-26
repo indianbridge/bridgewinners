@@ -9,9 +9,6 @@
 html {
   box-sizing: border-box;
 }
-// html, body {
-//   height: calc(100% - 0px);
-// }
 html,
 body {
 height: 100%;
@@ -95,6 +92,7 @@ $menu_items: vote create history alerts account;
   font-stretch: normal;
   letter-spacing: 0.7px;
   text-align: center;
+  text-shadow:none;
 }
 
 @mixin background-contain() {
@@ -110,6 +108,11 @@ $menu_items: vote create history alerts account;
 
 .inline-block {
   display: inline;
+}
+
+%highlight {
+  -webkit-filter: blur(1px);
+  filter: blur(1px);
 }
 
 %flex-vertical-center {
@@ -132,6 +135,11 @@ $menu_items: vote create history alerts account;
   left: 0;
   right: 0;
   margin: 0 auto;
+}
+
+.scrollable {
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .center {
@@ -286,6 +294,7 @@ $menu_items: vote create history alerts account;
     scoringtypes{
       @include location(289px, 44px, 345px, 15px);
       display: table;
+      table-layout: fixed;
       @include border-radius(5px);
       border: solid 1px #979797;
       background-color: $deactiveGrey;
@@ -315,6 +324,7 @@ $menu_items: vote create history alerts account;
     vulnerabilities {
       @include location(378px, 44px, 345px, 15px);
       display: table;
+      table-layout: fixed;
       @include border-radius(5px);
       border: solid 1px #979797;
       background-color: $deactiveGrey;
@@ -344,6 +354,7 @@ $menu_items: vote create history alerts account;
     directions {
       @include location(467px, 44px, 345px, 15px);
       display: table;
+      table-layout: fixed;
       @include border-radius(5px);
       border: solid 1px #979797;
       background-color: $deactiveGrey;
@@ -427,8 +438,8 @@ $menu_items: vote create history alerts account;
     }
     call[data-call="u"] {
       @include location(138px, 40px, 105px, 255px);
-      background-color: $darkGrey;
-      color: $deactiveGrey;
+      background-color: $black;
+      color: $white;
     }
     call[data-call="x"] {
       @include location(183px, 40px, 105px, 255px);
@@ -439,6 +450,10 @@ $menu_items: vote create history alerts account;
       @include location(183px, 40px, 105px, 255px);
       background-color: $redoubleBlue;
       color: $white;
+    }
+    call[data-call="u"].disabled, call[data-call="x"].disabled, call[data-call="r"].disabled {
+      background-color: $darkGrey;
+      color: $deactiveGrey;
     }
     call[data-call="p"] {
       @include location(228px, 40px, 105px, 255px);
@@ -619,7 +634,6 @@ $menu_items: vote create history alerts account;
       padding: 5px;
       background-color: $white;
       border: solid 1px $deactiveGrey;
-      overflow-y: hidden;
       padding-right: 7vw;
     }
     #hand-review {
@@ -644,8 +658,7 @@ $menu_items: vote create history alerts account;
           cursor: pointer;
       }
       card.selected {
-        -webkit-filter: sepia(1);
-        filter: sepia(1);
+        @extend %highlight;
       }
       $suits: s h d c;
       $ranks: a k q j t 9 8 7 6 5 4 3 2;
@@ -916,7 +929,6 @@ $menu_items: vote create history alerts account;
       padding: 5px;
       background-color: $white;
       border: solid 1px $deactiveGrey;
-      overflow-y: hidden;
       padding-right: 7vw;
     }
     #hand-results {
@@ -941,8 +953,7 @@ $menu_items: vote create history alerts account;
           cursor: pointer;
       }
       card.selected {
-        -webkit-filter: sepia(1);
-        filter: sepia(1);
+        @extend %highlight;
       }
       $suits: s h d c;
       $ranks: a k q j t 9 8 7 6 5 4 3 2;
@@ -970,8 +981,6 @@ $menu_items: vote create history alerts account;
     }
     #answers-results {
       @include location(400px, 130px, 375px);
-      overflow-y: scroll;
-      overflow-x: hidden;
       .my_answer {
         font-weight: bold;
         color: $BWRed;
@@ -992,7 +1001,7 @@ $menu_items: vote create history alerts account;
       text-align: left;
     }
     .avatar-result {
-      $height: 20px;
+      $height: 30px;
       height: $height/$ref_height * 100vh;
       // Width should be same as height. So this hack.
       width: $height/$ref_height * 100vh;
@@ -1057,8 +1066,6 @@ $menu_items: vote create history alerts account;
     @include font(13px);
     font-weight: 600;
     color: $BWRed;
-    overflow-x: hidden;
-    overflow-y: auto;
     a {
       padding: 5px;
     }
@@ -1121,7 +1128,7 @@ $menu_items: vote create history alerts account;
       color: $black;
     }
     rank, suit {
-      @include font(12px);
+      @include font(14px);
       font-weight: 600;
     }
     rank {
@@ -1141,14 +1148,14 @@ $menu_items: vote create history alerts account;
       vertical-align: middle;
     }
     .name {
-      @include font(13px);
+      @include font(15px);
       font-weight: 600;
       color: $darkGrey;
       margin-left: 10px;
     }
     .answer, .percentage {
       float:right;
-      @include font(12px);
+      @include font(14px);
       font-weight: 600;
       color: $darkGrey;
     }
@@ -1156,7 +1163,7 @@ $menu_items: vote create history alerts account;
       @include width(40px);
     }
     .stats {
-      @include font(12px);
+      @include font(14px);
       font-weight: 600;
       color: $darkGrey;
       margin-right: 10px;
@@ -1332,14 +1339,10 @@ $menu_items: vote create history alerts account;
     padding: 5px;
     background-color: $white;
     border: solid 1px $deactiveGrey;
-    overflow-y: hidden;
     padding-right: 7vw;
     background-image: url('images/icons-png/carat-d-black.png');
     background-repeat: no-repeat;
     background-position: right 5px top 5px;
-    overflow-x: hidden;
-    overflow-y: auto;
-    //@include background_size(13px, 8px);
   }
   #hand {
     @include location(258px, 66px, 349px, 13px);
@@ -1366,8 +1369,7 @@ $menu_items: vote create history alerts account;
         cursor: pointer;
     }
     card.selected {
-      -webkit-filter: sepia(1);
-      filter: sepia(1);
+      @extend %highlight;
     }
     $suits: s h d c;
     $ranks: a k q j t 9 8 7 6 5 4 3 2;
@@ -1447,10 +1449,10 @@ $menu_items: vote create history alerts account;
       color: $white;
     }
     level.selected, call.selected {
+      [data-suit="d"], [data-suit="h"] {
+        color: $white;
+      }
       background-color: $BWSeaGreen;
-      color: $white;
-    }
-    level.selected {
       color: $white;
     }
   }
@@ -1538,14 +1540,14 @@ body.ui-mobile-viewport {
   padding-right: 7vw;
   background-image: url('images/icons-png/carat-r-black.png');
   background-repeat: no-repeat;
-  background-position: right 5px center;
+  background-position: right 0.25vw center;
 }
 
 .carat-left {
   padding-left: 4vw;
   background-image: url('images/icons-png/carat-l-white.png');
   background-repeat: no-repeat;
-  background-position: left 5px center;
+  background-position: left 0.25vw center;
 }
 
 .header-container {

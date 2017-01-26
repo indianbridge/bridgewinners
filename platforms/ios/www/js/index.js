@@ -30,26 +30,20 @@ BW.app = new function() {
     // Added a hack to check if running in browser and not mobile app
     // This hack is to allow testing on browser where deviceready event will not fire
     if ( this.isCordovaApp() ) {
-    	$.when( cordovaReady, jQueryMobileReady ).then( this.init );
+    	$.when( cordovaReady, jQueryMobileReady ).then( this.init.bind(this) );
     }
     else {
-      $.when( jQueryMobileReady ).then( this.init );
+      $.when( jQueryMobileReady ).then( this.init.bind(this) );
     }
   };
   this.init = function() {
     if ( navigator && navigator.splashscreen ) {
       navigator.splashscreen.hide();
     }
-    if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
-      $(".footer-inner-container").addClass("ios1");
-      $(".footer-outer-container").addClass("ios1");
-    }
-    BW.loadingDialog = new BW.dialog("loading-popup", true);
-    BW.messageDialog = new BW.dialog("message-popup", true);
-    $("#message-popup").on("popupafterclose", function() {
-      $("#all-content").removeClass("ui-disabled");
-    });
-    BW.errorDialog = new BW.dialog("error-popup", true);
+    // enable fast click
+  	var attachFastClick = Origami.fastclick;
+  	attachFastClick(document.body);
+    this.initDialogs();
     BW.utils.init();
     BW.page.init();
     BW.vote.init();
@@ -57,6 +51,16 @@ BW.app = new function() {
     BW.history.init();
     BW.alerts.init();
     BW.user.init();
+  };
+  this.initDialogs = function() {
+    BW.loadingDialog = new BW.dialog("loading-popup", true);
+    BW.messageDialog = new BW.dialog("message-popup", true);
+    $("#message-popup").on("popupafterclose", function() {
+      $("#all-content").removeClass("ui-disabled");
+    });
+    $("#message-popup").on("popupafteropen", function() {
+      $("#all-content").addClass("ui-disabled");
+    });
   };
   /**
    * Utility function to check if running in a browser as oppose to mobile app.
@@ -97,11 +101,60 @@ BW.utils = new function() {
   };
 };
 
+/**
+ * A class to perform ajax requests.
+ */
+BW.ajax = function(parameters) {
+  parameters = parameters || {};
+  _.defaults(parameters, {
+    method: "GET",
+    headers: BW.user.getHeader(),
+    timeout: 5000,
+    data: {},
+    successCallback: null,
+    errorCallback: null,
+    failedCallback: null,
+  });
+  BW.loadingDialog.show(parameters.loadingMessage);
+  var url = encodeURI(BW.utils.getRestUrl(parameters.urlSuffix));
+  var request = $.ajax({
+    method: parameters.method,
+    context: this,
+    url: url,
+    data: parameters.data,
+    headers: parameters.headers,
+    timeout: parameters.timeout,
+  });
+	request.done(function(data) {
+    BW.loadingDialog.hide();
+    var hasError = data.hasOwnProperty("error") && data.error;
+    if (hasError) {
+      if (parameters.errorCallback) {
+        parameters.errorCallback(data.message);
+      } else {
+        BW.messageDialog.show("Error: " + data.message);
+      }
+    } else {
+      if (parameters.successCallback) {
+        parameters.successCallback(data);
+      }
+    }
+	});
+	request.fail( function(jqXHR, textStatus, errorThrown) {
+    BW.loadingDialog.hide();
+    var message = "Error - " + textStatus + ": " + errorThrown;
+    if (parameters.failedCallback) {
+      parameters.failedCallback(message);
+    } else {
+      BW.messageDialog.show("Request Failed: " + data.message);
+    }
+	});
+};
 
 /**
  * A class to perform ajax requests.
  */
-BW.ajax = function() {
+BW.ajax1 = function() {
   this.done = $.Deferred();
   this.requestFailed = false;
   this.hasError = false;
@@ -145,9 +198,8 @@ BW.ajax = function() {
 /**
  * A class to manage showing and hiding dialogs.
  */
-BW.dialog = function(container, disableContent) {
+BW.dialog = function(container) {
   this.container = container;
-  this.disableContent = disableContent;
   this.show = function(text) {
     $("#all-content").addClass("ui-disabled");
     $("#" + this.container + "-content").empty().append(text);
@@ -169,44 +221,55 @@ BW.alerts = new function() {
   this.setupClickHandlers = function() {};
   this.load = function() {
     $("#header-text").empty().append("Alerts");
-    BW.loadingDialog.show("Getting Alerts...");
-    var ajaxRequest = new BW.ajax();
-    var self = this;
-    $.when(ajaxRequest.done).then(function() {
-      BW.loadingDialog.hide();
-      if (ajaxRequest.requestFailed || ajaxRequest.hasError) {
-        BW.messageDialog.show("Error " + ajaxRequest.errorMessage);
-      }
-      else {
-        var html = "";
-        if (ajaxRequest.data.alerts.length > 0) {
-          _.each(ajaxRequest.data.alerts, function(alert) {
-            html += "<li data-icon='false'><a href='#'>";
-            html += "<p class='alert'>";
-            html += "<img class='avatar-alert' src='" + BW.utils.getAvatarLink(alert.instigator_avatar) + "'/>";
-            var text = alert.blurb.replace("a href", "a1 href");
-            text = text.replace("</a>", "</a1>");
-            text = text.replace("<strong>", "<span class='name-alert'>");
-            text = text.replace("</strong>", "</span>");
-            html += "<span class='text-alert'>" + text + "</span>";
-            html += "</p>";
-            html += "</a></li>";
-          });
-        } else {
-          html += "You have no alerts.";
-        }
-        $("#alerts-list").empty().append(html);
-        $("#alerts-list").listview();
-      }
-    });
-    ajaxRequest.send({
-  		urlSuffix: "get-alerts/",
+    //BW.loadingDialog.show("Getting Alerts...");
+    var ajaxRequest = BW.ajax({
+      urlSuffix: "get-alerts/",
       data: {
     		start:0,
     		end: 4
       },
-  	});
+      loadingMessage: "Getting Alerts...",
+      successCallback: this.show.bind(this),
+    });
+    // var self = this;
+    // $.when(ajaxRequest.done).then(function() {
+    //   BW.loadingDialog.hide();
+    //   if (ajaxRequest.requestFailed || ajaxRequest.hasError) {
+    //     BW.messageDialog.show("Error " + ajaxRequest.errorMessage);
+    //   }
+    //   else {
+    //     self.show(ajaxRequest.data);
+    //   }
+    // });
+    // ajaxRequest.send({
+  	// 	urlSuffix: "get-alerts/",
+    //   data: {
+    // 		start:0,
+    // 		end: 4
+    //   },
+  	// });
   	return false;
+  };
+  this.show = function(data) {
+    var html = "";
+    if (data.alerts.length > 0) {
+      _.each(data.alerts, function(alert) {
+        html += "<li data-icon='false'><a href='#'>";
+        html += "<p class='alert'>";
+        html += "<img class='avatar-alert' src='" + BW.utils.getAvatarLink(alert.instigator_avatar) + "'/>";
+        var text = alert.blurb.replace("a href", "a1 href");
+        text = text.replace("</a>", "</a1>");
+        text = text.replace("<strong>", "<span class='name-alert'>");
+        text = text.replace("</strong>", "</span>");
+        html += "<span class='text-alert'>" + text + "</span>";
+        html += "</p>";
+        html += "</a></li>";
+      });
+    } else {
+      html += "You have no alerts.";
+    }
+    $("#alerts-list").empty().append(html);
+    $("#alerts-list").listview();
   };
 };
 
@@ -225,6 +288,7 @@ BW.history = new function() {
       BW.page.load("vote.html", function() {
         BW.page.setActiveTab("vote");
       }, {"slug": self.slug});
+      return false;
     });
     // section changed
     _.each(["history-voted-page", "history-published-page", "history-drafts-page"], function(sectionName) {
@@ -286,9 +350,7 @@ BW.history = new function() {
         html += "<div class='history-response-summary'>";
         html += answer.count + " Votes (" + answer.percent + "%)";
         html += "</div>";
-        html += "<div class='history-response-voters'>";
-        html += "</div>";
-        html += "<ul class='history-response-voters'>";
+        html += "<ul class='history-response-voters scrollable'>";
         _.each(answer.public_responses, function(response) {
           html += "<li data-icon='false'><a href='#'>";
           html += "<p>";
@@ -312,28 +374,39 @@ BW.history = new function() {
     BW.page.showSubSection(shownSectionName);
   };
   this.loadResponses = function(slug, backPage) {
-    BW.loadingDialog.show("Getting Responses...");
-    var ajaxRequest = new BW.ajax();
+    //BW.loadingDialog.show("Getting Responses...");
     var self = this;
-    $.when(ajaxRequest.done).then(function() {
-      BW.loadingDialog.hide();
-      if (ajaxRequest.requestFailed || ajaxRequest.hasError) {
-        BW.messageDialog.show("Error " + ajaxRequest.errorMessage);
-      }
-      else {
-        self.polls[ajaxRequest.data.slug] = ajaxRequest.data;
-        self.polls[ajaxRequest.data.slug].all_answers.sort(function(a,b) {
-          return b.percent - a.percent;
-        });
-        self.showResponses(slug, backPage);
-      }
-    });
-    ajaxRequest.send({
+    var ajaxRequest = BW.ajax({
       urlSuffix: "get-voting-problem/",
       data: {
         slug: slug,
       },
+      loadingMessage: "Getting Responses...",
+      successCallback: function(data) {
+        self.polls[data.slug] = data;
+        self.polls[data.slug].all_answers.sort(function(a,b) {
+          return b.percent - a.percent;
+        });
+        self.showResponses(slug, backPage);
+      },
     });
+    // var ajaxRequest = new BW.ajax1();
+    //
+    // $.when(ajaxRequest.done).then(function() {
+    //   BW.loadingDialog.hide();
+    //   if (ajaxRequest.requestFailed || ajaxRequest.hasError) {
+    //     BW.messageDialog.show("Error " + ajaxRequest.errorMessage);
+    //   }
+    //   else {
+    //
+    //   }
+    // });
+    // ajaxRequest.send({
+    //   urlSuffix: "get-voting-problem/",
+    //   data: {
+    //     slug: slug,
+    //   },
+    // });
     return false;
 
   };
@@ -373,11 +446,13 @@ BW.history = new function() {
     for(var direction in Bridge.directions) {
       var value = deal.isVulnerable(direction) ? "yes" : "no";
       BW.utils.setAttribute($("#vul-" + direction + "-results"), "vulnerable", value);
+      $("#vul-" + direction).empty();
     }
     $("#vul-" + deal.getDealer() + "-results").empty().append("D");
     $("#scoring-results").empty().append(data.scoring);
     hand.showHand("hand-results", {
       registerClickHandlers: false,
+      registerChangeHandlers: false,
     });
     $("#description-results").empty().append(data.description);
     var html = "";
@@ -483,7 +558,7 @@ BW.history = new function() {
     }
     var container = $("#history-" + pollType + "-list");
     BW.loadingDialog.show(message);
-    var ajaxRequest = new BW.ajax();
+    var ajaxRequest = new BW.ajax1();
     var self = this;
     $.when(ajaxRequest.done).then(function() {
       BW.loadingDialog.hide();
@@ -511,7 +586,7 @@ BW.history = new function() {
   		urlSuffix: url,
       data: {
     		start:0,
-    		end: 4,
+    		end: 9,
         num_responses: 3,
       },
   	});
@@ -527,7 +602,7 @@ BW.history = new function() {
   this.load = function() {
     $("#header-text").empty().append("History");
     $(".history-list").listview();
-    BW.page.showSection("history-published-page");
+    BW.page.showSection("history-voted-page");
   };
 };
 
@@ -620,14 +695,18 @@ BW.create = new function() {
     // reset clicked
     $(document).on("tap", "#create-reset-button.enabled", function(e) {
       self.reset();
+      return false;
     });
     // Description changed
     $(document).on("input", "#create-description-page #description", function(e) {
       self.deal.setNotes($("#create-description-page #description").val());
+      return false;
     });
     // publish clicked
     $(document).on("tap", "#create-publish-button.enabled", function(e) {
-      self.publish();
+      alert("publish clicked");
+      //self.publish();
+      return false;
     });
     // section changed
     for (var sectionName in this.sections) {
@@ -684,7 +763,7 @@ BW.create = new function() {
   		data[ field ] = hand.getCardsInSuit( Bridge.suitOrder[i] );
   	}
     BW.loadingDialog.show("Submitting New Problem...");
-    var ajaxRequest = new BW.ajax();
+    var ajaxRequest = new BW.ajax1();
     var self = this;
     $.when(ajaxRequest.done).then(function() {
       BW.loadingDialog.hide();
@@ -752,9 +831,7 @@ BW.create = new function() {
     $("#header-text").empty().append("Create");
     var deal = this.currentDraft.deal;
     deal.setActiveHand(this.handDirection);
-    deal.getHand(this.handDirection).showHand("hand", {
-      registerClickHandlers: false,
-    });
+    deal.getHand(this.handDirection).showHand("hand");
     deal.showCardDeck("deck");
     deal.showScoring("scoring");
     deal.showVulnerability("vulnerability");
@@ -772,13 +849,13 @@ BW.create = new function() {
     $("#create-description-page #description").val(deal.getNotes());
     deal.getHand(this.handDirection).showHand("hand-review", {
       registerClickHandlers: false,
+      registerChangeHandlers: false,
     });
     var auction = deal.getAuction();
     auction.showAuction("auction-review");
     for(var direction in Bridge.directions) {
       var value = deal.isVulnerable(direction) ? "yes" : "no";
       BW.utils.setAttribute($("#vul-" + direction), "vulnerable", value);
-      //$("#vul-" + direction).attr("data-vulnerable", value).data("vulnerable", value);
       $("#vul-" + direction).empty();
     }
     $("#vul-" + deal.getDealer()).empty().append("D");
@@ -840,14 +917,17 @@ BW.vote = new function() {
     // Skip clicked
     $(document).on("tap", "#skip-submit-button.enabled", function() {
       self.load({"exclude": self.slug});
+      return false;
     });
     // Abstain clicked
     $(document).on("tap", "#abstain-submit-button.enabled", function() {
       self.vote(/*abstain=*/true);
+      return false;
     });
     // Vote clicked
     $(document).on("tap", "#vote-submit-button.enabled", function() {
       self.vote(/*abstain=*/false);
+      return false;
     });
   };
   this.getLeadAnswer = function() {
@@ -879,7 +959,7 @@ BW.vote = new function() {
         data["answer"] = this.getLeadAnswer();
       }
     }
-    var ajaxRequest = new BW.ajax();
+    var ajaxRequest = new BW.ajax1();
     var self = this;
     $.when(ajaxRequest.done).then(function() {
       BW.loadingDialog.hide();
@@ -901,11 +981,11 @@ BW.vote = new function() {
     data = data || {};
     _.defaults(data, {
       "num_responses": 0,
-      //"slug": "lead-problem-529",
+      //"slug": "lead-problem-986",
     });
     $("#back-button").addClass("hide");
     BW.loadingDialog.show("Getting voting problem...");
-  	var ajaxRequest = new BW.ajax();
+  	var ajaxRequest = new BW.ajax1();
     var self = this;
     $.when(ajaxRequest.done).then(function() {
       BW.loadingDialog.hide();
@@ -935,8 +1015,14 @@ BW.vote = new function() {
   	deal.setDealer(data.dealer);
   	deal.setVulnerability(data.vulnerability);
   	deal.getAuction().fromString(data.auction);
-  	while(deal.getAuction().getNextToCall() != 's') {
-      deal.rotateClockwise();
+    if (this.type == "bidding") {
+    	while(deal.getAuction().getNextToCall() != 's') {
+        deal.rotateClockwise();
+      }
+    } else {
+      while(deal.getAuction().getContract().getDeclarer() != 'e') {
+        deal.rotateClockwise();
+      }
     }
     var hand = deal.getHand(deal.getAuction().getNextToCall());
   	hand.setHand( data.lin_str );
@@ -947,13 +1033,19 @@ BW.vote = new function() {
     deal.getHand('w').setName("LHO");
     if (this.type == "bidding") {
       $("#hand").show();
-      hand.showHand("hand");
+      hand.showHand("hand", {
+        registerClickHandlers: false,
+        registerChangeHandlers: false,
+      });
     }
     else {
       $("#hand").empty().hide();
     }
     var auction = deal.getAuction();
-    auction.showAuction("auction");
+    auction.showAuction("auction", {
+      registerClickHandlers: false,
+      registerChangeHandlers: false,
+    });
   	this.slug = data.slug;
     if (this.type == "bidding") {
       $("bidding-box").show();
@@ -978,7 +1070,7 @@ BW.vote = new function() {
     for(var direction in Bridge.directions) {
       var value = deal.isVulnerable(direction) ? "yes" : "no";
       BW.utils.setAttribute($("#vul-" + direction), "vulnerable", value);
-      //$("#vul-" + direction).attr("data-vulnerable", value).data("vulnerable", value);
+      $("#vul-" + direction).empty();
     }
     $("#vul-" + deal.getDealer()).empty().append("D");
     $("#scoring").empty().append(data.scoring);
@@ -1043,6 +1135,7 @@ BW.page = new function() {
           self.setActiveTab(item);
         });
       }
+      return false;
     });
     // Section change
     $(document).on("tap", "[data-role='section-change'].enabled", function(e) {
@@ -1050,6 +1143,7 @@ BW.page = new function() {
       if (section && section != "") {
         self.showSection(section, $(this).data());
       }
+      return false;
     });
     // Sub section change
     $(document).on("tap", "[data-role='sub-section-change'].enabled", function(e) {
@@ -1057,6 +1151,7 @@ BW.page = new function() {
       if (section && section != "") {
         self.showSubSection(section, $(this).data());
       }
+      return false;
     });
   };
   this.init = function() {
@@ -1209,6 +1304,18 @@ BW.user = new function() {
     $(document).on( "tap", "#logout-submit-button", function() {
   		return self.logout();
   	});
+    $(document).on("keypress", "#username", function(e) {
+      if (e.which === 13) {
+        $("#password").focus();
+      }
+      return false;
+    });
+    $(document).on("keypress", "#password", function(e) {
+      if (e.which === 13) {
+        return self.login($( "#username" ).val(), $( "#password" ).val());
+      }
+      return false;
+    });
   };
   /**
    * Load user info into account page.
@@ -1229,7 +1336,7 @@ BW.user = new function() {
    */
   this.login = function( username, password ) {
     BW.loadingDialog.show("Logging In...");
-  	var ajaxRequest = new BW.ajax();
+  	var ajaxRequest = new BW.ajax1();
     var self = this;
     $.when(ajaxRequest.done).then(function() {
       BW.loadingDialog.hide();
@@ -1281,7 +1388,7 @@ BW.user = new function() {
   this.authenticateAccessToken = function() {
   	// Connect to BW server to check if access token is still ok
     BW.loadingDialog.show("Authenticating Access...");
-  	var ajaxRequest = new BW.ajax();
+  	var ajaxRequest = new BW.ajax1();
     var self = this;
     $.when(ajaxRequest.done).then(function() {
       BW.loadingDialog.hide();

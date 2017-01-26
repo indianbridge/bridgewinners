@@ -1480,6 +1480,34 @@ $menu_items: vote create history alerts account;
     @include location(539px, 44px, 105px, 255px);
   }
 }
+#vote-page.show-hand-first {
+  #auction {
+    @include location(189px, 135px, 230px, 15px);
+  }
+  #vulnerability {
+    #info-wrapper {
+      @include location(189px, 135px, 105px, 255px);
+    }
+    #vul-e {
+      @include location(219px, 76px, 21px, 332px);
+    }
+    #vul-w {
+      @include location(219px, 76px, 21px, 262px);
+    }
+    #scoring {
+      @include location(219px, 76px, 53.1px, 281px);
+    }
+    #vul-n {
+      @include location(196px, 25px, 53.1px, 281px);
+    }
+    #vul-s {
+      @include location(293px, 25px, 53.1px, 281px);
+    }
+  }
+  #hand {
+    @include location(109px, 66px, 349px, 13px);
+  }
+}
 
 /* Login page styles. */
 .login-page-content {
@@ -1697,8 +1725,51 @@ body.ui-mobile-viewport {
     cursor: pointer;
   }
 
-  #account-options-page, #account-about-page {
+  #account-about-page {
     @include location(44px);
+  }
+  #account-options-list {
+    @include location(50px, 550px, 375px);
+  }
+  .options-header {
+    @include font(17px);
+    position: relative;
+    @include height(20px);
+    @include left(15px);
+    font-weight: 600;
+    letter-spacing: -0.4px;
+    color: $darkGrey;
+    text-align: left;
+    margin-top: 2vh;
+  }
+  options{
+    position: relative;
+    @include height(44px);
+    @include left(15px);
+    @include width(345px);
+    //@include location(75px, 44px, 345px, 15px);
+    display: table;
+    table-layout: fixed;
+    @include border-radius(5px);
+    border: solid 1px #979797;
+    background-color: $deactiveGrey;
+  }
+  option {
+    display: table-cell;
+    vertical-align: middle;
+    @include font(17px);
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    color: $darkGrey;
+    cursor: pointer;
+  }
+  option:not(:last-child) {
+    border-right: solid 1px #979797;
+  }
+  option.current {
+    background-color: $BWSeaGreen;
+    color: $white;
+    cursor:default;
   }
 }
 

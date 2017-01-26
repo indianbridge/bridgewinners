@@ -30,10 +30,10 @@ BW.app = new function() {
     // Added a hack to check if running in browser and not mobile app
     // This hack is to allow testing on browser where deviceready event will not fire
     if ( this.isCordovaApp() ) {
-    	$.when( cordovaReady, jQueryMobileReady ).then( this.init );
+    	$.when( cordovaReady, jQueryMobileReady ).then( this.init.bind(this) );
     }
     else {
-      $.when( jQueryMobileReady ).then( this.init );
+      $.when( jQueryMobileReady ).then( this.init.bind(this) );
     }
   };
   this.init = function() {
@@ -43,16 +43,7 @@ BW.app = new function() {
     // enable fast click
   	var attachFastClick = Origami.fastclick;
   	attachFastClick(document.body);
-    if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
-      $(".footer-inner-container").addClass("ios1");
-      $(".footer-outer-container").addClass("ios1");
-    }
-    BW.loadingDialog = new BW.dialog("loading-popup", true);
-    BW.messageDialog = new BW.dialog("message-popup", true);
-    $("#message-popup").on("popupafterclose", function() {
-      $("#all-content").removeClass("ui-disabled");
-    });
-    BW.errorDialog = new BW.dialog("error-popup", true);
+    this.initDialogs();
     BW.utils.init();
     BW.page.init();
     BW.vote.init();
@@ -60,6 +51,16 @@ BW.app = new function() {
     BW.history.init();
     BW.alerts.init();
     BW.user.init();
+  };
+  this.initDialogs = function() {
+    BW.loadingDialog = new BW.dialog("loading-popup", true);
+    BW.messageDialog = new BW.dialog("message-popup", true);
+    $("#message-popup").on("popupafterclose", function() {
+      $("#all-content").removeClass("ui-disabled");
+    });
+    $("#message-popup").on("popupafteropen", function() {
+      $("#all-content").addClass("ui-disabled");
+    });
   };
   /**
    * Utility function to check if running in a browser as oppose to mobile app.
@@ -75,8 +76,8 @@ BW.app.start();
  * Some utility functions.
  */
 BW.utils = new function() {
-  this.sitePrefix = "https://52.4.5.8";
-  //this.sitePrefix = "https://127.0.0.1:8000";
+  //this.sitePrefix = "https://52.4.5.8";
+  this.sitePrefix = "https://127.0.0.1:8000";
   this.init = function() {
     // Nothing to do yet.
   };
@@ -100,57 +101,61 @@ BW.utils = new function() {
   };
 };
 
-
 /**
  * A class to perform ajax requests.
  */
-BW.ajax = function() {
-  this.done = $.Deferred();
-  this.requestFailed = false;
-  this.hasError = false;
-  this.errorMessage = "";
-  this.data = null;
-  this.send = function(parameters) {
-    _.defaults(parameters, {
-      method: "GET",
-      headers: BW.user.getHeader(),
-      timeout: 5000,
-      data: {},
-    });
-    var url = encodeURI(BW.utils.getRestUrl(parameters.urlSuffix));
-    var request = $.ajax({
-  		method: parameters.method,
-  		context: this,
-  		url: url,
-  		data: parameters.data,
-  		headers: parameters.headers,
-      timeout: parameters.timeout,
-  	});
-  	request.done(function(data) {
-      this.requestFailed = false;
-  		this.hasError = data.hasOwnProperty("error") && data.error;
-      this.errorMessage = data.message;
-      this.data = data;
-      this.done.resolve();
-  	});
-  	request.fail( function(jqXHR, textStatus, errorThrown) {
-  		this.requestFailed = true;
-      this.error = true;
-      this.jqXHR = jqXHR;
-      this.textStatus = textStatus;
-      this.errorThrown = errorThrown;
-      this.errorMessage = "Error - " + textStatus + ": " + errorThrown;
-      this.done.resolve();
-  	});
-  };
+BW.ajax = function(parameters) {
+  parameters = parameters || {};
+  _.defaults(parameters, {
+    method: "GET",
+    headers: BW.user.getHeader(),
+    timeout: 5000,
+    data: {},
+    successCallback: null,
+    errorCallback: null,
+    failedCallback: null,
+  });
+  BW.loadingDialog.show(parameters.loadingMessage);
+  var url = encodeURI(BW.utils.getRestUrl(parameters.urlSuffix));
+  var request = $.ajax({
+    method: parameters.method,
+    context: this,
+    url: url,
+    data: parameters.data,
+    headers: parameters.headers,
+    timeout: parameters.timeout,
+  });
+	request.done(function(data) {
+    BW.loadingDialog.hide();
+    var hasError = data.hasOwnProperty("error") && data.error;
+    if (hasError) {
+      if (parameters.errorCallback) {
+        parameters.errorCallback(data.message);
+      } else {
+        BW.messageDialog.show("Error: " + data.message);
+      }
+    } else {
+      if (parameters.successCallback) {
+        parameters.successCallback(data);
+      }
+    }
+	});
+	request.fail( function(jqXHR, textStatus, errorThrown) {
+    BW.loadingDialog.hide();
+    var message = "Error - " + textStatus + ": " + errorThrown;
+    if (parameters.failedCallback) {
+      parameters.failedCallback(message);
+    } else {
+      BW.messageDialog.show("Request Failed: " + message);
+    }
+	});
 };
 
 /**
  * A class to manage showing and hiding dialogs.
  */
-BW.dialog = function(container, disableContent) {
+BW.dialog = function(container) {
   this.container = container;
-  this.disableContent = disableContent;
   this.show = function(text) {
     $("#all-content").addClass("ui-disabled");
     $("#" + this.container + "-content").empty().append(text);
@@ -172,44 +177,38 @@ BW.alerts = new function() {
   this.setupClickHandlers = function() {};
   this.load = function() {
     $("#header-text").empty().append("Alerts");
-    BW.loadingDialog.show("Getting Alerts...");
-    var ajaxRequest = new BW.ajax();
-    var self = this;
-    $.when(ajaxRequest.done).then(function() {
-      BW.loadingDialog.hide();
-      if (ajaxRequest.requestFailed || ajaxRequest.hasError) {
-        BW.messageDialog.show("Error " + ajaxRequest.errorMessage);
-      }
-      else {
-        var html = "";
-        if (ajaxRequest.data.alerts.length > 0) {
-          _.each(ajaxRequest.data.alerts, function(alert) {
-            html += "<li data-icon='false'><a href='#'>";
-            html += "<p class='alert'>";
-            html += "<img class='avatar-alert' src='" + BW.utils.getAvatarLink(alert.instigator_avatar) + "'/>";
-            var text = alert.blurb.replace("a href", "a1 href");
-            text = text.replace("</a>", "</a1>");
-            text = text.replace("<strong>", "<span class='name-alert'>");
-            text = text.replace("</strong>", "</span>");
-            html += "<span class='text-alert'>" + text + "</span>";
-            html += "</p>";
-            html += "</a></li>";
-          });
-        } else {
-          html += "You have no alerts.";
-        }
-        $("#alerts-list").empty().append(html);
-        $("#alerts-list").listview();
-      }
-    });
-    ajaxRequest.send({
-  		urlSuffix: "get-alerts/",
+    //BW.loadingDialog.show("Getting Alerts...");
+    var ajaxRequest = BW.ajax({
+      urlSuffix: "get-alerts/",
       data: {
     		start:0,
     		end: 4
       },
-  	});
+      loadingMessage: "Getting Alerts...",
+      successCallback: this.show.bind(this),
+    });
   	return false;
+  };
+  this.show = function(data) {
+    var html = "";
+    if (data.alerts.length > 0) {
+      _.each(data.alerts, function(alert) {
+        html += "<li data-icon='false'><a href='#'>";
+        html += "<p class='alert'>";
+        html += "<img class='avatar-alert' src='" + BW.utils.getAvatarLink(alert.instigator_avatar) + "'/>";
+        var text = alert.blurb.replace("a href", "a1 href");
+        text = text.replace("</a>", "</a1>");
+        text = text.replace("<strong>", "<span class='name-alert'>");
+        text = text.replace("</strong>", "</span>");
+        html += "<span class='text-alert'>" + text + "</span>";
+        html += "</p>";
+        html += "</a></li>";
+      });
+    } else {
+      html += "You have no alerts.";
+    }
+    $("#alerts-list").empty().append(html);
+    $("#alerts-list").listview();
   };
 };
 
@@ -225,9 +224,8 @@ BW.history = new function() {
   this.setupClickHandlers = function() {
     var self = this;
     $(document).on("tap", "#history-revote-button.enabled", function() {
-      BW.page.load("vote.html", function() {
-        BW.page.setActiveTab("vote");
-      }, {"slug": self.slug});
+      BW.page.show("vote", {"slug": self.slug});
+      return false;
     });
     // section changed
     _.each(["history-voted-page", "history-published-page", "history-drafts-page"], function(sectionName) {
@@ -253,7 +251,7 @@ BW.history = new function() {
       });
     });
     BW.page.registerSectionChangeCallback("history-results-page", function(section, parameters) {
-      self.loadProblem(parameters.slug, parameters.back);
+      self.loadProblem(parameters.slug, parameters.back, parameters.data);
     });
     BW.page.registerSectionChangeCallback("history-responses-page", function(section, parameters) {
       self.loadResponses(parameters.slug, parameters.back);
@@ -270,7 +268,7 @@ BW.history = new function() {
     if (poll.all_answers.length > 0) {
       _.each(poll.all_answers, function(answer){
         var answerClass = "";
-        if (poll.my_answer.answer === answer.text) {
+        if (poll.my_answer && poll.my_answer.answer === answer.text) {
           answerClass = "my_answer";
         }
         html += "<div class='history-response-item enabled " + answerClass + "' data-role='sub-section-change' data-section='history-response-page-" + answer.text + "'>";
@@ -313,37 +311,32 @@ BW.history = new function() {
     BW.page.showSubSection(shownSectionName);
   };
   this.loadResponses = function(slug, backPage) {
-    BW.loadingDialog.show("Getting Responses...");
-    var ajaxRequest = new BW.ajax();
+    //BW.loadingDialog.show("Getting Responses...");
     var self = this;
-    $.when(ajaxRequest.done).then(function() {
-      BW.loadingDialog.hide();
-      if (ajaxRequest.requestFailed || ajaxRequest.hasError) {
-        BW.messageDialog.show("Error " + ajaxRequest.errorMessage);
-      }
-      else {
-        self.polls[ajaxRequest.data.slug] = ajaxRequest.data;
-        self.polls[ajaxRequest.data.slug].all_answers.sort(function(a,b) {
-          return b.percent - a.percent;
-        });
-        self.showResponses(slug, backPage);
-      }
-    });
-    ajaxRequest.send({
+    var ajaxRequest = BW.ajax({
       urlSuffix: "get-voting-problem/",
       data: {
         slug: slug,
+      },
+      loadingMessage: "Getting Responses...",
+      successCallback: function(data) {
+        self.polls[data.slug] = data;
+        self.showResponses(slug, backPage);
       },
     });
     return false;
 
   };
-  this.loadProblem = function(slug, backPage) {
+  this.loadProblem = function(slug, backPage, data) {
     $("#back-button").removeClass("hide");
     BW.utils.setAttribute($("#back-button"), "section", backPage);
     $("#history-menu").addClass("hide");
     this.slug = slug;
-    this.showProblem(this.polls[slug]);
+    if (data) {
+      this.showProblem(data);
+    } else {
+      this.showProblem(this.polls[slug]);
+    }
   	return false;
   };
   this.showProblem = function(data) {
@@ -386,7 +379,7 @@ BW.history = new function() {
     var html = "";
     _.each(data.all_answers, function(answer){
       var answerClass = "";
-      if (data.my_answer.answer === answer.text) {
+      if (data.my_answer && data.my_answer.answer === answer.text) {
         answerClass = "my_answer";
       }
       html += "<div class='answer-result'>";
@@ -485,39 +478,29 @@ BW.history = new function() {
       var emptyText = "You have not published any problems yet.";
     }
     var container = $("#history-" + pollType + "-list");
-    BW.loadingDialog.show(message);
-    var ajaxRequest = new BW.ajax();
     var self = this;
-    $.when(ajaxRequest.done).then(function() {
-      BW.loadingDialog.hide();
-      if (ajaxRequest.requestFailed || ajaxRequest.hasError) {
-        BW.messageDialog.show("Error " + ajaxRequest.errorMessage);
-      }
-      else {
-        self.polls = {};
-        if (ajaxRequest.data.polls.length > 0) {
-          _.each(ajaxRequest.data.polls, function(poll) {
-            poll.all_answers.sort(function(a,b) {
-              return b.percent - a.percent;
-            });
-            self.polls[poll.slug] = poll;
-          });
-          var html = self.getHTML(ajaxRequest.data, sectionName, showAuthor, showAnswer);
-        } else {
-          var html = "<li>" + emptyText + "</li>";
-        }
-        container.empty().append(html);
-        container.listview("refresh");
-      }
-    });
-    ajaxRequest.send({
-  		urlSuffix: url,
+    BW.ajax({
+      urlSuffix: url,
       data: {
     		start:0,
     		end: 9,
         num_responses: 3,
       },
-  	});
+      loadingMessage: message,
+      successCallback: function(data) {
+        self.polls = {};
+        if (data.polls.length > 0) {
+          _.each(data.polls, function(poll) {
+            self.polls[poll.slug] = poll;
+          });
+          var html = self.getHTML(data, sectionName, showAuthor, showAnswer);
+        } else {
+          var html = "<li>" + emptyText + "</li>";
+        }
+        container.empty().append(html);
+        container.listview("refresh");
+      },
+    });
   	return false;
   };
   this.loadRecentlyVoted = function() {
@@ -527,10 +510,14 @@ BW.history = new function() {
     return this.getRecent("published");
   };
 
-  this.load = function() {
-    $("#header-text").empty().append("History");
-    $(".history-list").listview();
-    BW.page.showSection("history-voted-page");
+  this.load = function(parameters) {
+    if (parameters && parameters.slug) {
+      alert(parameters.slug);
+    } else {
+      $("#header-text").empty().append("History");
+      $(".history-list").listview();
+      BW.page.showSection("history-voted-page");
+    }
   };
 };
 
@@ -623,14 +610,17 @@ BW.create = new function() {
     // reset clicked
     $(document).on("tap", "#create-reset-button.enabled", function(e) {
       self.reset();
+      return false;
     });
     // Description changed
     $(document).on("input", "#create-description-page #description", function(e) {
       self.deal.setNotes($("#create-description-page #description").val());
+      return false;
     });
     // publish clicked
     $(document).on("tap", "#create-publish-button.enabled", function(e) {
       self.publish();
+      return false;
     });
     // section changed
     for (var sectionName in this.sections) {
@@ -686,29 +676,29 @@ BW.create = new function() {
   		var field = "hand_" + i;
   		data[ field ] = hand.getCardsInSuit( Bridge.suitOrder[i] );
   	}
-    BW.loadingDialog.show("Submitting New Problem...");
-    var ajaxRequest = new BW.ajax();
-    var self = this;
-    $.when(ajaxRequest.done).then(function() {
-      BW.loadingDialog.hide();
-      if (ajaxRequest.requestFailed || ajaxRequest.hasError) {
-        alert("Error " + ajaxRequest.errorMessage);
-      }
-      else {
-        BW.messageDialog.show("Problem Published");
-        self.reset();
-      }
-    });
-    ajaxRequest.send({
-  		urlSuffix: "create-problem/",
+    BW.ajax({
+      urlSuffix: "create-problem/",
       method: "POST",
       data: data,
-  	});
+      loadingMessage: "Submitting New Problem...",
+      successCallback: function(data) {
+        BW.messageDialog.show("Problem Published");
+        self.reset();
+      },
+    });
   	return false;
   };
   this.updateStatus = function() {
     if (!this.deal) return;
     $("#hand-header").show();
+    if (this.getSection() === "create-hand-page") {
+      this.deal.getHand(this.handDirection).showHand("hand");
+    } else {
+      this.deal.getHand(this.handDirection).showHand("hand", {
+        registerClickHandlers: false,
+        registerChangeHandlers: false,
+      });
+    }
     $("#hand").show();
     $("#create-buttons").show();
     var section = this.getSection();
@@ -755,7 +745,14 @@ BW.create = new function() {
     $("#header-text").empty().append("Create");
     var deal = this.currentDraft.deal;
     deal.setActiveHand(this.handDirection);
-    deal.getHand(this.handDirection).showHand("hand");
+    if (this.getSection() === "create-hand-page") {
+      deal.getHand(this.handDirection).showHand("hand");
+    } else {
+      deal.getHand(this.handDirection).showHand("hand", {
+        registerClickHandlers: false,
+        registerChangeHandlers: false,
+      });
+    }
     deal.showCardDeck("deck");
     deal.showScoring("scoring");
     deal.showVulnerability("vulnerability");
@@ -841,14 +838,17 @@ BW.vote = new function() {
     // Skip clicked
     $(document).on("tap", "#skip-submit-button.enabled", function() {
       self.load({"exclude": self.slug});
+      return false;
     });
     // Abstain clicked
     $(document).on("tap", "#abstain-submit-button.enabled", function() {
       self.vote(/*abstain=*/true);
+      return false;
     });
     // Vote clicked
     $(document).on("tap", "#vote-submit-button.enabled", function() {
       self.vote(/*abstain=*/false);
+      return false;
     });
   };
   this.getLeadAnswer = function() {
@@ -866,8 +866,8 @@ BW.vote = new function() {
     var data = {
       "public": true,
       "slug": this.slug,
+      "num_responses": 3,
     };
-    BW.loadingDialog.show("Submitting vote...");
     if (abstain) {
       data["Abstain"] = true;
     }
@@ -880,22 +880,27 @@ BW.vote = new function() {
         data["answer"] = this.getLeadAnswer();
       }
     }
-    var ajaxRequest = new BW.ajax();
     var self = this;
-    $.when(ajaxRequest.done).then(function() {
-      BW.loadingDialog.hide();
-      if (ajaxRequest.requestFailed || ajaxRequest.hasError) {
-        alert("Error " + ajaxRequest.errorMessage);
-      }
-      else {
-        self.load();
-      }
-    });
-    ajaxRequest.send({
-  		urlSuffix: "poll-answer/",
+    BW.ajax({
+      urlSuffix: "poll-answer/",
       method: "POST",
       data: data,
-  	});
+      loadingMessage: "Submitting vote...",
+      successCallback: function(data) {
+        var option = BW.options.get("after-voting");
+        if (option === "next") {
+          self.load();
+        } else {
+          BW.page.show("history", {"slug": this.slug});
+          BW.page.showSection("history-results-page", {
+            "slug": this.slug,
+            "back": "vote-page",
+            "data": data,
+          });
+          return false;
+        }
+      },
+    });
   	return false;
   };
   this.load = function(data) {
@@ -905,22 +910,12 @@ BW.vote = new function() {
       //"slug": "lead-problem-986",
     });
     $("#back-button").addClass("hide");
-    BW.loadingDialog.show("Getting voting problem...");
-  	var ajaxRequest = new BW.ajax();
-    var self = this;
-    $.when(ajaxRequest.done).then(function() {
-      BW.loadingDialog.hide();
-      if (ajaxRequest.requestFailed || ajaxRequest.hasError) {
-        alert("Error " + ajaxRequest.errorMessage);
-      }
-      else {
-        self.show(ajaxRequest.data);
-      }
-    });
-    ajaxRequest.send({
-  		urlSuffix: "get-voting-problem/",
+    BW.ajax({
+      urlSuffix: "get-voting-problem/",
       data: data,
-  	});
+      loadingMessage: "Getting voting problem...",
+      successCallback: this.show.bind(this),
+    });
   	return false;
   };
   this.show = function(data) {
@@ -929,6 +924,11 @@ BW.vote = new function() {
     this.type = data.type.toLowerCase();
     var pageID = "";
     $("#vote-page").removeClass("lead bidding").addClass(this.type);
+    if (this.type == "bidding" && !BW.user.getPreference("auction_above_hands")) {
+      $("#vote-page").addClass("show-hand-first");
+    } else {
+      $("#vote-page").removeClass("show-hand-first");
+    }
   	this.selectedLevel = null;
     this.selectedCall = null;
   	this.selectedCard = null;
@@ -1009,20 +1009,7 @@ BW.vote = new function() {
  * when users browse to different sections of the app.
  */
 BW.page = new function() {
-  // The pages that need to be cached.
-  this.pages = {
-    "login.html": true,
-    "account.html": true,
-    "vote.html": true,
-    "create.html": true,
-    "history.html": true,
-    "alerts.html": true,
-  };
-  // jquery deferred for each objects that need to be fired when page has
-  // been retrieved.
-  this.resolvers = {};
-  // The actual page contents for each retrieved page.
-  this.pageContents = {};
+  this.lastPage = null;
   // Callbacks when specific pages are loaded.
   this.pageLoadedCallbacks = {};
   // Callbacks when section changes.
@@ -1052,17 +1039,21 @@ BW.page = new function() {
     $(document).on("tap", ".footer-outer-container .menu-item", function() {
       var item = $(this).data("item");
       if (self.activeTab != item) {
-        BW.page.load(item + ".html", function() {
-          self.setActiveTab(item);
-        });
+        BW.page.show(item);
       }
+      return false;
     });
     // Section change
     $(document).on("tap", "[data-role='section-change'].enabled", function(e) {
       var section = $(this).data("section");
       if (section && section != "") {
-        self.showSection(section, $(this).data());
+        if (section === "vote-page") {
+          BW.page.show("vote");
+        } else {
+          self.showSection(section, $(this).data());
+        }
       }
+      return false;
     });
     // Sub section change
     $(document).on("tap", "[data-role='sub-section-change'].enabled", function(e) {
@@ -1070,51 +1061,33 @@ BW.page = new function() {
       if (section && section != "") {
         self.showSubSection(section, $(this).data());
       }
+      return false;
     });
+  };
+  this.getSavedLastPageName = function () {
+    return BW.user.getUserName() + "-last-page";
   };
   this.init = function() {
     $("#back-button").addClass("hide");
     this.setupClickHandlers();
     this.registerCallbacks();
-    for(var page in this.pages) {
-      this.resolvers[page] = $.Deferred();
-      this.pageContents[page] = null;
-      var request = $.ajax( {
-        url: page,
-        self: this,
-        timeout: 5000,
-      });
-      request.done(function(html) {
-        this.self.pageContents[this.url] = html;
-        this.self.resolvers[this.url].resolve();
-      });
-      request.fail( function() {
-    		this.self.pageContents[this.url] = null;
-    	});
-    };
-  };
-  this.get = function(page, callback) {
-    var self = this;
-    if (page in this.pages) {
-      return $.when(self.resolvers[page]).then(function() {
-        callback(self.pageContents[page]);
-      });
-    }
-    return null;
   };
   this.registerCallbacks = function() {
-    this.pageLoadedCallbacks["account.html"] = BW.user.loadAccount.bind(BW.user);
-    this.pageLoadedCallbacks["vote.html"] = BW.vote.load.bind(BW.vote);
-    this.pageLoadedCallbacks["create.html"] = BW.create.load.bind(BW.create);
-    this.pageLoadedCallbacks["history.html"] = BW.history.load.bind(BW.history);
-    this.pageLoadedCallbacks["alerts.html"] = BW.alerts.load.bind(BW.alerts);
+    this.pageLoadedCallbacks["vote"] = BW.vote.load.bind(BW.vote);
+    this.pageLoadedCallbacks["create"] = BW.create.load.bind(BW.create);
+    this.pageLoadedCallbacks["history"] = BW.history.load.bind(BW.history);
+    this.pageLoadedCallbacks["alerts"] = BW.alerts.load.bind(BW.alerts);
+    this.pageLoadedCallbacks["account"] = BW.user.loadAccount.bind(BW.user);
   };
 
   /**
    * Set active tab.
    */
   this.setActiveTab = function(item) {
+    if (item == "login") return;
     this.activeTab = item;
+    this.lastPage = item;
+    localStorage.setItem(this.getSavedLastPageName(), item);
     if (item === "account") {
       $("#account-avatar-outer").show();
       $("#account-avatar-inner").hide();
@@ -1127,27 +1100,20 @@ BW.page = new function() {
     $(".footer-inner-container .menu-item").removeClass("selected").addClass("not-selected");
     $(".footer-inner-container [data-item='" + item + "']").removeClass("not-selected").addClass("selected");
   };
-
-  this.load = function(pageName, callback, parameters) {
-    BW.loadingDialog.show("Loading Page...");
-    var self = this;
-    var promise = this.get(pageName, function(html) {
-      $("#content").empty().append(html);
-      BW.loadingDialog.hide();
-      if (pageName in self.pageLoadedCallbacks) {
-        self.pageLoadedCallbacks[pageName](parameters);
+  this.show = function(pageName, parameters) {
+    if (!pageName) {
+      this.lastPage = localStorage.getItem(this.getSavedLastPageName(), "vote");
+      if (this.lastPage == "login") {
+        this.lastPage = "vote";
       }
-      if (callback) {
-        callback();
-      }
-    });
-    if (!promise) {
-      BW.loadingDialog.hide();
-      BW.loadingDialog.show("Something went terribly wrong. Try restarting the app!");
+      pageName = this.lastPage;
     }
-    return;
+    $("#content").empty().append($("#" + pageName +"-template").html());
+    this.setActiveTab(pageName);
+    if (pageName in this.pageLoadedCallbacks) {
+      this.pageLoadedCallbacks[pageName](parameters);
+    }
   };
-
   this.hideHeaderFooter = function() {
     $("#footer").hide();
     $("#header").hide();
@@ -1155,6 +1121,66 @@ BW.page = new function() {
   this.showHeaderFooter = function() {
     $("#header").show();
     $("#footer").show();
+  };
+};
+
+BW.options = new function() {
+  this.init = function() {
+    this.setupClickHandlers();
+    this.optionValues = {
+      "after-voting": {
+        "results": "Results",
+        "next": "Next Problem",
+      },
+    };
+    var optionsString = localStorage.getItem(BW.user.getLocalStorageName("options"), "{}");
+    var options = JSON.parse(optionsString);
+    options = options || {};
+    _.defaults(options, {
+      "after-voting": "results",
+    });
+    this.options = options;
+  };
+
+  this.setupClickHandlers = function() {
+    var self = this;
+    $(document).on("tap", "[data-option].enabled", function() {
+      var optionName = $(this).data("option");
+      var optionValue = $(this).data("value");
+      self.options[optionName] = optionValue;
+      self.saveOptions();
+      self.loadOptionHTML(optionName);
+    });
+  };
+  this.saveOptions = function() {
+    localStorage.setItem(BW.user.getLocalStorageName("options"), JSON.stringify(this.options));
+  };
+  this.get = function(optionName) {
+    return this.options[optionName];
+  };
+  this.loadOptionHTML = function(optionName) {
+    var options = this.options;
+    var html = "<options>";
+    _.each(this.optionValues[optionName], function(value, key) {
+      html += "<option class='";
+      if (options[optionName] === key) {
+        html += "current";
+      } else {
+        html += "enabled";
+      }
+      html += "' data-option='" + optionName + "' data-value='";
+      html += key;
+      html += "'>";
+      html += value;
+      html += "</option>";
+    });
+    html += "</options>";
+    $("#" + optionName).empty().append(html);
+  };
+  this.load = function() {
+    _.each(this.optionValues, function(values, optionName) {
+      this.loadOptionHTML(optionName);
+    }, this);
   };
 };
 
@@ -1183,7 +1209,13 @@ BW.user = new function() {
   };
   this.getUserName = function() {
     return this.userInfo.username;
-  }
+  };
+  this.getPreference = function(fieldName) {
+    return this.userInfo[fieldName];
+  };
+  this.getLocalStorageName = function(variableName) {
+    return this.getUserName() + '-' + variableName;
+  };
   /**
    * Load a user if there is an accessToken, else show login page.
    */
@@ -1200,18 +1232,17 @@ BW.user = new function() {
         } else {
           $("#back-button").addClass("hide");
         }
+        if (section === "account-options-page") {
+          BW.options.load();
+        }
       });
     }
+    BW.page.hideHeaderFooter();
     if (!this.accessToken) {
-      BW.page.hideHeaderFooter();
-      BW.page.load("login.html");
+      BW.page.show("login");
     }
     else {
-      BW.page.hideHeaderFooter();
-      BW.page.load("login.html", function() {
-        self.authenticateAccessToken();
-      });
-      return false;
+      self.authenticateAccessToken();
     }
   };
   this.setupClickHandlers = function() {
@@ -1226,11 +1257,13 @@ BW.user = new function() {
       if (e.which === 13) {
         $("#password").focus();
       }
+      return false;
     });
     $(document).on("keypress", "#password", function(e) {
       if (e.which === 13) {
         return self.login($( "#username" ).val(), $( "#password" ).val());
       }
+      return false;
     });
   };
   /**
@@ -1251,24 +1284,14 @@ BW.user = new function() {
    * @param {string} password the password to use to login
    */
   this.login = function( username, password ) {
-    BW.loadingDialog.show("Logging In...");
-  	var ajaxRequest = new BW.ajax();
-    var self = this;
-    $.when(ajaxRequest.done).then(function() {
-      BW.loadingDialog.hide();
-      if (ajaxRequest.requestFailed || ajaxRequest.hasError) {
-        self.loginFailCallback(ajaxRequest.errorMessage);
-      }
-      else {
-        self.loginSuccessCallback(ajaxRequest.data);
-      }
-    });
-    ajaxRequest.send({
-  		urlSuffix: "get-auth-token/",
+    BW.ajax({
+      urlSuffix: "get-auth-token/",
       method: "POST",
   		data: { username: username, password: password },
   		headers: {},
-  	});
+      loadingMessage: "Logging In...",
+      successCallback: this.loginSuccessCallback.bind(this),
+    });
   	return false;
   };
 
@@ -1303,21 +1326,11 @@ BW.user = new function() {
    */
   this.authenticateAccessToken = function() {
   	// Connect to BW server to check if access token is still ok
-    BW.loadingDialog.show("Authenticating Access...");
-  	var ajaxRequest = new BW.ajax();
-    var self = this;
-    $.when(ajaxRequest.done).then(function() {
-      BW.loadingDialog.hide();
-      if (ajaxRequest.requestFailed || ajaxRequest.hasError) {
-        self.authenticationFailCallback(ajaxRequest.errorMessage);
-      }
-      else {
-        self.authenticationSuccessCallback(ajaxRequest.data);
-      }
+    BW.ajax({
+      urlSuffix: "get-profile/",
+      loadingMessage: "Authenticating Access...",
+      successCallback: this.authenticationSuccessCallback.bind(this),
     });
-    ajaxRequest.send({
-  		urlSuffix: "get-profile/",
-  	});
   	return false;
   };
   /**
@@ -1325,13 +1338,11 @@ BW.user = new function() {
    */
   this.authenticationSuccessCallback = function(data) {
     this.userInfo = data;
+    BW.options.init();
     $("#account-avatar-inner").css("background-image", "url(" + BW.utils.getAvatarLink(this.userInfo.avatar) + ")");
     $("#account-avatar-outer").css("background-image", "url(" + BW.utils.getAvatarLink(this.userInfo.avatar) + ")");
-    //BW.page.showHeaderFooter();
-    BW.page.load("vote.html", function() {
-      BW.page.setActiveTab("vote");
-      BW.page.showHeaderFooter();
-    });
+    BW.page.showHeaderFooter();
+    BW.page.show();
   };
 
   /**
@@ -1347,7 +1358,7 @@ BW.user = new function() {
     this.accessToken = null;
     localStorage.removeItem(this.accessTokenName);
     BW.page.hideHeaderFooter();
-    BW.page.load("login.html");
+    BW.page.show("login");
     return false;
   };
 };

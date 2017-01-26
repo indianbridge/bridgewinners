@@ -3903,21 +3903,94 @@ body {
   width: 28vw;
 }
 
+/* line 1484, ../sass/bridgewinners.scss */
+#vote-page.show-hand-first #auction {
+  display: block;
+  position: fixed;
+  top: 29.21175vh;
+  height: 20.86553vh;
+  left: 4vw;
+  width: 61.33333vw;
+}
+/* line 1488, ../sass/bridgewinners.scss */
+#vote-page.show-hand-first #vulnerability #info-wrapper {
+  display: block;
+  position: fixed;
+  top: 29.21175vh;
+  height: 20.86553vh;
+  left: 68vw;
+  width: 28vw;
+}
+/* line 1491, ../sass/bridgewinners.scss */
+#vote-page.show-hand-first #vulnerability #vul-e {
+  display: block;
+  position: fixed;
+  top: 33.84853vh;
+  height: 11.74652vh;
+  left: 88.53333vw;
+  width: 5.6vw;
+}
+/* line 1494, ../sass/bridgewinners.scss */
+#vote-page.show-hand-first #vulnerability #vul-w {
+  display: block;
+  position: fixed;
+  top: 33.84853vh;
+  height: 11.74652vh;
+  left: 69.86667vw;
+  width: 5.6vw;
+}
+/* line 1497, ../sass/bridgewinners.scss */
+#vote-page.show-hand-first #vulnerability #scoring {
+  display: block;
+  position: fixed;
+  top: 33.84853vh;
+  height: 11.74652vh;
+  left: 74.93333vw;
+  width: 14.16vw;
+}
+/* line 1500, ../sass/bridgewinners.scss */
+#vote-page.show-hand-first #vulnerability #vul-n {
+  display: block;
+  position: fixed;
+  top: 30.29366vh;
+  height: 3.86399vh;
+  left: 74.93333vw;
+  width: 14.16vw;
+}
+/* line 1503, ../sass/bridgewinners.scss */
+#vote-page.show-hand-first #vulnerability #vul-s {
+  display: block;
+  position: fixed;
+  top: 45.28594vh;
+  height: 3.86399vh;
+  left: 74.93333vw;
+  width: 14.16vw;
+}
+/* line 1507, ../sass/bridgewinners.scss */
+#vote-page.show-hand-first #hand {
+  display: block;
+  position: fixed;
+  top: 16.84699vh;
+  height: 10.20093vh;
+  left: 3.46667vw;
+  width: 93.06667vw;
+}
+
 /* Login page styles. */
-/* line 1485, ../sass/bridgewinners.scss */
+/* line 1513, ../sass/bridgewinners.scss */
 .login-page-content {
   height: 100vh;
   width: 100vw;
   background: url(img/bridgewinners_background.png) no-repeat center center fixed;
   background-size: cover;
 }
-/* line 1490, ../sass/bridgewinners.scss */
+/* line 1518, ../sass/bridgewinners.scss */
 .login-page-content .bridgewinners-logo {
   display: block;
   position: fixed;
   top: 9.11901vh;
 }
-/* line 1494, ../sass/bridgewinners.scss */
+/* line 1522, ../sass/bridgewinners.scss */
 .login-page-content input {
   font-family: SFUIDisplay;
   font-size: 3.09119vh;
@@ -3932,7 +4005,7 @@ body {
   border-radius: 5px;
   box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.5);
 }
-/* line 1500, ../sass/bridgewinners.scss */
+/* line 1528, ../sass/bridgewinners.scss */
 .login-page-content input.username {
   display: block;
   position: fixed;
@@ -3940,7 +4013,7 @@ body {
   height: 8.80989vh;
   width: 89.33333vw;
 }
-/* line 1503, ../sass/bridgewinners.scss */
+/* line 1531, ../sass/bridgewinners.scss */
 .login-page-content input.password {
   display: block;
   position: fixed;
@@ -3948,7 +4021,7 @@ body {
   height: 8.80989vh;
   width: 89.33333vw;
 }
-/* line 1506, ../sass/bridgewinners.scss */
+/* line 1534, ../sass/bridgewinners.scss */
 .login-page-content button {
   font-family: SFUIDisplay;
   font-size: 3.09119vh;
@@ -3963,7 +4036,7 @@ body {
   -webkit-border-radius: 5px;
   border-radius: 5px;
 }
-/* line 1512, ../sass/bridgewinners.scss */
+/* line 1540, ../sass/bridgewinners.scss */
 .login-page-content button.bridgewinners {
   background-color: #9a032e;
   display: block;
@@ -3972,7 +4045,7 @@ body {
   height: 6.80062vh;
   width: 89.33333vw;
 }
-/* line 1516, ../sass/bridgewinners.scss */
+/* line 1544, ../sass/bridgewinners.scss */
 .login-page-content button.facebook {
   background-color: #3b5998;
   display: block;
@@ -3981,7 +4054,7 @@ body {
   height: 6.80062vh;
   width: 89.33333vw;
 }
-/* line 1520, ../sass/bridgewinners.scss */
+/* line 1548, ../sass/bridgewinners.scss */
 .login-page-content button.google {
   background-color: #dd4b39;
   display: block;
@@ -3991,23 +4064,23 @@ body {
   width: 89.33333vw;
 }
 
-/* line 1526, ../sass/bridgewinners.scss */
+/* line 1554, ../sass/bridgewinners.scss */
 body.ui-mobile-viewport {
   overflow-y: hidden;
 }
 
-/* line 1530, ../sass/bridgewinners.scss */
+/* line 1558, ../sass/bridgewinners.scss */
 .ui-page-active {
   overflow-x: visible !important;
 }
 
-/* line 1534, ../sass/bridgewinners.scss */
+/* line 1562, ../sass/bridgewinners.scss */
 .hide {
   display: none;
   visibility: hidden;
 }
 
-/* line 1539, ../sass/bridgewinners.scss */
+/* line 1567, ../sass/bridgewinners.scss */
 .carat-right {
   padding-right: 7vw;
   background-image: url("images/icons-png/carat-r-black.png");
@@ -4015,7 +4088,7 @@ body.ui-mobile-viewport {
   background-position: right 0.25vw center;
 }
 
-/* line 1546, ../sass/bridgewinners.scss */
+/* line 1574, ../sass/bridgewinners.scss */
 .carat-left {
   padding-left: 4vw;
   background-image: url("images/icons-png/carat-l-white.png");
@@ -4023,7 +4096,7 @@ body.ui-mobile-viewport {
   background-position: left 0.25vw center;
 }
 
-/* line 1553, ../sass/bridgewinners.scss */
+/* line 1581, ../sass/bridgewinners.scss */
 .header-container {
   font-family: SFUIDisplay;
   font-size: 2.62751vh;
@@ -4044,13 +4117,13 @@ body.ui-mobile-viewport {
   text-transform: capitalize;
 }
 
-/* line 1563, ../sass/bridgewinners.scss */
+/* line 1591, ../sass/bridgewinners.scss */
 .header-text {
   color: #ffffff;
   text-transform: capitalize;
 }
 
-/* line 1568, ../sass/bridgewinners.scss */
+/* line 1596, ../sass/bridgewinners.scss */
 #back-button {
   color: #ffffff;
   float: left;
@@ -4058,20 +4131,20 @@ body.ui-mobile-viewport {
 }
 
 /* Footer styles. */
-/* line 1575, ../sass/bridgewinners.scss */
+/* line 1603, ../sass/bridgewinners.scss */
 .footer-inner-container, .footer-outer-container {
   position: fixed;
   width: 100vw;
   bottom: 0vh;
 }
 
-/* line 1580, ../sass/bridgewinners.scss */
+/* line 1608, ../sass/bridgewinners.scss */
 .footer-inner-container {
   background-color: #2a5461;
   height: 7.57342vh;
   box-shadow: inset 0 0.5px 0 0 #b2b2b2;
 }
-/* line 1585, ../sass/bridgewinners.scss */
+/* line 1613, ../sass/bridgewinners.scss */
 .footer-inner-container .menu-item {
   height: 90%;
   width: 20vw;
@@ -4080,50 +4153,50 @@ body.ui-mobile-viewport {
   background-position: center center;
   background-size: contain;
 }
-/* line 1593, ../sass/bridgewinners.scss */
+/* line 1621, ../sass/bridgewinners.scss */
 .footer-inner-container .vote-icon.not-selected {
   background-image: url("img/vote.png");
 }
-/* line 1593, ../sass/bridgewinners.scss */
+/* line 1621, ../sass/bridgewinners.scss */
 .footer-inner-container .create-icon.not-selected {
   background-image: url("img/create.png");
 }
-/* line 1593, ../sass/bridgewinners.scss */
+/* line 1621, ../sass/bridgewinners.scss */
 .footer-inner-container .history-icon.not-selected {
   background-image: url("img/history.png");
 }
-/* line 1593, ../sass/bridgewinners.scss */
+/* line 1621, ../sass/bridgewinners.scss */
 .footer-inner-container .alerts-icon.not-selected {
   background-image: url("img/alerts.png");
 }
-/* line 1593, ../sass/bridgewinners.scss */
+/* line 1621, ../sass/bridgewinners.scss */
 .footer-inner-container .account-icon.not-selected {
   background-image: url("img/account.png");
 }
 
-/* line 1598, ../sass/bridgewinners.scss */
+/* line 1626, ../sass/bridgewinners.scss */
 .footer-inner-container.ios {
   bottom: 20px;
 }
 
-/* line 1601, ../sass/bridgewinners.scss */
+/* line 1629, ../sass/bridgewinners.scss */
 .footer-outer-container {
   height: 8.50077vh;
 }
-/* line 1604, ../sass/bridgewinners.scss */
+/* line 1632, ../sass/bridgewinners.scss */
 .footer-outer-container .menu-item {
   height: 100%;
   width: 20vw;
   display: inline-block;
 }
-/* line 1608, ../sass/bridgewinners.scss */
+/* line 1636, ../sass/bridgewinners.scss */
 .footer-outer-container .menu-item .menu-icon {
   height: 80%;
   background-repeat: no-repeat;
   background-position: center center;
   background-size: contain;
 }
-/* line 1614, ../sass/bridgewinners.scss */
+/* line 1642, ../sass/bridgewinners.scss */
 .footer-outer-container .selected {
   background-color: #698f64;
   box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.86);
@@ -4136,33 +4209,33 @@ body.ui-mobile-viewport {
   border-top-right-radius: 10px;
   box-sizing: border-box;
 }
-/* line 1621, ../sass/bridgewinners.scss */
+/* line 1649, ../sass/bridgewinners.scss */
 .footer-outer-container .selected .vote-icon {
   background-image: url("img/vote.png");
 }
-/* line 1621, ../sass/bridgewinners.scss */
+/* line 1649, ../sass/bridgewinners.scss */
 .footer-outer-container .selected .create-icon {
   background-image: url("img/create.png");
 }
-/* line 1621, ../sass/bridgewinners.scss */
+/* line 1649, ../sass/bridgewinners.scss */
 .footer-outer-container .selected .history-icon {
   background-image: url("img/history.png");
 }
-/* line 1621, ../sass/bridgewinners.scss */
+/* line 1649, ../sass/bridgewinners.scss */
 .footer-outer-container .selected .alerts-icon {
   background-image: url("img/alerts.png");
 }
-/* line 1621, ../sass/bridgewinners.scss */
+/* line 1649, ../sass/bridgewinners.scss */
 .footer-outer-container .selected .account-icon {
   background-image: url("img/account.png");
 }
 
-/* line 1627, ../sass/bridgewinners.scss */
+/* line 1655, ../sass/bridgewinners.scss */
 .footer-outer-container.ios {
   bottom: 20px;
 }
 
-/* line 1632, ../sass/bridgewinners.scss */
+/* line 1660, ../sass/bridgewinners.scss */
 #account-page #profile {
   display: block;
   position: fixed;
@@ -4172,7 +4245,7 @@ body.ui-mobile-viewport {
   background-color: #ffffff;
   border: solid 0.5px #c7c7cc;
 }
-/* line 1638, ../sass/bridgewinners.scss */
+/* line 1666, ../sass/bridgewinners.scss */
 #account-page #avatar {
   display: block;
   position: fixed;
@@ -4190,7 +4263,7 @@ body.ui-mobile-viewport {
   background-position: center center;
   background-size: contain;
 }
-/* line 1649, ../sass/bridgewinners.scss */
+/* line 1677, ../sass/bridgewinners.scss */
 #account-page #name {
   display: block;
   position: fixed;
@@ -4210,7 +4283,7 @@ body.ui-mobile-viewport {
   font-weight: 600;
   color: #4a4a4a;
 }
-/* line 1658, ../sass/bridgewinners.scss */
+/* line 1686, ../sass/bridgewinners.scss */
 #account-page #edit-profile-button {
   display: block;
   position: fixed;
@@ -4234,7 +4307,7 @@ body.ui-mobile-viewport {
   text-align: center;
   color: #4a4a4a;
 }
-/* line 1669, ../sass/bridgewinners.scss */
+/* line 1697, ../sass/bridgewinners.scss */
 #account-page #account-options {
   display: block;
   position: fixed;
@@ -4253,7 +4326,7 @@ body.ui-mobile-viewport {
   text-align: left;
   color: #4a4a4a;
 }
-/* line 1679, ../sass/bridgewinners.scss */
+/* line 1707, ../sass/bridgewinners.scss */
 #account-page #logout-submit-button {
   display: block;
   position: fixed;
@@ -4275,21 +4348,89 @@ body.ui-mobile-viewport {
   padding-left: 4%;
   cursor: pointer;
 }
-/* line 1692, ../sass/bridgewinners.scss */
+/* line 1720, ../sass/bridgewinners.scss */
 #account-page .list {
   margin-left: 4vw;
   height: 6.80062vh;
   border-bottom: solid 0.5px #c7c7cc;
   cursor: pointer;
 }
-/* line 1700, ../sass/bridgewinners.scss */
-#account-page #account-options-page, #account-page #account-about-page {
+/* line 1728, ../sass/bridgewinners.scss */
+#account-page #account-about-page {
   display: block;
   position: fixed;
   top: 6.80062vh;
 }
+/* line 1731, ../sass/bridgewinners.scss */
+#account-page #account-options-list {
+  display: block;
+  position: fixed;
+  top: 7.72798vh;
+  height: 85.00773vh;
+  width: 100vw;
+}
+/* line 1734, ../sass/bridgewinners.scss */
+#account-page .options-header {
+  font-family: SFUIDisplay;
+  font-size: 2.62751vh;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  letter-spacing: 0.7px;
+  text-align: center;
+  text-shadow: none;
+  position: relative;
+  height: 3.09119vh;
+  left: 4vw;
+  font-weight: 600;
+  letter-spacing: -0.4px;
+  color: #4a4a4a;
+  text-align: left;
+  margin-top: 2vh;
+}
+/* line 1745, ../sass/bridgewinners.scss */
+#account-page options {
+  position: relative;
+  height: 6.80062vh;
+  left: 4vw;
+  width: 92vw;
+  display: table;
+  table-layout: fixed;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  border: solid 1px #979797;
+  background-color: #c7c7cc;
+}
+/* line 1757, ../sass/bridgewinners.scss */
+#account-page option {
+  display: table-cell;
+  vertical-align: middle;
+  font-family: SFUIDisplay;
+  font-size: 2.62751vh;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  letter-spacing: 0.7px;
+  text-align: center;
+  text-shadow: none;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  color: #4a4a4a;
+  cursor: pointer;
+}
+/* line 1766, ../sass/bridgewinners.scss */
+#account-page option:not(:last-child) {
+  border-right: solid 1px #979797;
+}
+/* line 1769, ../sass/bridgewinners.scss */
+#account-page option.current {
+  background-color: #2a5461;
+  color: #ffffff;
+  cursor: default;
+}
 
-/* line 1705, ../sass/bridgewinners.scss */
+/* line 1776, ../sass/bridgewinners.scss */
 .main-page {
   display: block;
   position: fixed;

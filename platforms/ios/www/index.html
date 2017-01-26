@@ -20,6 +20,7 @@
     <script src="js/lodash.min.js"></script>
     <script src="js/bridge.all.js"></script>
     <script src="js/jquery.mobile-1.4.5.min.js"></script>
+    <script src="js/fastclick.min.js"></script>
     <title>BridgeWinners Mobile App</title>
   </head>
   <body >
@@ -47,5 +48,16 @@
       <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
       <div class="center" id="message-popup-content">Loading...</div>
     </div>
+    <!-- Templates for different sections/pages. -->
+    <script id="login-page" type="text/template">
+      <div class="login-page-content">
+        <img class="bridgewinners-logo" src="css/img/bridgewinners_logo.png" />
+        <input class="username" type="text" name="username" id="username" value="" placeholder="Email or Username" />
+        <input class="password" type="password" name="password" id="password" value="" placeholder="Password" />
+        <button id="login-submit-button" class="clickable bridgewinners">Log In</button>
+        <button id="facebook-login-button" class="facebook hide">Log in with Facebook</button>
+        <button id="google-login-button" class="google hide">Log in with Google+</button>
+      </div>
+    </script>
   </body>
 </html>
