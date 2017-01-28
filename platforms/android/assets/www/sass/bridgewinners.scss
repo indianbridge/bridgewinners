@@ -512,16 +512,6 @@ $menu_items: vote create history alerts account;
     @include location(535px, 44px, 169px, 191px);
   }
   #create-review-page {
-    #avatar-review {
-      $height: 35px;
-      @include location(59px, $height, $height, 15px);
-      // Width should be same as height. So this hack.
-      width: $height/$ref_height * 100vh;
-      background-color: #d8d8d8;
-      border: solid 2px $BWSlate;
-      @include border-radius(50%);
-      @include background-contain();
-    }
     #name-review {
       @extend %flex-vertical-center2;
       @include location(59px, 35px, 200px, 56px);
@@ -756,16 +746,6 @@ $menu_items: vote create history alerts account;
 
 #history-page {
   #history-results-page {
-    #avatar-results {
-      $height: 35px;
-      @include location(59px, $height, $height, 15px);
-      // Width should be same as height. So this hack.
-      width: $height/$ref_height * 100vh;
-      background-color: #d8d8d8;
-      border: solid 2px $BWSlate;
-      @include border-radius(50%);
-      @include background-contain();
-    }
     #name-results {
       @extend %flex-vertical-center2;
       @include location(59px, 35px, 200px, 56px);
@@ -1184,16 +1164,6 @@ $menu_items: vote create history alerts account;
 
 /* Bidding vote page styles. */
 #vote-page {
-  #avatar {
-    $height: 35px;
-    @include location(59px, $height, $height, 15px);
-    // Width should be same as height. So this hack.
-    width: $height/$ref_height * 100vh;
-    background-color: #d8d8d8;
-    border: solid 2px $BWSlate;
-    @include border-radius(50%);
-    @include background-contain();
-  }
   #name {
     @extend %flex-vertical-center2;
     @include location(59px, 35px, 200px, 56px);
@@ -1480,6 +1450,34 @@ $menu_items: vote create history alerts account;
     @include location(539px, 44px, 105px, 255px);
   }
 }
+#vote-page.show-hand-first {
+  #auction {
+    @include location(189px, 135px, 230px, 15px);
+  }
+  #vulnerability {
+    #info-wrapper {
+      @include location(189px, 135px, 105px, 255px);
+    }
+    #vul-e {
+      @include location(219px, 76px, 21px, 332px);
+    }
+    #vul-w {
+      @include location(219px, 76px, 21px, 262px);
+    }
+    #scoring {
+      @include location(219px, 76px, 53.1px, 281px);
+    }
+    #vul-n {
+      @include location(196px, 25px, 53.1px, 281px);
+    }
+    #vul-s {
+      @include location(293px, 25px, 53.1px, 281px);
+    }
+  }
+  #hand {
+    @include location(109px, 66px, 349px, 13px);
+  }
+}
 
 /* Login page styles. */
 .login-page-content {
@@ -1628,22 +1626,30 @@ body.ui-mobile-viewport {
   bottom: 20px;
 }
 
+avatar {
+  background-color: #d8d8d8;
+  border: solid 2px $BWSlate;
+  @include border-radius(50%);
+  @include background-contain();
+  $height: 35px;
+  @include location(59px, $height, $height, 15px);
+  // Width should be same as height. So this hack.
+  width: $height/$ref_height * 100vh;
+}
+
+avatar.large {
+  $height: 75px;
+  @include height($height);
+  // Width should be same as height. So this hack.
+  width: $height/$ref_height * 100vh;
+  @include left(15px);
+}
+
 #account-page {
   #profile {
     @include location(44px, 108px, 375px);
     background-color: $white;
     border: solid 0.5px $deactiveGrey;
-  }
-
-  #avatar {
-    $height: 75px;
-    @include location(59px, $height, $height, 16px);
-    // Width should be same as height. So this hack.
-    width: $height/$ref_height * 100vh;
-    background-color: $lightGrey;
-    border: solid 1px #979797;
-    @include border-radius(50%);
-    @include background-contain();
   }
 
   #name {
@@ -1697,8 +1703,51 @@ body.ui-mobile-viewport {
     cursor: pointer;
   }
 
-  #account-options-page, #account-about-page {
+  #account-about-page {
     @include location(44px);
+  }
+  #account-options-list {
+    @include location(50px, 550px, 375px);
+  }
+  .options-header {
+    @include font(17px);
+    position: relative;
+    @include height(20px);
+    @include left(15px);
+    font-weight: 600;
+    letter-spacing: -0.4px;
+    color: $darkGrey;
+    text-align: left;
+    margin-top: 2vh;
+  }
+  options{
+    position: relative;
+    @include height(44px);
+    @include left(15px);
+    @include width(345px);
+    //@include location(75px, 44px, 345px, 15px);
+    display: table;
+    table-layout: fixed;
+    @include border-radius(5px);
+    border: solid 1px #979797;
+    background-color: $deactiveGrey;
+  }
+  option {
+    display: table-cell;
+    vertical-align: middle;
+    @include font(17px);
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    color: $darkGrey;
+    cursor: pointer;
+  }
+  option:not(:last-child) {
+    border-right: solid 1px #979797;
+  }
+  option.current {
+    background-color: $BWSeaGreen;
+    color: $white;
+    cursor:default;
   }
 }
 

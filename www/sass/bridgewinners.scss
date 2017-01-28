@@ -151,6 +151,11 @@ $menu_items: vote create history alerts account;
   color: $suitRed;
 }
 
+#confirmation-popup-content {
+  @include font(24px);
+  color: $darkGrey;
+}
+
 #vote-page.bidding {
   #description {
     @include location(339px, 57px, 375px);
@@ -159,7 +164,7 @@ $menu_items: vote create history alerts account;
 
 #vote-page.lead {
   #description {
-    @include location(259px, 57px, 375px);
+    @include location(259px, 87px, 375px);
   }
 }
 
@@ -512,16 +517,6 @@ $menu_items: vote create history alerts account;
     @include location(535px, 44px, 169px, 191px);
   }
   #create-review-page {
-    #avatar-review {
-      $height: 35px;
-      @include location(59px, $height, $height, 15px);
-      // Width should be same as height. So this hack.
-      width: $height/$ref_height * 100vh;
-      background-color: #d8d8d8;
-      border: solid 2px $BWSlate;
-      @include border-radius(50%);
-      @include background-contain();
-    }
     #name-review {
       @extend %flex-vertical-center2;
       @include location(59px, 35px, 200px, 56px);
@@ -720,9 +715,11 @@ $menu_items: vote create history alerts account;
 
 #alerts-page {
   #alerts-list {
-    @include location(44px, 550px);
+    li {
+      width: 100vw;
+    }
+    @include location(44px, 550px, 375px);
     @include font(12px);
-    width: 100%;
   }
   .alert {
     display: table;
@@ -756,16 +753,6 @@ $menu_items: vote create history alerts account;
 
 #history-page {
   #history-results-page {
-    #avatar-results {
-      $height: 35px;
-      @include location(59px, $height, $height, 15px);
-      // Width should be same as height. So this hack.
-      width: $height/$ref_height * 100vh;
-      background-color: #d8d8d8;
-      border: solid 2px $BWSlate;
-      @include border-radius(50%);
-      @include background-contain();
-    }
     #name-results {
       @extend %flex-vertical-center2;
       @include location(59px, 35px, 200px, 56px);
@@ -1184,16 +1171,6 @@ $menu_items: vote create history alerts account;
 
 /* Bidding vote page styles. */
 #vote-page {
-  #avatar {
-    $height: 35px;
-    @include location(59px, $height, $height, 15px);
-    // Width should be same as height. So this hack.
-    width: $height/$ref_height * 100vh;
-    background-color: #d8d8d8;
-    border: solid 2px $BWSlate;
-    @include border-radius(50%);
-    @include background-contain();
-  }
   #name {
     @extend %flex-vertical-center2;
     @include location(59px, 35px, 200px, 56px);
@@ -1348,7 +1325,7 @@ $menu_items: vote create history alerts account;
     @include location(258px, 66px, 349px, 13px);
   }
   #lead-box {
-    @include location(320px, 200px, 343px, 16px);
+    @include location(350px, 200px, 343px, 16px);
   }
   #hand, #lead-box {
     hand, content {
@@ -1656,22 +1633,30 @@ body.ui-mobile-viewport {
   bottom: 20px;
 }
 
+avatar {
+  background-color: #d8d8d8;
+  border: solid 2px $BWSlate;
+  @include border-radius(50%);
+  @include background-contain();
+  $height: 35px;
+  @include location(59px, $height, $height, 15px);
+  // Width should be same as height. So this hack.
+  width: $height/$ref_height * 100vh;
+}
+
+avatar.large {
+  $height: 75px;
+  @include height($height);
+  // Width should be same as height. So this hack.
+  width: $height/$ref_height * 100vh;
+  @include left(15px);
+}
+
 #account-page {
   #profile {
     @include location(44px, 108px, 375px);
     background-color: $white;
     border: solid 0.5px $deactiveGrey;
-  }
-
-  #avatar {
-    $height: 75px;
-    @include location(59px, $height, $height, 16px);
-    // Width should be same as height. So this hack.
-    width: $height/$ref_height * 100vh;
-    background-color: $lightGrey;
-    border: solid 1px #979797;
-    @include border-radius(50%);
-    @include background-contain();
   }
 
   #name {

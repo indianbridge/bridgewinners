@@ -943,7 +943,9 @@ Bridge.Deal.prototype.setVulnerability = function( vulnerability ) {
  * Get the scoring of this deal.
  * @return {string} the scoring.
  */
-Bridge.Deal.prototype.getScoring = function() { return this.scoring; }
+Bridge.Deal.prototype.getScoring = function() {
+	return this.scoring;
+}
 
 /**
  * Set the scoring for this deal.
@@ -4453,7 +4455,7 @@ _.declareTemplate("deal.vulnerability", `<vulnerabilities><%
 _.declareTemplate("deal.scoring", `<scoringtypes><%
   var currentScoring = deal.getScoring();
   _.each(config.scoringTypes, function(scoringType) {
-    %><scoringtype data-operation="setScoring" data-scoring=<%=scoringType%> <%
+    %><scoringtype data-operation="setScoring" data-scoring="<%=scoringType%>" <%
     if (scoringType != currentScoring) {
       %>class="enabled" <%
     } else {

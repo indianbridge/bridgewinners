@@ -51,16 +51,23 @@ BW.app = new function() {
     BW.history.init();
     BW.alerts.init();
     BW.user.init();
+    document.addEventListener('backbutton', this.backButtonCallback, false);
+  };
+  this.backButtonCallback = function() {
+    if (!$("#back-button").hasClass("hide")) {
+      $("#back-button").tap();
+    }
   };
   this.initDialogs = function() {
     BW.loadingDialog = new BW.dialog("loading-popup", true);
     BW.messageDialog = new BW.dialog("message-popup", true);
-    $("#message-popup").on("popupafterclose", function() {
-      $("#all-content").removeClass("ui-disabled");
-    });
-    $("#message-popup").on("popupafteropen", function() {
-      $("#all-content").addClass("ui-disabled");
-    });
+    BW.confirmationDialog = new BW.dialog("confirmation-popup", true);
+    // $("#message-popup").on("popupafterclose", function() {
+    //   $("#all-content").removeClass("ui-disabled");
+    // });
+    // $("#message-popup").on("popupafteropen", function() {
+    //   $("#all-content").addClass("ui-disabled");
+    // });
   };
   /**
    * Utility function to check if running in a browser as oppose to mobile app.
@@ -76,8 +83,8 @@ BW.app.start();
  * Some utility functions.
  */
 BW.utils = new function() {
-  //this.sitePrefix = "https://52.4.5.8";
-  this.sitePrefix = "https://127.0.0.1:8000";
+  this.sitePrefix = "https://52.4.5.8";
+  //this.sitePrefix = "https://127.0.0.1:8000";
   this.init = function() {
     // Nothing to do yet.
   };
@@ -109,7 +116,7 @@ BW.ajax = function(parameters) {
   _.defaults(parameters, {
     method: "GET",
     headers: BW.user.getHeader(),
-    timeout: 5000,
+    timeout: 10000,
     data: {},
     successCallback: null,
     errorCallback: null,
@@ -156,6 +163,30 @@ BW.ajax = function(parameters) {
  */
 BW.dialog = function(container) {
   this.container = container;
+  $("#" + this.container).on("popupafterclose", function() {
+    $("#all-content").removeClass("ui-disabled");
+  });
+  $("#" + this.container).on("popupafteropen", function() {
+    $("#all-content").addClass("ui-disabled");
+  });
+  this.showWithConfirmation = function(text, yesCallback, noCallback) {
+    var self = this;
+    $("#all-content").addClass("ui-disabled");
+    $("#" + this.container + "-content").empty().append(text);
+    $(document).one("tap", "#" + container + "-yes", function() {
+      $(document).off("tap", "#" + container + "-yes");
+      $(document).off("tap", "#" + container + "-no");
+      self.hide();
+      if (yesCallback) yesCallback();
+    });
+    $(document).one("tap", "#" + container + "-no", function() {
+      $(document).off("tap", "#" + container + "-yes");
+      $(document).off("tap", "#" + container + "-no");
+      self.hide();
+      if (noCallback) noCallback();
+    });
+  	$("#" + this.container).popup("open");
+  };
   this.show = function(text) {
     $("#all-content").addClass("ui-disabled");
     $("#" + this.container + "-content").empty().append(text);
@@ -174,10 +205,16 @@ BW.alerts = new function() {
   this.init = function() {
     this.setupClickHandlers();
   };
-  this.setupClickHandlers = function() {};
+  this.setupClickHandlers = function() {
+    $(document).on("tap", "li.alert[data-slug]", function() {
+      var slug = $(this).data("slug");
+      BW.page.show("vote", {"slug": slug});
+      return false;
+    });
+  };
   this.load = function() {
     $("#header-text").empty().append("Alerts");
-    //BW.loadingDialog.show("Getting Alerts...");
+    $("#back-button").addClass("hide")
     var ajaxRequest = BW.ajax({
       urlSuffix: "get-alerts/",
       data: {
@@ -193,7 +230,7 @@ BW.alerts = new function() {
     var html = "";
     if (data.alerts.length > 0) {
       _.each(data.alerts, function(alert) {
-        html += "<li data-icon='false'><a href='#'>";
+        html += "<li class='alert clickable' data-slug='" + alert.slug + "' data-icon='false'><a href='#'>";
         html += "<p class='alert'>";
         html += "<img class='avatar-alert' src='" + BW.utils.getAvatarLink(alert.instigator_avatar) + "'/>";
         var text = alert.blurb.replace("a href", "a1 href");
@@ -205,7 +242,7 @@ BW.alerts = new function() {
         html += "</a></li>";
       });
     } else {
-      html += "You have no alerts.";
+      html += "You have no poll related alerts.";
     }
     $("#alerts-list").empty().append(html);
     $("#alerts-list").listview();
@@ -226,6 +263,18 @@ BW.history = new function() {
     $(document).on("tap", "#history-revote-button.enabled", function() {
       BW.page.show("vote", {"slug": self.slug});
       return false;
+    });
+    $(document).on("swipeleft", "#history-responses-menu", function() {
+      if (self.currentResponseSection < self.numResponseSections-1) {
+        self.currentResponseSection++;
+        $("[data-section-number='" + self.currentResponseSection + "']").tap();
+      }
+    });
+    $(document).on("swiperight", "#history-responses-menu", function() {
+      if (self.currentResponseSection > 0) {
+        self.currentResponseSection--;
+        $("[data-section-number='" + self.currentResponseSection + "']").tap();
+      }
     });
     // section changed
     _.each(["history-voted-page", "history-published-page", "history-drafts-page"], function(sectionName) {
@@ -266,12 +315,14 @@ BW.history = new function() {
     var poll = this.polls[slug];
     var html = "";
     if (poll.all_answers.length > 0) {
-      _.each(poll.all_answers, function(answer){
+      this.numResponseSections = poll.all_answers.length;
+      this.currentResponseSection = 0;
+      _.each(poll.all_answers, function(answer, index) {
         var answerClass = "";
         if (poll.my_answer && poll.my_answer.answer === answer.text) {
           answerClass = "my_answer";
         }
-        html += "<div class='history-response-item enabled " + answerClass + "' data-role='sub-section-change' data-section='history-response-page-" + answer.text + "'>";
+        html += "<div class='history-response-item enabled " + answerClass + "' data-section-number='" + index + "' data-role='sub-section-change' data-section='history-response-page-" + answer.text + "'>";
         if (poll.type.toLowerCase() === "bidding") {
           html += Bridge.getBidHTML(answer.text);
         } else {
@@ -301,7 +352,7 @@ BW.history = new function() {
       });
       $("#history-responses-sections").empty().append(html);
       $(".history-response-voters").listview();
-      var shownSectionName = "history-response-page-" + poll.all_answers[0].text;
+      var shownSectionName = "history-response-page-" + poll.all_answers[this.currentResponseSection].text;
     } else {
       var shownSectionName = "history-response-page-empty";
       var html = ""
@@ -609,7 +660,12 @@ BW.create = new function() {
     var self = this;
     // reset clicked
     $(document).on("tap", "#create-reset-button.enabled", function(e) {
-      self.reset();
+      var message = "This will clear all the information including hands and auction. Are you sure?"
+      BW.confirmationDialog.showWithConfirmation(message, function(){
+        self.reset();
+      }, function() {
+        // No was pressed, do nothing.
+      });
       return false;
     });
     // Description changed
@@ -663,7 +719,7 @@ BW.create = new function() {
       "MPs": "Matchpoints",
       "IMPs": "KO",
       "BAM": "BAM",
-      "Total": "TP",
+      "Total Points": "TP",
     };
   	data[ "scoring" ] = scoringMapping[deal.getScoring()];
   	data[ "vul" ] = deal.getVulnerability();
@@ -702,8 +758,9 @@ BW.create = new function() {
     $("#hand").show();
     $("#create-buttons").show();
     var section = this.getSection();
+    $("#header-text").empty().append("Create");
     if (section == "create-hand-page") {
-      $("#header-text").empty().append("Create");
+      $("#header-text").empty().append("Add Hand");
       var currentHand = this.deal.getHand(this.handDirection);
       var count = currentHand.getCount();
       if (count == 13) {
@@ -712,10 +769,10 @@ BW.create = new function() {
         $("#create-continue-button").removeClass("enabled").addClass("disabled");
       }
     } else if (section == "create-info-page") {
-      $("#header-text").empty().append("Create");
+      $("#header-text").empty().append("Add Info");
       $("#create-continue-button").removeClass("disabled").addClass("enabled");
     } else if (section == "create-auction-page") {
-      $("#header-text").empty().append("Create");
+      $("#header-text").empty().append("Add Auction");
       var auction = this.deal.getAuction();
       if (auction.getContract().isComplete || auction.getNextToCall() !== this.handDirection) {
         $("#create-continue-button").removeClass("enabled").addClass("disabled");
@@ -754,7 +811,14 @@ BW.create = new function() {
       });
     }
     deal.showCardDeck("deck");
-    deal.showScoring("scoring");
+    deal.showScoring("scoring", {
+      scoringTypes: [
+        "MPs",
+        "IMPs",
+        "BAM",
+        "Total Points",
+      ],
+    });
     deal.showVulnerability("vulnerability");
     deal.showDealer("dealer");
     var auction = deal.getAuction();
@@ -780,7 +844,7 @@ BW.create = new function() {
       $("#vul-" + direction).empty();
     }
     $("#vul-" + deal.getDealer()).empty().append("D");
-    $("#scoring-review").empty().append(deal.getScoring());
+    $("#scoring-review").empty().append(BW.options.getScoringMapping(deal.getScoring()));
     $("#avatar-review").css("background-image", "url(" + BW.utils.getAvatarLink(BW.user.userInfo.avatar) + ")");
     $("#description-review").empty().append(deal.getNotes());
     this.deal = deal;
@@ -793,7 +857,7 @@ BW.create = new function() {
         $("#vul-" + direction).empty();
       }
       $("#vul-" + deal.getDealer()).empty().append("D");
-      $("#scoring-review").empty().append(deal.getScoring());
+      $("#scoring-review").empty().append(BW.options.getScoringMapping(deal.getScoring()));
       $("#description-review").empty().append(deal.getNotes());
       self.updateStatus();
     });
@@ -994,8 +1058,8 @@ BW.vote = new function() {
       $("#vul-" + direction).empty();
     }
     $("#vul-" + deal.getDealer()).empty().append("D");
-    $("#scoring").empty().append(data.scoring);
-    $("#avatar").css("background-image", "url(" + BW.utils.getAvatarLink(data.author.avatar) + ")");
+    $("#scoring").empty().append(BW.options.getScoringMapping(data.scoring));
+    $("#avatar-vote").css("background-image", "url(" + BW.utils.getAvatarLink(data.author.avatar) + ")");
     $("#comments").empty().append(data.num_comments);
     $("#likes").empty().append(data.num_likes);
     $("#user").empty().append(data.author.name);
@@ -1142,6 +1206,16 @@ BW.options = new function() {
     this.options = options;
   };
 
+  this.getScoringMapping = function(scoring) {
+    mapping = {
+      "Matchpoints": "MPs",
+      "CrossImps": "IMPs",
+      "TP": "Total Points",
+    };
+    if(mapping[scoring]) return mapping[scoring];
+    return scoring;
+  }
+
   this.setupClickHandlers = function() {
     var self = this;
     $(document).on("tap", "[data-option].enabled", function() {
@@ -1274,7 +1348,7 @@ BW.user = new function() {
     $("#header-text").empty().append("Account");
     $("#account-list").listview();
     $("#name").empty().append(this.userInfo.name);
-    $("#avatar").css("background-image", "url(" + BW.utils.getAvatarLink(this.userInfo.avatar) + ")");
+    $("#avatar-profile").css("background-image", "url(" + BW.utils.getAvatarLink(this.userInfo.avatar) + ")");
     BW.page.showSection("account-main-page");
   };
 

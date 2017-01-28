@@ -49,14 +49,181 @@
       <div class="center" id="message-popup-content">Loading...</div>
     </div>
     <!-- Templates for different sections/pages. -->
-    <script id="login-page" type="text/template">
-      <div class="login-page-content">
+    <script id="login-template" type="text/template">
+      <div id="login-page" class="login-page-content">
         <img class="bridgewinners-logo" src="css/img/bridgewinners_logo.png" />
         <input class="username" type="text" name="username" id="username" value="" placeholder="Email or Username" />
         <input class="password" type="password" name="password" id="password" value="" placeholder="Password" />
         <button id="login-submit-button" class="clickable bridgewinners">Log In</button>
         <button id="facebook-login-button" class="facebook hide">Log in with Facebook</button>
         <button id="google-login-button" class="google hide">Log in with Google+</button>
+      </div>
+    </script>
+    <script id="vote-template" type="text/template">
+      <div id="vote-page" class="main-page">
+        <div id="asks">
+          <avatar id="avatar-vote"></avatar>
+          <div id="name"><span id="user">Bridge Winners </span>Asks...</div>
+          <div id="comments">245</div>
+          <div id="likes">125</div>
+        </div>
+        <div id="auction" class="scrollable"></div>
+        <div id="vulnerability">
+          <div id="info-wrapper"></div>
+          <div id="scoring"></div>
+          <div id="vul-n" class="vulnerability"></div>
+          <div id="vul-e" class="vulnerability"></div>
+          <div id="vul-s" class="vulnerability"></div>
+          <div id="vul-w" class="vulnerability"></div>
+        </div>
+        <div id="hand"></div>
+        <div id="description" class="scrollable"></div>
+        <div id="bidding-box"></div>
+        <div id="lead-box"></div>
+        <div class="buttons">
+          <div id="skip-submit-button" class="button clickable bridgewinners enabled">Skip</div>
+          <div id="abstain-submit-button" class="button clickable bridgewinners enabled">Abstain</div>
+          <div id="vote-submit-button" class="button clickable bridgewinners disabled">Vote</div>
+        </div>
+      </div>
+    </script>
+    <script id="create-template" type="text/template">
+      <div id="create-page" class="main-page">
+        <div id="hand-header">You are South, you hold:</div>
+        <div id="hand"></div>
+        <div id="create-hand-page" data-role="section" data-name="create-hand-page">
+          <div id="deck-header">Set Hand:</div>
+          <div id="deck"></div>
+        </div>
+        <div id="create-info-page" data-role="section" data-name="create-info-page">
+          <div id="scoring-header">Form of Scoring:</div>
+          <div id="scoring"></div>
+          <div id="vulnerability-header">Vulnerability:</div>
+          <div id="vulnerability"></div>
+          <div id="dealer-header">Dealer:</div>
+          <div id="dealer"></div>
+        </div>
+        <div id="create-auction-page" data-role="section" data-name="create-auction-page">
+          <div id="hand-hider" class="ui-page-theme-a"></div>
+          <div id="auction"></div>
+          <div id="special_calls"></div>
+          <div id="bidding-box"></div>
+        </div>
+        <div id="create-description-page" data-role="section" data-name="create-description-page">
+          <div id="description-header">Problem Description:</div>
+          <textarea id="description" placeholder="Provide any additional information that might be relevant to the problem, like meaning of bids, etc."></textarea>
+        </div>
+        <div id="create-review-page" data-role="section" data-name="create-review-page">
+          <div id="asks-review">
+            <avatar id="avatar-review"></avatar>
+            <div id="name-review"><span id="user-review">You </span>Ask...</div>
+          </div>
+          <div id="auction-review"></div>
+          <div id="vulnerability-review">
+            <div id="info-wrapper"></div>
+            <div id="scoring-review"></div>
+            <div id="vul-n" class="vulnerability"></div>
+            <div id="vul-e" class="vulnerability"></div>
+            <div id="vul-s" class="vulnerability"></div>
+            <div id="vul-w" class="vulnerability"></div>
+          </div>
+          <div id="hand-review"></div>
+          <div id="description-review"></div>
+          <div id="create-save-button" class="button clickable bridgewinners disabled hide">Save Draft</div>
+          <div id="create-publish-button" class="button clickable bridgewinners enabled">Publish</div>
+        </div>
+        <div id="create-buttons" class="buttons">
+          <div id="create-reset-button" class="button clickable bridgewinners enabled">Reset/Clear</div>
+          <div id="create-continue-button" data-role="section-change" data-section="create-info-page" class="button clickable bridgewinners disabled">Continue</div>
+        </div>
+      </div>
+    </script>
+    <script id="history-template" type="text/template">
+      <div id="history-page" class="main-page">
+        <div id="history-menu">
+          <div class="history-menu-item enabled" data-role="section-change" data-section="history-voted-page">Voted On</div>
+          <div class="history-menu-item enabled" data-role="section-change" data-section="history-published-page">Published</div>
+          <!-- <div class="history-menu-item enabled" data-role="section-change" data-section="history-drafts-page">Drafts</div> -->
+        </div>
+        <div id="history-voted-page" data-role="section" data-name="history-voted-page">
+          <div class="history-header">Problems you recently voted on.</div>
+          <ul id="history-voted-list" class="history-list scrollable" data-role="listview">
+          </ul>
+        </div>
+        <div id="history-published-page" data-role="section" data-name="history-published-page">
+          <div class="history-header">Problems you recently published.</div>
+          <ul id="history-published-list" class="history-list scrollable" data-role="listview">
+          </ul>
+        </div>
+        <div id="history-results-page" data-role="section" data-name="history-results-page">
+          <div id="asks-results">
+            <avatar id="avatar-results"></avatar>
+            <div id="name-results"><span id="user-results">You </span>Asks...</div>
+            <div id="votes-results">0</div>
+            <div id="comments-results">0</div>
+            <div id="likes-results">0</div>
+          </div>
+          <div id="auction-results"></div>
+          <div id="vulnerability-results">
+            <div id="info-wrapper-results"></div>
+            <div id="scoring-results"></div>
+            <div id="vul-n-results" class="vulnerability"></div>
+            <div id="vul-e-results" class="vulnerability"></div>
+            <div id="vul-s-results" class="vulnerability"></div>
+            <div id="vul-w-results" class="vulnerability"></div>
+          </div>
+          <div id="hand-results"></div>
+          <div id="description-results"></div>
+          <div id="answers-results" class="scrollable"></div>
+          <div id="history-revote-button" class="button clickable bridgewinners enabled">Re-vote</div>
+          <div id="history-voters-button" data-role="section-change" data-section="history-responses-page" class="button clickable bridgewinners enabled">Voters</div>
+        </div>
+        <div id="history-responses-page" data-role="section" data-name="history-responses-page">
+          <div id="history-responses-menu">
+          </div>
+          <div id="history-responses-sections">
+          </div>
+        </div>
+        <!-- <div id="history-drafts-page" data-role="section" data-name="history-drafts-page">
+          <div class="history-header">Your drafts.</div>
+        </div> -->
+      </div>
+    </script>
+    <script id="alerts-template" type="text/template">
+      <div id="alerts-page" class="main-page">
+        <ul id="alerts-list" data-role="listview">
+        </ul>
+      </div>
+    </script>
+    <script id="account-template" type="text/template">
+      <div id="account-page" class="main-page">
+        <div id="account-main-page" data-role="section" data-name="account-main-page">
+          <div id="profile">
+            <avatar id="avatar-profile" class="large"></avatar>
+            <div id="name">Bridge Winners</div>
+            <div id="edit-profile-button" class="clickable hide">Edit Profile</div>
+          </div>
+          <div id="account-options">
+            <ul id="account-list" data-role="listview">
+              <!-- <li><a data-role="section-change" data-section="account-friends-page" class="enabled clickable" href="#">Find Friends</a></li> -->
+              <li><a data-role="section-change" data-section="account-options-page" class="enabled clickable" href="#">Settings</a></li>
+              <li><a data-role="section-change" data-section="account-about-page" class="enabled clickable" href="#">About the App</a></li>
+            </ul>
+          </div>
+          <div id="logout-submit-button" class="logout clickable">Log Out</div>
+        </div>
+        <!-- <div id="account-friends-page" data-role="section" data-name="account-friends-page" data-section-back="account-main-page">
+          <div id="options-list">Friends</div>
+        </div> -->
+        <div id="account-options-page" data-role="section" data-name="account-options-page" data-section-back="account-main-page">
+          <div id="account-options-list">
+            <div id="after-voting-header" class="options-header">After Voting Goto:</div>
+            <div id="after-voting"></div>
+          </div>
+        </div>
+        <div id="account-about-page" data-role="section" data-name="account-about-page" data-section-back="account-main-page">
+          <div id="about-app">About</div>
+        </div>
       </div>
     </script>
   </body>
