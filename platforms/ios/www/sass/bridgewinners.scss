@@ -9,16 +9,17 @@
 html {
   box-sizing: border-box;
 }
-html,
-body {
-height: 100%;
-min-height: 100%;
+html, body {
+  height: 100%;
+  min-height: 100%;
+  overflow: hidden;
 }
 
 .full-screen {
 height: 100%;
 min-height: 100%;
 }
+
 *, *:before, *:after {
   box-sizing: inherit;
 }
@@ -151,6 +152,11 @@ $menu_items: vote create history alerts account;
   color: $suitRed;
 }
 
+#confirmation-popup-content {
+  @include font(24px);
+  color: $darkGrey;
+}
+
 #vote-page.bidding {
   #description {
     @include location(339px, 57px, 375px);
@@ -159,7 +165,7 @@ $menu_items: vote create history alerts account;
 
 #vote-page.lead {
   #description {
-    @include location(259px, 57px, 375px);
+    @include location(259px, 87px, 375px);
   }
 }
 
@@ -280,12 +286,42 @@ $menu_items: vote create history alerts account;
       }
     }
   }
-  #scoring-header, #vulnerability-header, #dealer-header, #description-header {
+  #scoring-header, #vulnerability-header, #dealer-header, #description-header, #problem-header {
     @include font(17px);
     font-weight: 600;
     letter-spacing: -0.4px;
     color: $darkGrey;
     text-align: left;
+  }
+  #problem-header {
+    @include location(184px, 20px, 345px, 15px);
+  }
+  #problem {
+    problemtypes{
+      @include location(209px, 44px, 345px, 15px);
+      display: table;
+      table-layout: fixed;
+      @include border-radius(5px);
+      border: solid 1px #979797;
+      background-color: $deactiveGrey;
+    }
+    problemtype {
+      display: table-cell;
+      vertical-align: middle;
+      @include font(17px);
+      font-weight: 600;
+      letter-spacing: 0.6px;
+      color: $darkGrey;
+      cursor: pointer;
+    }
+    problemtype:not(:last-child) {
+      border-right: solid 1px #979797;
+    }
+    problemtype.current {
+      background-color: $BWSeaGreen;
+      color: $white;
+      cursor:default;
+    }
   }
   #scoring-header {
     @include location(264px, 20px, 345px, 15px);
@@ -710,9 +746,11 @@ $menu_items: vote create history alerts account;
 
 #alerts-page {
   #alerts-list {
-    @include location(44px, 550px);
+    li {
+      width: 100vw;
+    }
+    @include location(44px, 550px, 375px);
     @include font(12px);
-    width: 100%;
   }
   .alert {
     display: table;
@@ -970,6 +1008,7 @@ $menu_items: vote create history alerts account;
       display: table;
       table-layout: fixed;
       width: 100%;
+      @include font(20px);
     }
     .answer-result-column {
       display: table-cell;
@@ -979,9 +1018,10 @@ $menu_items: vote create history alerts account;
     }
     .answer-result-avatar {
       text-align: left;
+      width: 50%;
     }
     .avatar-result {
-      $height: 30px;
+      $height: 40px;
       height: $height/$ref_height * 100vh;
       // Width should be same as height. So this hack.
       width: $height/$ref_height * 100vh;
@@ -1094,7 +1134,7 @@ $menu_items: vote create history alerts account;
     padding: 10px;
   }
   .history-list {
-    @include location(178px, 400px, 375px);
+    @include location(88px, 490px, 375px);
     section {
       display: inline-block;
     }
@@ -1138,6 +1178,12 @@ $menu_items: vote create history alerts account;
       @include font(14px);
       font-weight: 600;
       color: $darkGrey;
+    }
+    .answer {
+      margin-right: 2vw;
+    }
+    suit[data-suit='n'] {
+      text-transform: capitalize;
     }
     .percentage {
       @include width(40px);
@@ -1318,7 +1364,7 @@ $menu_items: vote create history alerts account;
     @include location(258px, 66px, 349px, 13px);
   }
   #lead-box {
-    @include location(320px, 200px, 343px, 16px);
+    @include location(350px, 200px, 343px, 16px);
   }
   #hand, #lead-box {
     hand, content {
@@ -1551,6 +1597,16 @@ body.ui-mobile-viewport {
 .header-container {
   @include font(17px);
   background-color: $BWSeaGreen;
+  @include location(0px, 44px, 375px);
+  @extend %flex-vertical-center;
+  font-weight: 600;
+  color: $TextColor;
+  text-transform: capitalize;
+}
+
+.back-button-container {
+  @include font(17px);
+  background-color: transparent;
   @include location(0px, 44px, 375px);
   @extend %flex-vertical-center;
   font-weight: 600;

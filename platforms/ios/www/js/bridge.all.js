@@ -35,7 +35,7 @@ var Bridge = {
 	suitOrder: [],
 
 	calls : {
-		'n' : { name : 'No Trump', index : 0, isStrain: true, bid: true, text: "notrump", html : 'nt' },
+		'n' : { name : 'No Trump', index : 0, isStrain: true, bid: true, text: "notrump", html : 'NT' },
 		's' : { name : 'Spades', index : 1, isStrain: true, bid: true, text: "spades", html : '&spades;' },
 		'h' : { name : 'Hearts', index : 2, isStrain: true, bid: true, text: "hearts", html : '&hearts;' },
 		'd' : { name : 'Diamonds', index : 3, isStrain: true, bid: true, text: "diamonds", html : '&diams;' },
@@ -823,6 +823,12 @@ Bridge.Deal.prototype.init = function init() {
 	this.setScoring("KO");
 
 	/**
+	 * The type of problem (if any) this deal is about.
+	 * @member {string}
+	 */
+	this.setProblemType("Bidding");
+
+	/**
 	 * Any notes associated with this deal.
 	 * @member {string}
 	 */
@@ -943,7 +949,9 @@ Bridge.Deal.prototype.setVulnerability = function( vulnerability ) {
  * Get the scoring of this deal.
  * @return {string} the scoring.
  */
-Bridge.Deal.prototype.getScoring = function() { return this.scoring; }
+Bridge.Deal.prototype.getScoring = function() {
+	return this.scoring;
+}
 
 /**
  * Set the scoring for this deal.
@@ -956,6 +964,27 @@ Bridge.Deal.prototype.setScoring = function( scoring ) {
 	Bridge._checkRequiredArgument( scoring );
 	this.scoring = scoring;
 	this.onChange( "setScoring", scoring );
+};
+
+/**
+ * Get the problem type of this deal.
+ * @return {string} the problem type.
+ */
+Bridge.Deal.prototype.getProblemType = function() {
+	return this.problemType;
+}
+
+/**
+ * Set the problem type for this deal.
+ * @param {string} problemType - the problem type
+ */
+Bridge.Deal.prototype.setProblemType = function( problemType ) {
+	if (_.isObject(problemType)) {
+		problemType = problemType.type;
+	}
+	Bridge._checkRequiredArgument( problemType );
+	this.problemType = problemType;
+	this.onChange( "setProblemType", problemType );
 };
 
 
@@ -1046,23 +1075,24 @@ Bridge.Deal.prototype.rotateClockwise = function() {
 		's': 'w',
 		'w': 'n',
 	};
-	var hands = {};
-	for (var direction in directions) {
-		var hand = this.getHand(direction);
-		hands[direction] = hand.getHand();
-		hand.clearCards();
-	}
-	for (var direction in directions) {
-		this.getHand(directions[direction]).setHand(hands[direction]);
-	}
-	// Rotate Vulnerability.
-	var rotateVulnerabilities = {
-		'-' : '-',
-		'n' : 'e',
-		'e' : 'n',
-		'b' : 'b',
-	};
-	this.setVulnerability(rotateVulnerabilities[this.getVulnerability()]);
+	// Dont rotate hands.
+	// var hands = {};
+	// for (var direction in directions) {
+	// 	var hand = this.getHand(direction);
+	// 	hands[direction] = hand.getHand();
+	// 	hand.clearCards();
+	// }
+	// for (var direction in directions) {
+	// 	this.getHand(directions[direction]).setHand(hands[direction]);
+	// }
+	// Don't Rotate Vulnerability.
+	// var rotateVulnerabilities = {
+	// 	'-' : '-',
+	// 	'n' : 'e',
+	// 	'e' : 'n',
+	// 	'b' : 'b',
+	// };
+	// this.setVulnerability(rotateVulnerabilities[this.getVulnerability()]);
 	// Rotate dealer.
 	var auction = this.getAuction();
 	var newDealer = Bridge.getLHO(this.getDealer());
@@ -1099,6 +1129,9 @@ Bridge.Deal.prototype.set = function( property, value ) {
 		case "scoring" :
 			this.setScoring( value );
 			break;
+		case "problemType" :
+			this.setProblemType( value );
+			break;
 		case "notes" :
 			this.setNotes( value );
 			break;
@@ -1127,6 +1160,8 @@ Bridge.Deal.prototype.get = function( property ) {
 			return this.getDealer();
 		case "scoring" :
 			return this.getScoring();
+		case "problemType" :
+			return this.getProblemType();
 		case "notes" :
 			return this.getNotes();
 		case "auction" :
@@ -1280,7 +1315,7 @@ Bridge.Deal.prototype.toString = function( expandedFormat ) {
 Bridge.Deal.prototype.toJSON = function() {
 	var output = {};
 	output.version = "1.0";
-	var fields = [ 'board', 'dealer', 'vulnerability', 'scoring', 'notes' ];
+	var fields = [ 'board', 'dealer', 'vulnerability', 'scoring', 'problemType', 'notes' ];
 	_.each( fields, function( field ) {
 		output[ field ] = this.get( field );
 	}, this);
@@ -1299,7 +1334,7 @@ Bridge.Deal.prototype.toJSON = function() {
  * @param {object} the json representation of this deal.
  */
 Bridge.Deal.prototype.fromJSON = function( json ) {
-	var fields = [ 'board', 'dealer', 'vulnerability', 'scoring', 'notes' ];
+	var fields = [ 'board', 'dealer', 'vulnerability', 'scoring', 'problemType', 'notes' ];
 	_.each( fields, function( field ) {
 		if ( _.has( json, field ) ) this.set( field, json[ field ] );
 	}, this);
@@ -4335,6 +4370,26 @@ Bridge.Deal.prototype.showScoring = function showScoring(containerID, config) {
   return this.toHTML(config, "setScoring");
 };
 
+/*
+ * Generate html to show problem type info based on configuration options.
+ * If nothing is specified defaults are used.
+ * @param {string} containerID the id of the container to embed html in
+ * @param {object} config the configuration options to use
+ * @return {string} html display of this deal's problem type using the passed template.
+ */
+Bridge.Deal.prototype.showProblemType = function showProblemType(containerID, config) {
+  config = config || {};
+  _.defaults(config, {
+    containerID: containerID,
+    template: "deal.problemType",
+    problemTypes: [
+      "Bidding",
+      "Lead",
+    ],
+  });
+  return this.toHTML(config, "setProblemType");
+};
+
 
 /**
  * Render a hand template.
@@ -4453,7 +4508,7 @@ _.declareTemplate("deal.vulnerability", `<vulnerabilities><%
 _.declareTemplate("deal.scoring", `<scoringtypes><%
   var currentScoring = deal.getScoring();
   _.each(config.scoringTypes, function(scoringType) {
-    %><scoringtype data-operation="setScoring" data-scoring=<%=scoringType%> <%
+    %><scoringtype data-operation="setScoring" data-scoring="<%=scoringType%>" <%
     if (scoringType != currentScoring) {
       %>class="enabled" <%
     } else {
@@ -4462,6 +4517,19 @@ _.declareTemplate("deal.scoring", `<scoringtypes><%
     %>><%=scoringType%></scoringtype><%
   });
   %></scoringtypes>`);
+
+  _.declareTemplate("deal.problemType", `<problemtypes><%
+    var currentProblemType = deal.getProblemType();
+    _.each(config.problemTypes, function(problemType) {
+      %><problemtype data-operation="setProblemType" data-type="<%=problemType%>" <%
+      if (problemType != currentProblemType) {
+        %>class="enabled" <%
+      } else {
+        %>class="disabled current" <%
+      }
+      %>><%=problemType%></problemtype><%
+    });
+    %></problemtypes>`);
 
 _.declareTemplate("deal.dealer", `<directions><%
   var currentDealer = deal.getDealer();

@@ -48,6 +48,13 @@
       <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
       <div class="center" id="message-popup-content">Loading...</div>
     </div>
+    <div data-role="popup" id="confirmation-popup" class="ui-content" data-theme="a" data-dismissible="false" data-history="false">
+      <div class="center" id="confirmation-popup-content">Are You Sure?</div>
+      <div class="center">
+        <a id="confirmation-popup-yes" href="#" class="ui-btn clickable">Yes</a>
+        <a id="confirmation-popup-no" href="#" class="ui-btn clickable">No</a>
+      </div>
+    </div>
     <!-- Templates for different sections/pages. -->
     <script id="login-template" type="text/template">
       <div id="login-page" class="login-page-content">

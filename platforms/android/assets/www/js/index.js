@@ -61,12 +61,13 @@ BW.app = new function() {
   this.initDialogs = function() {
     BW.loadingDialog = new BW.dialog("loading-popup", true);
     BW.messageDialog = new BW.dialog("message-popup", true);
-    $("#message-popup").on("popupafterclose", function() {
-      $("#all-content").removeClass("ui-disabled");
-    });
-    $("#message-popup").on("popupafteropen", function() {
-      $("#all-content").addClass("ui-disabled");
-    });
+    BW.confirmationDialog = new BW.dialog("confirmation-popup", true);
+    // $("#message-popup").on("popupafterclose", function() {
+    //   $("#all-content").removeClass("ui-disabled");
+    // });
+    // $("#message-popup").on("popupafteropen", function() {
+    //   $("#all-content").addClass("ui-disabled");
+    // });
   };
   /**
    * Utility function to check if running in a browser as oppose to mobile app.
@@ -162,6 +163,30 @@ BW.ajax = function(parameters) {
  */
 BW.dialog = function(container) {
   this.container = container;
+  $("#" + this.container).on("popupafterclose", function() {
+    $("#all-content").removeClass("ui-disabled");
+  });
+  $("#" + this.container).on("popupafteropen", function() {
+    $("#all-content").addClass("ui-disabled");
+  });
+  this.showWithConfirmation = function(text, yesCallback, noCallback) {
+    var self = this;
+    $("#all-content").addClass("ui-disabled");
+    $("#" + this.container + "-content").empty().append(text);
+    $(document).one("tap", "#" + container + "-yes", function() {
+      $(document).off("tap", "#" + container + "-yes");
+      $(document).off("tap", "#" + container + "-no");
+      self.hide();
+      if (yesCallback) yesCallback();
+    });
+    $(document).one("tap", "#" + container + "-no", function() {
+      $(document).off("tap", "#" + container + "-yes");
+      $(document).off("tap", "#" + container + "-no");
+      self.hide();
+      if (noCallback) noCallback();
+    });
+  	$("#" + this.container).popup("open");
+  };
   this.show = function(text) {
     $("#all-content").addClass("ui-disabled");
     $("#" + this.container + "-content").empty().append(text);
@@ -180,10 +205,16 @@ BW.alerts = new function() {
   this.init = function() {
     this.setupClickHandlers();
   };
-  this.setupClickHandlers = function() {};
+  this.setupClickHandlers = function() {
+    $(document).on("tap", "li.alert[data-slug]", function() {
+      var slug = $(this).data("slug");
+      BW.page.show("vote", {"slug": slug});
+      return false;
+    });
+  };
   this.load = function() {
     $("#header-text").empty().append("Alerts");
-    //BW.loadingDialog.show("Getting Alerts...");
+    $("#back-button").addClass("hide")
     var ajaxRequest = BW.ajax({
       urlSuffix: "get-alerts/",
       data: {
@@ -199,7 +230,7 @@ BW.alerts = new function() {
     var html = "";
     if (data.alerts.length > 0) {
       _.each(data.alerts, function(alert) {
-        html += "<li data-icon='false'><a href='#'>";
+        html += "<li class='alert clickable' data-slug='" + alert.slug + "' data-icon='false'><a href='#'>";
         html += "<p class='alert'>";
         html += "<img class='avatar-alert' src='" + BW.utils.getAvatarLink(alert.instigator_avatar) + "'/>";
         var text = alert.blurb.replace("a href", "a1 href");
@@ -211,7 +242,7 @@ BW.alerts = new function() {
         html += "</a></li>";
       });
     } else {
-      html += "You have no alerts.";
+      html += "You have no poll related alerts.";
     }
     $("#alerts-list").empty().append(html);
     $("#alerts-list").listview();
@@ -234,14 +265,12 @@ BW.history = new function() {
       return false;
     });
     $(document).on("swipeleft", "#history-responses-menu", function() {
-      alert("swipeleft");
       if (self.currentResponseSection < self.numResponseSections-1) {
         self.currentResponseSection++;
         $("[data-section-number='" + self.currentResponseSection + "']").tap();
       }
     });
     $(document).on("swiperight", "#history-responses-menu", function() {
-      alert("swiperight");
       if (self.currentResponseSection > 0) {
         self.currentResponseSection--;
         $("[data-section-number='" + self.currentResponseSection + "']").tap();
@@ -631,7 +660,12 @@ BW.create = new function() {
     var self = this;
     // reset clicked
     $(document).on("tap", "#create-reset-button.enabled", function(e) {
-      self.reset();
+      var message = "This will clear all the information including hands and auction. Are you sure?"
+      BW.confirmationDialog.showWithConfirmation(message, function(){
+        self.reset();
+      }, function() {
+        // No was pressed, do nothing.
+      });
       return false;
     });
     // Description changed
@@ -685,7 +719,7 @@ BW.create = new function() {
       "MPs": "Matchpoints",
       "IMPs": "KO",
       "BAM": "BAM",
-      "Total": "TP",
+      "Total Points": "TP",
     };
   	data[ "scoring" ] = scoringMapping[deal.getScoring()];
   	data[ "vul" ] = deal.getVulnerability();
@@ -724,8 +758,9 @@ BW.create = new function() {
     $("#hand").show();
     $("#create-buttons").show();
     var section = this.getSection();
+    $("#header-text").empty().append("Create");
     if (section == "create-hand-page") {
-      $("#header-text").empty().append("Create");
+      $("#header-text").empty().append("Add Hand");
       var currentHand = this.deal.getHand(this.handDirection);
       var count = currentHand.getCount();
       if (count == 13) {
@@ -734,10 +769,10 @@ BW.create = new function() {
         $("#create-continue-button").removeClass("enabled").addClass("disabled");
       }
     } else if (section == "create-info-page") {
-      $("#header-text").empty().append("Create");
+      $("#header-text").empty().append("Add Info");
       $("#create-continue-button").removeClass("disabled").addClass("enabled");
     } else if (section == "create-auction-page") {
-      $("#header-text").empty().append("Create");
+      $("#header-text").empty().append("Add Auction");
       var auction = this.deal.getAuction();
       if (auction.getContract().isComplete || auction.getNextToCall() !== this.handDirection) {
         $("#create-continue-button").removeClass("enabled").addClass("disabled");
@@ -776,7 +811,14 @@ BW.create = new function() {
       });
     }
     deal.showCardDeck("deck");
-    deal.showScoring("scoring");
+    deal.showScoring("scoring", {
+      scoringTypes: [
+        "MPs",
+        "IMPs",
+        "BAM",
+        "Total Points",
+      ],
+    });
     deal.showVulnerability("vulnerability");
     deal.showDealer("dealer");
     var auction = deal.getAuction();
@@ -802,7 +844,7 @@ BW.create = new function() {
       $("#vul-" + direction).empty();
     }
     $("#vul-" + deal.getDealer()).empty().append("D");
-    $("#scoring-review").empty().append(deal.getScoring());
+    $("#scoring-review").empty().append(BW.options.getScoringMapping(deal.getScoring()));
     $("#avatar-review").css("background-image", "url(" + BW.utils.getAvatarLink(BW.user.userInfo.avatar) + ")");
     $("#description-review").empty().append(deal.getNotes());
     this.deal = deal;
@@ -815,7 +857,7 @@ BW.create = new function() {
         $("#vul-" + direction).empty();
       }
       $("#vul-" + deal.getDealer()).empty().append("D");
-      $("#scoring-review").empty().append(deal.getScoring());
+      $("#scoring-review").empty().append(BW.options.getScoringMapping(deal.getScoring()));
       $("#description-review").empty().append(deal.getNotes());
       self.updateStatus();
     });
@@ -1016,7 +1058,7 @@ BW.vote = new function() {
       $("#vul-" + direction).empty();
     }
     $("#vul-" + deal.getDealer()).empty().append("D");
-    $("#scoring").empty().append(data.scoring);
+    $("#scoring").empty().append(BW.options.getScoringMapping(data.scoring));
     $("#avatar-vote").css("background-image", "url(" + BW.utils.getAvatarLink(data.author.avatar) + ")");
     $("#comments").empty().append(data.num_comments);
     $("#likes").empty().append(data.num_likes);
@@ -1163,6 +1205,16 @@ BW.options = new function() {
     });
     this.options = options;
   };
+
+  this.getScoringMapping = function(scoring) {
+    mapping = {
+      "Matchpoints": "MPs",
+      "CrossImps": "IMPs",
+      "TP": "Total Points",
+    };
+    if(mapping[scoring]) return mapping[scoring];
+    return scoring;
+  }
 
   this.setupClickHandlers = function() {
     var self = this;

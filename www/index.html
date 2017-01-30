@@ -21,13 +21,17 @@
     <script src="js/bridge.all.js"></script>
     <script src="js/jquery.mobile-1.4.5.min.js"></script>
     <script src="js/fastclick.min.js"></script>
+    <script src="js/iscroll.js"></script>
     <title>BridgeWinners Mobile App</title>
   </head>
   <body >
     <div id="all-content" class="full-screen">
       <div id="header">
         <div class="header-container">
-          <div class="header-text"><span id="back-button" data-role="section-change" class="carat-left enabled">Back</span><span id="header-text">Account<span></div>
+          <div class="header-text"><span id="header-text">Account<span></div>
+        </div>
+        <div class="back-button-container">
+          <div class="header-text"><span id="back-button" data-role="section-change" class="carat-left enabled">Back</span></div>
         </div>
       </div>
       <div id="content"></div>
@@ -103,6 +107,8 @@
           <div id="deck"></div>
         </div>
         <div id="create-info-page" data-role="section" data-name="create-info-page">
+          <div id="problem-header">Problem Type:</div>
+          <div id="problem"></div>
           <div id="scoring-header">Form of Scoring:</div>
           <div id="scoring"></div>
           <div id="vulnerability-header">Vulnerability:</div>
@@ -112,7 +118,7 @@
         </div>
         <div id="create-auction-page" data-role="section" data-name="create-auction-page">
           <div id="hand-hider" class="ui-page-theme-a"></div>
-          <div id="auction"></div>
+          <div id="auction" class="scrollable"></div>
           <div id="special_calls"></div>
           <div id="bidding-box"></div>
         </div>
@@ -125,17 +131,17 @@
             <avatar id="avatar-review"></avatar>
             <div id="name-review"><span id="user-review">You </span>Ask...</div>
           </div>
-          <div id="auction-review"></div>
+          <div id="auction-review" class="scrollable"></div>
           <div id="vulnerability-review">
-            <div id="info-wrapper"></div>
+            <div id="info-wrapper-review"></div>
             <div id="scoring-review"></div>
-            <div id="vul-n" class="vulnerability"></div>
-            <div id="vul-e" class="vulnerability"></div>
-            <div id="vul-s" class="vulnerability"></div>
-            <div id="vul-w" class="vulnerability"></div>
+            <div id="vul-n-review" class="vulnerability"></div>
+            <div id="vul-e-review" class="vulnerability"></div>
+            <div id="vul-s-review" class="vulnerability"></div>
+            <div id="vul-w-review" class="vulnerability"></div>
           </div>
           <div id="hand-review"></div>
-          <div id="description-review"></div>
+          <div id="description-review" class="scrollable"></div>
           <div id="create-save-button" class="button clickable bridgewinners disabled hide">Save Draft</div>
           <div id="create-publish-button" class="button clickable bridgewinners enabled">Publish</div>
         </div>
@@ -153,12 +159,12 @@
           <!-- <div class="history-menu-item enabled" data-role="section-change" data-section="history-drafts-page">Drafts</div> -->
         </div>
         <div id="history-voted-page" data-role="section" data-name="history-voted-page">
-          <div class="history-header">Problems you recently voted on.</div>
+          <!-- <div class="history-header">Problems you recently voted on.</div> -->
           <ul id="history-voted-list" class="history-list scrollable" data-role="listview">
           </ul>
         </div>
         <div id="history-published-page" data-role="section" data-name="history-published-page">
-          <div class="history-header">Problems you recently published.</div>
+          <!-- <div class="history-header">Problems you recently published.</div> -->
           <ul id="history-published-list" class="history-list scrollable" data-role="listview">
           </ul>
         </div>
@@ -180,15 +186,17 @@
             <div id="vul-w-results" class="vulnerability"></div>
           </div>
           <div id="hand-results"></div>
-          <div id="description-results"></div>
+          <div id="description-results" class="scrollable"></div>
           <div id="answers-results" class="scrollable"></div>
           <div id="history-revote-button" class="button clickable bridgewinners enabled">Re-vote</div>
           <div id="history-voters-button" data-role="section-change" data-section="history-responses-page" class="button clickable bridgewinners enabled">Voters</div>
         </div>
         <div id="history-responses-page" data-role="section" data-name="history-responses-page">
-          <div id="history-responses-menu">
-          </div>
-          <div id="history-responses-sections">
+          <div id="history-responses-voters">
+            <div id="history-responses-menu">
+            </div>
+            <div id="history-responses-sections">
+            </div>
           </div>
         </div>
         <!-- <div id="history-drafts-page" data-role="section" data-name="history-drafts-page">
@@ -224,7 +232,7 @@
         </div> -->
         <div id="account-options-page" data-role="section" data-name="account-options-page" data-section-back="account-main-page">
           <div id="account-options-list">
-            <div id="after-voting-header" class="options-header">After Voting Goto:</div>
+            <div id="after-voting-header" class="options-header">After Voting Go To:</div>
             <div id="after-voting"></div>
           </div>
         </div>

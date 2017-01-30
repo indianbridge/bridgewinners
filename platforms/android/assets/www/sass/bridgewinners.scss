@@ -151,6 +151,11 @@ $menu_items: vote create history alerts account;
   color: $suitRed;
 }
 
+#confirmation-popup-content {
+  @include font(24px);
+  color: $darkGrey;
+}
+
 #vote-page.bidding {
   #description {
     @include location(339px, 57px, 375px);
@@ -159,7 +164,7 @@ $menu_items: vote create history alerts account;
 
 #vote-page.lead {
   #description {
-    @include location(259px, 57px, 375px);
+    @include location(259px, 87px, 375px);
   }
 }
 
@@ -710,9 +715,11 @@ $menu_items: vote create history alerts account;
 
 #alerts-page {
   #alerts-list {
-    @include location(44px, 550px);
+    li {
+      width: 100vw;
+    }
+    @include location(44px, 550px, 375px);
     @include font(12px);
-    width: 100%;
   }
   .alert {
     display: table;
@@ -1318,7 +1325,7 @@ $menu_items: vote create history alerts account;
     @include location(258px, 66px, 349px, 13px);
   }
   #lead-box {
-    @include location(320px, 200px, 343px, 16px);
+    @include location(350px, 200px, 343px, 16px);
   }
   #hand, #lead-box {
     hand, content {
