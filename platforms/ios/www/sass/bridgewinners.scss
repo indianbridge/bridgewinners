@@ -16,8 +16,8 @@ html, body {
 }
 
 .full-screen {
-height: 100%;
-min-height: 100%;
+  height: 100%;
+  min-height: 100%;
 }
 
 *, *:before, *:after {
@@ -499,7 +499,7 @@ $menu_items: vote create history alerts account;
   }
   #bidding-box {
     @include location(283px, 245px, 345px, 15px);
-    @include font(18px);
+    @include font(16px);
     font-weight: 600;
     letter-spacing: -0.5px;
     color: $black;
@@ -612,17 +612,17 @@ $menu_items: vote create history alerts account;
         color: $black;
         background-color: $white;
       }
-      #info-wrapper {
+      #info-wrapper-review {
         @include location(109px, 135px, 105px, 255px);
         background-color: $lightGrey;
         border: solid 2px $BWSlate;
       }
-      #vul-e {
+      #vul-e-review {
         @include location(139px, 76px, 21px, 332px);
         border: solid 2px $BWSlate;
         border-left: 0;
       }
-      #vul-w {
+      #vul-w-review {
         @include location(139px, 76px, 21px, 262px);
         border: solid 2px $BWSlate;
         border-right: 0;
@@ -641,12 +641,12 @@ $menu_items: vote create history alerts account;
         z-index: 1;
         word-wrap: break-word;
       }
-      #vul-n {
+      #vul-n-review {
         @include location(116px, 25px, 53.1px, 281px);
         border: solid 2px $BWSlate;
         border-bottom: 0;
       }
-      #vul-s {
+      #vul-s-review {
         @include location(213px, 25px, 53.1px, 281px);
         border: solid 2px $BWSlate;
         border-top: 0;
@@ -719,6 +719,34 @@ $menu_items: vote create history alerts account;
       @include location(535px, 44px, 169px, 191px);
     }
   }
+  #create-review-page.show-hand-first {
+      #auction-review {
+        @include location(189px, 135px, 230px, 15px);
+      }
+      #vulnerability-review {
+        #info-wrapper-review {
+          @include location(189px, 135px, 105px, 255px);
+        }
+        #vul-e-review {
+          @include location(219px, 76px, 21px, 332px);
+        }
+        #vul-w-review {
+          @include location(219px, 76px, 21px, 262px);
+        }
+        #scoring-review {
+          @include location(219px, 76px, 53.1px, 281px);
+        }
+        #vul-n-review {
+          @include location(196px, 25px, 53.1px, 281px);
+        }
+        #vul-s-review {
+          @include location(293px, 25px, 53.1px, 281px);
+        }
+      }
+      #hand-review {
+        @include location(109px, 66px, 349px, 13px);
+      }
+  }
 }
 
 #footer {
@@ -745,11 +773,18 @@ $menu_items: vote create history alerts account;
 
 
 #alerts-page {
+  #alerts-wrapper {
+  	position:absolute;
+  	@include location(44px, 550px, 375px);
+  	width:100%;
+  	overflow:auto;
+    background-color: transparent;
+    color:transparent;
+  }
   #alerts-list {
     li {
       width: 100vw;
     }
-    @include location(44px, 550px, 375px);
     @include font(12px);
   }
   .alert {
@@ -1133,8 +1168,16 @@ $menu_items: vote create history alerts account;
     color: $darkGrey;
     padding: 10px;
   }
+  #history-voted-wrapper, #history-published-wrapper {
+  	position:absolute;
+  	@include location(88px, 490px, 375px);
+  	width:100%;
+  	overflow:auto;
+    background-color: transparent;
+    color:transparent;
+  }
   .history-list {
-    @include location(88px, 490px, 375px);
+    //@include location(88px, 490px, 375px);
     section {
       display: inline-block;
     }
@@ -1170,7 +1213,7 @@ $menu_items: vote create history alerts account;
     .name {
       @include font(15px);
       font-weight: 600;
-      color: $darkGrey;
+      color: $BWRed;
       margin-left: 10px;
     }
     .answer, .percentage {
@@ -1431,7 +1474,7 @@ $menu_items: vote create history alerts account;
   }
   #bidding-box {
     @include location(411px, 96px, 343px, 16px);
-    @include font(36px);
+    @include font(30px);
     font-weight: 600;
     letter-spacing: -0.9px;
     color: $black;

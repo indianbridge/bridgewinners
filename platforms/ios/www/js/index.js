@@ -242,6 +242,7 @@ BW.alerts = new function() {
     }
     $("#alerts-list").empty().append(html);
     $("#alerts-list").listview();
+    //var alertsScroll = new IScroll("#alerts-wrapper");
   };
 };
 
@@ -557,7 +558,9 @@ BW.history = new function() {
         }
         container.empty().append(html);
         container.listview("refresh");
-        var myScroll = new IScroll("#history-voted-list");
+        //self.scroller[pollType].refresh();
+        $("#history-" + pollType + "-wrapper").iscrollview();
+        //var myScroll = new IScroll("#history-voted-wrapper");
       },
     });
   	return false;
@@ -570,6 +573,10 @@ BW.history = new function() {
   };
 
   this.load = function(parameters) {
+    // this.scroller = {
+    //   "published": new IScroll("#history-published-wrapper"),
+    //   "voted": new IScroll("#history-voted-wrapper"),
+    // };
     if (parameters && parameters.slug) {
       alert(parameters.slug);
     } else {
@@ -745,8 +752,8 @@ BW.create = new function() {
       data: data,
       loadingMessage: "Submitting New Problem...",
       successCallback: function(data) {
-        BW.messageDialog.show("Problem Published");
         self.reset();
+        BW.page.show("vote", {"slug": data.slug});
       },
     });
   	return false;
@@ -766,6 +773,7 @@ BW.create = new function() {
     $("#create-buttons").show();
     var section = this.getSection();
     $("#header-text").empty().append("Create");
+    $("#create-continue-button").removeClass("hide");
     if (section == "create-hand-page") {
       $("#header-text").empty().append("Enter Hand");
       var currentHand = this.deal.getHand(this.handDirection);
@@ -805,9 +813,14 @@ BW.create = new function() {
       $("#create-continue-button").removeClass("disabled").addClass("enabled");
     } else if (section == "create-review-page") {
       $("#header-text").empty().append("Final Review");
+      if (!BW.user.getPreference("auction_above_hands")) {
+        $("#create-review-page").addClass("show-hand-first");
+      } else {
+        $("#create-review-page").removeClass("show-hand-first");
+      }
       $("#hand-header").hide();
       $("#hand").hide();
-      $("#create-buttons").hide();
+      $("#create-continue-button").addClass("hide");
     }
     else {
     }

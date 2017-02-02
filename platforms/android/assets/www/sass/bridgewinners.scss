@@ -9,16 +9,17 @@
 html {
   box-sizing: border-box;
 }
-html,
-body {
-height: 100%;
-min-height: 100%;
+html, body {
+  height: 100%;
+  min-height: 100%;
+  overflow: hidden;
 }
 
 .full-screen {
-height: 100%;
-min-height: 100%;
+  height: 100%;
+  min-height: 100%;
 }
+
 *, *:before, *:after {
   box-sizing: inherit;
 }
@@ -285,12 +286,42 @@ $menu_items: vote create history alerts account;
       }
     }
   }
-  #scoring-header, #vulnerability-header, #dealer-header, #description-header {
+  #scoring-header, #vulnerability-header, #dealer-header, #description-header, #problem-header {
     @include font(17px);
     font-weight: 600;
     letter-spacing: -0.4px;
     color: $darkGrey;
     text-align: left;
+  }
+  #problem-header {
+    @include location(184px, 20px, 345px, 15px);
+  }
+  #problem {
+    problemtypes{
+      @include location(209px, 44px, 345px, 15px);
+      display: table;
+      table-layout: fixed;
+      @include border-radius(5px);
+      border: solid 1px #979797;
+      background-color: $deactiveGrey;
+    }
+    problemtype {
+      display: table-cell;
+      vertical-align: middle;
+      @include font(17px);
+      font-weight: 600;
+      letter-spacing: 0.6px;
+      color: $darkGrey;
+      cursor: pointer;
+    }
+    problemtype:not(:last-child) {
+      border-right: solid 1px #979797;
+    }
+    problemtype.current {
+      background-color: $BWSeaGreen;
+      color: $white;
+      cursor:default;
+    }
   }
   #scoring-header {
     @include location(264px, 20px, 345px, 15px);
@@ -468,7 +499,7 @@ $menu_items: vote create history alerts account;
   }
   #bidding-box {
     @include location(283px, 245px, 345px, 15px);
-    @include font(18px);
+    @include font(16px);
     font-weight: 600;
     letter-spacing: -0.5px;
     color: $black;
@@ -581,17 +612,17 @@ $menu_items: vote create history alerts account;
         color: $black;
         background-color: $white;
       }
-      #info-wrapper {
+      #info-wrapper-review {
         @include location(109px, 135px, 105px, 255px);
         background-color: $lightGrey;
         border: solid 2px $BWSlate;
       }
-      #vul-e {
+      #vul-e-review {
         @include location(139px, 76px, 21px, 332px);
         border: solid 2px $BWSlate;
         border-left: 0;
       }
-      #vul-w {
+      #vul-w-review {
         @include location(139px, 76px, 21px, 262px);
         border: solid 2px $BWSlate;
         border-right: 0;
@@ -610,12 +641,12 @@ $menu_items: vote create history alerts account;
         z-index: 1;
         word-wrap: break-word;
       }
-      #vul-n {
+      #vul-n-review {
         @include location(116px, 25px, 53.1px, 281px);
         border: solid 2px $BWSlate;
         border-bottom: 0;
       }
-      #vul-s {
+      #vul-s-review {
         @include location(213px, 25px, 53.1px, 281px);
         border: solid 2px $BWSlate;
         border-top: 0;
@@ -688,6 +719,34 @@ $menu_items: vote create history alerts account;
       @include location(535px, 44px, 169px, 191px);
     }
   }
+  #create-review-page.show-hand-first {
+      #auction-review {
+        @include location(189px, 135px, 230px, 15px);
+      }
+      #vulnerability-review {
+        #info-wrapper-review {
+          @include location(189px, 135px, 105px, 255px);
+        }
+        #vul-e-review {
+          @include location(219px, 76px, 21px, 332px);
+        }
+        #vul-w-review {
+          @include location(219px, 76px, 21px, 262px);
+        }
+        #scoring-review {
+          @include location(219px, 76px, 53.1px, 281px);
+        }
+        #vul-n-review {
+          @include location(196px, 25px, 53.1px, 281px);
+        }
+        #vul-s-review {
+          @include location(293px, 25px, 53.1px, 281px);
+        }
+      }
+      #hand-review {
+        @include location(109px, 66px, 349px, 13px);
+      }
+  }
 }
 
 #footer {
@@ -714,11 +773,18 @@ $menu_items: vote create history alerts account;
 
 
 #alerts-page {
+  #alerts-wrapper {
+  	position:absolute;
+  	@include location(44px, 550px, 375px);
+  	width:100%;
+  	overflow:auto;
+    background-color: transparent;
+    color:transparent;
+  }
   #alerts-list {
     li {
       width: 100vw;
     }
-    @include location(44px, 550px, 375px);
     @include font(12px);
   }
   .alert {
@@ -977,6 +1043,7 @@ $menu_items: vote create history alerts account;
       display: table;
       table-layout: fixed;
       width: 100%;
+      @include font(20px);
     }
     .answer-result-column {
       display: table-cell;
@@ -986,9 +1053,10 @@ $menu_items: vote create history alerts account;
     }
     .answer-result-avatar {
       text-align: left;
+      width: 50%;
     }
     .avatar-result {
-      $height: 30px;
+      $height: 40px;
       height: $height/$ref_height * 100vh;
       // Width should be same as height. So this hack.
       width: $height/$ref_height * 100vh;
@@ -1100,8 +1168,16 @@ $menu_items: vote create history alerts account;
     color: $darkGrey;
     padding: 10px;
   }
+  #history-voted-wrapper, #history-published-wrapper {
+  	position:absolute;
+  	@include location(88px, 490px, 375px);
+  	width:100%;
+  	overflow:auto;
+    background-color: transparent;
+    color:transparent;
+  }
   .history-list {
-    @include location(178px, 400px, 375px);
+    //@include location(88px, 490px, 375px);
     section {
       display: inline-block;
     }
@@ -1137,7 +1213,7 @@ $menu_items: vote create history alerts account;
     .name {
       @include font(15px);
       font-weight: 600;
-      color: $darkGrey;
+      color: $BWRed;
       margin-left: 10px;
     }
     .answer, .percentage {
@@ -1145,6 +1221,12 @@ $menu_items: vote create history alerts account;
       @include font(14px);
       font-weight: 600;
       color: $darkGrey;
+    }
+    .answer {
+      margin-right: 2vw;
+    }
+    suit[data-suit='n'] {
+      text-transform: capitalize;
     }
     .percentage {
       @include width(40px);
@@ -1392,7 +1474,7 @@ $menu_items: vote create history alerts account;
   }
   #bidding-box {
     @include location(411px, 96px, 343px, 16px);
-    @include font(36px);
+    @include font(30px);
     font-weight: 600;
     letter-spacing: -0.9px;
     color: $black;
@@ -1558,6 +1640,16 @@ body.ui-mobile-viewport {
 .header-container {
   @include font(17px);
   background-color: $BWSeaGreen;
+  @include location(0px, 44px, 375px);
+  @extend %flex-vertical-center;
+  font-weight: 600;
+  color: $TextColor;
+  text-transform: capitalize;
+}
+
+.back-button-container {
+  @include font(17px);
+  background-color: transparent;
   @include location(0px, 44px, 375px);
   @extend %flex-vertical-center;
   font-weight: 600;

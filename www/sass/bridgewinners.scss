@@ -22,7 +22,6 @@ html, body {
 
 *, *:before, *:after {
   box-sizing: inherit;
-  overflow: hidden;
 }
 
 $ref_height: 647px;
@@ -500,7 +499,7 @@ $menu_items: vote create history alerts account;
   }
   #bidding-box {
     @include location(283px, 245px, 345px, 15px);
-    @include font(18px);
+    @include font(16px);
     font-weight: 600;
     letter-spacing: -0.5px;
     color: $black;
@@ -774,11 +773,35 @@ $menu_items: vote create history alerts account;
 
 
 #alerts-page {
+  button.bridgewinners {
+    position:relative;
+    @extend %horizontal-center;
+    @include font(20px);
+    color: #ffffff;
+    background-color: $BWRed;
+    @include border-radius(5px);
+    @include height(44px);
+    @include width(335px);
+    @include left(20px);
+    cursor: pointer;
+  }
+  button.bridgewinners.disabled {
+    color: $darkGrey;
+    background-color: $lightGrey;
+    cursor: not-allowed;
+  }
+  #alerts-wrapper {
+  	position:absolute;
+  	@include location(44px, 550px, 375px);
+  	width:100%;
+  	overflow:auto;
+    background-color: transparent;
+    color:transparent;
+  }
   #alerts-list {
     li {
       width: 100vw;
     }
-    @include location(44px, 550px, 375px);
     @include font(12px);
   }
   .alert {
@@ -1162,8 +1185,16 @@ $menu_items: vote create history alerts account;
     color: $darkGrey;
     padding: 10px;
   }
+  #history-voted-wrapper, #history-published-wrapper {
+    position:absolute;
+  	@include location(88px, 490px, 375px);
+  	width:100%;
+  	overflow:auto;
+    background-color: transparent;
+    color:transparent;
+  }
   .history-list {
-    @include location(88px, 490px, 375px);
+    //@include location(88px, 485px, 375px);
     section {
       display: inline-block;
     }
@@ -1199,7 +1230,7 @@ $menu_items: vote create history alerts account;
     .name {
       @include font(15px);
       font-weight: 600;
-      color: $darkGrey;
+      color: $BWRed;
       margin-left: 10px;
     }
     .answer, .percentage {
@@ -1460,7 +1491,7 @@ $menu_items: vote create history alerts account;
   }
   #bidding-box {
     @include location(411px, 96px, 343px, 16px);
-    @include font(36px);
+    @include font(30px);
     font-weight: 600;
     letter-spacing: -0.9px;
     color: $black;

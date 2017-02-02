@@ -18,6 +18,7 @@
   <preference name="StatusBarBackgroundColor" value="#2a5461" />
   <preference name="StatusBarStyle" value="lightcontent" />
   <preference name="Orientation" value="portrait" />
+  <preference name="DisallowOverscroll" value="true"/>
 	<platform name="android">
 		<icon src="res/android/drawable-hdpi/Icon.png" density="hdpi" />
 		<icon src="res/android/drawable-ldpi/Icon.png" density="ldpi" />

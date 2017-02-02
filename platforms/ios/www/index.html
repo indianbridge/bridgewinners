@@ -12,6 +12,8 @@
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, usr-scalable=no">
     <!--<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, target-densitydpi=device-dpi" />-->
     <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.min.css">
+    <link rel="stylesheet" href="css/jquery.mobile.iscrollview.css"/>
+    <link rel="stylesheet" href="css/jquery.mobile.iscrollview-pull.css"/>
     <link rel="stylesheet" type="text/css" href="css/bridgewinners.css">
     <script src="js/jquery.min.js"></script>
     <script type="text/javascript" src="cordova.js"></script>
@@ -22,6 +24,7 @@
     <script src="js/jquery.mobile-1.4.5.min.js"></script>
     <script src="js/fastclick.min.js"></script>
     <script src="js/iscroll.js"></script>
+    <script src="js/jquery.mobile.iscrollview.js"></script>
     <title>BridgeWinners Mobile App</title>
   </head>
   <body >
@@ -133,12 +136,12 @@
           </div>
           <div id="auction-review" class="scrollable"></div>
           <div id="vulnerability-review">
-            <div id="info-wrapper"></div>
+            <div id="info-wrapper-review"></div>
             <div id="scoring-review"></div>
-            <div id="vul-n" class="vulnerability"></div>
-            <div id="vul-e" class="vulnerability"></div>
-            <div id="vul-s" class="vulnerability"></div>
-            <div id="vul-w" class="vulnerability"></div>
+            <div id="vul-n-review" class="vulnerability"></div>
+            <div id="vul-e-review" class="vulnerability"></div>
+            <div id="vul-s-review" class="vulnerability"></div>
+            <div id="vul-w-review" class="vulnerability"></div>
           </div>
           <div id="hand-review"></div>
           <div id="description-review" class="scrollable"></div>
@@ -160,13 +163,33 @@
         </div>
         <div id="history-voted-page" data-role="section" data-name="history-voted-page">
           <!-- <div class="history-header">Problems you recently voted on.</div> -->
-          <ul id="history-voted-list" class="history-list scrollable" data-role="listview">
-          </ul>
+          <div id="history-voted-wrapper">
+              <div class="iscroll-pulldown">
+                <span class="iscroll-pull-icon"></span>
+                <span class="iscroll-pull-label"></span>
+              </div>
+              <ul id="history-voted-list" class="history-list scrollable" data-role="listview">
+              </ul>
+              <div class="iscroll-pullup">
+                <span class="iscroll-pull-icon"></span>
+                <span class="iscroll-pull-label"></span>
+              </div>
+          </div>
         </div>
         <div id="history-published-page" data-role="section" data-name="history-published-page">
           <!-- <div class="history-header">Problems you recently published.</div> -->
-          <ul id="history-published-list" class="history-list scrollable" data-role="listview">
-          </ul>
+          <div id="history-published-wrapper">
+            <div class="iscroll-pulldown">
+              <span class="iscroll-pull-icon"></span>
+              <span class="iscroll-pull-label"></span>
+            </div>
+            <ul id="history-published-list" class="history-list scrollable" data-role="listview">
+            </ul>
+            <div class="iscroll-pullup">
+              <span class="iscroll-pull-icon"></span>
+              <span class="iscroll-pull-label"></span>
+            </div>
+          </div>
         </div>
         <div id="history-results-page" data-role="section" data-name="history-results-page">
           <div id="asks-results">
@@ -206,8 +229,10 @@
     </script>
     <script id="alerts-template" type="text/template">
       <div id="alerts-page" class="main-page">
-        <ul id="alerts-list" data-role="listview">
-        </ul>
+        <div id="alerts-wrapper">
+          <ul id="alerts-list" class="scrollable" data-role="listview">
+          </ul>
+        </div>
       </div>
     </script>
     <script id="account-template" type="text/template">

@@ -88,64 +88,63 @@ html, body {
 /* line 23, ../sass/bridgewinners.scss */
 *, *:before, *:after {
   box-sizing: inherit;
-  overflow: hidden;
 }
 
-/* line 111, ../sass/bridgewinners.scss */
+/* line 110, ../sass/bridgewinners.scss */
 .inline-block {
   display: inline;
 }
 
-/* line 115, ../sass/bridgewinners.scss */
+/* line 114, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review card.selected, #history-page #history-results-page #hand-results card.selected, #vote-page #hand card.selected, #vote-page #lead-box card.selected {
   -webkit-filter: blur(1px);
   filter: blur(1px);
 }
 
-/* line 120, ../sass/bridgewinners.scss */
+/* line 119, ../sass/bridgewinners.scss */
 #create-page #special_calls call, #create-page #create-reset-button, #create-page #create-continue-button, #create-page #create-review-page #vulnerability-review .vulnerability, #create-page #create-review-page #vulnerability-review #scoring-review, #create-page #create-review-page #create-save-button, #create-page #create-review-page #create-publish-button, #history-page #history-results-page #vulnerability-results .vulnerability, #history-page #history-results-page #vulnerability-results #scoring-results, #history-page #history-results-page #history-revote-button, #history-page #history-results-page #history-voters-button, #vote-page #vulnerability .vulnerability, #vote-page #vulnerability #scoring, #vote-page #skip-submit-button, #vote-page #abstain-submit-button, #vote-page #vote-submit-button, .header-container, .back-button-container, #account-page #name, #account-page #edit-profile-button, #account-page #logout-submit-button, #account-page .list {
   display: flex !important;
   justify-content: center;
   flex-direction: column;
 }
 
-/* line 125, ../sass/bridgewinners.scss */
+/* line 124, ../sass/bridgewinners.scss */
 #create-page #create-review-page #name-review, #history-page #history-results-page #name-results, #history-page #history-results-page #votes-results, #history-page #history-results-page #comments-results, #history-page #history-results-page #likes-results, #vote-page #name, #vote-page #comments, #vote-page #likes {
   display: flex !important;
   align-items: center;
 }
 
-/* line 130, ../sass/bridgewinners.scss */
+/* line 129, ../sass/bridgewinners.scss */
 .footer-inner-container .menu-item, .footer-outer-container .menu-item .menu-icon {
   position: relative;
   top: 50%;
   -webkit-transform: translateY(-50%);
 }
 
-/* line 136, ../sass/bridgewinners.scss */
-.center, #footer #account-avatar-inner, #footer #account-avatar-outer, .login-page-content .bridgewinners-logo, .login-page-content input, .login-page-content button {
+/* line 135, ../sass/bridgewinners.scss */
+.center, #footer #account-avatar-inner, #footer #account-avatar-outer, #alerts-page button.bridgewinners, .login-page-content .bridgewinners-logo, .login-page-content input, .login-page-content button {
   left: 0;
   right: 0;
   margin: 0 auto;
 }
 
-/* line 142, ../sass/bridgewinners.scss */
+/* line 141, ../sass/bridgewinners.scss */
 .scrollable {
   overflow-x: hidden;
   overflow-y: auto;
 }
 
-/* line 147, ../sass/bridgewinners.scss */
+/* line 146, ../sass/bridgewinners.scss */
 .center {
   display: block;
 }
 
-/* line 152, ../sass/bridgewinners.scss */
+/* line 151, ../sass/bridgewinners.scss */
 [data-suit="d"], [data-suit="h"] {
   color: #cb1517;
 }
 
-/* line 156, ../sass/bridgewinners.scss */
+/* line 155, ../sass/bridgewinners.scss */
 #confirmation-popup-content {
   font-family: SFUIDisplay;
   font-size: 3.70943vh;
@@ -158,7 +157,7 @@ html, body {
   color: #4a4a4a;
 }
 
-/* line 162, ../sass/bridgewinners.scss */
+/* line 161, ../sass/bridgewinners.scss */
 #vote-page.bidding #description {
   display: block;
   position: fixed;
@@ -167,7 +166,7 @@ html, body {
   width: 100vw;
 }
 
-/* line 168, ../sass/bridgewinners.scss */
+/* line 167, ../sass/bridgewinners.scss */
 #vote-page.lead #description {
   display: block;
   position: fixed;
@@ -176,7 +175,7 @@ html, body {
   width: 100vw;
 }
 
-/* line 174, ../sass/bridgewinners.scss */
+/* line 173, ../sass/bridgewinners.scss */
 #create-page #hand-header {
   display: block;
   position: fixed;
@@ -196,7 +195,7 @@ html, body {
   color: #4a4a4a;
   text-align: left;
 }
-/* line 181, ../sass/bridgewinners.scss */
+/* line 180, ../sass/bridgewinners.scss */
 #create-page #hand {
   display: block;
   position: fixed;
@@ -206,18 +205,18 @@ html, body {
   width: 92vw;
   z-index: -2;
 }
-/* line 184, ../sass/bridgewinners.scss */
+/* line 183, ../sass/bridgewinners.scss */
 #create-page #hand hand, #create-page #hand content {
   display: block;
   width: 100%;
   height: 100%;
 }
-/* line 189, ../sass/bridgewinners.scss */
+/* line 188, ../sass/bridgewinners.scss */
 #create-page #hand cards {
   display: inline-block;
   height: 100%;
 }
-/* line 193, ../sass/bridgewinners.scss */
+/* line 192, ../sass/bridgewinners.scss */
 #create-page #hand card {
   position: absolute;
   color: transparent;
@@ -226,7 +225,7 @@ html, body {
   width: 12.8vw;
   cursor: pointer;
 }
-/* line 201, ../sass/bridgewinners.scss */
+/* line 200, ../sass/bridgewinners.scss */
 #create-page #hand card.unassigned {
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
@@ -234,288 +233,288 @@ html, body {
   background-color: #dddddd;
   border: solid 1px #979797;
 }
-/* line 208, ../sass/bridgewinners.scss */
+/* line 207, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit][data-rank] {
   background-repeat: no-repeat;
   background-size: cover;
 }
-/* line 212, ../sass/bridgewinners.scss */
+/* line 211, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="s"][data-rank="x"] {
   background-image: url("img/s2.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="s"][data-rank="a"] {
   background-image: url("img/sa.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="s"][data-rank="k"] {
   background-image: url("img/sk.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="s"][data-rank="q"] {
   background-image: url("img/sq.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="s"][data-rank="j"] {
   background-image: url("img/sj.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="s"][data-rank="t"] {
   background-image: url("img/st.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="s"][data-rank="9"] {
   background-image: url("img/s9.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="s"][data-rank="8"] {
   background-image: url("img/s8.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="s"][data-rank="7"] {
   background-image: url("img/s7.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="s"][data-rank="6"] {
   background-image: url("img/s6.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="s"][data-rank="5"] {
   background-image: url("img/s5.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="s"][data-rank="4"] {
   background-image: url("img/s4.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="s"][data-rank="3"] {
   background-image: url("img/s3.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="s"][data-rank="2"] {
   background-image: url("img/s2.png");
 }
-/* line 212, ../sass/bridgewinners.scss */
+/* line 211, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="h"][data-rank="x"] {
   background-image: url("img/h2.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="h"][data-rank="a"] {
   background-image: url("img/ha.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="h"][data-rank="k"] {
   background-image: url("img/hk.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="h"][data-rank="q"] {
   background-image: url("img/hq.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="h"][data-rank="j"] {
   background-image: url("img/hj.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="h"][data-rank="t"] {
   background-image: url("img/ht.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="h"][data-rank="9"] {
   background-image: url("img/h9.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="h"][data-rank="8"] {
   background-image: url("img/h8.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="h"][data-rank="7"] {
   background-image: url("img/h7.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="h"][data-rank="6"] {
   background-image: url("img/h6.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="h"][data-rank="5"] {
   background-image: url("img/h5.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="h"][data-rank="4"] {
   background-image: url("img/h4.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="h"][data-rank="3"] {
   background-image: url("img/h3.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="h"][data-rank="2"] {
   background-image: url("img/h2.png");
 }
-/* line 212, ../sass/bridgewinners.scss */
+/* line 211, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="d"][data-rank="x"] {
   background-image: url("img/d2.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="d"][data-rank="a"] {
   background-image: url("img/da.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="d"][data-rank="k"] {
   background-image: url("img/dk.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="d"][data-rank="q"] {
   background-image: url("img/dq.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="d"][data-rank="j"] {
   background-image: url("img/dj.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="d"][data-rank="t"] {
   background-image: url("img/dt.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="d"][data-rank="9"] {
   background-image: url("img/d9.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="d"][data-rank="8"] {
   background-image: url("img/d8.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="d"][data-rank="7"] {
   background-image: url("img/d7.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="d"][data-rank="6"] {
   background-image: url("img/d6.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="d"][data-rank="5"] {
   background-image: url("img/d5.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="d"][data-rank="4"] {
   background-image: url("img/d4.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="d"][data-rank="3"] {
   background-image: url("img/d3.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="d"][data-rank="2"] {
   background-image: url("img/d2.png");
 }
-/* line 212, ../sass/bridgewinners.scss */
+/* line 211, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="c"][data-rank="x"] {
   background-image: url("img/c2.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="c"][data-rank="a"] {
   background-image: url("img/ca.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="c"][data-rank="k"] {
   background-image: url("img/ck.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="c"][data-rank="q"] {
   background-image: url("img/cq.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="c"][data-rank="j"] {
   background-image: url("img/cj.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="c"][data-rank="t"] {
   background-image: url("img/ct.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="c"][data-rank="9"] {
   background-image: url("img/c9.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="c"][data-rank="8"] {
   background-image: url("img/c8.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="c"][data-rank="7"] {
   background-image: url("img/c7.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="c"][data-rank="6"] {
   background-image: url("img/c6.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="c"][data-rank="5"] {
   background-image: url("img/c5.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="c"][data-rank="4"] {
   background-image: url("img/c4.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="c"][data-rank="3"] {
   background-image: url("img/c3.png");
 }
-/* line 216, ../sass/bridgewinners.scss */
+/* line 215, ../sass/bridgewinners.scss */
 #create-page #hand [data-suit="c"][data-rank="2"] {
   background-image: url("img/c2.png");
 }
-/* line 222, ../sass/bridgewinners.scss */
+/* line 221, ../sass/bridgewinners.scss */
 #create-page #hand [data-card-number="1"] {
   left: 0vw;
 }
-/* line 222, ../sass/bridgewinners.scss */
+/* line 221, ../sass/bridgewinners.scss */
 #create-page #hand [data-card-number="2"] {
   left: 6.66667vw;
 }
-/* line 222, ../sass/bridgewinners.scss */
+/* line 221, ../sass/bridgewinners.scss */
 #create-page #hand [data-card-number="3"] {
   left: 13.33333vw;
 }
-/* line 222, ../sass/bridgewinners.scss */
+/* line 221, ../sass/bridgewinners.scss */
 #create-page #hand [data-card-number="4"] {
   left: 20vw;
 }
-/* line 222, ../sass/bridgewinners.scss */
+/* line 221, ../sass/bridgewinners.scss */
 #create-page #hand [data-card-number="5"] {
   left: 26.66667vw;
 }
-/* line 222, ../sass/bridgewinners.scss */
+/* line 221, ../sass/bridgewinners.scss */
 #create-page #hand [data-card-number="6"] {
   left: 33.33333vw;
 }
-/* line 222, ../sass/bridgewinners.scss */
+/* line 221, ../sass/bridgewinners.scss */
 #create-page #hand [data-card-number="7"] {
   left: 40vw;
 }
-/* line 222, ../sass/bridgewinners.scss */
+/* line 221, ../sass/bridgewinners.scss */
 #create-page #hand [data-card-number="8"] {
   left: 46.66667vw;
 }
-/* line 222, ../sass/bridgewinners.scss */
+/* line 221, ../sass/bridgewinners.scss */
 #create-page #hand [data-card-number="9"] {
   left: 53.33333vw;
 }
-/* line 222, ../sass/bridgewinners.scss */
+/* line 221, ../sass/bridgewinners.scss */
 #create-page #hand [data-card-number="10"] {
   left: 60vw;
 }
-/* line 222, ../sass/bridgewinners.scss */
+/* line 221, ../sass/bridgewinners.scss */
 #create-page #hand [data-card-number="11"] {
   left: 66.66667vw;
 }
-/* line 222, ../sass/bridgewinners.scss */
+/* line 221, ../sass/bridgewinners.scss */
 #create-page #hand [data-card-number="12"] {
   left: 73.33333vw;
 }
-/* line 222, ../sass/bridgewinners.scss */
+/* line 221, ../sass/bridgewinners.scss */
 #create-page #hand [data-card-number="13"] {
   left: 80vw;
 }
-/* line 228, ../sass/bridgewinners.scss */
+/* line 227, ../sass/bridgewinners.scss */
 #create-page #deck-header {
   display: block;
   position: fixed;
@@ -535,13 +534,13 @@ html, body {
   color: #4a4a4a;
   text-align: left;
 }
-/* line 236, ../sass/bridgewinners.scss */
+/* line 235, ../sass/bridgewinners.scss */
 #create-page #deck card-deck, #create-page #deck content {
   display: block;
   width: 100%;
   height: 100%;
 }
-/* line 241, ../sass/bridgewinners.scss */
+/* line 240, ../sass/bridgewinners.scss */
 #create-page #deck card {
   position: absolute;
   color: transparent;
@@ -550,236 +549,236 @@ html, body {
   width: 12.8vw;
   cursor: pointer;
 }
-/* line 251, ../sass/bridgewinners.scss */
+/* line 250, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit][data-rank] {
   background-repeat: no-repeat;
   background-size: cover;
 }
-/* line 255, ../sass/bridgewinners.scss */
+/* line 254, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="s"][data-rank="x"].unassigned {
   background-image: url("img/s2.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="s"][data-rank="a"].unassigned {
   background-image: url("img/sa.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="s"][data-rank="k"].unassigned {
   background-image: url("img/sk.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="s"][data-rank="q"].unassigned {
   background-image: url("img/sq.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="s"][data-rank="j"].unassigned {
   background-image: url("img/sj.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="s"][data-rank="t"].unassigned {
   background-image: url("img/st.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="s"][data-rank="9"].unassigned {
   background-image: url("img/s9.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="s"][data-rank="8"].unassigned {
   background-image: url("img/s8.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="s"][data-rank="7"].unassigned {
   background-image: url("img/s7.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="s"][data-rank="6"].unassigned {
   background-image: url("img/s6.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="s"][data-rank="5"].unassigned {
   background-image: url("img/s5.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="s"][data-rank="4"].unassigned {
   background-image: url("img/s4.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="s"][data-rank="3"].unassigned {
   background-image: url("img/s3.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="s"][data-rank="2"].unassigned {
   background-image: url("img/s2.png");
 }
-/* line 255, ../sass/bridgewinners.scss */
+/* line 254, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="h"][data-rank="x"].unassigned {
   background-image: url("img/h2.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="h"][data-rank="a"].unassigned {
   background-image: url("img/ha.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="h"][data-rank="k"].unassigned {
   background-image: url("img/hk.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="h"][data-rank="q"].unassigned {
   background-image: url("img/hq.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="h"][data-rank="j"].unassigned {
   background-image: url("img/hj.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="h"][data-rank="t"].unassigned {
   background-image: url("img/ht.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="h"][data-rank="9"].unassigned {
   background-image: url("img/h9.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="h"][data-rank="8"].unassigned {
   background-image: url("img/h8.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="h"][data-rank="7"].unassigned {
   background-image: url("img/h7.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="h"][data-rank="6"].unassigned {
   background-image: url("img/h6.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="h"][data-rank="5"].unassigned {
   background-image: url("img/h5.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="h"][data-rank="4"].unassigned {
   background-image: url("img/h4.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="h"][data-rank="3"].unassigned {
   background-image: url("img/h3.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="h"][data-rank="2"].unassigned {
   background-image: url("img/h2.png");
 }
-/* line 255, ../sass/bridgewinners.scss */
+/* line 254, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="d"][data-rank="x"].unassigned {
   background-image: url("img/d2.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="d"][data-rank="a"].unassigned {
   background-image: url("img/da.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="d"][data-rank="k"].unassigned {
   background-image: url("img/dk.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="d"][data-rank="q"].unassigned {
   background-image: url("img/dq.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="d"][data-rank="j"].unassigned {
   background-image: url("img/dj.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="d"][data-rank="t"].unassigned {
   background-image: url("img/dt.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="d"][data-rank="9"].unassigned {
   background-image: url("img/d9.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="d"][data-rank="8"].unassigned {
   background-image: url("img/d8.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="d"][data-rank="7"].unassigned {
   background-image: url("img/d7.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="d"][data-rank="6"].unassigned {
   background-image: url("img/d6.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="d"][data-rank="5"].unassigned {
   background-image: url("img/d5.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="d"][data-rank="4"].unassigned {
   background-image: url("img/d4.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="d"][data-rank="3"].unassigned {
   background-image: url("img/d3.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="d"][data-rank="2"].unassigned {
   background-image: url("img/d2.png");
 }
-/* line 255, ../sass/bridgewinners.scss */
+/* line 254, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="c"][data-rank="x"].unassigned {
   background-image: url("img/c2.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="c"][data-rank="a"].unassigned {
   background-image: url("img/ca.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="c"][data-rank="k"].unassigned {
   background-image: url("img/ck.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="c"][data-rank="q"].unassigned {
   background-image: url("img/cq.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="c"][data-rank="j"].unassigned {
   background-image: url("img/cj.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="c"][data-rank="t"].unassigned {
   background-image: url("img/ct.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="c"][data-rank="9"].unassigned {
   background-image: url("img/c9.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="c"][data-rank="8"].unassigned {
   background-image: url("img/c8.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="c"][data-rank="7"].unassigned {
   background-image: url("img/c7.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="c"][data-rank="6"].unassigned {
   background-image: url("img/c6.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="c"][data-rank="5"].unassigned {
   background-image: url("img/c5.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="c"][data-rank="4"].unassigned {
   background-image: url("img/c4.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="c"][data-rank="3"].unassigned {
   background-image: url("img/c3.png");
 }
-/* line 259, ../sass/bridgewinners.scss */
+/* line 258, ../sass/bridgewinners.scss */
 #create-page #deck [data-suit="c"][data-rank="2"].unassigned {
   background-image: url("img/c2.png");
 }
-/* line 264, ../sass/bridgewinners.scss */
+/* line 263, ../sass/bridgewinners.scss */
 #create-page #deck card.assigned {
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
@@ -787,267 +786,267 @@ html, body {
   background-color: #dddddd;
   border: solid 1px #979797;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="1"] {
   left: 4vw;
   top: 26.27512vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="2"] {
   left: 10.66667vw;
   top: 26.27512vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="3"] {
   left: 17.33333vw;
   top: 26.27512vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="4"] {
   left: 24vw;
   top: 26.27512vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="5"] {
   left: 30.66667vw;
   top: 26.27512vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="6"] {
   left: 37.33333vw;
   top: 26.27512vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="7"] {
   left: 44vw;
   top: 26.27512vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="8"] {
   left: 50.66667vw;
   top: 26.27512vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="9"] {
   left: 57.33333vw;
   top: 26.27512vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="10"] {
   left: 64vw;
   top: 26.27512vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="11"] {
   left: 70.66667vw;
   top: 26.27512vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="12"] {
   left: 77.33333vw;
   top: 26.27512vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="13"] {
   left: 84vw;
   top: 26.27512vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="14"] {
   left: 4vw;
   top: 38.63988vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="15"] {
   left: 10.66667vw;
   top: 38.63988vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="16"] {
   left: 17.33333vw;
   top: 38.63988vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="17"] {
   left: 24vw;
   top: 38.63988vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="18"] {
   left: 30.66667vw;
   top: 38.63988vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="19"] {
   left: 37.33333vw;
   top: 38.63988vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="20"] {
   left: 44vw;
   top: 38.63988vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="21"] {
   left: 50.66667vw;
   top: 38.63988vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="22"] {
   left: 57.33333vw;
   top: 38.63988vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="23"] {
   left: 64vw;
   top: 38.63988vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="24"] {
   left: 70.66667vw;
   top: 38.63988vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="25"] {
   left: 77.33333vw;
   top: 38.63988vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="26"] {
   left: 84vw;
   top: 38.63988vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="27"] {
   left: 4vw;
   top: 51.00464vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="28"] {
   left: 10.66667vw;
   top: 51.00464vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="29"] {
   left: 17.33333vw;
   top: 51.00464vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="30"] {
   left: 24vw;
   top: 51.00464vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="31"] {
   left: 30.66667vw;
   top: 51.00464vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="32"] {
   left: 37.33333vw;
   top: 51.00464vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="33"] {
   left: 44vw;
   top: 51.00464vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="34"] {
   left: 50.66667vw;
   top: 51.00464vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="35"] {
   left: 57.33333vw;
   top: 51.00464vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="36"] {
   left: 64vw;
   top: 51.00464vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="37"] {
   left: 70.66667vw;
   top: 51.00464vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="38"] {
   left: 77.33333vw;
   top: 51.00464vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="39"] {
   left: 84vw;
   top: 51.00464vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="40"] {
   left: 4vw;
   top: 63.3694vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="41"] {
   left: 10.66667vw;
   top: 63.3694vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="42"] {
   left: 17.33333vw;
   top: 63.3694vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="43"] {
   left: 24vw;
   top: 63.3694vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="44"] {
   left: 30.66667vw;
   top: 63.3694vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="45"] {
   left: 37.33333vw;
   top: 63.3694vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="46"] {
   left: 44vw;
   top: 63.3694vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="47"] {
   left: 50.66667vw;
   top: 63.3694vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="48"] {
   left: 57.33333vw;
   top: 63.3694vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="49"] {
   left: 64vw;
   top: 63.3694vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="50"] {
   left: 70.66667vw;
   top: 63.3694vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="51"] {
   left: 77.33333vw;
   top: 63.3694vh;
 }
-/* line 270, ../sass/bridgewinners.scss */
+/* line 269, ../sass/bridgewinners.scss */
 #create-page #deck [data-card-number="52"] {
   left: 84vw;
   top: 63.3694vh;
 }
-/* line 290, ../sass/bridgewinners.scss */
+/* line 289, ../sass/bridgewinners.scss */
 #create-page #scoring-header, #create-page #vulnerability-header, #create-page #dealer-header, #create-page #description-header, #create-page #problem-header {
   font-family: SFUIDisplay;
   font-size: 2.62751vh;
@@ -1062,7 +1061,7 @@ html, body {
   color: #4a4a4a;
   text-align: left;
 }
-/* line 297, ../sass/bridgewinners.scss */
+/* line 296, ../sass/bridgewinners.scss */
 #create-page #problem-header {
   display: block;
   position: fixed;
@@ -1071,7 +1070,7 @@ html, body {
   left: 4vw;
   width: 92vw;
 }
-/* line 301, ../sass/bridgewinners.scss */
+/* line 300, ../sass/bridgewinners.scss */
 #create-page #problem problemtypes {
   display: block;
   position: fixed;
@@ -1087,7 +1086,7 @@ html, body {
   border: solid 1px #979797;
   background-color: #c7c7cc;
 }
-/* line 309, ../sass/bridgewinners.scss */
+/* line 308, ../sass/bridgewinners.scss */
 #create-page #problem problemtype {
   display: table-cell;
   vertical-align: middle;
@@ -1104,17 +1103,17 @@ html, body {
   color: #4a4a4a;
   cursor: pointer;
 }
-/* line 318, ../sass/bridgewinners.scss */
+/* line 317, ../sass/bridgewinners.scss */
 #create-page #problem problemtype:not(:last-child) {
   border-right: solid 1px #979797;
 }
-/* line 321, ../sass/bridgewinners.scss */
+/* line 320, ../sass/bridgewinners.scss */
 #create-page #problem problemtype.current {
   background-color: #2a5461;
   color: #ffffff;
   cursor: default;
 }
-/* line 327, ../sass/bridgewinners.scss */
+/* line 326, ../sass/bridgewinners.scss */
 #create-page #scoring-header {
   display: block;
   position: fixed;
@@ -1123,7 +1122,7 @@ html, body {
   left: 4vw;
   width: 92vw;
 }
-/* line 331, ../sass/bridgewinners.scss */
+/* line 330, ../sass/bridgewinners.scss */
 #create-page #scoring scoringtypes {
   display: block;
   position: fixed;
@@ -1139,7 +1138,7 @@ html, body {
   border: solid 1px #979797;
   background-color: #c7c7cc;
 }
-/* line 339, ../sass/bridgewinners.scss */
+/* line 338, ../sass/bridgewinners.scss */
 #create-page #scoring scoringtype {
   display: table-cell;
   vertical-align: middle;
@@ -1156,17 +1155,17 @@ html, body {
   color: #4a4a4a;
   cursor: pointer;
 }
-/* line 348, ../sass/bridgewinners.scss */
+/* line 347, ../sass/bridgewinners.scss */
 #create-page #scoring scoringtype:not(:last-child) {
   border-right: solid 1px #979797;
 }
-/* line 351, ../sass/bridgewinners.scss */
+/* line 350, ../sass/bridgewinners.scss */
 #create-page #scoring scoringtype.current {
   background-color: #2a5461;
   color: #ffffff;
   cursor: default;
 }
-/* line 357, ../sass/bridgewinners.scss */
+/* line 356, ../sass/bridgewinners.scss */
 #create-page #vulnerability-header {
   display: block;
   position: fixed;
@@ -1175,7 +1174,7 @@ html, body {
   left: 4vw;
   width: 92vw;
 }
-/* line 361, ../sass/bridgewinners.scss */
+/* line 360, ../sass/bridgewinners.scss */
 #create-page #vulnerability vulnerabilities {
   display: block;
   position: fixed;
@@ -1191,7 +1190,7 @@ html, body {
   border: solid 1px #979797;
   background-color: #c7c7cc;
 }
-/* line 369, ../sass/bridgewinners.scss */
+/* line 368, ../sass/bridgewinners.scss */
 #create-page #vulnerability vulnerability {
   display: table-cell;
   vertical-align: middle;
@@ -1208,17 +1207,17 @@ html, body {
   color: #4a4a4a;
   cursor: pointer;
 }
-/* line 378, ../sass/bridgewinners.scss */
+/* line 377, ../sass/bridgewinners.scss */
 #create-page #vulnerability vulnerability:not(:last-child) {
   border-right: solid 1px #979797;
 }
-/* line 381, ../sass/bridgewinners.scss */
+/* line 380, ../sass/bridgewinners.scss */
 #create-page #vulnerability vulnerability.current {
   background-color: #2a5461;
   color: #ffffff;
   cursor: default;
 }
-/* line 387, ../sass/bridgewinners.scss */
+/* line 386, ../sass/bridgewinners.scss */
 #create-page #dealer-header {
   display: block;
   position: fixed;
@@ -1227,7 +1226,7 @@ html, body {
   left: 4vw;
   width: 96vw;
 }
-/* line 391, ../sass/bridgewinners.scss */
+/* line 390, ../sass/bridgewinners.scss */
 #create-page #dealer directions {
   display: block;
   position: fixed;
@@ -1243,7 +1242,7 @@ html, body {
   border: solid 1px #979797;
   background-color: #c7c7cc;
 }
-/* line 399, ../sass/bridgewinners.scss */
+/* line 398, ../sass/bridgewinners.scss */
 #create-page #dealer direction {
   display: table-cell;
   vertical-align: middle;
@@ -1260,17 +1259,17 @@ html, body {
   color: #4a4a4a;
   cursor: pointer;
 }
-/* line 408, ../sass/bridgewinners.scss */
+/* line 407, ../sass/bridgewinners.scss */
 #create-page #dealer direction:not(:last-child) {
   border-right: solid 1px #979797;
 }
-/* line 411, ../sass/bridgewinners.scss */
+/* line 410, ../sass/bridgewinners.scss */
 #create-page #dealer direction.current {
   background-color: #2a5461;
   color: #ffffff;
   cursor: default;
 }
-/* line 417, ../sass/bridgewinners.scss */
+/* line 416, ../sass/bridgewinners.scss */
 #create-page #hand-hider {
   display: block;
   position: fixed;
@@ -1280,7 +1279,7 @@ html, body {
   width: 100vw;
   z-index: -1;
 }
-/* line 421, ../sass/bridgewinners.scss */
+/* line 420, ../sass/bridgewinners.scss */
 #create-page #auction {
   display: block;
   position: fixed;
@@ -1299,13 +1298,13 @@ html, body {
   background-color: #ffffff;
   border: solid 2px #416757;
 }
-/* line 426, ../sass/bridgewinners.scss */
+/* line 425, ../sass/bridgewinners.scss */
 #create-page #auction directions, #create-page #auction calls {
   display: table;
   table-layout: fixed;
   width: 100%;
 }
-/* line 431, ../sass/bridgewinners.scss */
+/* line 430, ../sass/bridgewinners.scss */
 #create-page #auction directions {
   font-family: SFUIDisplay;
   font-size: 3.09119vh;
@@ -1318,7 +1317,7 @@ html, body {
   height: 18.5%;
   border-bottom: solid 2px #416757;
 }
-/* line 436, ../sass/bridgewinners.scss */
+/* line 435, ../sass/bridgewinners.scss */
 #create-page #auction calls {
   font-family: SFUIDisplay;
   font-size: 2.78207vh;
@@ -1330,16 +1329,16 @@ html, body {
   text-shadow: none;
   height: 81.5%;
 }
-/* line 440, ../sass/bridgewinners.scss */
+/* line 439, ../sass/bridgewinners.scss */
 #create-page #auction row {
   display: table-row;
   width: 100%;
 }
-/* line 444, ../sass/bridgewinners.scss */
+/* line 443, ../sass/bridgewinners.scss */
 #create-page #auction direction, #create-page #auction call {
   display: table-cell;
 }
-/* line 447, ../sass/bridgewinners.scss */
+/* line 446, ../sass/bridgewinners.scss */
 #create-page #auction direction {
   font-weight: 600;
   letter-spacing: -0.8px;
@@ -1347,18 +1346,18 @@ html, body {
   color: #000000;
   background-color: #ffffff;
 }
-/* line 454, ../sass/bridgewinners.scss */
+/* line 453, ../sass/bridgewinners.scss */
 #create-page #auction direction[data-vulnerable] {
   color: #ffffff;
   background-color: #d0021b;
 }
-/* line 458, ../sass/bridgewinners.scss */
+/* line 457, ../sass/bridgewinners.scss */
 #create-page #auction call {
   font-weight: 600;
   letter-spacing: -0.5px;
   text-transform: uppercase;
 }
-/* line 465, ../sass/bridgewinners.scss */
+/* line 464, ../sass/bridgewinners.scss */
 #create-page #special_calls call {
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
@@ -1375,11 +1374,11 @@ html, body {
   letter-spacing: 0.6px;
   cursor: not-allowed;
 }
-/* line 473, ../sass/bridgewinners.scss */
+/* line 472, ../sass/bridgewinners.scss */
 #create-page #special_calls call.enabled {
   cursor: pointer;
 }
-/* line 476, ../sass/bridgewinners.scss */
+/* line 475, ../sass/bridgewinners.scss */
 #create-page #special_calls call[data-call="u"] {
   display: block;
   position: fixed;
@@ -1390,7 +1389,7 @@ html, body {
   background-color: #000000;
   color: #ffffff;
 }
-/* line 481, ../sass/bridgewinners.scss */
+/* line 480, ../sass/bridgewinners.scss */
 #create-page #special_calls call[data-call="x"] {
   display: block;
   position: fixed;
@@ -1401,7 +1400,7 @@ html, body {
   background-color: #d0021b;
   color: #ffffff;
 }
-/* line 486, ../sass/bridgewinners.scss */
+/* line 485, ../sass/bridgewinners.scss */
 #create-page #special_calls call[data-call="r"] {
   display: block;
   position: fixed;
@@ -1412,12 +1411,12 @@ html, body {
   background-color: #000099;
   color: #ffffff;
 }
-/* line 491, ../sass/bridgewinners.scss */
+/* line 490, ../sass/bridgewinners.scss */
 #create-page #special_calls call[data-call="u"].disabled, #create-page #special_calls call[data-call="x"].disabled, #create-page #special_calls call[data-call="r"].disabled {
   background-color: #4a4a4a;
   color: #c7c7cc;
 }
-/* line 495, ../sass/bridgewinners.scss */
+/* line 494, ../sass/bridgewinners.scss */
 #create-page #special_calls call[data-call="p"] {
   display: block;
   position: fixed;
@@ -1428,7 +1427,7 @@ html, body {
   background-color: #417505;
   color: #ffffff;
 }
-/* line 501, ../sass/bridgewinners.scss */
+/* line 500, ../sass/bridgewinners.scss */
 #create-page #bidding-box {
   display: block;
   position: fixed;
@@ -1437,7 +1436,7 @@ html, body {
   left: 4vw;
   width: 92vw;
   font-family: SFUIDisplay;
-  font-size: 2.78207vh;
+  font-size: 2.47295vh;
   font-weight: normal;
   font-style: normal;
   font-stretch: normal;
@@ -1448,13 +1447,13 @@ html, body {
   letter-spacing: -0.5px;
   color: #000000;
 }
-/* line 507, ../sass/bridgewinners.scss */
+/* line 506, ../sass/bridgewinners.scss */
 #create-page #bidding-box row {
   display: table;
   table-layout: fixed;
   width: 100%;
 }
-/* line 512, ../sass/bridgewinners.scss */
+/* line 511, ../sass/bridgewinners.scss */
 #create-page #bidding-box call {
   height: 5.40958vh;
   display: table-cell;
@@ -1464,12 +1463,12 @@ html, body {
   text-transform: uppercase;
   cursor: pointer;
 }
-/* line 521, ../sass/bridgewinners.scss */
+/* line 520, ../sass/bridgewinners.scss */
 #create-page #bidding-box call.disabled {
   cursor: not-allowed;
   opacity: 0.4;
 }
-/* line 526, ../sass/bridgewinners.scss */
+/* line 525, ../sass/bridgewinners.scss */
 #create-page #description-header {
   display: block;
   position: fixed;
@@ -1478,7 +1477,7 @@ html, body {
   left: 4vw;
   width: 96vw;
 }
-/* line 529, ../sass/bridgewinners.scss */
+/* line 528, ../sass/bridgewinners.scss */
 #create-page #description {
   display: block;
   position: fixed;
@@ -1486,7 +1485,7 @@ html, body {
   height: 37.09428vh;
   width: 100.26667vw;
 }
-/* line 532, ../sass/bridgewinners.scss */
+/* line 531, ../sass/bridgewinners.scss */
 #create-page .button {
   font-family: SFUIDisplay;
   font-size: 2.62751vh;
@@ -1502,13 +1501,13 @@ html, body {
   color: #4a4a4a;
   background-color: #dddddd;
 }
-/* line 538, ../sass/bridgewinners.scss */
+/* line 537, ../sass/bridgewinners.scss */
 #create-page .button.enabled {
   color: #ffffff;
   background-color: #9a032e;
   cursor: pointer;
 }
-/* line 543, ../sass/bridgewinners.scss */
+/* line 542, ../sass/bridgewinners.scss */
 #create-page #create-reset-button {
   display: block;
   position: fixed;
@@ -1517,7 +1516,7 @@ html, body {
   left: 4vw;
   width: 45.06667vw;
 }
-/* line 547, ../sass/bridgewinners.scss */
+/* line 546, ../sass/bridgewinners.scss */
 #create-page #create-continue-button {
   display: block;
   position: fixed;
@@ -1526,7 +1525,7 @@ html, body {
   left: 50.93333vw;
   width: 45.06667vw;
 }
-/* line 552, ../sass/bridgewinners.scss */
+/* line 551, ../sass/bridgewinners.scss */
 #create-page #create-review-page #name-review {
   display: block;
   position: fixed;
@@ -1545,13 +1544,13 @@ html, body {
   text-align: left;
   color: #4a4a4a;
 }
-/* line 559, ../sass/bridgewinners.scss */
+/* line 558, ../sass/bridgewinners.scss */
 #create-page #create-review-page #user-review {
   color: #9a032e;
   font-weight: 600;
   margin-right: 5px;
 }
-/* line 564, ../sass/bridgewinners.scss */
+/* line 563, ../sass/bridgewinners.scss */
 #create-page #create-review-page #auction-review {
   display: block;
   position: fixed;
@@ -1570,13 +1569,13 @@ html, body {
   background-color: #ffffff;
   border: solid 2px #416757;
 }
-/* line 569, ../sass/bridgewinners.scss */
+/* line 568, ../sass/bridgewinners.scss */
 #create-page #create-review-page #auction-review directions, #create-page #create-review-page #auction-review calls {
   display: table;
   table-layout: fixed;
   width: 100%;
 }
-/* line 574, ../sass/bridgewinners.scss */
+/* line 573, ../sass/bridgewinners.scss */
 #create-page #create-review-page #auction-review directions {
   font-family: SFUIDisplay;
   font-size: 3.09119vh;
@@ -1589,7 +1588,7 @@ html, body {
   height: 17.77%;
   border-bottom: solid 2px #416757;
 }
-/* line 579, ../sass/bridgewinners.scss */
+/* line 578, ../sass/bridgewinners.scss */
 #create-page #create-review-page #auction-review calls {
   font-family: SFUIDisplay;
   font-size: 2.78207vh;
@@ -1601,16 +1600,16 @@ html, body {
   text-shadow: none;
   height: 82.23%;
 }
-/* line 583, ../sass/bridgewinners.scss */
+/* line 582, ../sass/bridgewinners.scss */
 #create-page #create-review-page #auction-review row {
   display: table-row;
   width: 100%;
 }
-/* line 587, ../sass/bridgewinners.scss */
+/* line 586, ../sass/bridgewinners.scss */
 #create-page #create-review-page #auction-review direction, #create-page #create-review-page #auction-review call {
   display: table-cell;
 }
-/* line 590, ../sass/bridgewinners.scss */
+/* line 589, ../sass/bridgewinners.scss */
 #create-page #create-review-page #auction-review direction {
   font-weight: 600;
   letter-spacing: -0.8px;
@@ -1618,28 +1617,28 @@ html, body {
   color: #000000;
   background-color: #ffffff;
 }
-/* line 597, ../sass/bridgewinners.scss */
+/* line 596, ../sass/bridgewinners.scss */
 #create-page #create-review-page #auction-review direction[data-vulnerable] {
   color: #ffffff;
   background-color: #d0021b;
 }
-/* line 601, ../sass/bridgewinners.scss */
+/* line 600, ../sass/bridgewinners.scss */
 #create-page #create-review-page #auction-review call {
   font-weight: 600;
   letter-spacing: -0.5px;
   text-transform: uppercase;
 }
-/* line 608, ../sass/bridgewinners.scss */
+/* line 607, ../sass/bridgewinners.scss */
 #create-page #create-review-page #vulnerability-review [data-vulnerable="yes"] {
   color: #ffffff;
   background-color: #d0021b;
 }
-/* line 612, ../sass/bridgewinners.scss */
+/* line 611, ../sass/bridgewinners.scss */
 #create-page #create-review-page #vulnerability-review [data-vulnerable="no"] {
   color: #000000;
   background-color: #ffffff;
 }
-/* line 616, ../sass/bridgewinners.scss */
+/* line 615, ../sass/bridgewinners.scss */
 #create-page #create-review-page #vulnerability-review #info-wrapper-review {
   display: block;
   position: fixed;
@@ -1650,7 +1649,7 @@ html, body {
   background-color: #dddddd;
   border: solid 2px #416757;
 }
-/* line 621, ../sass/bridgewinners.scss */
+/* line 620, ../sass/bridgewinners.scss */
 #create-page #create-review-page #vulnerability-review #vul-e-review {
   display: block;
   position: fixed;
@@ -1661,7 +1660,7 @@ html, body {
   border: solid 2px #416757;
   border-left: 0;
 }
-/* line 626, ../sass/bridgewinners.scss */
+/* line 625, ../sass/bridgewinners.scss */
 #create-page #create-review-page #vulnerability-review #vul-w-review {
   display: block;
   position: fixed;
@@ -1672,11 +1671,11 @@ html, body {
   border: solid 2px #416757;
   border-right: 0;
 }
-/* line 631, ../sass/bridgewinners.scss */
+/* line 630, ../sass/bridgewinners.scss */
 #create-page #create-review-page #vulnerability-review .vulnerability {
   text-align: center;
 }
-/* line 635, ../sass/bridgewinners.scss */
+/* line 634, ../sass/bridgewinners.scss */
 #create-page #create-review-page #vulnerability-review #scoring-review {
   display: block;
   position: fixed;
@@ -1691,7 +1690,7 @@ html, body {
   z-index: 1;
   word-wrap: break-word;
 }
-/* line 645, ../sass/bridgewinners.scss */
+/* line 644, ../sass/bridgewinners.scss */
 #create-page #create-review-page #vulnerability-review #vul-n-review {
   display: block;
   position: fixed;
@@ -1702,7 +1701,7 @@ html, body {
   border: solid 2px #416757;
   border-bottom: 0;
 }
-/* line 650, ../sass/bridgewinners.scss */
+/* line 649, ../sass/bridgewinners.scss */
 #create-page #create-review-page #vulnerability-review #vul-s-review {
   display: block;
   position: fixed;
@@ -1713,7 +1712,7 @@ html, body {
   border: solid 2px #416757;
   border-top: 0;
 }
-/* line 656, ../sass/bridgewinners.scss */
+/* line 655, ../sass/bridgewinners.scss */
 #create-page #create-review-page #description-review {
   display: block;
   position: fixed;
@@ -1735,7 +1734,7 @@ html, body {
   border: solid 1px #c7c7cc;
   padding-right: 7vw;
 }
-/* line 666, ../sass/bridgewinners.scss */
+/* line 665, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review {
   display: block;
   position: fixed;
@@ -1744,18 +1743,18 @@ html, body {
   left: 3.46667vw;
   width: 93.06667vw;
 }
-/* line 670, ../sass/bridgewinners.scss */
+/* line 669, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review hand, #create-page #create-review-page #hand-review content {
   display: block;
   width: 100%;
   height: 100%;
 }
-/* line 675, ../sass/bridgewinners.scss */
+/* line 674, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review cards {
   display: inline-block;
   height: 100%;
 }
-/* line 679, ../sass/bridgewinners.scss */
+/* line 678, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review card {
   position: absolute;
   color: transparent;
@@ -1764,288 +1763,288 @@ html, body {
   width: 12.8vw;
   cursor: pointer;
 }
-/* line 692, ../sass/bridgewinners.scss */
+/* line 691, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit][data-rank] {
   background-repeat: no-repeat;
   background-size: cover;
 }
-/* line 696, ../sass/bridgewinners.scss */
+/* line 695, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="s"][data-rank="x"] {
   background-image: url("img/s2.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="s"][data-rank="a"] {
   background-image: url("img/sa.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="s"][data-rank="k"] {
   background-image: url("img/sk.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="s"][data-rank="q"] {
   background-image: url("img/sq.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="s"][data-rank="j"] {
   background-image: url("img/sj.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="s"][data-rank="t"] {
   background-image: url("img/st.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="s"][data-rank="9"] {
   background-image: url("img/s9.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="s"][data-rank="8"] {
   background-image: url("img/s8.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="s"][data-rank="7"] {
   background-image: url("img/s7.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="s"][data-rank="6"] {
   background-image: url("img/s6.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="s"][data-rank="5"] {
   background-image: url("img/s5.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="s"][data-rank="4"] {
   background-image: url("img/s4.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="s"][data-rank="3"] {
   background-image: url("img/s3.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="s"][data-rank="2"] {
   background-image: url("img/s2.png");
 }
-/* line 696, ../sass/bridgewinners.scss */
+/* line 695, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="h"][data-rank="x"] {
   background-image: url("img/h2.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="h"][data-rank="a"] {
   background-image: url("img/ha.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="h"][data-rank="k"] {
   background-image: url("img/hk.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="h"][data-rank="q"] {
   background-image: url("img/hq.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="h"][data-rank="j"] {
   background-image: url("img/hj.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="h"][data-rank="t"] {
   background-image: url("img/ht.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="h"][data-rank="9"] {
   background-image: url("img/h9.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="h"][data-rank="8"] {
   background-image: url("img/h8.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="h"][data-rank="7"] {
   background-image: url("img/h7.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="h"][data-rank="6"] {
   background-image: url("img/h6.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="h"][data-rank="5"] {
   background-image: url("img/h5.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="h"][data-rank="4"] {
   background-image: url("img/h4.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="h"][data-rank="3"] {
   background-image: url("img/h3.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="h"][data-rank="2"] {
   background-image: url("img/h2.png");
 }
-/* line 696, ../sass/bridgewinners.scss */
+/* line 695, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="d"][data-rank="x"] {
   background-image: url("img/d2.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="d"][data-rank="a"] {
   background-image: url("img/da.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="d"][data-rank="k"] {
   background-image: url("img/dk.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="d"][data-rank="q"] {
   background-image: url("img/dq.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="d"][data-rank="j"] {
   background-image: url("img/dj.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="d"][data-rank="t"] {
   background-image: url("img/dt.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="d"][data-rank="9"] {
   background-image: url("img/d9.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="d"][data-rank="8"] {
   background-image: url("img/d8.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="d"][data-rank="7"] {
   background-image: url("img/d7.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="d"][data-rank="6"] {
   background-image: url("img/d6.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="d"][data-rank="5"] {
   background-image: url("img/d5.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="d"][data-rank="4"] {
   background-image: url("img/d4.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="d"][data-rank="3"] {
   background-image: url("img/d3.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="d"][data-rank="2"] {
   background-image: url("img/d2.png");
 }
-/* line 696, ../sass/bridgewinners.scss */
+/* line 695, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="c"][data-rank="x"] {
   background-image: url("img/c2.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="c"][data-rank="a"] {
   background-image: url("img/ca.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="c"][data-rank="k"] {
   background-image: url("img/ck.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="c"][data-rank="q"] {
   background-image: url("img/cq.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="c"][data-rank="j"] {
   background-image: url("img/cj.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="c"][data-rank="t"] {
   background-image: url("img/ct.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="c"][data-rank="9"] {
   background-image: url("img/c9.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="c"][data-rank="8"] {
   background-image: url("img/c8.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="c"][data-rank="7"] {
   background-image: url("img/c7.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="c"][data-rank="6"] {
   background-image: url("img/c6.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="c"][data-rank="5"] {
   background-image: url("img/c5.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="c"][data-rank="4"] {
   background-image: url("img/c4.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="c"][data-rank="3"] {
   background-image: url("img/c3.png");
 }
-/* line 700, ../sass/bridgewinners.scss */
+/* line 699, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-suit="c"][data-rank="2"] {
   background-image: url("img/c2.png");
 }
-/* line 708, ../sass/bridgewinners.scss */
+/* line 707, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-card-number="1"] {
   left: 0vw;
 }
-/* line 708, ../sass/bridgewinners.scss */
+/* line 707, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-card-number="2"] {
   left: 6.66667vw;
 }
-/* line 708, ../sass/bridgewinners.scss */
+/* line 707, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-card-number="3"] {
   left: 13.33333vw;
 }
-/* line 708, ../sass/bridgewinners.scss */
+/* line 707, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-card-number="4"] {
   left: 20vw;
 }
-/* line 708, ../sass/bridgewinners.scss */
+/* line 707, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-card-number="5"] {
   left: 26.66667vw;
 }
-/* line 708, ../sass/bridgewinners.scss */
+/* line 707, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-card-number="6"] {
   left: 33.33333vw;
 }
-/* line 708, ../sass/bridgewinners.scss */
+/* line 707, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-card-number="7"] {
   left: 40vw;
 }
-/* line 708, ../sass/bridgewinners.scss */
+/* line 707, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-card-number="8"] {
   left: 46.66667vw;
 }
-/* line 708, ../sass/bridgewinners.scss */
+/* line 707, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-card-number="9"] {
   left: 53.33333vw;
 }
-/* line 708, ../sass/bridgewinners.scss */
+/* line 707, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-card-number="10"] {
   left: 60vw;
 }
-/* line 708, ../sass/bridgewinners.scss */
+/* line 707, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-card-number="11"] {
   left: 66.66667vw;
 }
-/* line 708, ../sass/bridgewinners.scss */
+/* line 707, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-card-number="12"] {
   left: 73.33333vw;
 }
-/* line 708, ../sass/bridgewinners.scss */
+/* line 707, ../sass/bridgewinners.scss */
 #create-page #create-review-page #hand-review [data-card-number="13"] {
   left: 80vw;
 }
-/* line 714, ../sass/bridgewinners.scss */
+/* line 713, ../sass/bridgewinners.scss */
 #create-page #create-review-page #create-save-button {
   display: block;
   position: fixed;
@@ -2054,7 +2053,7 @@ html, body {
   left: 4vw;
   width: 45.06667vw;
 }
-/* line 718, ../sass/bridgewinners.scss */
+/* line 717, ../sass/bridgewinners.scss */
 #create-page #create-review-page #create-publish-button {
   display: block;
   position: fixed;
@@ -2063,7 +2062,7 @@ html, body {
   left: 50.93333vw;
   width: 45.06667vw;
 }
-/* line 724, ../sass/bridgewinners.scss */
+/* line 723, ../sass/bridgewinners.scss */
 #create-page #create-review-page.show-hand-first #auction-review {
   display: block;
   position: fixed;
@@ -2072,7 +2071,7 @@ html, body {
   left: 4vw;
   width: 61.33333vw;
 }
-/* line 728, ../sass/bridgewinners.scss */
+/* line 727, ../sass/bridgewinners.scss */
 #create-page #create-review-page.show-hand-first #vulnerability-review #info-wrapper-review {
   display: block;
   position: fixed;
@@ -2081,7 +2080,7 @@ html, body {
   left: 68vw;
   width: 28vw;
 }
-/* line 731, ../sass/bridgewinners.scss */
+/* line 730, ../sass/bridgewinners.scss */
 #create-page #create-review-page.show-hand-first #vulnerability-review #vul-e-review {
   display: block;
   position: fixed;
@@ -2090,7 +2089,7 @@ html, body {
   left: 88.53333vw;
   width: 5.6vw;
 }
-/* line 734, ../sass/bridgewinners.scss */
+/* line 733, ../sass/bridgewinners.scss */
 #create-page #create-review-page.show-hand-first #vulnerability-review #vul-w-review {
   display: block;
   position: fixed;
@@ -2099,7 +2098,7 @@ html, body {
   left: 69.86667vw;
   width: 5.6vw;
 }
-/* line 737, ../sass/bridgewinners.scss */
+/* line 736, ../sass/bridgewinners.scss */
 #create-page #create-review-page.show-hand-first #vulnerability-review #scoring-review {
   display: block;
   position: fixed;
@@ -2108,7 +2107,7 @@ html, body {
   left: 74.93333vw;
   width: 14.16vw;
 }
-/* line 740, ../sass/bridgewinners.scss */
+/* line 739, ../sass/bridgewinners.scss */
 #create-page #create-review-page.show-hand-first #vulnerability-review #vul-n-review {
   display: block;
   position: fixed;
@@ -2117,7 +2116,7 @@ html, body {
   left: 74.93333vw;
   width: 14.16vw;
 }
-/* line 743, ../sass/bridgewinners.scss */
+/* line 742, ../sass/bridgewinners.scss */
 #create-page #create-review-page.show-hand-first #vulnerability-review #vul-s-review {
   display: block;
   position: fixed;
@@ -2126,7 +2125,7 @@ html, body {
   left: 74.93333vw;
   width: 14.16vw;
 }
-/* line 747, ../sass/bridgewinners.scss */
+/* line 746, ../sass/bridgewinners.scss */
 #create-page #create-review-page.show-hand-first #hand-review {
   display: block;
   position: fixed;
@@ -2136,7 +2135,7 @@ html, body {
   width: 93.06667vw;
 }
 
-/* line 754, ../sass/bridgewinners.scss */
+/* line 753, ../sass/bridgewinners.scss */
 #footer #account-avatar-inner, #footer #account-avatar-outer {
   height: 4.63679vh;
   width: 4.63679vh;
@@ -2152,23 +2151,58 @@ html, body {
   z-index: 5;
 }
 
-/* line 768, ../sass/bridgewinners.scss */
+/* line 767, ../sass/bridgewinners.scss */
 #account-avatar-inner {
   margin-top: 0.46368vh;
 }
 
-/* line 771, ../sass/bridgewinners.scss */
+/* line 770, ../sass/bridgewinners.scss */
 #account-avatar-outer {
   margin-top: 0.7728vh;
 }
 
-/* line 777, ../sass/bridgewinners.scss */
-#alerts-page #alerts-list {
+/* line 776, ../sass/bridgewinners.scss */
+#alerts-page button.bridgewinners {
+  position: relative;
+  font-family: SFUIDisplay;
+  font-size: 3.09119vh;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  letter-spacing: 0.7px;
+  text-align: center;
+  text-shadow: none;
+  color: #ffffff;
+  background-color: #9a032e;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  height: 6.80062vh;
+  width: 89.33333vw;
+  left: 5.33333vw;
+  cursor: pointer;
+}
+/* line 788, ../sass/bridgewinners.scss */
+#alerts-page button.bridgewinners.disabled {
+  color: #4a4a4a;
+  background-color: #dddddd;
+  cursor: not-allowed;
+}
+/* line 793, ../sass/bridgewinners.scss */
+#alerts-page #alerts-wrapper {
+  position: absolute;
   display: block;
   position: fixed;
   top: 6.80062vh;
   height: 85.00773vh;
   width: 100vw;
+  width: 100%;
+  overflow: auto;
+  background-color: transparent;
+  color: transparent;
+}
+/* line 801, ../sass/bridgewinners.scss */
+#alerts-page #alerts-list {
   font-family: SFUIDisplay;
   font-size: 1.85471vh;
   font-weight: normal;
@@ -2178,20 +2212,20 @@ html, body {
   text-align: center;
   text-shadow: none;
 }
-/* line 778, ../sass/bridgewinners.scss */
+/* line 802, ../sass/bridgewinners.scss */
 #alerts-page #alerts-list li {
   width: 100vw;
 }
-/* line 784, ../sass/bridgewinners.scss */
+/* line 807, ../sass/bridgewinners.scss */
 #alerts-page .alert {
   display: table;
   table-layout: fixed;
 }
-/* line 788, ../sass/bridgewinners.scss */
+/* line 811, ../sass/bridgewinners.scss */
 #alerts-page p {
   margin: 0;
 }
-/* line 792, ../sass/bridgewinners.scss */
+/* line 815, ../sass/bridgewinners.scss */
 #alerts-page .avatar-alert {
   display: table-cell;
   height: 3.86399vh;
@@ -2202,20 +2236,20 @@ html, body {
   border-radius: 50%;
   vertical-align: middle;
 }
-/* line 802, ../sass/bridgewinners.scss */
+/* line 825, ../sass/bridgewinners.scss */
 #alerts-page .text-alert {
   display: table-cell;
   padding-left: 5px;
   white-space: normal;
   vertical-align: middle;
 }
-/* line 808, ../sass/bridgewinners.scss */
+/* line 831, ../sass/bridgewinners.scss */
 #alerts-page .name-alert {
   font-weight: 600;
   color: #9a032e;
 }
 
-/* line 816, ../sass/bridgewinners.scss */
+/* line 839, ../sass/bridgewinners.scss */
 #history-page #history-results-page #name-results {
   display: block;
   position: fixed;
@@ -2234,13 +2268,13 @@ html, body {
   text-align: left;
   color: #4a4a4a;
 }
-/* line 823, ../sass/bridgewinners.scss */
+/* line 846, ../sass/bridgewinners.scss */
 #history-page #history-results-page #user-results {
   color: #9a032e;
   font-weight: 600;
   margin-right: 5px;
 }
-/* line 828, ../sass/bridgewinners.scss */
+/* line 851, ../sass/bridgewinners.scss */
 #history-page #history-results-page #votes-results {
   display: block;
   position: fixed;
@@ -2259,7 +2293,7 @@ html, body {
   color: #9a032e;
   font-weight: 600;
 }
-/* line 835, ../sass/bridgewinners.scss */
+/* line 858, ../sass/bridgewinners.scss */
 #history-page #history-results-page #votes-results:before {
   content: "";
   display: block;
@@ -2272,7 +2306,7 @@ html, body {
   float: left;
   margin-right: 5px;
 }
-/* line 845, ../sass/bridgewinners.scss */
+/* line 868, ../sass/bridgewinners.scss */
 #history-page #history-results-page #comments-results {
   display: block;
   position: fixed;
@@ -2291,7 +2325,7 @@ html, body {
   color: #9a032e;
   font-weight: 600;
 }
-/* line 852, ../sass/bridgewinners.scss */
+/* line 875, ../sass/bridgewinners.scss */
 #history-page #history-results-page #comments-results:before {
   content: "";
   display: block;
@@ -2304,7 +2338,7 @@ html, body {
   float: left;
   margin-right: 5px;
 }
-/* line 862, ../sass/bridgewinners.scss */
+/* line 885, ../sass/bridgewinners.scss */
 #history-page #history-results-page #likes-results {
   display: block;
   position: fixed;
@@ -2323,7 +2357,7 @@ html, body {
   color: #9a032e;
   font-weight: 600;
 }
-/* line 869, ../sass/bridgewinners.scss */
+/* line 892, ../sass/bridgewinners.scss */
 #history-page #history-results-page #likes-results:before {
   content: "";
   display: block;
@@ -2336,7 +2370,7 @@ html, body {
   float: left;
   margin-right: 5px;
 }
-/* line 879, ../sass/bridgewinners.scss */
+/* line 902, ../sass/bridgewinners.scss */
 #history-page #history-results-page #auction-results {
   display: block;
   position: fixed;
@@ -2355,13 +2389,13 @@ html, body {
   background-color: #ffffff;
   border: solid 2px #416757;
 }
-/* line 884, ../sass/bridgewinners.scss */
+/* line 907, ../sass/bridgewinners.scss */
 #history-page #history-results-page #auction-results directions, #history-page #history-results-page #auction-results calls {
   display: table;
   table-layout: fixed;
   width: 100%;
 }
-/* line 889, ../sass/bridgewinners.scss */
+/* line 912, ../sass/bridgewinners.scss */
 #history-page #history-results-page #auction-results directions {
   font-family: SFUIDisplay;
   font-size: 3.09119vh;
@@ -2374,7 +2408,7 @@ html, body {
   height: 17.77%;
   border-bottom: solid 2px #416757;
 }
-/* line 894, ../sass/bridgewinners.scss */
+/* line 917, ../sass/bridgewinners.scss */
 #history-page #history-results-page #auction-results calls {
   font-family: SFUIDisplay;
   font-size: 2.78207vh;
@@ -2386,16 +2420,16 @@ html, body {
   text-shadow: none;
   height: 82.23%;
 }
-/* line 898, ../sass/bridgewinners.scss */
+/* line 921, ../sass/bridgewinners.scss */
 #history-page #history-results-page #auction-results row {
   display: table-row;
   width: 100%;
 }
-/* line 902, ../sass/bridgewinners.scss */
+/* line 925, ../sass/bridgewinners.scss */
 #history-page #history-results-page #auction-results direction, #history-page #history-results-page #auction-results call {
   display: table-cell;
 }
-/* line 905, ../sass/bridgewinners.scss */
+/* line 928, ../sass/bridgewinners.scss */
 #history-page #history-results-page #auction-results direction {
   font-weight: 600;
   letter-spacing: -0.8px;
@@ -2403,28 +2437,28 @@ html, body {
   color: #000000;
   background-color: #ffffff;
 }
-/* line 912, ../sass/bridgewinners.scss */
+/* line 935, ../sass/bridgewinners.scss */
 #history-page #history-results-page #auction-results direction[data-vulnerable] {
   color: #ffffff;
   background-color: #d0021b;
 }
-/* line 916, ../sass/bridgewinners.scss */
+/* line 939, ../sass/bridgewinners.scss */
 #history-page #history-results-page #auction-results call {
   font-weight: 600;
   letter-spacing: -0.5px;
   text-transform: uppercase;
 }
-/* line 923, ../sass/bridgewinners.scss */
+/* line 946, ../sass/bridgewinners.scss */
 #history-page #history-results-page #vulnerability-results [data-vulnerable="yes"] {
   color: #ffffff;
   background-color: #d0021b;
 }
-/* line 927, ../sass/bridgewinners.scss */
+/* line 950, ../sass/bridgewinners.scss */
 #history-page #history-results-page #vulnerability-results [data-vulnerable="no"] {
   color: #000000;
   background-color: #ffffff;
 }
-/* line 931, ../sass/bridgewinners.scss */
+/* line 954, ../sass/bridgewinners.scss */
 #history-page #history-results-page #vulnerability-results #info-wrapper-results {
   display: block;
   position: fixed;
@@ -2435,7 +2469,7 @@ html, body {
   background-color: #dddddd;
   border: solid 2px #416757;
 }
-/* line 936, ../sass/bridgewinners.scss */
+/* line 959, ../sass/bridgewinners.scss */
 #history-page #history-results-page #vulnerability-results #vul-e-results {
   display: block;
   position: fixed;
@@ -2446,7 +2480,7 @@ html, body {
   border: solid 2px #416757;
   border-left: 0;
 }
-/* line 941, ../sass/bridgewinners.scss */
+/* line 964, ../sass/bridgewinners.scss */
 #history-page #history-results-page #vulnerability-results #vul-w-results {
   display: block;
   position: fixed;
@@ -2457,11 +2491,11 @@ html, body {
   border: solid 2px #416757;
   border-right: 0;
 }
-/* line 946, ../sass/bridgewinners.scss */
+/* line 969, ../sass/bridgewinners.scss */
 #history-page #history-results-page #vulnerability-results .vulnerability {
   text-align: center;
 }
-/* line 950, ../sass/bridgewinners.scss */
+/* line 973, ../sass/bridgewinners.scss */
 #history-page #history-results-page #vulnerability-results #scoring-results {
   display: block;
   position: fixed;
@@ -2476,7 +2510,7 @@ html, body {
   z-index: 1;
   word-wrap: break-word;
 }
-/* line 960, ../sass/bridgewinners.scss */
+/* line 983, ../sass/bridgewinners.scss */
 #history-page #history-results-page #vulnerability-results #vul-n-results {
   display: block;
   position: fixed;
@@ -2487,7 +2521,7 @@ html, body {
   border: solid 2px #416757;
   border-bottom: 0;
 }
-/* line 965, ../sass/bridgewinners.scss */
+/* line 988, ../sass/bridgewinners.scss */
 #history-page #history-results-page #vulnerability-results #vul-s-results {
   display: block;
   position: fixed;
@@ -2498,7 +2532,7 @@ html, body {
   border: solid 2px #416757;
   border-top: 0;
 }
-/* line 971, ../sass/bridgewinners.scss */
+/* line 994, ../sass/bridgewinners.scss */
 #history-page #history-results-page #description-results {
   display: block;
   position: fixed;
@@ -2520,7 +2554,7 @@ html, body {
   border: solid 1px #c7c7cc;
   padding-right: 7vw;
 }
-/* line 981, ../sass/bridgewinners.scss */
+/* line 1004, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results {
   display: block;
   position: fixed;
@@ -2529,18 +2563,18 @@ html, body {
   left: 3.46667vw;
   width: 93.06667vw;
 }
-/* line 985, ../sass/bridgewinners.scss */
+/* line 1008, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results hand, #history-page #history-results-page #hand-results content {
   display: block;
   width: 100%;
   height: 100%;
 }
-/* line 990, ../sass/bridgewinners.scss */
+/* line 1013, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results cards {
   display: inline-block;
   height: 100%;
 }
-/* line 994, ../sass/bridgewinners.scss */
+/* line 1017, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results card {
   position: absolute;
   color: transparent;
@@ -2549,288 +2583,288 @@ html, body {
   width: 12.8vw;
   cursor: pointer;
 }
-/* line 1007, ../sass/bridgewinners.scss */
+/* line 1030, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit][data-rank] {
   background-repeat: no-repeat;
   background-size: cover;
 }
-/* line 1011, ../sass/bridgewinners.scss */
+/* line 1034, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="s"][data-rank="x"] {
   background-image: url("img/s2.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="s"][data-rank="a"] {
   background-image: url("img/sa.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="s"][data-rank="k"] {
   background-image: url("img/sk.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="s"][data-rank="q"] {
   background-image: url("img/sq.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="s"][data-rank="j"] {
   background-image: url("img/sj.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="s"][data-rank="t"] {
   background-image: url("img/st.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="s"][data-rank="9"] {
   background-image: url("img/s9.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="s"][data-rank="8"] {
   background-image: url("img/s8.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="s"][data-rank="7"] {
   background-image: url("img/s7.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="s"][data-rank="6"] {
   background-image: url("img/s6.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="s"][data-rank="5"] {
   background-image: url("img/s5.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="s"][data-rank="4"] {
   background-image: url("img/s4.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="s"][data-rank="3"] {
   background-image: url("img/s3.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="s"][data-rank="2"] {
   background-image: url("img/s2.png");
 }
-/* line 1011, ../sass/bridgewinners.scss */
+/* line 1034, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="h"][data-rank="x"] {
   background-image: url("img/h2.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="h"][data-rank="a"] {
   background-image: url("img/ha.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="h"][data-rank="k"] {
   background-image: url("img/hk.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="h"][data-rank="q"] {
   background-image: url("img/hq.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="h"][data-rank="j"] {
   background-image: url("img/hj.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="h"][data-rank="t"] {
   background-image: url("img/ht.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="h"][data-rank="9"] {
   background-image: url("img/h9.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="h"][data-rank="8"] {
   background-image: url("img/h8.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="h"][data-rank="7"] {
   background-image: url("img/h7.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="h"][data-rank="6"] {
   background-image: url("img/h6.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="h"][data-rank="5"] {
   background-image: url("img/h5.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="h"][data-rank="4"] {
   background-image: url("img/h4.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="h"][data-rank="3"] {
   background-image: url("img/h3.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="h"][data-rank="2"] {
   background-image: url("img/h2.png");
 }
-/* line 1011, ../sass/bridgewinners.scss */
+/* line 1034, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="d"][data-rank="x"] {
   background-image: url("img/d2.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="d"][data-rank="a"] {
   background-image: url("img/da.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="d"][data-rank="k"] {
   background-image: url("img/dk.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="d"][data-rank="q"] {
   background-image: url("img/dq.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="d"][data-rank="j"] {
   background-image: url("img/dj.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="d"][data-rank="t"] {
   background-image: url("img/dt.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="d"][data-rank="9"] {
   background-image: url("img/d9.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="d"][data-rank="8"] {
   background-image: url("img/d8.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="d"][data-rank="7"] {
   background-image: url("img/d7.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="d"][data-rank="6"] {
   background-image: url("img/d6.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="d"][data-rank="5"] {
   background-image: url("img/d5.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="d"][data-rank="4"] {
   background-image: url("img/d4.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="d"][data-rank="3"] {
   background-image: url("img/d3.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="d"][data-rank="2"] {
   background-image: url("img/d2.png");
 }
-/* line 1011, ../sass/bridgewinners.scss */
+/* line 1034, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="c"][data-rank="x"] {
   background-image: url("img/c2.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="c"][data-rank="a"] {
   background-image: url("img/ca.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="c"][data-rank="k"] {
   background-image: url("img/ck.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="c"][data-rank="q"] {
   background-image: url("img/cq.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="c"][data-rank="j"] {
   background-image: url("img/cj.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="c"][data-rank="t"] {
   background-image: url("img/ct.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="c"][data-rank="9"] {
   background-image: url("img/c9.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="c"][data-rank="8"] {
   background-image: url("img/c8.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="c"][data-rank="7"] {
   background-image: url("img/c7.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="c"][data-rank="6"] {
   background-image: url("img/c6.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="c"][data-rank="5"] {
   background-image: url("img/c5.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="c"][data-rank="4"] {
   background-image: url("img/c4.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="c"][data-rank="3"] {
   background-image: url("img/c3.png");
 }
-/* line 1015, ../sass/bridgewinners.scss */
+/* line 1038, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-suit="c"][data-rank="2"] {
   background-image: url("img/c2.png");
 }
-/* line 1023, ../sass/bridgewinners.scss */
+/* line 1046, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-card-number="1"] {
   left: 0vw;
 }
-/* line 1023, ../sass/bridgewinners.scss */
+/* line 1046, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-card-number="2"] {
   left: 6.66667vw;
 }
-/* line 1023, ../sass/bridgewinners.scss */
+/* line 1046, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-card-number="3"] {
   left: 13.33333vw;
 }
-/* line 1023, ../sass/bridgewinners.scss */
+/* line 1046, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-card-number="4"] {
   left: 20vw;
 }
-/* line 1023, ../sass/bridgewinners.scss */
+/* line 1046, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-card-number="5"] {
   left: 26.66667vw;
 }
-/* line 1023, ../sass/bridgewinners.scss */
+/* line 1046, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-card-number="6"] {
   left: 33.33333vw;
 }
-/* line 1023, ../sass/bridgewinners.scss */
+/* line 1046, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-card-number="7"] {
   left: 40vw;
 }
-/* line 1023, ../sass/bridgewinners.scss */
+/* line 1046, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-card-number="8"] {
   left: 46.66667vw;
 }
-/* line 1023, ../sass/bridgewinners.scss */
+/* line 1046, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-card-number="9"] {
   left: 53.33333vw;
 }
-/* line 1023, ../sass/bridgewinners.scss */
+/* line 1046, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-card-number="10"] {
   left: 60vw;
 }
-/* line 1023, ../sass/bridgewinners.scss */
+/* line 1046, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-card-number="11"] {
   left: 66.66667vw;
 }
-/* line 1023, ../sass/bridgewinners.scss */
+/* line 1046, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-card-number="12"] {
   left: 73.33333vw;
 }
-/* line 1023, ../sass/bridgewinners.scss */
+/* line 1046, ../sass/bridgewinners.scss */
 #history-page #history-results-page #hand-results [data-card-number="13"] {
   left: 80vw;
 }
-/* line 1029, ../sass/bridgewinners.scss */
+/* line 1052, ../sass/bridgewinners.scss */
 #history-page #history-results-page #answers-results {
   display: block;
   position: fixed;
@@ -2838,12 +2872,12 @@ html, body {
   height: 20.09274vh;
   width: 100vw;
 }
-/* line 1031, ../sass/bridgewinners.scss */
+/* line 1054, ../sass/bridgewinners.scss */
 #history-page #history-results-page #answers-results .my_answer {
   font-weight: bold;
   color: #9a032e;
 }
-/* line 1036, ../sass/bridgewinners.scss */
+/* line 1059, ../sass/bridgewinners.scss */
 #history-page #history-results-page .answer-result {
   display: table;
   table-layout: fixed;
@@ -2857,19 +2891,19 @@ html, body {
   text-align: center;
   text-shadow: none;
 }
-/* line 1042, ../sass/bridgewinners.scss */
+/* line 1065, ../sass/bridgewinners.scss */
 #history-page #history-results-page .answer-result-column {
   display: table-cell;
   vertical-align: middle;
   text-align: center;
   text-transform: uppercase;
 }
-/* line 1048, ../sass/bridgewinners.scss */
+/* line 1071, ../sass/bridgewinners.scss */
 #history-page #history-results-page .answer-result-avatar {
   text-align: left;
   width: 50%;
 }
-/* line 1052, ../sass/bridgewinners.scss */
+/* line 1075, ../sass/bridgewinners.scss */
 #history-page #history-results-page .avatar-result {
   height: 6.18238vh;
   width: 6.18238vh;
@@ -2879,7 +2913,7 @@ html, body {
   border-radius: 50%;
   vertical-align: middle;
 }
-/* line 1061, ../sass/bridgewinners.scss */
+/* line 1084, ../sass/bridgewinners.scss */
 #history-page #history-results-page .button {
   font-family: SFUIDisplay;
   font-size: 2.62751vh;
@@ -2895,13 +2929,13 @@ html, body {
   color: #4a4a4a;
   background-color: #dddddd;
 }
-/* line 1067, ../sass/bridgewinners.scss */
+/* line 1090, ../sass/bridgewinners.scss */
 #history-page #history-results-page .button.enabled {
   color: #ffffff;
   background-color: #9a032e;
   cursor: pointer;
 }
-/* line 1072, ../sass/bridgewinners.scss */
+/* line 1095, ../sass/bridgewinners.scss */
 #history-page #history-results-page #history-revote-button {
   display: block;
   position: fixed;
@@ -2910,7 +2944,7 @@ html, body {
   left: 4vw;
   width: 45.06667vw;
 }
-/* line 1076, ../sass/bridgewinners.scss */
+/* line 1099, ../sass/bridgewinners.scss */
 #history-page #history-results-page #history-voters-button {
   display: block;
   position: fixed;
@@ -2919,7 +2953,7 @@ html, body {
   left: 50.93333vw;
   width: 45.06667vw;
 }
-/* line 1081, ../sass/bridgewinners.scss */
+/* line 1104, ../sass/bridgewinners.scss */
 #history-page #history-menu {
   display: block;
   position: fixed;
@@ -2942,7 +2976,7 @@ html, body {
   table-layout: fixed;
   width: 100%;
 }
-/* line 1092, ../sass/bridgewinners.scss */
+/* line 1115, ../sass/bridgewinners.scss */
 #history-page #history-responses-menu {
   display: block;
   position: fixed;
@@ -2967,7 +3001,7 @@ html, body {
   border-bottom: solid 0.5px #c7c7cc;
   text-transform: uppercase;
 }
-/* line 1105, ../sass/bridgewinners.scss */
+/* line 1128, ../sass/bridgewinners.scss */
 #history-page #history-responses-sections {
   display: block;
   position: fixed;
@@ -2988,7 +3022,7 @@ html, body {
   color: #4a4a4a;
   text-align: left;
 }
-/* line 1113, ../sass/bridgewinners.scss */
+/* line 1136, ../sass/bridgewinners.scss */
 #history-page .history-response-voters {
   display: block;
   position: fixed;
@@ -3007,15 +3041,15 @@ html, body {
   font-weight: 600;
   color: #9a032e;
 }
-/* line 1118, ../sass/bridgewinners.scss */
+/* line 1141, ../sass/bridgewinners.scss */
 #history-page .history-response-voters a {
   padding: 5px;
 }
-/* line 1121, ../sass/bridgewinners.scss */
+/* line 1144, ../sass/bridgewinners.scss */
 #history-page .history-response-voters p {
   margin: 0;
 }
-/* line 1124, ../sass/bridgewinners.scss */
+/* line 1147, ../sass/bridgewinners.scss */
 #history-page .history-response-voters .avatar-response {
   height: 3.86399vh;
   width: 3.86399vh;
@@ -3025,33 +3059,33 @@ html, body {
   border-radius: 50%;
   vertical-align: middle;
 }
-/* line 1133, ../sass/bridgewinners.scss */
+/* line 1156, ../sass/bridgewinners.scss */
 #history-page .history-response-voters .name-response {
   margin-left: 5px;
   font-weight: 600;
   color: #9a032e;
 }
-/* line 1139, ../sass/bridgewinners.scss */
+/* line 1162, ../sass/bridgewinners.scss */
 #history-page .history-menu-item, #history-page .history-response-item {
   display: table-cell;
   vertical-align: middle;
   cursor: pointer;
 }
-/* line 1144, ../sass/bridgewinners.scss */
+/* line 1167, ../sass/bridgewinners.scss */
 #history-page .history-menu-item.selected {
   background-color: #698f64;
   color: #ffffff;
 }
-/* line 1148, ../sass/bridgewinners.scss */
+/* line 1171, ../sass/bridgewinners.scss */
 #history-page .history-response-item.my_answer {
   font-weight: bold;
   color: #9a032e;
 }
-/* line 1152, ../sass/bridgewinners.scss */
+/* line 1175, ../sass/bridgewinners.scss */
 #history-page .history-response-item.selected {
   border-bottom: solid 3px #9a032e;
 }
-/* line 1155, ../sass/bridgewinners.scss */
+/* line 1178, ../sass/bridgewinners.scss */
 #history-page .history-header {
   display: block;
   position: fixed;
@@ -3073,31 +3107,36 @@ html, body {
   color: #4a4a4a;
   padding: 10px;
 }
-/* line 1165, ../sass/bridgewinners.scss */
-#history-page .history-list {
+/* line 1188, ../sass/bridgewinners.scss */
+#history-page #history-voted-wrapper, #history-page #history-published-wrapper {
+  position: absolute;
   display: block;
   position: fixed;
   top: 13.60124vh;
   height: 75.73416vh;
   width: 100vw;
+  width: 100%;
+  overflow: auto;
+  background-color: transparent;
+  color: transparent;
 }
-/* line 1167, ../sass/bridgewinners.scss */
+/* line 1198, ../sass/bridgewinners.scss */
 #history-page .history-list section {
   display: inline-block;
 }
-/* line 1170, ../sass/bridgewinners.scss */
+/* line 1201, ../sass/bridgewinners.scss */
 #history-page .history-list a {
   padding-bottom: 5px;
 }
-/* line 1173, ../sass/bridgewinners.scss */
+/* line 1204, ../sass/bridgewinners.scss */
 #history-page .history-list p {
   margin: 0;
 }
-/* line 1176, ../sass/bridgewinners.scss */
+/* line 1207, ../sass/bridgewinners.scss */
 #history-page .history-list rank[data-suit="d"], #history-page .history-list rank[data-suit="h"] {
   color: #000000;
 }
-/* line 1179, ../sass/bridgewinners.scss */
+/* line 1210, ../sass/bridgewinners.scss */
 #history-page .history-list rank, #history-page .history-list suit {
   font-family: SFUIDisplay;
   font-size: 2.16383vh;
@@ -3109,16 +3148,16 @@ html, body {
   text-shadow: none;
   font-weight: 600;
 }
-/* line 1183, ../sass/bridgewinners.scss */
+/* line 1214, ../sass/bridgewinners.scss */
 #history-page .history-list rank {
   color: #4a4a4a;
   text-transform: uppercase;
 }
-/* line 1187, ../sass/bridgewinners.scss */
+/* line 1218, ../sass/bridgewinners.scss */
 #history-page .history-list row {
   margin-right: 10px;
 }
-/* line 1190, ../sass/bridgewinners.scss */
+/* line 1221, ../sass/bridgewinners.scss */
 #history-page .history-list .avatar {
   height: 3.09119vh;
   width: 3.09119vh;
@@ -3128,7 +3167,7 @@ html, body {
   border-radius: 50%;
   vertical-align: middle;
 }
-/* line 1199, ../sass/bridgewinners.scss */
+/* line 1230, ../sass/bridgewinners.scss */
 #history-page .history-list .name {
   font-family: SFUIDisplay;
   font-size: 2.31839vh;
@@ -3139,10 +3178,10 @@ html, body {
   text-align: center;
   text-shadow: none;
   font-weight: 600;
-  color: #4a4a4a;
+  color: #9a032e;
   margin-left: 10px;
 }
-/* line 1205, ../sass/bridgewinners.scss */
+/* line 1236, ../sass/bridgewinners.scss */
 #history-page .history-list .answer, #history-page .history-list .percentage {
   float: right;
   font-family: SFUIDisplay;
@@ -3156,19 +3195,19 @@ html, body {
   font-weight: 600;
   color: #4a4a4a;
 }
-/* line 1211, ../sass/bridgewinners.scss */
+/* line 1242, ../sass/bridgewinners.scss */
 #history-page .history-list .answer {
   margin-right: 2vw;
 }
-/* line 1214, ../sass/bridgewinners.scss */
+/* line 1245, ../sass/bridgewinners.scss */
 #history-page .history-list suit[data-suit='n'] {
   text-transform: capitalize;
 }
-/* line 1217, ../sass/bridgewinners.scss */
+/* line 1248, ../sass/bridgewinners.scss */
 #history-page .history-list .percentage {
   width: 10.66667vw;
 }
-/* line 1220, ../sass/bridgewinners.scss */
+/* line 1251, ../sass/bridgewinners.scss */
 #history-page .history-list .stats {
   font-family: SFUIDisplay;
   font-size: 2.16383vh;
@@ -3182,20 +3221,20 @@ html, body {
   color: #4a4a4a;
   margin-right: 10px;
 }
-/* line 1226, ../sass/bridgewinners.scss */
+/* line 1257, ../sass/bridgewinners.scss */
 #history-page .history-list .icon {
   height: 1.85471vh;
   width: 1.85471vh;
   vertical-align: middle;
   margin-right: 2px;
 }
-/* line 1234, ../sass/bridgewinners.scss */
+/* line 1265, ../sass/bridgewinners.scss */
 #history-page .history-list .ui-btn {
   background-color: #ffffff;
 }
 
 /* Bidding vote page styles. */
-/* line 1242, ../sass/bridgewinners.scss */
+/* line 1273, ../sass/bridgewinners.scss */
 #vote-page #name {
   display: block;
   position: fixed;
@@ -3214,13 +3253,13 @@ html, body {
   text-align: left;
   color: #4a4a4a;
 }
-/* line 1249, ../sass/bridgewinners.scss */
+/* line 1280, ../sass/bridgewinners.scss */
 #vote-page #user {
   color: #9a032e;
   font-weight: 600;
   margin-right: 5px;
 }
-/* line 1254, ../sass/bridgewinners.scss */
+/* line 1285, ../sass/bridgewinners.scss */
 #vote-page #comments {
   display: block;
   position: fixed;
@@ -3239,7 +3278,7 @@ html, body {
   color: #9a032e;
   font-weight: 600;
 }
-/* line 1261, ../sass/bridgewinners.scss */
+/* line 1292, ../sass/bridgewinners.scss */
 #vote-page #comments:before {
   content: "";
   display: block;
@@ -3252,7 +3291,7 @@ html, body {
   float: left;
   margin-right: 5px;
 }
-/* line 1271, ../sass/bridgewinners.scss */
+/* line 1302, ../sass/bridgewinners.scss */
 #vote-page #likes {
   display: block;
   position: fixed;
@@ -3271,7 +3310,7 @@ html, body {
   color: #9a032e;
   font-weight: 600;
 }
-/* line 1278, ../sass/bridgewinners.scss */
+/* line 1309, ../sass/bridgewinners.scss */
 #vote-page #likes:before {
   content: "";
   display: block;
@@ -3284,7 +3323,7 @@ html, body {
   float: left;
   margin-right: 5px;
 }
-/* line 1288, ../sass/bridgewinners.scss */
+/* line 1319, ../sass/bridgewinners.scss */
 #vote-page #auction {
   display: block;
   position: fixed;
@@ -3303,13 +3342,13 @@ html, body {
   background-color: #ffffff;
   border: solid 2px #416757;
 }
-/* line 1293, ../sass/bridgewinners.scss */
+/* line 1324, ../sass/bridgewinners.scss */
 #vote-page #auction directions, #vote-page #auction calls {
   display: table;
   table-layout: fixed;
   width: 100%;
 }
-/* line 1298, ../sass/bridgewinners.scss */
+/* line 1329, ../sass/bridgewinners.scss */
 #vote-page #auction directions {
   font-family: SFUIDisplay;
   font-size: 3.09119vh;
@@ -3322,7 +3361,7 @@ html, body {
   height: 17.77%;
   border-bottom: solid 2px #416757;
 }
-/* line 1303, ../sass/bridgewinners.scss */
+/* line 1334, ../sass/bridgewinners.scss */
 #vote-page #auction calls {
   font-family: SFUIDisplay;
   font-size: 2.78207vh;
@@ -3334,16 +3373,16 @@ html, body {
   text-shadow: none;
   height: 82.23%;
 }
-/* line 1307, ../sass/bridgewinners.scss */
+/* line 1338, ../sass/bridgewinners.scss */
 #vote-page #auction row {
   display: table-row;
   width: 100%;
 }
-/* line 1311, ../sass/bridgewinners.scss */
+/* line 1342, ../sass/bridgewinners.scss */
 #vote-page #auction direction, #vote-page #auction call {
   display: table-cell;
 }
-/* line 1314, ../sass/bridgewinners.scss */
+/* line 1345, ../sass/bridgewinners.scss */
 #vote-page #auction direction {
   font-weight: 600;
   letter-spacing: -0.8px;
@@ -3351,28 +3390,28 @@ html, body {
   color: #000000;
   background-color: #ffffff;
 }
-/* line 1321, ../sass/bridgewinners.scss */
+/* line 1352, ../sass/bridgewinners.scss */
 #vote-page #auction direction[data-vulnerable] {
   color: #ffffff;
   background-color: #d0021b;
 }
-/* line 1325, ../sass/bridgewinners.scss */
+/* line 1356, ../sass/bridgewinners.scss */
 #vote-page #auction call {
   font-weight: 600;
   letter-spacing: -0.5px;
   text-transform: uppercase;
 }
-/* line 1332, ../sass/bridgewinners.scss */
+/* line 1363, ../sass/bridgewinners.scss */
 #vote-page #vulnerability [data-vulnerable="yes"] {
   color: #ffffff;
   background-color: #d0021b;
 }
-/* line 1336, ../sass/bridgewinners.scss */
+/* line 1367, ../sass/bridgewinners.scss */
 #vote-page #vulnerability [data-vulnerable="no"] {
   color: #000000;
   background-color: #ffffff;
 }
-/* line 1340, ../sass/bridgewinners.scss */
+/* line 1371, ../sass/bridgewinners.scss */
 #vote-page #vulnerability #info-wrapper {
   display: block;
   position: fixed;
@@ -3383,7 +3422,7 @@ html, body {
   background-color: #dddddd;
   border: solid 2px #416757;
 }
-/* line 1345, ../sass/bridgewinners.scss */
+/* line 1376, ../sass/bridgewinners.scss */
 #vote-page #vulnerability #vul-e {
   display: block;
   position: fixed;
@@ -3394,7 +3433,7 @@ html, body {
   border: solid 2px #416757;
   border-left: 0;
 }
-/* line 1350, ../sass/bridgewinners.scss */
+/* line 1381, ../sass/bridgewinners.scss */
 #vote-page #vulnerability #vul-w {
   display: block;
   position: fixed;
@@ -3405,11 +3444,11 @@ html, body {
   border: solid 2px #416757;
   border-right: 0;
 }
-/* line 1355, ../sass/bridgewinners.scss */
+/* line 1386, ../sass/bridgewinners.scss */
 #vote-page #vulnerability .vulnerability {
   text-align: center;
 }
-/* line 1359, ../sass/bridgewinners.scss */
+/* line 1390, ../sass/bridgewinners.scss */
 #vote-page #vulnerability #scoring {
   display: block;
   position: fixed;
@@ -3424,7 +3463,7 @@ html, body {
   z-index: 1;
   word-wrap: break-word;
 }
-/* line 1369, ../sass/bridgewinners.scss */
+/* line 1400, ../sass/bridgewinners.scss */
 #vote-page #vulnerability #vul-n {
   display: block;
   position: fixed;
@@ -3435,7 +3474,7 @@ html, body {
   border: solid 2px #416757;
   border-bottom: 0;
 }
-/* line 1374, ../sass/bridgewinners.scss */
+/* line 1405, ../sass/bridgewinners.scss */
 #vote-page #vulnerability #vul-s {
   display: block;
   position: fixed;
@@ -3446,7 +3485,7 @@ html, body {
   border: solid 2px #416757;
   border-top: 0;
 }
-/* line 1380, ../sass/bridgewinners.scss */
+/* line 1411, ../sass/bridgewinners.scss */
 #vote-page #description {
   font-family: SFUIDisplay;
   font-size: 2.62751vh;
@@ -3466,7 +3505,7 @@ html, body {
   background-repeat: no-repeat;
   background-position: right 5px top 5px;
 }
-/* line 1392, ../sass/bridgewinners.scss */
+/* line 1423, ../sass/bridgewinners.scss */
 #vote-page #hand {
   display: block;
   position: fixed;
@@ -3475,7 +3514,7 @@ html, body {
   left: 3.46667vw;
   width: 93.06667vw;
 }
-/* line 1395, ../sass/bridgewinners.scss */
+/* line 1426, ../sass/bridgewinners.scss */
 #vote-page #lead-box {
   display: block;
   position: fixed;
@@ -3484,18 +3523,18 @@ html, body {
   left: 4.26667vw;
   width: 91.46667vw;
 }
-/* line 1399, ../sass/bridgewinners.scss */
+/* line 1430, ../sass/bridgewinners.scss */
 #vote-page #hand hand, #vote-page #hand content, #vote-page #lead-box hand, #vote-page #lead-box content {
   display: block;
   width: 100%;
   height: 100%;
 }
-/* line 1404, ../sass/bridgewinners.scss */
+/* line 1435, ../sass/bridgewinners.scss */
 #vote-page #hand cards, #vote-page #lead-box cards {
   display: inline-block;
   height: 100%;
 }
-/* line 1408, ../sass/bridgewinners.scss */
+/* line 1439, ../sass/bridgewinners.scss */
 #vote-page #hand card, #vote-page #lead-box card {
   position: absolute;
   color: transparent;
@@ -3504,397 +3543,397 @@ html, body {
   width: 12.8vw;
   cursor: pointer;
 }
-/* line 1421, ../sass/bridgewinners.scss */
+/* line 1452, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit][data-rank], #vote-page #lead-box [data-suit][data-rank] {
   background-repeat: no-repeat;
   background-size: cover;
 }
-/* line 1425, ../sass/bridgewinners.scss */
+/* line 1456, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="s"][data-rank="x"], #vote-page #lead-box [data-suit="s"][data-rank="x"] {
   background-image: url("img/s2.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="s"][data-rank="a"], #vote-page #lead-box [data-suit="s"][data-rank="a"] {
   background-image: url("img/sa.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="s"][data-rank="k"], #vote-page #lead-box [data-suit="s"][data-rank="k"] {
   background-image: url("img/sk.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="s"][data-rank="q"], #vote-page #lead-box [data-suit="s"][data-rank="q"] {
   background-image: url("img/sq.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="s"][data-rank="j"], #vote-page #lead-box [data-suit="s"][data-rank="j"] {
   background-image: url("img/sj.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="s"][data-rank="t"], #vote-page #lead-box [data-suit="s"][data-rank="t"] {
   background-image: url("img/st.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="s"][data-rank="9"], #vote-page #lead-box [data-suit="s"][data-rank="9"] {
   background-image: url("img/s9.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="s"][data-rank="8"], #vote-page #lead-box [data-suit="s"][data-rank="8"] {
   background-image: url("img/s8.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="s"][data-rank="7"], #vote-page #lead-box [data-suit="s"][data-rank="7"] {
   background-image: url("img/s7.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="s"][data-rank="6"], #vote-page #lead-box [data-suit="s"][data-rank="6"] {
   background-image: url("img/s6.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="s"][data-rank="5"], #vote-page #lead-box [data-suit="s"][data-rank="5"] {
   background-image: url("img/s5.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="s"][data-rank="4"], #vote-page #lead-box [data-suit="s"][data-rank="4"] {
   background-image: url("img/s4.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="s"][data-rank="3"], #vote-page #lead-box [data-suit="s"][data-rank="3"] {
   background-image: url("img/s3.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="s"][data-rank="2"], #vote-page #lead-box [data-suit="s"][data-rank="2"] {
   background-image: url("img/s2.png");
 }
-/* line 1425, ../sass/bridgewinners.scss */
+/* line 1456, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="h"][data-rank="x"], #vote-page #lead-box [data-suit="h"][data-rank="x"] {
   background-image: url("img/h2.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="h"][data-rank="a"], #vote-page #lead-box [data-suit="h"][data-rank="a"] {
   background-image: url("img/ha.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="h"][data-rank="k"], #vote-page #lead-box [data-suit="h"][data-rank="k"] {
   background-image: url("img/hk.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="h"][data-rank="q"], #vote-page #lead-box [data-suit="h"][data-rank="q"] {
   background-image: url("img/hq.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="h"][data-rank="j"], #vote-page #lead-box [data-suit="h"][data-rank="j"] {
   background-image: url("img/hj.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="h"][data-rank="t"], #vote-page #lead-box [data-suit="h"][data-rank="t"] {
   background-image: url("img/ht.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="h"][data-rank="9"], #vote-page #lead-box [data-suit="h"][data-rank="9"] {
   background-image: url("img/h9.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="h"][data-rank="8"], #vote-page #lead-box [data-suit="h"][data-rank="8"] {
   background-image: url("img/h8.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="h"][data-rank="7"], #vote-page #lead-box [data-suit="h"][data-rank="7"] {
   background-image: url("img/h7.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="h"][data-rank="6"], #vote-page #lead-box [data-suit="h"][data-rank="6"] {
   background-image: url("img/h6.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="h"][data-rank="5"], #vote-page #lead-box [data-suit="h"][data-rank="5"] {
   background-image: url("img/h5.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="h"][data-rank="4"], #vote-page #lead-box [data-suit="h"][data-rank="4"] {
   background-image: url("img/h4.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="h"][data-rank="3"], #vote-page #lead-box [data-suit="h"][data-rank="3"] {
   background-image: url("img/h3.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="h"][data-rank="2"], #vote-page #lead-box [data-suit="h"][data-rank="2"] {
   background-image: url("img/h2.png");
 }
-/* line 1425, ../sass/bridgewinners.scss */
+/* line 1456, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="d"][data-rank="x"], #vote-page #lead-box [data-suit="d"][data-rank="x"] {
   background-image: url("img/d2.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="d"][data-rank="a"], #vote-page #lead-box [data-suit="d"][data-rank="a"] {
   background-image: url("img/da.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="d"][data-rank="k"], #vote-page #lead-box [data-suit="d"][data-rank="k"] {
   background-image: url("img/dk.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="d"][data-rank="q"], #vote-page #lead-box [data-suit="d"][data-rank="q"] {
   background-image: url("img/dq.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="d"][data-rank="j"], #vote-page #lead-box [data-suit="d"][data-rank="j"] {
   background-image: url("img/dj.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="d"][data-rank="t"], #vote-page #lead-box [data-suit="d"][data-rank="t"] {
   background-image: url("img/dt.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="d"][data-rank="9"], #vote-page #lead-box [data-suit="d"][data-rank="9"] {
   background-image: url("img/d9.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="d"][data-rank="8"], #vote-page #lead-box [data-suit="d"][data-rank="8"] {
   background-image: url("img/d8.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="d"][data-rank="7"], #vote-page #lead-box [data-suit="d"][data-rank="7"] {
   background-image: url("img/d7.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="d"][data-rank="6"], #vote-page #lead-box [data-suit="d"][data-rank="6"] {
   background-image: url("img/d6.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="d"][data-rank="5"], #vote-page #lead-box [data-suit="d"][data-rank="5"] {
   background-image: url("img/d5.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="d"][data-rank="4"], #vote-page #lead-box [data-suit="d"][data-rank="4"] {
   background-image: url("img/d4.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="d"][data-rank="3"], #vote-page #lead-box [data-suit="d"][data-rank="3"] {
   background-image: url("img/d3.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="d"][data-rank="2"], #vote-page #lead-box [data-suit="d"][data-rank="2"] {
   background-image: url("img/d2.png");
 }
-/* line 1425, ../sass/bridgewinners.scss */
+/* line 1456, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="c"][data-rank="x"], #vote-page #lead-box [data-suit="c"][data-rank="x"] {
   background-image: url("img/c2.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="c"][data-rank="a"], #vote-page #lead-box [data-suit="c"][data-rank="a"] {
   background-image: url("img/ca.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="c"][data-rank="k"], #vote-page #lead-box [data-suit="c"][data-rank="k"] {
   background-image: url("img/ck.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="c"][data-rank="q"], #vote-page #lead-box [data-suit="c"][data-rank="q"] {
   background-image: url("img/cq.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="c"][data-rank="j"], #vote-page #lead-box [data-suit="c"][data-rank="j"] {
   background-image: url("img/cj.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="c"][data-rank="t"], #vote-page #lead-box [data-suit="c"][data-rank="t"] {
   background-image: url("img/ct.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="c"][data-rank="9"], #vote-page #lead-box [data-suit="c"][data-rank="9"] {
   background-image: url("img/c9.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="c"][data-rank="8"], #vote-page #lead-box [data-suit="c"][data-rank="8"] {
   background-image: url("img/c8.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="c"][data-rank="7"], #vote-page #lead-box [data-suit="c"][data-rank="7"] {
   background-image: url("img/c7.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="c"][data-rank="6"], #vote-page #lead-box [data-suit="c"][data-rank="6"] {
   background-image: url("img/c6.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="c"][data-rank="5"], #vote-page #lead-box [data-suit="c"][data-rank="5"] {
   background-image: url("img/c5.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="c"][data-rank="4"], #vote-page #lead-box [data-suit="c"][data-rank="4"] {
   background-image: url("img/c4.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="c"][data-rank="3"], #vote-page #lead-box [data-suit="c"][data-rank="3"] {
   background-image: url("img/c3.png");
 }
-/* line 1429, ../sass/bridgewinners.scss */
+/* line 1460, ../sass/bridgewinners.scss */
 #vote-page #hand [data-suit="c"][data-rank="2"], #vote-page #lead-box [data-suit="c"][data-rank="2"] {
   background-image: url("img/c2.png");
 }
-/* line 1437, ../sass/bridgewinners.scss */
+/* line 1468, ../sass/bridgewinners.scss */
 #vote-page #hand [data-card-number="1"] {
   left: 0vw;
 }
-/* line 1437, ../sass/bridgewinners.scss */
+/* line 1468, ../sass/bridgewinners.scss */
 #vote-page #hand [data-card-number="2"] {
   left: 6.66667vw;
 }
-/* line 1437, ../sass/bridgewinners.scss */
+/* line 1468, ../sass/bridgewinners.scss */
 #vote-page #hand [data-card-number="3"] {
   left: 13.33333vw;
 }
-/* line 1437, ../sass/bridgewinners.scss */
+/* line 1468, ../sass/bridgewinners.scss */
 #vote-page #hand [data-card-number="4"] {
   left: 20vw;
 }
-/* line 1437, ../sass/bridgewinners.scss */
+/* line 1468, ../sass/bridgewinners.scss */
 #vote-page #hand [data-card-number="5"] {
   left: 26.66667vw;
 }
-/* line 1437, ../sass/bridgewinners.scss */
+/* line 1468, ../sass/bridgewinners.scss */
 #vote-page #hand [data-card-number="6"] {
   left: 33.33333vw;
 }
-/* line 1437, ../sass/bridgewinners.scss */
+/* line 1468, ../sass/bridgewinners.scss */
 #vote-page #hand [data-card-number="7"] {
   left: 40vw;
 }
-/* line 1437, ../sass/bridgewinners.scss */
+/* line 1468, ../sass/bridgewinners.scss */
 #vote-page #hand [data-card-number="8"] {
   left: 46.66667vw;
 }
-/* line 1437, ../sass/bridgewinners.scss */
+/* line 1468, ../sass/bridgewinners.scss */
 #vote-page #hand [data-card-number="9"] {
   left: 53.33333vw;
 }
-/* line 1437, ../sass/bridgewinners.scss */
+/* line 1468, ../sass/bridgewinners.scss */
 #vote-page #hand [data-card-number="10"] {
   left: 60vw;
 }
-/* line 1437, ../sass/bridgewinners.scss */
+/* line 1468, ../sass/bridgewinners.scss */
 #vote-page #hand [data-card-number="11"] {
   left: 66.66667vw;
 }
-/* line 1437, ../sass/bridgewinners.scss */
+/* line 1468, ../sass/bridgewinners.scss */
 #vote-page #hand [data-card-number="12"] {
   left: 73.33333vw;
 }
-/* line 1437, ../sass/bridgewinners.scss */
+/* line 1468, ../sass/bridgewinners.scss */
 #vote-page #hand [data-card-number="13"] {
   left: 80vw;
 }
-/* line 1444, ../sass/bridgewinners.scss */
+/* line 1475, ../sass/bridgewinners.scss */
 #vote-page #lead-box card {
   left: 40vw;
   transform-origin: center 60vw;
 }
-/* line 1451, ../sass/bridgewinners.scss */
+/* line 1482, ../sass/bridgewinners.scss */
 #vote-page #lead-box [data-card-number="1"] {
   transform: rotate(-45deg);
 }
-/* line 1455, ../sass/bridgewinners.scss */
+/* line 1486, ../sass/bridgewinners.scss */
 #vote-page #lead-box [data-card-number="1"].selected {
   transform: rotate(-45deg) translateY(-10px);
 }
-/* line 1451, ../sass/bridgewinners.scss */
+/* line 1482, ../sass/bridgewinners.scss */
 #vote-page #lead-box [data-card-number="2"] {
   transform: rotate(-37.5deg);
 }
-/* line 1455, ../sass/bridgewinners.scss */
+/* line 1486, ../sass/bridgewinners.scss */
 #vote-page #lead-box [data-card-number="2"].selected {
   transform: rotate(-37.5deg) translateY(-10px);
 }
-/* line 1451, ../sass/bridgewinners.scss */
+/* line 1482, ../sass/bridgewinners.scss */
 #vote-page #lead-box [data-card-number="3"] {
   transform: rotate(-30deg);
 }
-/* line 1455, ../sass/bridgewinners.scss */
+/* line 1486, ../sass/bridgewinners.scss */
 #vote-page #lead-box [data-card-number="3"].selected {
   transform: rotate(-30deg) translateY(-10px);
 }
-/* line 1451, ../sass/bridgewinners.scss */
+/* line 1482, ../sass/bridgewinners.scss */
 #vote-page #lead-box [data-card-number="4"] {
   transform: rotate(-22.5deg);
 }
-/* line 1455, ../sass/bridgewinners.scss */
+/* line 1486, ../sass/bridgewinners.scss */
 #vote-page #lead-box [data-card-number="4"].selected {
   transform: rotate(-22.5deg) translateY(-10px);
 }
-/* line 1451, ../sass/bridgewinners.scss */
+/* line 1482, ../sass/bridgewinners.scss */
 #vote-page #lead-box [data-card-number="5"] {
   transform: rotate(-15deg);
 }
-/* line 1455, ../sass/bridgewinners.scss */
+/* line 1486, ../sass/bridgewinners.scss */
 #vote-page #lead-box [data-card-number="5"].selected {
   transform: rotate(-15deg) translateY(-10px);
 }
-/* line 1451, ../sass/bridgewinners.scss */
+/* line 1482, ../sass/bridgewinners.scss */
 #vote-page #lead-box [data-card-number="6"] {
   transform: rotate(-7.5deg);
 }
-/* line 1455, ../sass/bridgewinners.scss */
+/* line 1486, ../sass/bridgewinners.scss */
 #vote-page #lead-box [data-card-number="6"].selected {
   transform: rotate(-7.5deg) translateY(-10px);
 }
-/* line 1451, ../sass/bridgewinners.scss */
+/* line 1482, ../sass/bridgewinners.scss */
 #vote-page #lead-box [data-card-number="7"] {
   transform: rotate(0deg);
 }
-/* line 1455, ../sass/bridgewinners.scss */
+/* line 1486, ../sass/bridgewinners.scss */
 #vote-page #lead-box [data-card-number="7"].selected {
   transform: rotate(0deg) translateY(-10px);
 }
-/* line 1451, ../sass/bridgewinners.scss */
+/* line 1482, ../sass/bridgewinners.scss */
 #vote-page #lead-box [data-card-number="8"] {
   transform: rotate(7.5deg);
 }
-/* line 1455, ../sass/bridgewinners.scss */
+/* line 1486, ../sass/bridgewinners.scss */
 #vote-page #lead-box [data-card-number="8"].selected {
   transform: rotate(7.5deg) translateY(-10px);
 }
-/* line 1451, ../sass/bridgewinners.scss */
+/* line 1482, ../sass/bridgewinners.scss */
 #vote-page #lead-box [data-card-number="9"] {
   transform: rotate(15deg);
 }
-/* line 1455, ../sass/bridgewinners.scss */
+/* line 1486, ../sass/bridgewinners.scss */
 #vote-page #lead-box [data-card-number="9"].selected {
   transform: rotate(15deg) translateY(-10px);
 }
-/* line 1451, ../sass/bridgewinners.scss */
+/* line 1482, ../sass/bridgewinners.scss */
 #vote-page #lead-box [data-card-number="10"] {
   transform: rotate(22.5deg);
 }
-/* line 1455, ../sass/bridgewinners.scss */
+/* line 1486, ../sass/bridgewinners.scss */
 #vote-page #lead-box [data-card-number="10"].selected {
   transform: rotate(22.5deg) translateY(-10px);
 }
-/* line 1451, ../sass/bridgewinners.scss */
+/* line 1482, ../sass/bridgewinners.scss */
 #vote-page #lead-box [data-card-number="11"] {
   transform: rotate(30deg);
 }
-/* line 1455, ../sass/bridgewinners.scss */
+/* line 1486, ../sass/bridgewinners.scss */
 #vote-page #lead-box [data-card-number="11"].selected {
   transform: rotate(30deg) translateY(-10px);
 }
-/* line 1451, ../sass/bridgewinners.scss */
+/* line 1482, ../sass/bridgewinners.scss */
 #vote-page #lead-box [data-card-number="12"] {
   transform: rotate(37.5deg);
 }
-/* line 1455, ../sass/bridgewinners.scss */
+/* line 1486, ../sass/bridgewinners.scss */
 #vote-page #lead-box [data-card-number="12"].selected {
   transform: rotate(37.5deg) translateY(-10px);
 }
-/* line 1451, ../sass/bridgewinners.scss */
+/* line 1482, ../sass/bridgewinners.scss */
 #vote-page #lead-box [data-card-number="13"] {
   transform: rotate(45deg);
 }
-/* line 1455, ../sass/bridgewinners.scss */
+/* line 1486, ../sass/bridgewinners.scss */
 #vote-page #lead-box [data-card-number="13"].selected {
   transform: rotate(45deg) translateY(-10px);
 }
-/* line 1461, ../sass/bridgewinners.scss */
+/* line 1492, ../sass/bridgewinners.scss */
 #vote-page #bidding-box {
   display: block;
   position: fixed;
@@ -3903,7 +3942,7 @@ html, body {
   left: 4.26667vw;
   width: 91.46667vw;
   font-family: SFUIDisplay;
-  font-size: 5.56414vh;
+  font-size: 4.63679vh;
   font-weight: normal;
   font-style: normal;
   font-stretch: normal;
@@ -3914,13 +3953,13 @@ html, body {
   letter-spacing: -0.9px;
   color: #000000;
 }
-/* line 1467, ../sass/bridgewinners.scss */
+/* line 1498, ../sass/bridgewinners.scss */
 #vote-page #bidding-box levels, #vote-page #bidding-box calls {
   display: table;
   table-layout: fixed;
   width: 100%;
 }
-/* line 1472, ../sass/bridgewinners.scss */
+/* line 1503, ../sass/bridgewinners.scss */
 #vote-page #bidding-box level, #vote-page #bidding-box call {
   display: table-cell;
   height: 50%;
@@ -3929,36 +3968,36 @@ html, body {
   text-transform: uppercase;
   cursor: pointer;
 }
-/* line 1480, ../sass/bridgewinners.scss */
+/* line 1511, ../sass/bridgewinners.scss */
 #vote-page #bidding-box level.disabled, #vote-page #bidding-box call.disabled {
   cursor: not-allowed;
   opacity: 0.4;
 }
-/* line 1484, ../sass/bridgewinners.scss */
+/* line 1515, ../sass/bridgewinners.scss */
 #vote-page #bidding-box call[data-call="p"] {
   background-color: #417505;
   color: #ffffff;
 }
-/* line 1488, ../sass/bridgewinners.scss */
+/* line 1519, ../sass/bridgewinners.scss */
 #vote-page #bidding-box call[data-call="x"] {
   background-color: #d0021b;
   color: #ffffff;
 }
-/* line 1492, ../sass/bridgewinners.scss */
+/* line 1523, ../sass/bridgewinners.scss */
 #vote-page #bidding-box call[data-call="r"] {
   background-color: #000099;
   color: #ffffff;
 }
-/* line 1496, ../sass/bridgewinners.scss */
+/* line 1527, ../sass/bridgewinners.scss */
 #vote-page #bidding-box level.selected, #vote-page #bidding-box call.selected {
   background-color: #2a5461;
   color: #ffffff;
 }
-/* line 1497, ../sass/bridgewinners.scss */
+/* line 1528, ../sass/bridgewinners.scss */
 #vote-page #bidding-box level.selected [data-suit="d"], #vote-page #bidding-box level.selected [data-suit="h"], #vote-page #bidding-box call.selected [data-suit="d"], #vote-page #bidding-box call.selected [data-suit="h"] {
   color: #ffffff;
 }
-/* line 1504, ../sass/bridgewinners.scss */
+/* line 1535, ../sass/bridgewinners.scss */
 #vote-page .button {
   font-family: SFUIDisplay;
   font-size: 2.62751vh;
@@ -3974,13 +4013,13 @@ html, body {
   color: #4a4a4a;
   background-color: #dddddd;
 }
-/* line 1510, ../sass/bridgewinners.scss */
+/* line 1541, ../sass/bridgewinners.scss */
 #vote-page .button.enabled {
   color: #ffffff;
   background-color: #9a032e;
   cursor: pointer;
 }
-/* line 1515, ../sass/bridgewinners.scss */
+/* line 1546, ../sass/bridgewinners.scss */
 #vote-page #skip-submit-button {
   display: block;
   position: fixed;
@@ -3989,7 +4028,7 @@ html, body {
   left: 4vw;
   width: 28vw;
 }
-/* line 1519, ../sass/bridgewinners.scss */
+/* line 1550, ../sass/bridgewinners.scss */
 #vote-page #abstain-submit-button {
   display: block;
   position: fixed;
@@ -3998,7 +4037,7 @@ html, body {
   left: 36vw;
   width: 28vw;
 }
-/* line 1523, ../sass/bridgewinners.scss */
+/* line 1554, ../sass/bridgewinners.scss */
 #vote-page #vote-submit-button {
   display: block;
   position: fixed;
@@ -4008,7 +4047,7 @@ html, body {
   width: 28vw;
 }
 
-/* line 1529, ../sass/bridgewinners.scss */
+/* line 1560, ../sass/bridgewinners.scss */
 #vote-page.show-hand-first #auction {
   display: block;
   position: fixed;
@@ -4017,7 +4056,7 @@ html, body {
   left: 4vw;
   width: 61.33333vw;
 }
-/* line 1533, ../sass/bridgewinners.scss */
+/* line 1564, ../sass/bridgewinners.scss */
 #vote-page.show-hand-first #vulnerability #info-wrapper {
   display: block;
   position: fixed;
@@ -4026,7 +4065,7 @@ html, body {
   left: 68vw;
   width: 28vw;
 }
-/* line 1536, ../sass/bridgewinners.scss */
+/* line 1567, ../sass/bridgewinners.scss */
 #vote-page.show-hand-first #vulnerability #vul-e {
   display: block;
   position: fixed;
@@ -4035,7 +4074,7 @@ html, body {
   left: 88.53333vw;
   width: 5.6vw;
 }
-/* line 1539, ../sass/bridgewinners.scss */
+/* line 1570, ../sass/bridgewinners.scss */
 #vote-page.show-hand-first #vulnerability #vul-w {
   display: block;
   position: fixed;
@@ -4044,7 +4083,7 @@ html, body {
   left: 69.86667vw;
   width: 5.6vw;
 }
-/* line 1542, ../sass/bridgewinners.scss */
+/* line 1573, ../sass/bridgewinners.scss */
 #vote-page.show-hand-first #vulnerability #scoring {
   display: block;
   position: fixed;
@@ -4053,7 +4092,7 @@ html, body {
   left: 74.93333vw;
   width: 14.16vw;
 }
-/* line 1545, ../sass/bridgewinners.scss */
+/* line 1576, ../sass/bridgewinners.scss */
 #vote-page.show-hand-first #vulnerability #vul-n {
   display: block;
   position: fixed;
@@ -4062,7 +4101,7 @@ html, body {
   left: 74.93333vw;
   width: 14.16vw;
 }
-/* line 1548, ../sass/bridgewinners.scss */
+/* line 1579, ../sass/bridgewinners.scss */
 #vote-page.show-hand-first #vulnerability #vul-s {
   display: block;
   position: fixed;
@@ -4071,7 +4110,7 @@ html, body {
   left: 74.93333vw;
   width: 14.16vw;
 }
-/* line 1552, ../sass/bridgewinners.scss */
+/* line 1583, ../sass/bridgewinners.scss */
 #vote-page.show-hand-first #hand {
   display: block;
   position: fixed;
@@ -4082,20 +4121,20 @@ html, body {
 }
 
 /* Login page styles. */
-/* line 1558, ../sass/bridgewinners.scss */
+/* line 1589, ../sass/bridgewinners.scss */
 .login-page-content {
   height: 100vh;
   width: 100vw;
   background: url(img/bridgewinners_background.png) no-repeat center center fixed;
   background-size: cover;
 }
-/* line 1563, ../sass/bridgewinners.scss */
+/* line 1594, ../sass/bridgewinners.scss */
 .login-page-content .bridgewinners-logo {
   display: block;
   position: fixed;
   top: 9.11901vh;
 }
-/* line 1567, ../sass/bridgewinners.scss */
+/* line 1598, ../sass/bridgewinners.scss */
 .login-page-content input {
   font-family: SFUIDisplay;
   font-size: 3.09119vh;
@@ -4110,7 +4149,7 @@ html, body {
   border-radius: 5px;
   box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.5);
 }
-/* line 1573, ../sass/bridgewinners.scss */
+/* line 1604, ../sass/bridgewinners.scss */
 .login-page-content input.username {
   display: block;
   position: fixed;
@@ -4118,7 +4157,7 @@ html, body {
   height: 8.80989vh;
   width: 89.33333vw;
 }
-/* line 1576, ../sass/bridgewinners.scss */
+/* line 1607, ../sass/bridgewinners.scss */
 .login-page-content input.password {
   display: block;
   position: fixed;
@@ -4126,7 +4165,7 @@ html, body {
   height: 8.80989vh;
   width: 89.33333vw;
 }
-/* line 1579, ../sass/bridgewinners.scss */
+/* line 1610, ../sass/bridgewinners.scss */
 .login-page-content button {
   font-family: SFUIDisplay;
   font-size: 3.09119vh;
@@ -4141,7 +4180,7 @@ html, body {
   -webkit-border-radius: 5px;
   border-radius: 5px;
 }
-/* line 1585, ../sass/bridgewinners.scss */
+/* line 1616, ../sass/bridgewinners.scss */
 .login-page-content button.bridgewinners {
   background-color: #9a032e;
   display: block;
@@ -4150,7 +4189,7 @@ html, body {
   height: 6.80062vh;
   width: 89.33333vw;
 }
-/* line 1589, ../sass/bridgewinners.scss */
+/* line 1620, ../sass/bridgewinners.scss */
 .login-page-content button.facebook {
   background-color: #3b5998;
   display: block;
@@ -4159,7 +4198,7 @@ html, body {
   height: 6.80062vh;
   width: 89.33333vw;
 }
-/* line 1593, ../sass/bridgewinners.scss */
+/* line 1624, ../sass/bridgewinners.scss */
 .login-page-content button.google {
   background-color: #dd4b39;
   display: block;
@@ -4169,23 +4208,23 @@ html, body {
   width: 89.33333vw;
 }
 
-/* line 1599, ../sass/bridgewinners.scss */
+/* line 1630, ../sass/bridgewinners.scss */
 body.ui-mobile-viewport {
   overflow-y: hidden;
 }
 
-/* line 1603, ../sass/bridgewinners.scss */
+/* line 1634, ../sass/bridgewinners.scss */
 .ui-page-active {
   overflow-x: visible !important;
 }
 
-/* line 1607, ../sass/bridgewinners.scss */
+/* line 1638, ../sass/bridgewinners.scss */
 .hide {
   display: none;
   visibility: hidden;
 }
 
-/* line 1612, ../sass/bridgewinners.scss */
+/* line 1643, ../sass/bridgewinners.scss */
 .carat-right {
   padding-right: 7vw;
   background-image: url("images/icons-png/carat-r-black.png");
@@ -4193,7 +4232,7 @@ body.ui-mobile-viewport {
   background-position: right 0.25vw center;
 }
 
-/* line 1619, ../sass/bridgewinners.scss */
+/* line 1650, ../sass/bridgewinners.scss */
 .carat-left {
   padding-left: 4vw;
   background-image: url("images/icons-png/carat-l-white.png");
@@ -4201,7 +4240,7 @@ body.ui-mobile-viewport {
   background-position: left 0.25vw center;
 }
 
-/* line 1626, ../sass/bridgewinners.scss */
+/* line 1657, ../sass/bridgewinners.scss */
 .header-container {
   font-family: SFUIDisplay;
   font-size: 2.62751vh;
@@ -4222,7 +4261,7 @@ body.ui-mobile-viewport {
   text-transform: capitalize;
 }
 
-/* line 1636, ../sass/bridgewinners.scss */
+/* line 1667, ../sass/bridgewinners.scss */
 .back-button-container {
   font-family: SFUIDisplay;
   font-size: 2.62751vh;
@@ -4243,13 +4282,13 @@ body.ui-mobile-viewport {
   text-transform: capitalize;
 }
 
-/* line 1646, ../sass/bridgewinners.scss */
+/* line 1677, ../sass/bridgewinners.scss */
 .header-text {
   color: #ffffff;
   text-transform: capitalize;
 }
 
-/* line 1651, ../sass/bridgewinners.scss */
+/* line 1682, ../sass/bridgewinners.scss */
 #back-button {
   color: #ffffff;
   float: left;
@@ -4257,20 +4296,20 @@ body.ui-mobile-viewport {
 }
 
 /* Footer styles. */
-/* line 1658, ../sass/bridgewinners.scss */
+/* line 1689, ../sass/bridgewinners.scss */
 .footer-inner-container, .footer-outer-container {
   position: fixed;
   width: 100vw;
   bottom: 0vh;
 }
 
-/* line 1663, ../sass/bridgewinners.scss */
+/* line 1694, ../sass/bridgewinners.scss */
 .footer-inner-container {
   background-color: #2a5461;
   height: 7.57342vh;
   box-shadow: inset 0 0.5px 0 0 #b2b2b2;
 }
-/* line 1668, ../sass/bridgewinners.scss */
+/* line 1699, ../sass/bridgewinners.scss */
 .footer-inner-container .menu-item {
   height: 90%;
   width: 20vw;
@@ -4279,50 +4318,50 @@ body.ui-mobile-viewport {
   background-position: center center;
   background-size: contain;
 }
-/* line 1676, ../sass/bridgewinners.scss */
+/* line 1707, ../sass/bridgewinners.scss */
 .footer-inner-container .vote-icon.not-selected {
   background-image: url("img/vote.png");
 }
-/* line 1676, ../sass/bridgewinners.scss */
+/* line 1707, ../sass/bridgewinners.scss */
 .footer-inner-container .create-icon.not-selected {
   background-image: url("img/create.png");
 }
-/* line 1676, ../sass/bridgewinners.scss */
+/* line 1707, ../sass/bridgewinners.scss */
 .footer-inner-container .history-icon.not-selected {
   background-image: url("img/history.png");
 }
-/* line 1676, ../sass/bridgewinners.scss */
+/* line 1707, ../sass/bridgewinners.scss */
 .footer-inner-container .alerts-icon.not-selected {
   background-image: url("img/alerts.png");
 }
-/* line 1676, ../sass/bridgewinners.scss */
+/* line 1707, ../sass/bridgewinners.scss */
 .footer-inner-container .account-icon.not-selected {
   background-image: url("img/account.png");
 }
 
-/* line 1681, ../sass/bridgewinners.scss */
+/* line 1712, ../sass/bridgewinners.scss */
 .footer-inner-container.ios {
   bottom: 20px;
 }
 
-/* line 1684, ../sass/bridgewinners.scss */
+/* line 1715, ../sass/bridgewinners.scss */
 .footer-outer-container {
   height: 8.50077vh;
 }
-/* line 1687, ../sass/bridgewinners.scss */
+/* line 1718, ../sass/bridgewinners.scss */
 .footer-outer-container .menu-item {
   height: 100%;
   width: 20vw;
   display: inline-block;
 }
-/* line 1691, ../sass/bridgewinners.scss */
+/* line 1722, ../sass/bridgewinners.scss */
 .footer-outer-container .menu-item .menu-icon {
   height: 80%;
   background-repeat: no-repeat;
   background-position: center center;
   background-size: contain;
 }
-/* line 1697, ../sass/bridgewinners.scss */
+/* line 1728, ../sass/bridgewinners.scss */
 .footer-outer-container .selected {
   background-color: #698f64;
   box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.86);
@@ -4335,33 +4374,33 @@ body.ui-mobile-viewport {
   border-top-right-radius: 10px;
   box-sizing: border-box;
 }
-/* line 1704, ../sass/bridgewinners.scss */
+/* line 1735, ../sass/bridgewinners.scss */
 .footer-outer-container .selected .vote-icon {
   background-image: url("img/vote.png");
 }
-/* line 1704, ../sass/bridgewinners.scss */
+/* line 1735, ../sass/bridgewinners.scss */
 .footer-outer-container .selected .create-icon {
   background-image: url("img/create.png");
 }
-/* line 1704, ../sass/bridgewinners.scss */
+/* line 1735, ../sass/bridgewinners.scss */
 .footer-outer-container .selected .history-icon {
   background-image: url("img/history.png");
 }
-/* line 1704, ../sass/bridgewinners.scss */
+/* line 1735, ../sass/bridgewinners.scss */
 .footer-outer-container .selected .alerts-icon {
   background-image: url("img/alerts.png");
 }
-/* line 1704, ../sass/bridgewinners.scss */
+/* line 1735, ../sass/bridgewinners.scss */
 .footer-outer-container .selected .account-icon {
   background-image: url("img/account.png");
 }
 
-/* line 1710, ../sass/bridgewinners.scss */
+/* line 1741, ../sass/bridgewinners.scss */
 .footer-outer-container.ios {
   bottom: 20px;
 }
 
-/* line 1714, ../sass/bridgewinners.scss */
+/* line 1745, ../sass/bridgewinners.scss */
 avatar {
   background-color: #d8d8d8;
   border: solid 2px #416757;
@@ -4380,14 +4419,14 @@ avatar {
   width: 5.40958vh;
 }
 
-/* line 1725, ../sass/bridgewinners.scss */
+/* line 1756, ../sass/bridgewinners.scss */
 avatar.large {
   height: 11.59196vh;
   width: 11.59196vh;
   left: 4vw;
 }
 
-/* line 1734, ../sass/bridgewinners.scss */
+/* line 1765, ../sass/bridgewinners.scss */
 #account-page #profile {
   display: block;
   position: fixed;
@@ -4397,7 +4436,7 @@ avatar.large {
   background-color: #ffffff;
   border: solid 0.5px #c7c7cc;
 }
-/* line 1740, ../sass/bridgewinners.scss */
+/* line 1771, ../sass/bridgewinners.scss */
 #account-page #name {
   display: block;
   position: fixed;
@@ -4417,7 +4456,7 @@ avatar.large {
   font-weight: 600;
   color: #4a4a4a;
 }
-/* line 1749, ../sass/bridgewinners.scss */
+/* line 1780, ../sass/bridgewinners.scss */
 #account-page #edit-profile-button {
   display: block;
   position: fixed;
@@ -4441,7 +4480,7 @@ avatar.large {
   text-align: center;
   color: #4a4a4a;
 }
-/* line 1760, ../sass/bridgewinners.scss */
+/* line 1791, ../sass/bridgewinners.scss */
 #account-page #account-options {
   display: block;
   position: fixed;
@@ -4460,7 +4499,7 @@ avatar.large {
   text-align: left;
   color: #4a4a4a;
 }
-/* line 1770, ../sass/bridgewinners.scss */
+/* line 1801, ../sass/bridgewinners.scss */
 #account-page #logout-submit-button {
   display: block;
   position: fixed;
@@ -4482,20 +4521,20 @@ avatar.large {
   padding-left: 4%;
   cursor: pointer;
 }
-/* line 1783, ../sass/bridgewinners.scss */
+/* line 1814, ../sass/bridgewinners.scss */
 #account-page .list {
   margin-left: 4vw;
   height: 6.80062vh;
   border-bottom: solid 0.5px #c7c7cc;
   cursor: pointer;
 }
-/* line 1791, ../sass/bridgewinners.scss */
+/* line 1822, ../sass/bridgewinners.scss */
 #account-page #account-about-page {
   display: block;
   position: fixed;
   top: 6.80062vh;
 }
-/* line 1794, ../sass/bridgewinners.scss */
+/* line 1825, ../sass/bridgewinners.scss */
 #account-page #account-options-list {
   display: block;
   position: fixed;
@@ -4503,7 +4542,7 @@ avatar.large {
   height: 85.00773vh;
   width: 100vw;
 }
-/* line 1797, ../sass/bridgewinners.scss */
+/* line 1828, ../sass/bridgewinners.scss */
 #account-page .options-header {
   font-family: SFUIDisplay;
   font-size: 2.62751vh;
@@ -4522,7 +4561,7 @@ avatar.large {
   text-align: left;
   margin-top: 2vh;
 }
-/* line 1808, ../sass/bridgewinners.scss */
+/* line 1839, ../sass/bridgewinners.scss */
 #account-page options {
   position: relative;
   height: 6.80062vh;
@@ -4536,7 +4575,7 @@ avatar.large {
   border: solid 1px #979797;
   background-color: #c7c7cc;
 }
-/* line 1820, ../sass/bridgewinners.scss */
+/* line 1851, ../sass/bridgewinners.scss */
 #account-page option {
   display: table-cell;
   vertical-align: middle;
@@ -4553,18 +4592,18 @@ avatar.large {
   color: #4a4a4a;
   cursor: pointer;
 }
-/* line 1829, ../sass/bridgewinners.scss */
+/* line 1860, ../sass/bridgewinners.scss */
 #account-page option:not(:last-child) {
   border-right: solid 1px #979797;
 }
-/* line 1832, ../sass/bridgewinners.scss */
+/* line 1863, ../sass/bridgewinners.scss */
 #account-page option.current {
   background-color: #2a5461;
   color: #ffffff;
   cursor: default;
 }
 
-/* line 1839, ../sass/bridgewinners.scss */
+/* line 1870, ../sass/bridgewinners.scss */
 .main-page {
   display: block;
   position: fixed;
