@@ -12,6 +12,8 @@
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, usr-scalable=no">
     <!--<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, target-densitydpi=device-dpi" />-->
     <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.min.css">
+    <link rel="stylesheet" href="css/jquery.mobile.iscrollview.css"/>
+    <link rel="stylesheet" href="css/jquery.mobile.iscrollview-pull.css"/>
     <link rel="stylesheet" type="text/css" href="css/bridgewinners.css">
     <script src="js/jquery.min.js"></script>
     <script type="text/javascript" src="cordova.js"></script>
@@ -22,6 +24,7 @@
     <script src="js/jquery.mobile-1.4.5.min.js"></script>
     <script src="js/fastclick.min.js"></script>
     <script src="js/iscroll.js"></script>
+    <script src="js/jquery.mobile.iscrollview.js"></script>
     <title>BridgeWinners Mobile App</title>
   </head>
   <body >
@@ -161,15 +164,29 @@
         <div id="history-voted-page" data-role="section" data-name="history-voted-page">
           <!-- <div class="history-header">Problems you recently voted on.</div> -->
           <div id="history-voted-wrapper">
-              <ul id="history-voted-list" class="history-list scrollable" data-role="listview">
-              </ul>
+              <!-- <div class="iscroll-pulldown">
+                <span class="iscroll-pull-icon"></span>
+                <span class="iscroll-pull-label"></span>
+              </div> -->
+              <ul id="history-voted-list" class="history-list scrollable" data-role="listview"></ul>
+              <!-- <div class="iscroll-pullup">
+                <span class="iscroll-pull-icon"></span>
+                <span class="iscroll-pull-label"></span>
+              </div> -->
           </div>
         </div>
         <div id="history-published-page" data-role="section" data-name="history-published-page">
           <!-- <div class="history-header">Problems you recently published.</div> -->
           <div id="history-published-wrapper">
-            <ul id="history-published-list" class="history-list scrollable" data-role="listview">
-            </ul>
+            <!-- <div class="iscroll-pulldown">
+              <span class="iscroll-pull-icon"></span>
+              <span class="iscroll-pull-label"></span>
+            </div> -->
+            <ul id="history-published-list" class="history-list scrollable" data-role="listview"></ul>
+            <!-- <div class="iscroll-pullup">
+              <span class="iscroll-pull-icon"></span>
+              <span class="iscroll-pull-label"></span>
+            </div> -->
           </div>
         </div>
         <div id="history-results-page" data-role="section" data-name="history-results-page">
@@ -211,8 +228,9 @@
     <script id="alerts-template" type="text/template">
       <div id="alerts-page" class="main-page">
         <div id="alerts-wrapper">
-          <ul id="alerts-list" class="scrollable" data-role="listview">
-          </ul>
+          <button id="alerts-refresh-button" class="enabled bridgewinners">Reload Alerts</button>
+          <ul id="alerts-list" class="scrollable" data-role="listview"></ul>
+          <button id="alerts-more-button" class="enabled bridgewinners">Get More Alerts</button>
         </div>
       </div>
     </script>

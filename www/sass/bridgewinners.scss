@@ -433,7 +433,7 @@ $menu_items: vote create history alerts account;
       border-bottom: solid 2px $BWSlate;
     }
     calls {
-      @include font(18px);
+      @include font(22px);
       height: 81.5%;
     }
     row {
@@ -576,7 +576,7 @@ $menu_items: vote create history alerts account;
         border-bottom: solid 2px $BWSlate;
       }
       calls {
-        @include font(18px);
+        @include font(22px);
         height: 82.23%;
       }
       row {
@@ -915,7 +915,7 @@ $menu_items: vote create history alerts account;
         border-bottom: solid 2px $BWSlate;
       }
       calls {
-        @include font(18px);
+        @include font(22px);
         height: 82.23%;
       }
       row {
@@ -1185,6 +1185,23 @@ $menu_items: vote create history alerts account;
     color: $darkGrey;
     padding: 10px;
   }
+  button.bridgewinners {
+    position:relative;
+    @extend %horizontal-center;
+    @include font(20px);
+    color: #ffffff;
+    background-color: $BWRed;
+    @include border-radius(5px);
+    @include height(44px);
+    @include width(335px);
+    @include left(20px);
+    cursor: pointer;
+  }
+  button.bridgewinners.disabled {
+    color: $darkGrey;
+    background-color: $lightGrey;
+    cursor: not-allowed;
+  }
   #history-voted-wrapper, #history-published-wrapper {
     position:absolute;
   	@include location(88px, 490px, 375px);
@@ -1332,7 +1349,7 @@ $menu_items: vote create history alerts account;
       border-bottom: solid 2px $BWSlate;
     }
     calls {
-      @include font(18px);
+      @include font(22px);
       height: 82.23%;
     }
     row {
@@ -1869,4 +1886,59 @@ avatar.large {
 
 .main-page {
   @include location(44px);
+}
+
+
+/**
+ *
+ * Pull down styles
+ *
+ */
+#pullDown, #pullUp {
+	background:#fff;
+	height:40px;
+	line-height:40px;
+	padding:5px 10px;
+	border-bottom:1px solid #ccc;
+	font-weight:bold;
+	font-size:14px;
+	color:#888;
+}
+#pullDown .pullDownIcon, #pullUp .pullUpIcon  {
+	display:block; float:left;
+	width:40px; height:40px;
+	background:url(pull-icon@2x.png) 0 0 no-repeat;
+	-webkit-background-size:40px 80px; background-size:40px 80px;
+	-webkit-transition-property:-webkit-transform;
+	-webkit-transition-duration:250ms;
+}
+#pullDown .pullDownIcon {
+	-webkit-transform:rotate(0deg) translateZ(0);
+}
+#pullUp .pullUpIcon  {
+	-webkit-transform:rotate(-180deg) translateZ(0);
+}
+
+#pullDown.flip .pullDownIcon {
+	-webkit-transform:rotate(-180deg) translateZ(0);
+}
+
+#pullUp.flip .pullUpIcon {
+	-webkit-transform:rotate(0deg) translateZ(0);
+}
+
+#pullDown.loading .pullDownIcon, #pullUp.loading .pullUpIcon {
+	background-position:0 100%;
+	-webkit-transform:rotate(0deg) translateZ(0);
+	-webkit-transition-duration:0ms;
+
+	-webkit-animation-name:loading;
+	-webkit-animation-duration:2s;
+	-webkit-animation-iteration-count:infinite;
+	-webkit-animation-timing-function:linear;
+}
+
+@-webkit-keyframes loading {
+	from { -webkit-transform:rotate(0deg) translateZ(0); }
+	to { -webkit-transform:rotate(360deg) translateZ(0); }
 }

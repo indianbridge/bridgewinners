@@ -164,31 +164,29 @@
         <div id="history-voted-page" data-role="section" data-name="history-voted-page">
           <!-- <div class="history-header">Problems you recently voted on.</div> -->
           <div id="history-voted-wrapper">
-              <div class="iscroll-pulldown">
+              <!-- <div class="iscroll-pulldown">
                 <span class="iscroll-pull-icon"></span>
                 <span class="iscroll-pull-label"></span>
-              </div>
-              <ul id="history-voted-list" class="history-list scrollable" data-role="listview">
-              </ul>
-              <div class="iscroll-pullup">
+              </div> -->
+              <ul id="history-voted-list" class="history-list scrollable" data-role="listview"></ul>
+              <!-- <div class="iscroll-pullup">
                 <span class="iscroll-pull-icon"></span>
                 <span class="iscroll-pull-label"></span>
-              </div>
+              </div> -->
           </div>
         </div>
         <div id="history-published-page" data-role="section" data-name="history-published-page">
           <!-- <div class="history-header">Problems you recently published.</div> -->
           <div id="history-published-wrapper">
-            <div class="iscroll-pulldown">
+            <!-- <div class="iscroll-pulldown">
               <span class="iscroll-pull-icon"></span>
               <span class="iscroll-pull-label"></span>
-            </div>
-            <ul id="history-published-list" class="history-list scrollable" data-role="listview">
-            </ul>
-            <div class="iscroll-pullup">
+            </div> -->
+            <ul id="history-published-list" class="history-list scrollable" data-role="listview"></ul>
+            <!-- <div class="iscroll-pullup">
               <span class="iscroll-pull-icon"></span>
               <span class="iscroll-pull-label"></span>
-            </div>
+            </div> -->
           </div>
         </div>
         <div id="history-results-page" data-role="section" data-name="history-results-page">
@@ -230,8 +228,9 @@
     <script id="alerts-template" type="text/template">
       <div id="alerts-page" class="main-page">
         <div id="alerts-wrapper">
-          <ul id="alerts-list" class="scrollable" data-role="listview">
-          </ul>
+          <button id="alerts-refresh-button" class="enabled bridgewinners">Reload Alerts</button>
+          <ul id="alerts-list" class="scrollable" data-role="listview"></ul>
+          <button id="alerts-more-button" class="enabled bridgewinners">Get More Alerts</button>
         </div>
       </div>
     </script>

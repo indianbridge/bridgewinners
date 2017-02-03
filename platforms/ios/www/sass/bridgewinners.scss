@@ -773,6 +773,23 @@ $menu_items: vote create history alerts account;
 
 
 #alerts-page {
+  button.bridgewinners {
+    position:relative;
+    @extend %horizontal-center;
+    @include font(20px);
+    color: #ffffff;
+    background-color: $BWRed;
+    @include border-radius(5px);
+    @include height(44px);
+    @include width(335px);
+    @include left(20px);
+    cursor: pointer;
+  }
+  button.bridgewinners.disabled {
+    color: $darkGrey;
+    background-color: $lightGrey;
+    cursor: not-allowed;
+  }
   #alerts-wrapper {
   	position:absolute;
   	@include location(44px, 550px, 375px);
@@ -1169,7 +1186,7 @@ $menu_items: vote create history alerts account;
     padding: 10px;
   }
   #history-voted-wrapper, #history-published-wrapper {
-  	position:absolute;
+    position:absolute;
   	@include location(88px, 490px, 375px);
   	width:100%;
   	overflow:auto;
@@ -1177,7 +1194,7 @@ $menu_items: vote create history alerts account;
     color:transparent;
   }
   .history-list {
-    //@include location(88px, 490px, 375px);
+    //@include location(88px, 485px, 375px);
     section {
       display: inline-block;
     }

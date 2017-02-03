@@ -223,7 +223,7 @@ BW.alerts = new function() {
     });
     $(document).on("tap", "#alerts-more-button.enabled", function() {
       self.loadInBackground(/*addMore=*/true);
-      self.load(/*addMore=*/true);
+      self.load();
     });
   };
   this.loadInBackground = function(addMore) {
@@ -254,7 +254,7 @@ BW.alerts = new function() {
 
   	return false;
   };
-  this.load = function(addMore) {
+  this.load = function() {
     $("#alerts-list").listview();
     var self = this;
     $("#header-text").empty().append("Alerts");
@@ -310,6 +310,49 @@ BW.alerts = new function() {
     $("#alerts-list").empty().append(html);
     $("#alerts-list").listview("refresh");
     //var alertsScroll = new IScroll("#alerts-wrapper");
+    // var myScroll = new iScroll("#alerts-wrapper", {
+  	// 	useTransition: true,
+  	// 	topOffset: pullDownOffset,
+  	// 	onRefresh: function () {
+  	// 		if (pullDownEl.className.match('loading')) {
+  	// 			pullDownEl.className = '';
+  	// 			pullDownEl.querySelector('.pullDownLabel').innerHTML = 'Pull down to refresh...';
+  	// 		} else if (pullUpEl.className.match('loading')) {
+  	// 			pullUpEl.className = '';
+  	// 			pullUpEl.querySelector('.pullUpLabel').innerHTML = 'Pull up to load more...';
+  	// 		}
+  	// 	},
+  	// 	onScrollMove: function () {
+  	// 		if (this.y > 5 && !pullDownEl.className.match('flip')) {
+  	// 			pullDownEl.className = 'flip';
+  	// 			pullDownEl.querySelector('.pullDownLabel').innerHTML = 'Release to refresh...';
+  	// 			this.minScrollY = 0;
+  	// 		} else if (this.y < 5 && pullDownEl.className.match('flip')) {
+  	// 			pullDownEl.className = '';
+  	// 			pullDownEl.querySelector('.pullDownLabel').innerHTML = 'Pull down to refresh...';
+  	// 			this.minScrollY = -pullDownOffset;
+  	// 		} else if (this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
+  	// 			pullUpEl.className = 'flip';
+  	// 			pullUpEl.querySelector('.pullUpLabel').innerHTML = 'Release to refresh...';
+  	// 			this.maxScrollY = this.maxScrollY;
+  	// 		} else if (this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
+  	// 			pullUpEl.className = '';
+  	// 			pullUpEl.querySelector('.pullUpLabel').innerHTML = 'Pull up to load more...';
+  	// 			this.maxScrollY = pullUpOffset;
+  	// 		}
+  	// 	},
+  	// 	onScrollEnd: function () {
+  	// 		if (pullDownEl.className.match('flip')) {
+  	// 			pullDownEl.className = 'loading';
+  	// 			pullDownEl.querySelector('.pullDownLabel').innerHTML = 'Loading...';
+  	// 			pullDownAction();	// Execute custom function (ajax call?)
+  	// 		} else if (pullUpEl.className.match('flip')) {
+  	// 			pullUpEl.className = 'loading';
+  	// 			pullUpEl.querySelector('.pullUpLabel').innerHTML = 'Loading...';
+  	// 			pullUpAction();	// Execute custom function (ajax call?)
+  	// 		}
+  	// 	}
+  	// });
   };
 };
 
@@ -321,6 +364,10 @@ BW.history = new function() {
   this.polls = {
     "published": {},
     "voted": {},
+  };
+  this.has_more = {
+    "published": true,
+    "voted": true,
   };
   this.problems = {
     "published": [],
@@ -353,6 +400,17 @@ BW.history = new function() {
         $("[data-section-number='" + self.currentResponseSection + "']").tap();
       }
     });
+    _.each(["voted", "published"], function(pollType) {
+      $(document).on("tap", "#history-" + pollType + "-refresh-button.enabled", function() {
+        self.getRecentInBackground(pollType);
+        self.getRecent(pollType);
+      });
+      $(document).on("tap", "#history-" + pollType + "-more-button.enabled", function() {
+        self.getRecentInBackground(pollType, /*addMore=*/true);
+        self.getRecent(pollType);
+      });
+    });
+
     // section changed
     _.each(["history-voted-page", "history-published-page", "history-drafts-page"], function(sectionName) {
       BW.page.registerSectionChangeCallback(sectionName, function(section) {
@@ -595,7 +653,13 @@ BW.history = new function() {
     });
     return html;
   };
-  this.getRecentInBackground = function(pollType) {
+  this.getRecentInBackground = function(pollType, addMore) {
+    var self = this;
+    if (!addMore) {
+      self.problems[pollType] = [];
+    }
+    var start = self.problems[pollType].length;
+    var end = start + 9;
     this.problemsReady[pollType] = $.Deferred();
     var deferredObject = this.problemsReady[pollType];
     if (pollType === "voted") {
@@ -607,8 +671,8 @@ BW.history = new function() {
     BW.ajax({
       urlSuffix: url,
       data: {
-    		start:0,
-    		end: 9,
+    		start:start,
+    		end: end,
         num_responses: 3,
       },
       loadingMessage: null,
@@ -633,12 +697,23 @@ BW.history = new function() {
     }
     var deferredObject = self.problemsReady[pollType];
     if (!deferredObject) {
+      if (self.has_more[pollType]) {
+        $("#history-"+ pollType +"-more-button").removeClass("disabled").addClass("enabled");
+      } else {
+        $("#history-"+ pollType +"-more-button").removeClass("enabled").addClass("disabled");
+      }
       self.show(pollType);
       return false;
     }
     BW.loadingDialog.show(message);
     deferredObject.done(function(data) {
-      self.problems[pollType] = data.polls;
+      self.has_more[pollType] = data.has_more;
+      if (self.has_more[pollType]) {
+        $("#history-"+ pollType +"-more-button").removeClass("disabled").addClass("enabled");
+      } else {
+        $("#history-"+ pollType +"-more-button").removeClass("enabled").addClass("disabled");
+      }
+      $.merge(self.problems[pollType], data.polls);
       self.show(pollType);
       self.problemsReady[pollType] = null;
       BW.loadingDialog.hide();
@@ -674,6 +749,7 @@ BW.history = new function() {
     }
     container.empty().append(html);
     container.listview("refresh");
+    //var myScroll = new iScroll("history-" + pollType + "-wrapper");
   };
   this.loadRecentlyVoted = function() {
     return this.getRecent("voted");

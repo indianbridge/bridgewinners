@@ -116,7 +116,9 @@ BW.ajax = function(parameters) {
     errorCallback: null,
     failedCallback: null,
   });
-  BW.loadingDialog.show(parameters.loadingMessage);
+  if (parameters.loadingMessage) {
+    BW.loadingDialog.show(parameters.loadingMessage);
+  }
   var url = encodeURI(BW.utils.getRestUrl(parameters.urlSuffix));
   var request = $.ajax({
     method: parameters.method,
@@ -127,7 +129,9 @@ BW.ajax = function(parameters) {
     timeout: parameters.timeout,
   });
 	request.done(function(data) {
-    BW.loadingDialog.hide();
+    if (parameters.loadingMessage) {
+      BW.loadingDialog.hide();
+    }
     var hasError = data.hasOwnProperty("error") && data.error;
     if (hasError) {
       if (parameters.errorCallback) {
@@ -142,7 +146,9 @@ BW.ajax = function(parameters) {
     }
 	});
 	request.fail( function(jqXHR, textStatus, errorThrown) {
-    BW.loadingDialog.hide();
+    if (parameters.loadingMessage) {
+      BW.loadingDialog.hide();
+    }
     var message = "Error - " + textStatus + ": " + errorThrown;
     if (parameters.failedCallback) {
       parameters.failedCallback(message);
@@ -198,34 +204,95 @@ BW.dialog = function(container) {
  * Alerts page.
  */
 BW.alerts = new function() {
+  this.alertsReady = $.Deferred();
+  this.alerts = [];
+  this.has_more = true;
   this.init = function() {
     this.setupClickHandlers();
   };
   this.setupClickHandlers = function() {
+    var self = this;
     $(document).on("tap", "li.alert[data-slug]", function() {
       var slug = $(this).data("slug");
       BW.page.show("vote", {"slug": slug});
       return false;
     });
+    $(document).on("tap", "#alerts-refresh-button.enabled", function() {
+      self.loadInBackground();
+      self.load();
+    });
+    $(document).on("tap", "#alerts-more-button.enabled", function() {
+      self.loadInBackground(/*addMore=*/true);
+      self.load(/*addMore=*/true);
+    });
   };
-  this.load = function() {
-    $("#header-text").empty().append("Alerts");
-    $("#back-button").addClass("hide")
+  this.loadInBackground = function(addMore) {
+    if (!addMore) {
+      this.alerts = [];
+    }
+    var start = this.alerts.length;
+    var end = start + 4;
+    this.alertsReady = $.Deferred();
+    var deferredObject = this.alertsReady;
     var ajaxRequest = BW.ajax({
       urlSuffix: "get-alerts/",
       data: {
-    		start:0,
-    		end: 4
+    		start:start,
+    		end: end
       },
-      loadingMessage: "Getting Alerts...",
-      successCallback: this.show.bind(this),
+      loadingMessage: null,
+      successCallback: function(data) {
+        deferredObject.resolve(data);
+      },
+      errorCallback: function(message) {
+        deferredObject.reject(message);
+      },
+      failedCallback: function(message) {
+        deferredObject.reject(message);
+      },
+    });
+
+  	return false;
+  };
+  this.load = function(addMore) {
+    $("#alerts-list").listview();
+    var self = this;
+    $("#header-text").empty().append("Alerts");
+    $("#back-button").addClass("hide")
+    var deferredObject = this.alertsReady;
+    if (!deferredObject) {
+      if (self.has_more) {
+        $("#alerts-more-button").removeClass("disabled").addClass("enabled");
+      } else {
+        $("#alerts-more-button").removeClass("enabled").addClass("disabled");
+      }
+      self.show();
+      return false;
+    }
+    BW.loadingDialog.show("Getting Alerts...")
+    deferredObject.done(function(data) {
+      $.merge(self.alerts, data.alerts);
+      self.has_more = data.has_more;
+      if (data.has_more) {
+        $("#alerts-more-button").removeClass("disabled").addClass("enabled");
+      } else {
+        $("#alerts-more-button").removeClass("enabled").addClass("disabled");
+      }
+      BW.loadingDialog.hide();
+      self.alertsReady = null;
+      self.show();
+    });
+    deferredObject.fail(function(message) {
+      BW.loadingDialog.hide();
+      BW.messageDialog.show("Error: " + message);
     });
   	return false;
   };
   this.show = function(data) {
     var html = "";
-    if (data.alerts.length > 0) {
-      _.each(data.alerts, function(alert) {
+    var alerts = this.alerts;
+    if (alerts.length > 0) {
+      _.each(alerts, function(alert) {
         html += "<li class='alert clickable' data-slug='" + alert.slug + "' data-icon='false'><a href='#'>";
         html += "<p class='alert'>";
         html += "<img class='avatar-alert' src='" + BW.utils.getAvatarLink(alert.instigator_avatar) + "'/>";
@@ -238,11 +305,11 @@ BW.alerts = new function() {
         html += "</a></li>";
       });
     } else {
-      html += "You have no poll related alerts.";
+      html += "<li class='alert'>You have no poll related alerts.</li>";
     }
     $("#alerts-list").empty().append(html);
-    $("#alerts-list").listview();
-    var alertsScroll = new IScroll("#alerts-wrapper");
+    $("#alerts-list").listview("refresh");
+    //var alertsScroll = new IScroll("#alerts-wrapper");
   };
 };
 
@@ -255,6 +322,14 @@ BW.history = new function() {
     "published": {},
     "voted": {},
   };
+  this.problems = {
+    "published": [],
+    "voted": [],
+  };
+  this.problemsReady = {
+    "published": null,
+    "voted": null,
+  }
   this.init = function() {
     var self = this;
     this.setupClickHandlers();
@@ -263,7 +338,7 @@ BW.history = new function() {
     var self = this;
     $(document).on("tap", "#history-revote-button.enabled", function() {
       var slug = $(this).data("slug");
-      BW.page.show("vote", {"slug": slug});
+      BW.page.show("vote", {"problem": self.problemShown});
       return false;
     });
     $(document).on("swipeleft", "#history-responses-voters", function() {
@@ -367,7 +442,6 @@ BW.history = new function() {
     BW.page.showSubSection(shownSectionName);
   };
   this.loadResponses = function(slug, backPage, pollType) {
-    //BW.loadingDialog.show("Getting Responses...");
     var self = this;
     var ajaxRequest = BW.ajax({
       urlSuffix: "get-voting-problem/",
@@ -397,6 +471,7 @@ BW.history = new function() {
   };
   this.showProblem = function(data, pollType) {
     BW.loadingDialog.show("Displaying Problem...");
+    this.problemShown = data;
     var type = data.type.toLowerCase();
   	var deal = new Bridge.Deal();
   	deal.setDealer(data.dealer);
@@ -467,9 +542,9 @@ BW.history = new function() {
     BW.utils.setAttribute($("#history-voters-button"), "back", $("#back-button").data("section"));
     BW.loadingDialog.hide();
   };
-  this.getHTML = function(data, sectionName, showAuthor, showAnswer, pollType) {
+  this.getHTML = function(polls, sectionName, showAuthor, showAnswer, pollType) {
     var html = "";
-    _.each(data.polls, function(item) {
+    _.each(polls, function(item) {
       var hand = new Bridge.Hand('s');
       hand.fromString(item.lin_str);
       var handHtml = hand.toHTML({
@@ -520,23 +595,14 @@ BW.history = new function() {
     });
     return html;
   };
-  this.getRecent = function(pollType) {
+  this.getRecentInBackground = function(pollType) {
+    this.problemsReady[pollType] = $.Deferred();
+    var deferredObject = this.problemsReady[pollType];
     if (pollType === "voted") {
       var url = "get-recent-answers/";
-      var sectionName = "history-voted-page";
-      var message = "Getting Recently Voted Problems...";
-      var showAuthor = true;
-      var showAnswer = true;
-      var emptyText = "You have not voted on any problems yet.";
     } else {
       var url = "get-recent-published/";
-      var sectionName = "history-published-page";
-      var message = "Getting Recently Published Problems...";
-      var showAuthor = false;
-      var showAnswer = false;
-      var emptyText = "You have not published any problems yet.";
     }
-    var container = $("#history-" + pollType + "-list");
     var self = this;
     BW.ajax({
       urlSuffix: url,
@@ -545,24 +611,69 @@ BW.history = new function() {
     		end: 9,
         num_responses: 3,
       },
-      loadingMessage: message,
+      loadingMessage: null,
       successCallback: function(data) {
-        self.polls[pollType] = {}
-        if (data.polls.length > 0) {
-          _.each(data.polls, function(poll) {
-            self.polls[pollType][poll.slug] = poll;
-          });
-          var html = self.getHTML(data, sectionName, showAuthor, showAnswer, pollType);
-        } else {
-          var html = "<li>" + emptyText + "</li>";
-        }
-        container.empty().append(html);
-        container.listview("refresh");
-        self.scroller[pollType].refresh();
-        //var myScroll = new IScroll("#history-voted-wrapper");
+        deferredObject.resolve(data);
+      },
+      errorCallback: function(message) {
+        deferredObject.reject(message);
+      },
+      failedCallback: function(message) {
+        deferredObject.reject(message);
       },
     });
   	return false;
+  };
+  this.getRecent = function(pollType) {
+    var self = this;
+    if (pollType === "voted") {
+      var message = "Getting Recently Voted Problems...";
+    } else {
+      var message = "Getting Recently Published Problems...";
+    }
+    var deferredObject = self.problemsReady[pollType];
+    if (!deferredObject) {
+      self.show(pollType);
+      return false;
+    }
+    BW.loadingDialog.show(message);
+    deferredObject.done(function(data) {
+      self.problems[pollType] = data.polls;
+      self.show(pollType);
+      self.problemsReady[pollType] = null;
+      BW.loadingDialog.hide();
+    });
+    deferredObject.fail(function(message) {
+      BW.loadingDialog.hide();
+      BW.messageDialog.show("Error: " + message);
+    });
+  	return false;
+  };
+  this.show = function(pollType) {
+    var self = this;
+    if (pollType === "voted") {
+      var sectionName = "history-voted-page";
+      var showAuthor = true;
+      var showAnswer = true;
+      var emptyText = "You have not voted on any problems yet.";
+    } else {
+      var sectionName = "history-published-page";
+      var showAuthor = false;
+      var showAnswer = false;
+      var emptyText = "You have not published any problems yet.";
+    }
+    var container = $("#history-" + pollType + "-list");
+    var polls = this.problems[pollType];
+    if (polls.length > 0) {
+      _.each(polls, function(poll) {
+        self.polls[pollType][poll.slug] = poll;
+      });
+      var html = self.getHTML(polls, sectionName, showAuthor, showAnswer, pollType);
+    } else {
+      var html = "<li>" + emptyText + "</li>";
+    }
+    container.empty().append(html);
+    container.listview("refresh");
   };
   this.loadRecentlyVoted = function() {
     return this.getRecent("voted");
@@ -572,17 +683,9 @@ BW.history = new function() {
   };
 
   this.load = function(parameters) {
-    this.scroller = {
-      "published": new IScroll("#history-published-wrapper"),
-      "voted": new IScroll("#history-voted-wrapper"),
-    };
-    if (parameters && parameters.slug) {
-      alert(parameters.slug);
-    } else {
-      $("#header-text").empty().append("History");
-      $(".history-list").listview();
-      BW.page.showSection("history-voted-page");
-    }
+    $("#header-text").empty().append("History");
+    $(".history-list").listview();
+    BW.page.showSection("history-voted-page");
   };
 };
 
@@ -901,6 +1004,8 @@ BW.create = new function() {
  */
 BW.vote = new function() {
   this.parameters = {};
+  this.problemReady = $.Deferred();
+  this.problem = null;
   this.init = function() {
     var bidding_answers = [
      '1c','1d','1h','1s','1n',
@@ -933,7 +1038,11 @@ BW.vote = new function() {
     var self = this
     // Skip clicked
     $(document).on("tap", "#skip-submit-button.enabled", function() {
-      self.load({"exclude": self.slug});
+      var slug = $(this).data("slug");
+      if (self.problem && self.problem.slug === slug) {
+        self.loadInBackground({"exclude": slug});
+      }
+      self.load();
       return false;
     });
     // Abstain clicked
@@ -984,10 +1093,12 @@ BW.vote = new function() {
       loadingMessage: "Submitting Vote...",
       successCallback: function(data) {
         var option = BW.options.get("after-voting");
+        self.problem = null;
+        self.loadInBackground();
         if (option === "next") {
           self.load();
         } else {
-          BW.page.show("history", {"slug": this.slug});
+          BW.page.show("history", {}, /*disableCallbacks=*/true);
           BW.page.showSection("history-results-page", {
             "slug": this.slug,
             "back": "vote-page",
@@ -999,23 +1110,65 @@ BW.vote = new function() {
     });
   	return false;
   };
-  this.load = function(data) {
+  this.loadInBackground = function(data, deferredObject) {
     data = data || {};
     _.defaults(data, {
       "num_responses": 0,
       //"slug": "lead-problem-798",
     });
-    $("#back-button").addClass("hide");
+    if (!deferredObject) {
+      this.problemReady = $.Deferred();
+      deferredObject = this.problemReady;
+    }
+    var self = this;
     BW.ajax({
       urlSuffix: "get-voting-problem/",
       data: data,
-      loadingMessage: "Getting Voting Problem...",
-      successCallback: this.show.bind(this),
+      loadingMessage: null,
+      successCallback: function(data) {
+        deferredObject.resolve(data);
+      },
+      errorCallback: function(message) {
+        deferredObject.reject(message);
+      },
+      failedCallback: function(message) {
+        deferredObject.reject(message);
+      },
     });
   	return false;
   };
-  this.show = function(data) {
+  this.load = function(data) {
+    data = data || {};
+    $("#back-button").addClass("hide");
+    BW.loadingDialog.show("Getting Voting Problem...")
+    var self = this;
+    if (data.problem) {
+      self.show(data.problem);
+      return false;
+    }
+    var deferredObject = this.problemReady;
+    if (data.slug) {
+      var problemReady = $.Deferred();
+      deferredObject = problemReady;
+      self.loadInBackground(data, problemReady);
+    }
+    deferredObject.done(function(problem) {
+      BW.loadingDialog.hide();
+      if (!data.slug) {
+        self.problem = problem;
+      }
+      self.show(problem);
+    });
+    deferredObject.fail(function(message) {
+      BW.loadingDialog.hide();
+      BW.messageDialog.show("Error: " + message);
+    });
+  	return false;
+  };
+  this.show = function(problem) {
     BW.loadingDialog.show("Loading Problem...");
+    var data = problem;
+    BW.utils.setAttribute($("#skip-submit-button"), "slug", data.slug);
     this.data = data;
     this.type = data.type.toLowerCase();
     var pageID = "";
@@ -1200,7 +1353,7 @@ BW.page = new function() {
     $(".footer-inner-container .menu-item").removeClass("selected").addClass("not-selected");
     $(".footer-inner-container [data-item='" + item + "']").removeClass("not-selected").addClass("selected");
   };
-  this.show = function(pageName, parameters) {
+  this.show = function(pageName, parameters, disableCallbacks) {
     if (!pageName) {
       this.lastPage = localStorage.getItem(this.getSavedLastPageName(), "vote");
       if (!this.lastPage || this.lastPage == "login") {
@@ -1210,6 +1363,7 @@ BW.page = new function() {
     }
     $("#content").empty().append($("#" + pageName +"-template").html());
     this.setActiveTab(pageName);
+    if (disableCallbacks) return;
     if (pageName in this.pageLoadedCallbacks) {
       this.pageLoadedCallbacks[pageName](parameters);
     }
@@ -1348,10 +1502,8 @@ BW.user = new function() {
       });
     }
     BW.page.hideHeaderFooter();
-    if (!this.accessToken) {
-      BW.page.show("login");
-    }
-    else {
+    BW.page.show("login");
+    if (this.accessToken) {
       self.authenticateAccessToken();
     }
   };
@@ -1452,6 +1604,10 @@ BW.user = new function() {
     $("#account-avatar-inner").css("background-image", "url(" + BW.utils.getAvatarLink(this.userInfo.avatar) + ")");
     $("#account-avatar-outer").css("background-image", "url(" + BW.utils.getAvatarLink(this.userInfo.avatar) + ")");
     BW.page.showHeaderFooter();
+    BW.vote.loadInBackground();
+    BW.alerts.loadInBackground();
+    BW.history.getRecentInBackground("voted");
+    BW.history.getRecentInBackground("published");
     BW.page.show();
   };
 
