@@ -9,6 +9,7 @@
   </author>
   <content src="index.html" />
   <access origin="*"/>
+  <access origin="mailto:*" launch-external="yes"/>
 	<icon src="res/icon.png" />
 	<preference name="LoadingDialog" value="Please wait for Bridge Winners Awesomeness to begin..."/>
 	<preference name="AutoHideSplashScreen" value="false" />

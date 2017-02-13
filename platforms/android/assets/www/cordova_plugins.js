@@ -41,14 +41,6 @@ module.exports = [
             "cordova.InAppBrowser.open",
             "window.open"
         ]
-    },
-    {
-        "id": "com.oauthio.plugins.oauthio.OAuth",
-        "file": "plugins/com.oauthio.plugins.oauthio/dist/oauth.js",
-        "pluginId": "com.oauthio.plugins.oauthio",
-        "merges": [
-            "OAuth"
-        ]
     }
 ];
 module.exports.metadata = 
@@ -58,9 +50,8 @@ module.exports.metadata =
     "cordova-plugin-splashscreen": "4.0.0",
     "cordova-plugin-statusbar": "2.2.0",
     "cordova-plugin-whitelist": "1.3.0",
-    "cordova-plugin-inappbrowser": "1.5.0",
-    "com.oauthio.plugins.oauthio": "0.2.4",
-    "cordova-plugin-console": "1.0.5"
+    "cordova-plugin-console": "1.0.5",
+    "cordova-plugin-inappbrowser": "1.6.1"
 };
 // BOTTOM OF METADATA
 });

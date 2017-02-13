@@ -18,7 +18,6 @@
     <feature name="InAppBrowser">
         <param name="android-package" value="org.apache.cordova.inappbrowser.InAppBrowser" />
     </feature>
-    <access origin="https://oauth.io" />
     <name>Bridge Winners</name>
     <description>
      The Bridge Winners Mobile App
@@ -28,6 +27,7 @@
   </author>
     <content src="index.html" />
     <access origin="*" />
+    <access launch-external="yes" origin="mailto:*" />
     <icon src="res/icon.png" />
     <icon density="hdpi" src="res/android/drawable-hdpi/Icon.png" />
     <icon density="ldpi" src="res/android/drawable-ldpi/Icon.png" />

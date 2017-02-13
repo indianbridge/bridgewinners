@@ -17,14 +17,13 @@
     <link rel="stylesheet" type="text/css" href="css/bridgewinners.css">
     <script src="js/jquery.min.js"></script>
     <script type="text/javascript" src="cordova.js"></script>
-    <script type="text/javascript" src="js/oauth.min.js"></script>
-    <script src="js/index.js"></script>
     <script src="js/lodash.min.js"></script>
     <script src="js/bridge.all.js"></script>
     <script src="js/jquery.mobile-1.4.5.min.js"></script>
     <script src="js/fastclick.min.js"></script>
     <script src="js/iscroll.js"></script>
     <script src="js/jquery.mobile.iscrollview.js"></script>
+    <script src="js/index.js"></script>
     <title>BridgeWinners Mobile App</title>
   </head>
   <body >
@@ -77,11 +76,11 @@
       <div id="vote-page" class="main-page">
         <div id="asks">
           <avatar id="avatar-vote"></avatar>
-          <div id="name"><span id="user">Bridge Winners </span>Asks...</div>
+          <div id="name"><span id="user">Bridge Winners </span>Asks</div>
           <div id="comments">245</div>
           <div id="likes">125</div>
         </div>
-        <div id="auction" class="scrollable"></div>
+        <div id="auction"></div>
         <div id="vulnerability">
           <div id="info-wrapper"></div>
           <div id="scoring"></div>
@@ -121,7 +120,7 @@
         </div>
         <div id="create-auction-page" data-role="section" data-name="create-auction-page">
           <div id="hand-hider" class="ui-page-theme-a"></div>
-          <div id="auction" class="scrollable"></div>
+          <div id="auction"></div>
           <div id="special_calls"></div>
           <div id="bidding-box"></div>
         </div>
@@ -132,9 +131,9 @@
         <div id="create-review-page" data-role="section" data-name="create-review-page">
           <div id="asks-review">
             <avatar id="avatar-review"></avatar>
-            <div id="name-review"><span id="user-review">You </span>Ask...</div>
+            <div id="name-review"><span id="user-review">You </span>Ask</div>
           </div>
-          <div id="auction-review" class="scrollable"></div>
+          <div id="auction-review"></div>
           <div id="vulnerability-review">
             <div id="info-wrapper-review"></div>
             <div id="scoring-review"></div>
@@ -164,35 +163,39 @@
         <div id="history-voted-page" data-role="section" data-name="history-voted-page">
           <!-- <div class="history-header">Problems you recently voted on.</div> -->
           <div id="history-voted-wrapper">
-              <!-- <div class="iscroll-pulldown">
-                <span class="iscroll-pull-icon"></span>
-                <span class="iscroll-pull-label"></span>
-              </div> -->
-              <ul id="history-voted-list" class="history-list scrollable" data-role="listview"></ul>
-              <!-- <div class="iscroll-pullup">
-                <span class="iscroll-pull-icon"></span>
-                <span class="iscroll-pull-label"></span>
-              </div> -->
+            <!-- <button id="history-voted-refresh-button" class="enabled bridgewinners">Reload Voted History</button> -->
+            <div class="iscroll-pulldown">
+              <span class="iscroll-pull-icon"></span>
+              <span class="iscroll-pull-label" data-iscroll-pulled-text="Release to reload voted problems!" data-iscroll-loading-text="Reloading voted problems...">Pull up to reload voted problems</span>
+            </div>
+            <ul id="history-voted-list" class="history-list scrollable" data-role="listview"></ul>
+            <div class="iscroll-pullup">
+              <span class="iscroll-pull-icon"></span>
+              <span class="iscroll-pull-label" data-iscroll-pulled-text="Release to get more voted problems!" data-iscroll-loading-text="Getting more voted problems...">Pull up to get more voted problems</span>
+            </div>
+            <!-- <button id="history-voted-more-button" class="enabled bridgewinners">Get More Voted History</button> -->
           </div>
         </div>
         <div id="history-published-page" data-role="section" data-name="history-published-page">
           <!-- <div class="history-header">Problems you recently published.</div> -->
           <div id="history-published-wrapper">
-            <!-- <div class="iscroll-pulldown">
+            <div class="iscroll-pulldown">
               <span class="iscroll-pull-icon"></span>
-              <span class="iscroll-pull-label"></span>
-            </div> -->
+              <span class="iscroll-pull-label" data-iscroll-pulled-text="Release to reload published problems!" data-iscroll-loading-text="Reloading published problems...">Pull up to reload published problems</span>
+            </div>
+            <!-- <button id="history-published-refresh-button" class="enabled bridgewinners">Reload Published History</button> -->
             <ul id="history-published-list" class="history-list scrollable" data-role="listview"></ul>
-            <!-- <div class="iscroll-pullup">
+            <div class="iscroll-pullup">
               <span class="iscroll-pull-icon"></span>
-              <span class="iscroll-pull-label"></span>
-            </div> -->
+              <span class="iscroll-pull-label" data-iscroll-pulled-text="Release to get more published problems!" data-iscroll-loading-text="Getting more published problems...">Pull up to get more published problems</span>
+            </div>
+            <!-- <button id="history-published-more-button" class="enabled bridgewinners">Get More Published History</button> -->
           </div>
         </div>
         <div id="history-results-page" data-role="section" data-name="history-results-page">
           <div id="asks-results">
             <avatar id="avatar-results"></avatar>
-            <div id="name-results"><span id="user-results">You </span>Asks...</div>
+            <div id="name-results"><span id="user-results">You </span>Asks</div>
             <div id="votes-results">0</div>
             <div id="comments-results">0</div>
             <div id="likes-results">0</div>
@@ -228,9 +231,23 @@
     <script id="alerts-template" type="text/template">
       <div id="alerts-page" class="main-page">
         <div id="alerts-wrapper">
-          <button id="alerts-refresh-button" class="enabled bridgewinners">Reload Alerts</button>
+          <div class="iscroll-pulldown">
+            <span class="iscroll-pull-icon"></span>
+            <span class="iscroll-pull-label" data-iscroll-pulled-text="Release to reload alerts!" data-iscroll-loading-text="Reloading alerts...">Pull down to reload alerts</span>
+          </div>
+          <!-- <button id="alerts-refresh-button" class="enabled bridgewinners">Reload Alerts</button> -->
+          <!-- <div id="pullDown">
+      			<span class="pullDownIcon"></span><span class="pullDownLabel">Pull down to refresh...</span>
+      		</div> -->
           <ul id="alerts-list" class="scrollable" data-role="listview"></ul>
-          <button id="alerts-more-button" class="enabled bridgewinners">Get More Alerts</button>
+          <!-- <div id="pullUp">
+      			<span class="pullUpIcon"></span><span class="pullUpLabel">Pull up to refresh...</span>
+      		</div> -->
+          <div class="iscroll-pullup">
+            <span class="iscroll-pull-icon"></span>
+            <span class="iscroll-pull-label" data-iscroll-pulled-text="Release to get more alerts!" data-iscroll-loading-text="Getting more alerts...">Pull up to get more alerts</span>
+          </div>
+          <!-- <button id="alerts-more-button" class="enabled bridgewinners">Get More Alerts</button> -->
         </div>
       </div>
     </script>
@@ -249,7 +266,8 @@
               <li><a data-role="section-change" data-section="account-about-page" class="enabled clickable" href="#">About the App</a></li>
             </ul>
           </div>
-          <div id="logout-submit-button" class="logout clickable">Log Out</div>
+          <button id="logout-submit-button" class="logout clickable bridgewinners">Log Out</button>
+          <!-- <div id="logout-submit-button" class="logout clickable">Log Out</div> -->
         </div>
         <!-- <div id="account-friends-page" data-role="section" data-name="account-friends-page" data-section-back="account-main-page">
           <div id="options-list">Friends</div>
@@ -261,7 +279,11 @@
           </div>
         </div>
         <div id="account-about-page" data-role="section" data-name="account-about-page" data-section-back="account-main-page">
-          <div id="about-app">About</div>
+          <div id="about-app" class="scrollable">
+            <p><a target="_blank" href="http://www.bridgewinners.com">Bridge Winners</a> connects bridge players from around the world through our social network and provides a venue to learn, share, and talk about the game we love.</p>
+            <p>This mobile app from Bridgewinners allows users to create and vote on bridge problems (bidding and lead) and look up how other bridge players voted on these problems.</p>
+            <p>If you have a problem or question you can contact us at: <a href="mailto:support@bridgewinners.com">support@bridgewinners.com</a>.</p>
+          </div>
         </div>
       </div>
     </script>

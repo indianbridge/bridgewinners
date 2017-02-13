@@ -3556,14 +3556,11 @@ Bridge.Play.prototype.set = function( property, value ) {
  */
 Bridge.Play.prototype.initialize = function() {
 	var prefix = "Bridge.Play initialize";
-	if ( this.deal && this.deal.getAuction().getContract().isComplete ) {
-		var contract = this.deal.getAuction().getContract();
-		if ( !contract.isComplete ) {
-			Bridge._reportError( "Cannot initialize play unless auction is complete", prefix );
-		}
-		this.trump = contract.getSuit();
-		this.leader = contract.getLeader();
-	}
+	if (!this.deal) return;
+	var contract = this.deal.getAuction().getContract();
+	if (!contract.isComplete || contract.numPasses === 4) return;
+	this.trump = contract.getSuit();
+	this.leader = contract.getLeader();
 	this.plays[0] = new Bridge.PlayedCard( 0, this.trump, this.leader );
 	this.lastPlayIndex = 0;
 };
@@ -4254,6 +4251,19 @@ Bridge.getCardHTML = function(card) {
 Bridge.getBidHTML = function(bid) {
   if (bid.length < 2) return bid;
   return bid[0] + "<suit data-suit='" + bid[1].toLowerCase() + "'>" + Bridge.calls[bid[1].toLowerCase()].html + "</suit>";
+};
+
+Bridge.getSuitHTML = function(suit) {
+  suit = suit.toLowerCase();
+  return "<suit data-suit='" + suit + "'>" + Bridge.suits[suit].html + "</suit>";
+};
+
+Bridge.replaceSuitSymbolsHTML = function(text) {
+  _.each(Bridge.suits, function(suitData, suit) {
+    var re = new RegExp('!' + suit, "gi");
+    text = text.replace(re, Bridge.getSuitHTML(suit));
+  });
+  return text;
 };
 
 /**
