@@ -95,21 +95,15 @@ html, body {
   display: inline;
 }
 
-/* line 115, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review card.selected, #history-page #history-results-page #hand-results card.selected {
-  -webkit-filter: blur(1px);
-  filter: blur(1px);
-}
-
 /* line 120, ../sass/bridgewinners.scss */
-#create-page #special_calls call, #create-page #create-reset-button, #create-page #create-continue-button, #create-page #create-review-page #vulnerability-review .vulnerability, #create-page #create-review-page #vulnerability-review #scoring-review, #create-page #create-review-page #create-save-button, #create-page #create-review-page #create-publish-button, #history-page #history-results-page #vulnerability-results .vulnerability, #history-page #history-results-page #vulnerability-results #scoring-results, #history-page #history-results-page #history-revote-button, #history-page #history-results-page #history-voters-button, deal vulnerabilities vulnerability, deal scoring, #vote-page #skip-submit-button, #vote-page #abstain-submit-button, #vote-page #vote-submit-button, .header-container, .back-button-container, #account-page #name, #account-page #edit-profile-button, #account-page .list {
+#create-page #special_calls call, #create-page #create-reset-button, #create-page #create-continue-button, #create-page #create-review-page #create-save-button, #create-page #create-review-page #create-publish-button, #history-page #history-results-page #history-revote-button, #history-page #history-results-page #history-voters-button, deal vulnerabilities vulnerability, deal scoring, #vote-page #skip-submit-button, #vote-page #abstain-submit-button, #vote-page #vote-submit-button, .header-container, .back-button-container, #account-page #name, #account-page #edit-profile-button, #account-page .list {
   display: flex !important;
   justify-content: center;
   flex-direction: column;
 }
 
 /* line 125, ../sass/bridgewinners.scss */
-#create-page #create-review-page #name-review, #history-page #history-results-page #name-results, #history-page #history-results-page #votes-results, #history-page #history-results-page #comments-results, #history-page #history-results-page #likes-results, deal name, deal comments, deal likes {
+deal name, deal votes, deal comments, deal likes {
   display: flex !important;
   align-items: center;
 }
@@ -1336,14 +1330,13 @@ html, body {
 /* line 449, ../sass/bridgewinners.scss */
 #create-page #auction calls {
   font-family: SFUIDisplay;
-  font-size: 3.40031vh;
+  font-size: 3.86399vh;
   font-weight: normal;
   font-style: normal;
   font-stretch: normal;
   letter-spacing: 0.7px;
   text-align: center;
   text-shadow: none;
-  height: 81.5%;
 }
 /* line 453, ../sass/bridgewinners.scss */
 #create-page #auction row {
@@ -1542,233 +1535,87 @@ html, body {
   width: 45.06667vw;
 }
 /* line 565, ../sass/bridgewinners.scss */
-#create-page #create-review-page #name-review {
+#create-page #create-review-page name {
   display: block;
   position: fixed;
   top: 9.11901vh;
   height: 5.40958vh;
   left: 14.93333vw;
   width: 53.33333vw;
-  font-family: SFUIDisplay;
-  font-size: 2.62751vh;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  letter-spacing: 0.7px;
-  text-align: center;
-  text-shadow: none;
-  text-align: left;
-  color: #4a4a4a;
 }
-/* line 572, ../sass/bridgewinners.scss */
-#create-page #create-review-page #user-review {
-  color: #9a032e;
-  font-weight: 600;
-  margin-right: 5px;
-}
-/* line 577, ../sass/bridgewinners.scss */
-#create-page #create-review-page #auction-review {
+/* line 580, ../sass/bridgewinners.scss */
+#create-page #create-review-page auctioncontainer {
   display: block;
   position: fixed;
   top: 16.84699vh;
   height: 20.86553vh;
   left: 4vw;
   width: 61.33333vw;
-  font-family: SFUIDisplay;
-  font-size: 3.09119vh;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  letter-spacing: 0.7px;
-  text-align: center;
-  text-shadow: none;
-  background-color: #ffffff;
-  border: solid 2px #416757;
 }
-/* line 582, ../sass/bridgewinners.scss */
-#create-page #create-review-page #auction-review section {
-  height: 100%;
-}
-/* line 585, ../sass/bridgewinners.scss */
-#create-page #create-review-page #auction-review auction {
-  display: block;
-  height: 100%;
-}
-/* line 589, ../sass/bridgewinners.scss */
-#create-page #create-review-page #auction-review directions, #create-page #create-review-page #auction-review calls {
-  display: table;
-  table-layout: fixed;
-  width: 100%;
-}
-/* line 594, ../sass/bridgewinners.scss */
-#create-page #create-review-page #auction-review directions {
-  font-family: SFUIDisplay;
-  font-size: 3.09119vh;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  letter-spacing: 0.7px;
-  text-align: center;
-  text-shadow: none;
-  height: 17.77%;
-  border-bottom: solid 2px #416757;
-}
-/* line 599, ../sass/bridgewinners.scss */
-#create-page #create-review-page #auction-review content {
-  display: block;
-  overflow-x: hidden;
-  overflow-y: auto;
-  height: 82.23%;
-}
-/* line 605, ../sass/bridgewinners.scss */
-#create-page #create-review-page #auction-review calls {
-  font-family: SFUIDisplay;
-  font-size: 3.40031vh;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  letter-spacing: 0.7px;
-  text-align: center;
-  text-shadow: none;
-  height: 82.23%;
-}
-/* line 609, ../sass/bridgewinners.scss */
-#create-page #create-review-page #auction-review row {
-  display: table-row;
-  width: 100%;
-}
-/* line 613, ../sass/bridgewinners.scss */
-#create-page #create-review-page #auction-review direction, #create-page #create-review-page #auction-review call {
-  display: table-cell;
-}
-/* line 616, ../sass/bridgewinners.scss */
-#create-page #create-review-page #auction-review direction {
-  font-weight: 600;
-  letter-spacing: -0.8px;
-  text-align: center;
-  color: #000000;
-  background-color: #ffffff;
-}
-/* line 623, ../sass/bridgewinners.scss */
-#create-page #create-review-page #auction-review direction[data-vulnerable] {
-  color: #ffffff;
-  background-color: #d0021b;
-}
-/* line 627, ../sass/bridgewinners.scss */
-#create-page #create-review-page #auction-review call {
-  font-weight: 600;
-  letter-spacing: -0.5px;
-  text-transform: uppercase;
-}
-/* line 634, ../sass/bridgewinners.scss */
-#create-page #create-review-page #vulnerability-review [data-vulnerable="yes"] {
-  color: #ffffff;
-  background-color: #d0021b;
-}
-/* line 638, ../sass/bridgewinners.scss */
-#create-page #create-review-page #vulnerability-review [data-vulnerable="no"] {
-  color: #000000;
-  background-color: #ffffff;
-}
-/* line 642, ../sass/bridgewinners.scss */
-#create-page #create-review-page #vulnerability-review #info-wrapper-review {
+/* line 639, ../sass/bridgewinners.scss */
+#create-page #create-review-page infowrapper {
   display: block;
   position: fixed;
   top: 16.84699vh;
   height: 20.86553vh;
   left: 68vw;
   width: 28vw;
-  background-color: #dddddd;
-  border: solid 2px #416757;
 }
-/* line 647, ../sass/bridgewinners.scss */
-#create-page #create-review-page #vulnerability-review #vul-e-review {
+/* line 642, ../sass/bridgewinners.scss */
+#create-page #create-review-page vulnerability[data-direction="e"] {
   display: block;
   position: fixed;
   top: 21.48377vh;
   height: 11.74652vh;
   left: 88.53333vw;
   width: 5.6vw;
-  border: solid 2px #416757;
-  border-left: 0;
 }
-/* line 652, ../sass/bridgewinners.scss */
-#create-page #create-review-page #vulnerability-review #vul-w-review {
+/* line 645, ../sass/bridgewinners.scss */
+#create-page #create-review-page vulnerability[data-direction="w"] {
   display: block;
   position: fixed;
   top: 21.48377vh;
   height: 11.74652vh;
   left: 69.86667vw;
   width: 5.6vw;
-  border: solid 2px #416757;
-  border-right: 0;
 }
-/* line 657, ../sass/bridgewinners.scss */
-#create-page #create-review-page #vulnerability-review .vulnerability {
-  text-align: center;
-  text-shadow: none;
-}
-/* line 662, ../sass/bridgewinners.scss */
-#create-page #create-review-page #vulnerability-review #scoring-review {
+/* line 648, ../sass/bridgewinners.scss */
+#create-page #create-review-page scoring {
   display: block;
   position: fixed;
   top: 21.48377vh;
   height: 11.74652vh;
   left: 74.93333vw;
   width: 14.16vw;
-  background-color: #ade7ed;
-  border: solid 2px #416757;
-  text-align: center;
-  color: #000000;
-  z-index: 1;
-  word-wrap: break-word;
 }
-/* line 672, ../sass/bridgewinners.scss */
-#create-page #create-review-page #vulnerability-review #vul-n-review {
+/* line 651, ../sass/bridgewinners.scss */
+#create-page #create-review-page vulnerability[data-direction="n"] {
   display: block;
   position: fixed;
   top: 17.9289vh;
   height: 3.86399vh;
   left: 74.93333vw;
   width: 14.16vw;
-  border: solid 2px #416757;
-  border-bottom: 0;
 }
-/* line 677, ../sass/bridgewinners.scss */
-#create-page #create-review-page #vulnerability-review #vul-s-review {
+/* line 654, ../sass/bridgewinners.scss */
+#create-page #create-review-page vulnerability[data-direction="s"] {
   display: block;
   position: fixed;
   top: 32.92117vh;
   height: 3.86399vh;
   left: 74.93333vw;
   width: 14.16vw;
-  border: solid 2px #416757;
-  border-top: 0;
 }
-/* line 683, ../sass/bridgewinners.scss */
-#create-page #create-review-page #description-review {
+/* line 707, ../sass/bridgewinners.scss */
+#create-page #create-review-page description {
   display: block;
   position: fixed;
   top: 52.39567vh;
   height: 27.04791vh;
   width: 100vw;
-  font-family: SFUIDisplay;
-  font-size: 2.62751vh;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  letter-spacing: 0.7px;
-  text-align: center;
-  text-shadow: none;
-  color: #4a4a4a;
-  text-align: justify;
-  padding: 5px;
-  background-color: #ffffff;
-  border: solid 1px #c7c7cc;
-  padding-right: 7vw;
 }
-/* line 693, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review {
+/* line 710, ../sass/bridgewinners.scss */
+#create-page #create-review-page handcontainer {
   display: block;
   position: fixed;
   top: 39.87635vh;
@@ -1776,308 +1623,7 @@ html, body {
   left: 3.46667vw;
   width: 93.06667vw;
 }
-/* line 697, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review hand, #create-page #create-review-page #hand-review content {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-/* line 702, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review cards {
-  display: inline-block;
-  height: 100%;
-}
-/* line 706, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review card {
-  position: absolute;
-  color: transparent;
-  text-indent: -9999px;
-  height: 10.20093vh;
-  width: 12.8vw;
-  cursor: pointer;
-}
-/* line 719, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit][data-rank] {
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-/* line 723, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="s"][data-rank="x"] {
-  background-image: url("img/s2.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="s"][data-rank="a"] {
-  background-image: url("img/sa.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="s"][data-rank="k"] {
-  background-image: url("img/sk.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="s"][data-rank="q"] {
-  background-image: url("img/sq.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="s"][data-rank="j"] {
-  background-image: url("img/sj.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="s"][data-rank="t"] {
-  background-image: url("img/st.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="s"][data-rank="9"] {
-  background-image: url("img/s9.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="s"][data-rank="8"] {
-  background-image: url("img/s8.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="s"][data-rank="7"] {
-  background-image: url("img/s7.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="s"][data-rank="6"] {
-  background-image: url("img/s6.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="s"][data-rank="5"] {
-  background-image: url("img/s5.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="s"][data-rank="4"] {
-  background-image: url("img/s4.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="s"][data-rank="3"] {
-  background-image: url("img/s3.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="s"][data-rank="2"] {
-  background-image: url("img/s2.png");
-}
-/* line 723, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="h"][data-rank="x"] {
-  background-image: url("img/h2.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="h"][data-rank="a"] {
-  background-image: url("img/ha.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="h"][data-rank="k"] {
-  background-image: url("img/hk.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="h"][data-rank="q"] {
-  background-image: url("img/hq.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="h"][data-rank="j"] {
-  background-image: url("img/hj.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="h"][data-rank="t"] {
-  background-image: url("img/ht.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="h"][data-rank="9"] {
-  background-image: url("img/h9.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="h"][data-rank="8"] {
-  background-image: url("img/h8.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="h"][data-rank="7"] {
-  background-image: url("img/h7.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="h"][data-rank="6"] {
-  background-image: url("img/h6.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="h"][data-rank="5"] {
-  background-image: url("img/h5.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="h"][data-rank="4"] {
-  background-image: url("img/h4.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="h"][data-rank="3"] {
-  background-image: url("img/h3.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="h"][data-rank="2"] {
-  background-image: url("img/h2.png");
-}
-/* line 723, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="d"][data-rank="x"] {
-  background-image: url("img/d2.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="d"][data-rank="a"] {
-  background-image: url("img/da.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="d"][data-rank="k"] {
-  background-image: url("img/dk.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="d"][data-rank="q"] {
-  background-image: url("img/dq.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="d"][data-rank="j"] {
-  background-image: url("img/dj.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="d"][data-rank="t"] {
-  background-image: url("img/dt.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="d"][data-rank="9"] {
-  background-image: url("img/d9.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="d"][data-rank="8"] {
-  background-image: url("img/d8.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="d"][data-rank="7"] {
-  background-image: url("img/d7.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="d"][data-rank="6"] {
-  background-image: url("img/d6.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="d"][data-rank="5"] {
-  background-image: url("img/d5.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="d"][data-rank="4"] {
-  background-image: url("img/d4.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="d"][data-rank="3"] {
-  background-image: url("img/d3.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="d"][data-rank="2"] {
-  background-image: url("img/d2.png");
-}
-/* line 723, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="c"][data-rank="x"] {
-  background-image: url("img/c2.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="c"][data-rank="a"] {
-  background-image: url("img/ca.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="c"][data-rank="k"] {
-  background-image: url("img/ck.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="c"][data-rank="q"] {
-  background-image: url("img/cq.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="c"][data-rank="j"] {
-  background-image: url("img/cj.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="c"][data-rank="t"] {
-  background-image: url("img/ct.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="c"][data-rank="9"] {
-  background-image: url("img/c9.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="c"][data-rank="8"] {
-  background-image: url("img/c8.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="c"][data-rank="7"] {
-  background-image: url("img/c7.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="c"][data-rank="6"] {
-  background-image: url("img/c6.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="c"][data-rank="5"] {
-  background-image: url("img/c5.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="c"][data-rank="4"] {
-  background-image: url("img/c4.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="c"][data-rank="3"] {
-  background-image: url("img/c3.png");
-}
-/* line 727, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-suit="c"][data-rank="2"] {
-  background-image: url("img/c2.png");
-}
-/* line 735, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-card-number="1"] {
-  left: 0vw;
-}
-/* line 735, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-card-number="2"] {
-  left: 6.66667vw;
-}
-/* line 735, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-card-number="3"] {
-  left: 13.33333vw;
-}
-/* line 735, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-card-number="4"] {
-  left: 20vw;
-}
-/* line 735, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-card-number="5"] {
-  left: 26.66667vw;
-}
-/* line 735, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-card-number="6"] {
-  left: 33.33333vw;
-}
-/* line 735, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-card-number="7"] {
-  left: 40vw;
-}
-/* line 735, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-card-number="8"] {
-  left: 46.66667vw;
-}
-/* line 735, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-card-number="9"] {
-  left: 53.33333vw;
-}
-/* line 735, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-card-number="10"] {
-  left: 60vw;
-}
-/* line 735, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-card-number="11"] {
-  left: 66.66667vw;
-}
-/* line 735, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-card-number="12"] {
-  left: 73.33333vw;
-}
-/* line 735, ../sass/bridgewinners.scss */
-#create-page #create-review-page #hand-review [data-card-number="13"] {
-  left: 80vw;
-}
-/* line 741, ../sass/bridgewinners.scss */
+/* line 771, ../sass/bridgewinners.scss */
 #create-page #create-review-page #create-save-button {
   display: block;
   position: fixed;
@@ -2086,7 +1632,7 @@ html, body {
   left: 4vw;
   width: 45.06667vw;
 }
-/* line 745, ../sass/bridgewinners.scss */
+/* line 775, ../sass/bridgewinners.scss */
 #create-page #create-review-page #create-publish-button {
   display: block;
   position: fixed;
@@ -2095,8 +1641,8 @@ html, body {
   left: 50.93333vw;
   width: 45.06667vw;
 }
-/* line 751, ../sass/bridgewinners.scss */
-#create-page #create-review-page.show-hand-first #auction-review {
+/* line 781, ../sass/bridgewinners.scss */
+#create-page #create-review-page.show-hand-first auctioncontainer {
   display: block;
   position: fixed;
   top: 29.21175vh;
@@ -2104,8 +1650,8 @@ html, body {
   left: 4vw;
   width: 61.33333vw;
 }
-/* line 755, ../sass/bridgewinners.scss */
-#create-page #create-review-page.show-hand-first #vulnerability-review #info-wrapper-review {
+/* line 784, ../sass/bridgewinners.scss */
+#create-page #create-review-page.show-hand-first infowrapper {
   display: block;
   position: fixed;
   top: 29.21175vh;
@@ -2113,8 +1659,8 @@ html, body {
   left: 68vw;
   width: 28vw;
 }
-/* line 758, ../sass/bridgewinners.scss */
-#create-page #create-review-page.show-hand-first #vulnerability-review #vul-e-review {
+/* line 787, ../sass/bridgewinners.scss */
+#create-page #create-review-page.show-hand-first vulnerability[data-direction="e"] {
   display: block;
   position: fixed;
   top: 33.84853vh;
@@ -2122,8 +1668,8 @@ html, body {
   left: 88.53333vw;
   width: 5.6vw;
 }
-/* line 761, ../sass/bridgewinners.scss */
-#create-page #create-review-page.show-hand-first #vulnerability-review #vul-w-review {
+/* line 790, ../sass/bridgewinners.scss */
+#create-page #create-review-page.show-hand-first vulnerability[data-direction="w"] {
   display: block;
   position: fixed;
   top: 33.84853vh;
@@ -2131,8 +1677,8 @@ html, body {
   left: 69.86667vw;
   width: 5.6vw;
 }
-/* line 764, ../sass/bridgewinners.scss */
-#create-page #create-review-page.show-hand-first #vulnerability-review #scoring-review {
+/* line 793, ../sass/bridgewinners.scss */
+#create-page #create-review-page.show-hand-first scoring {
   display: block;
   position: fixed;
   top: 33.84853vh;
@@ -2140,8 +1686,8 @@ html, body {
   left: 74.93333vw;
   width: 14.16vw;
 }
-/* line 767, ../sass/bridgewinners.scss */
-#create-page #create-review-page.show-hand-first #vulnerability-review #vul-n-review {
+/* line 796, ../sass/bridgewinners.scss */
+#create-page #create-review-page.show-hand-first vulnerability[data-direction="n"] {
   display: block;
   position: fixed;
   top: 30.29366vh;
@@ -2149,8 +1695,8 @@ html, body {
   left: 74.93333vw;
   width: 14.16vw;
 }
-/* line 770, ../sass/bridgewinners.scss */
-#create-page #create-review-page.show-hand-first #vulnerability-review #vul-s-review {
+/* line 799, ../sass/bridgewinners.scss */
+#create-page #create-review-page.show-hand-first vulnerability[data-direction="s"] {
   display: block;
   position: fixed;
   top: 45.28594vh;
@@ -2158,8 +1704,8 @@ html, body {
   left: 74.93333vw;
   width: 14.16vw;
 }
-/* line 774, ../sass/bridgewinners.scss */
-#create-page #create-review-page.show-hand-first #hand-review {
+/* line 822, ../sass/bridgewinners.scss */
+#create-page #create-review-page.show-hand-first handcontainer {
   display: block;
   position: fixed;
   top: 16.84699vh;
@@ -2168,7 +1714,7 @@ html, body {
   width: 93.06667vw;
 }
 
-/* line 781, ../sass/bridgewinners.scss */
+/* line 829, ../sass/bridgewinners.scss */
 #footer #account-avatar-inner, #footer #account-avatar-outer {
   height: 4.63679vh;
   width: 4.63679vh;
@@ -2184,17 +1730,17 @@ html, body {
   z-index: 5;
 }
 
-/* line 795, ../sass/bridgewinners.scss */
+/* line 843, ../sass/bridgewinners.scss */
 #account-avatar-inner {
   margin-top: 0.46368vh;
 }
 
-/* line 798, ../sass/bridgewinners.scss */
+/* line 846, ../sass/bridgewinners.scss */
 #account-avatar-outer {
   margin-top: 0.7728vh;
 }
 
-/* line 804, ../sass/bridgewinners.scss */
+/* line 852, ../sass/bridgewinners.scss */
 #alerts-page button.bridgewinners {
   position: relative;
   font-family: SFUIDisplay;
@@ -2215,13 +1761,13 @@ html, body {
   left: 5.33333vw;
   cursor: pointer;
 }
-/* line 816, ../sass/bridgewinners.scss */
+/* line 864, ../sass/bridgewinners.scss */
 #alerts-page button.bridgewinners.disabled {
   color: #4a4a4a;
   background-color: #dddddd;
   cursor: not-allowed;
 }
-/* line 821, ../sass/bridgewinners.scss */
+/* line 869, ../sass/bridgewinners.scss */
 #alerts-page #alerts-wrapper {
   position: absolute;
   display: block;
@@ -2233,7 +1779,7 @@ html, body {
   background-color: transparent;
   color: transparent;
 }
-/* line 831, ../sass/bridgewinners.scss */
+/* line 879, ../sass/bridgewinners.scss */
 #alerts-page #alerts-list {
   font-family: SFUIDisplay;
   font-size: 1.85471vh;
@@ -2244,25 +1790,25 @@ html, body {
   text-align: center;
   text-shadow: none;
 }
-/* line 832, ../sass/bridgewinners.scss */
+/* line 880, ../sass/bridgewinners.scss */
 #alerts-page #alerts-list li {
   width: 100vw;
   opacity: 0.5;
 }
-/* line 836, ../sass/bridgewinners.scss */
+/* line 884, ../sass/bridgewinners.scss */
 #alerts-page #alerts-list li[data-slug] {
   opacity: 1;
 }
-/* line 841, ../sass/bridgewinners.scss */
+/* line 889, ../sass/bridgewinners.scss */
 #alerts-page .alert {
   display: table;
   table-layout: fixed;
 }
-/* line 845, ../sass/bridgewinners.scss */
+/* line 893, ../sass/bridgewinners.scss */
 #alerts-page p {
   margin: 0;
 }
-/* line 849, ../sass/bridgewinners.scss */
+/* line 897, ../sass/bridgewinners.scss */
 #alerts-page .avatar-alert {
   display: table-cell;
   height: 5.40958vh;
@@ -2273,343 +1819,128 @@ html, body {
   border-radius: 50%;
   vertical-align: middle;
 }
-/* line 859, ../sass/bridgewinners.scss */
+/* line 907, ../sass/bridgewinners.scss */
 #alerts-page .text-alert {
   display: table-cell;
   padding-left: 5px;
   white-space: normal;
   vertical-align: middle;
 }
-/* line 865, ../sass/bridgewinners.scss */
+/* line 913, ../sass/bridgewinners.scss */
 #alerts-page .name-alert {
   font-weight: 600;
   color: #9a032e;
 }
 
-/* line 873, ../sass/bridgewinners.scss */
-#history-page #history-results-page #name-results {
+/* line 921, ../sass/bridgewinners.scss */
+#history-page #history-results-page name {
   display: block;
   position: fixed;
   top: 9.11901vh;
   height: 5.40958vh;
   left: 14.93333vw;
   width: 53.33333vw;
-  font-family: SFUIDisplay;
-  font-size: 2.62751vh;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  letter-spacing: 0.7px;
-  text-align: center;
-  text-shadow: none;
-  text-align: left;
-  color: #4a4a4a;
 }
-/* line 880, ../sass/bridgewinners.scss */
-#history-page #history-results-page #user-results {
-  color: #9a032e;
-  font-weight: 600;
-  margin-right: 5px;
-}
-/* line 885, ../sass/bridgewinners.scss */
-#history-page #history-results-page #votes-results {
+/* line 936, ../sass/bridgewinners.scss */
+#history-page #history-results-page votes {
   display: block;
   position: fixed;
   top: 9.11901vh;
   height: 5.40958vh;
   left: 88.53333vw;
   width: 10.66667vw;
-  font-family: SFUIDisplay;
-  font-size: 2.62751vh;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  letter-spacing: 0.7px;
-  text-align: center;
-  text-shadow: none;
-  color: #9a032e;
-  font-weight: 600;
 }
-/* line 892, ../sass/bridgewinners.scss */
-#history-page #history-results-page #votes-results:before {
-  content: "";
-  display: block;
-  background: url("img/answers_black.png") no-repeat;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: contain;
-  width: 20px;
-  height: 20px;
-  float: left;
-  margin-right: 1vw;
-}
-/* line 902, ../sass/bridgewinners.scss */
-#history-page #history-results-page #comments-results {
+/* line 939, ../sass/bridgewinners.scss */
+#history-page #history-results-page comments {
   display: block;
   position: fixed;
   top: 9.11901vh;
   height: 5.40958vh;
   left: 67.2vw;
   width: 10.66667vw;
-  font-family: SFUIDisplay;
-  font-size: 2.62751vh;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  letter-spacing: 0.7px;
-  text-align: center;
-  text-shadow: none;
-  color: #9a032e;
-  font-weight: 600;
 }
-/* line 909, ../sass/bridgewinners.scss */
-#history-page #history-results-page #comments-results:before {
-  content: "";
-  display: block;
-  background: url("img/comments.png") no-repeat;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: contain;
-  width: 20px;
-  height: 20px;
-  float: left;
-  margin-right: 1vw;
-}
-/* line 919, ../sass/bridgewinners.scss */
-#history-page #history-results-page #likes-results {
+/* line 942, ../sass/bridgewinners.scss */
+#history-page #history-results-page likes {
   display: block;
   position: fixed;
   top: 9.11901vh;
   height: 5.40958vh;
   left: 77.86667vw;
   width: 10.66667vw;
-  font-family: SFUIDisplay;
-  font-size: 2.62751vh;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  letter-spacing: 0.7px;
-  text-align: center;
-  text-shadow: none;
-  color: #9a032e;
-  font-weight: 600;
 }
-/* line 926, ../sass/bridgewinners.scss */
-#history-page #history-results-page #likes-results:before {
-  content: "";
-  display: block;
-  background: url("img/likes.png") no-repeat;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: contain;
-  width: 20px;
-  height: 20px;
-  float: left;
-  margin-right: 1vw;
-}
-/* line 936, ../sass/bridgewinners.scss */
-#history-page #history-results-page #auction-results {
+/* line 996, ../sass/bridgewinners.scss */
+#history-page #history-results-page auctioncontainer {
   display: block;
   position: fixed;
   top: 16.84699vh;
   height: 20.86553vh;
   left: 4vw;
   width: 61.33333vw;
-  font-family: SFUIDisplay;
-  font-size: 3.09119vh;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  letter-spacing: 0.7px;
-  text-align: center;
-  text-shadow: none;
-  background-color: #ffffff;
-  border: solid 2px #416757;
 }
-/* line 941, ../sass/bridgewinners.scss */
-#history-page #history-results-page #auction-results section {
-  height: 100%;
-}
-/* line 944, ../sass/bridgewinners.scss */
-#history-page #history-results-page #auction-results auction {
-  display: block;
-  height: 100%;
-}
-/* line 948, ../sass/bridgewinners.scss */
-#history-page #history-results-page #auction-results directions, #history-page #history-results-page #auction-results calls {
-  display: table;
-  table-layout: fixed;
-  width: 100%;
-}
-/* line 953, ../sass/bridgewinners.scss */
-#history-page #history-results-page #auction-results directions {
-  font-family: SFUIDisplay;
-  font-size: 3.09119vh;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  letter-spacing: 0.7px;
-  text-align: center;
-  text-shadow: none;
-  height: 17.77%;
-  border-bottom: solid 2px #416757;
-}
-/* line 958, ../sass/bridgewinners.scss */
-#history-page #history-results-page #auction-results content {
-  display: block;
-  overflow-x: hidden;
-  overflow-y: auto;
-  height: 82.23%;
-}
-/* line 964, ../sass/bridgewinners.scss */
-#history-page #history-results-page #auction-results calls {
-  font-family: SFUIDisplay;
-  font-size: 3.40031vh;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  letter-spacing: 0.7px;
-  text-align: center;
-  text-shadow: none;
-  height: 82.23%;
-}
-/* line 968, ../sass/bridgewinners.scss */
-#history-page #history-results-page #auction-results row {
-  display: table-row;
-  width: 100%;
-}
-/* line 972, ../sass/bridgewinners.scss */
-#history-page #history-results-page #auction-results direction, #history-page #history-results-page #auction-results call {
-  display: table-cell;
-}
-/* line 975, ../sass/bridgewinners.scss */
-#history-page #history-results-page #auction-results direction {
-  font-weight: 600;
-  letter-spacing: -0.8px;
-  text-align: center;
-  color: #000000;
-  background-color: #ffffff;
-}
-/* line 982, ../sass/bridgewinners.scss */
-#history-page #history-results-page #auction-results direction[data-vulnerable] {
-  color: #ffffff;
-  background-color: #d0021b;
-}
-/* line 986, ../sass/bridgewinners.scss */
-#history-page #history-results-page #auction-results call {
-  font-weight: 600;
-  letter-spacing: -0.5px;
-  text-transform: uppercase;
-}
-/* line 993, ../sass/bridgewinners.scss */
-#history-page #history-results-page #vulnerability-results [data-vulnerable="yes"] {
-  color: #ffffff;
-  background-color: #d0021b;
-}
-/* line 997, ../sass/bridgewinners.scss */
-#history-page #history-results-page #vulnerability-results [data-vulnerable="no"] {
-  color: #000000;
-  background-color: #ffffff;
-}
-/* line 1001, ../sass/bridgewinners.scss */
-#history-page #history-results-page #vulnerability-results #info-wrapper-results {
+/* line 1055, ../sass/bridgewinners.scss */
+#history-page #history-results-page infowrapper {
   display: block;
   position: fixed;
   top: 16.84699vh;
   height: 20.86553vh;
   left: 68vw;
   width: 28vw;
-  background-color: #dddddd;
-  border: solid 2px #416757;
 }
-/* line 1006, ../sass/bridgewinners.scss */
-#history-page #history-results-page #vulnerability-results #vul-e-results {
+/* line 1058, ../sass/bridgewinners.scss */
+#history-page #history-results-page vulnerability[data-direction="e"] {
   display: block;
   position: fixed;
   top: 21.48377vh;
   height: 11.74652vh;
   left: 88.53333vw;
   width: 5.6vw;
-  border: solid 2px #416757;
-  border-left: 0;
 }
-/* line 1011, ../sass/bridgewinners.scss */
-#history-page #history-results-page #vulnerability-results #vul-w-results {
+/* line 1061, ../sass/bridgewinners.scss */
+#history-page #history-results-page vulnerability[data-direction="w"] {
   display: block;
   position: fixed;
   top: 21.48377vh;
   height: 11.74652vh;
   left: 69.86667vw;
   width: 5.6vw;
-  border: solid 2px #416757;
-  border-right: 0;
 }
-/* line 1016, ../sass/bridgewinners.scss */
-#history-page #history-results-page #vulnerability-results .vulnerability {
-  text-align: center;
-  text-shadow: none;
-}
-/* line 1021, ../sass/bridgewinners.scss */
-#history-page #history-results-page #vulnerability-results #scoring-results {
+/* line 1064, ../sass/bridgewinners.scss */
+#history-page #history-results-page scoring {
   display: block;
   position: fixed;
   top: 21.48377vh;
   height: 11.74652vh;
   left: 74.93333vw;
   width: 14.16vw;
-  background-color: #ade7ed;
-  border: solid 2px #416757;
-  text-align: center;
-  color: #000000;
-  z-index: 1;
-  word-wrap: break-word;
 }
-/* line 1031, ../sass/bridgewinners.scss */
-#history-page #history-results-page #vulnerability-results #vul-n-results {
+/* line 1067, ../sass/bridgewinners.scss */
+#history-page #history-results-page vulnerability[data-direction="n"] {
   display: block;
   position: fixed;
   top: 17.9289vh;
   height: 3.86399vh;
   left: 74.93333vw;
   width: 14.16vw;
-  border: solid 2px #416757;
-  border-bottom: 0;
 }
-/* line 1036, ../sass/bridgewinners.scss */
-#history-page #history-results-page #vulnerability-results #vul-s-results {
+/* line 1070, ../sass/bridgewinners.scss */
+#history-page #history-results-page vulnerability[data-direction="s"] {
   display: block;
   position: fixed;
   top: 32.92117vh;
   height: 3.86399vh;
   left: 74.93333vw;
   width: 14.16vw;
-  border: solid 2px #416757;
-  border-top: 0;
 }
-/* line 1042, ../sass/bridgewinners.scss */
-#history-page #history-results-page #description-results {
+/* line 1123, ../sass/bridgewinners.scss */
+#history-page #history-results-page description {
   display: block;
   position: fixed;
   top: 52.39567vh;
   height: 8.80989vh;
   width: 100vw;
-  font-family: SFUIDisplay;
-  font-size: 2.62751vh;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  letter-spacing: 0.7px;
-  text-align: center;
-  text-shadow: none;
-  color: #4a4a4a;
-  text-align: justify;
-  padding: 5px;
-  background-color: #ffffff;
-  border: solid 1px #c7c7cc;
-  padding-right: 7vw;
 }
-/* line 1052, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results {
+/* line 1126, ../sass/bridgewinners.scss */
+#history-page #history-results-page handcontainer {
   display: block;
   position: fixed;
   top: 39.87635vh;
@@ -2617,308 +1948,7 @@ html, body {
   left: 3.46667vw;
   width: 93.06667vw;
 }
-/* line 1056, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results hand, #history-page #history-results-page #hand-results content {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-/* line 1061, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results cards {
-  display: inline-block;
-  height: 100%;
-}
-/* line 1065, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results card {
-  position: absolute;
-  color: transparent;
-  text-indent: -9999px;
-  height: 10.20093vh;
-  width: 12.8vw;
-  cursor: pointer;
-}
-/* line 1078, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit][data-rank] {
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-/* line 1082, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="s"][data-rank="x"] {
-  background-image: url("img/s2.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="s"][data-rank="a"] {
-  background-image: url("img/sa.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="s"][data-rank="k"] {
-  background-image: url("img/sk.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="s"][data-rank="q"] {
-  background-image: url("img/sq.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="s"][data-rank="j"] {
-  background-image: url("img/sj.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="s"][data-rank="t"] {
-  background-image: url("img/st.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="s"][data-rank="9"] {
-  background-image: url("img/s9.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="s"][data-rank="8"] {
-  background-image: url("img/s8.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="s"][data-rank="7"] {
-  background-image: url("img/s7.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="s"][data-rank="6"] {
-  background-image: url("img/s6.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="s"][data-rank="5"] {
-  background-image: url("img/s5.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="s"][data-rank="4"] {
-  background-image: url("img/s4.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="s"][data-rank="3"] {
-  background-image: url("img/s3.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="s"][data-rank="2"] {
-  background-image: url("img/s2.png");
-}
-/* line 1082, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="h"][data-rank="x"] {
-  background-image: url("img/h2.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="h"][data-rank="a"] {
-  background-image: url("img/ha.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="h"][data-rank="k"] {
-  background-image: url("img/hk.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="h"][data-rank="q"] {
-  background-image: url("img/hq.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="h"][data-rank="j"] {
-  background-image: url("img/hj.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="h"][data-rank="t"] {
-  background-image: url("img/ht.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="h"][data-rank="9"] {
-  background-image: url("img/h9.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="h"][data-rank="8"] {
-  background-image: url("img/h8.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="h"][data-rank="7"] {
-  background-image: url("img/h7.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="h"][data-rank="6"] {
-  background-image: url("img/h6.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="h"][data-rank="5"] {
-  background-image: url("img/h5.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="h"][data-rank="4"] {
-  background-image: url("img/h4.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="h"][data-rank="3"] {
-  background-image: url("img/h3.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="h"][data-rank="2"] {
-  background-image: url("img/h2.png");
-}
-/* line 1082, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="d"][data-rank="x"] {
-  background-image: url("img/d2.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="d"][data-rank="a"] {
-  background-image: url("img/da.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="d"][data-rank="k"] {
-  background-image: url("img/dk.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="d"][data-rank="q"] {
-  background-image: url("img/dq.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="d"][data-rank="j"] {
-  background-image: url("img/dj.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="d"][data-rank="t"] {
-  background-image: url("img/dt.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="d"][data-rank="9"] {
-  background-image: url("img/d9.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="d"][data-rank="8"] {
-  background-image: url("img/d8.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="d"][data-rank="7"] {
-  background-image: url("img/d7.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="d"][data-rank="6"] {
-  background-image: url("img/d6.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="d"][data-rank="5"] {
-  background-image: url("img/d5.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="d"][data-rank="4"] {
-  background-image: url("img/d4.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="d"][data-rank="3"] {
-  background-image: url("img/d3.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="d"][data-rank="2"] {
-  background-image: url("img/d2.png");
-}
-/* line 1082, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="c"][data-rank="x"] {
-  background-image: url("img/c2.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="c"][data-rank="a"] {
-  background-image: url("img/ca.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="c"][data-rank="k"] {
-  background-image: url("img/ck.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="c"][data-rank="q"] {
-  background-image: url("img/cq.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="c"][data-rank="j"] {
-  background-image: url("img/cj.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="c"][data-rank="t"] {
-  background-image: url("img/ct.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="c"][data-rank="9"] {
-  background-image: url("img/c9.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="c"][data-rank="8"] {
-  background-image: url("img/c8.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="c"][data-rank="7"] {
-  background-image: url("img/c7.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="c"][data-rank="6"] {
-  background-image: url("img/c6.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="c"][data-rank="5"] {
-  background-image: url("img/c5.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="c"][data-rank="4"] {
-  background-image: url("img/c4.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="c"][data-rank="3"] {
-  background-image: url("img/c3.png");
-}
-/* line 1086, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-suit="c"][data-rank="2"] {
-  background-image: url("img/c2.png");
-}
-/* line 1094, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-card-number="1"] {
-  left: 0vw;
-}
-/* line 1094, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-card-number="2"] {
-  left: 6.66667vw;
-}
-/* line 1094, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-card-number="3"] {
-  left: 13.33333vw;
-}
-/* line 1094, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-card-number="4"] {
-  left: 20vw;
-}
-/* line 1094, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-card-number="5"] {
-  left: 26.66667vw;
-}
-/* line 1094, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-card-number="6"] {
-  left: 33.33333vw;
-}
-/* line 1094, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-card-number="7"] {
-  left: 40vw;
-}
-/* line 1094, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-card-number="8"] {
-  left: 46.66667vw;
-}
-/* line 1094, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-card-number="9"] {
-  left: 53.33333vw;
-}
-/* line 1094, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-card-number="10"] {
-  left: 60vw;
-}
-/* line 1094, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-card-number="11"] {
-  left: 66.66667vw;
-}
-/* line 1094, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-card-number="12"] {
-  left: 73.33333vw;
-}
-/* line 1094, ../sass/bridgewinners.scss */
-#history-page #history-results-page #hand-results [data-card-number="13"] {
-  left: 80vw;
-}
-/* line 1100, ../sass/bridgewinners.scss */
+/* line 1187, ../sass/bridgewinners.scss */
 #history-page #history-results-page #answers-results {
   display: block;
   position: fixed;
@@ -2926,12 +1956,12 @@ html, body {
   height: 20.09274vh;
   width: 100vw;
 }
-/* line 1102, ../sass/bridgewinners.scss */
+/* line 1189, ../sass/bridgewinners.scss */
 #history-page #history-results-page #answers-results .my_answer {
   font-weight: bold;
   color: #9a032e;
 }
-/* line 1107, ../sass/bridgewinners.scss */
+/* line 1194, ../sass/bridgewinners.scss */
 #history-page #history-results-page .answer-result {
   display: table;
   table-layout: fixed;
@@ -2945,28 +1975,28 @@ html, body {
   text-align: center;
   text-shadow: none;
 }
-/* line 1113, ../sass/bridgewinners.scss */
+/* line 1200, ../sass/bridgewinners.scss */
 #history-page #history-results-page .answer-result-column {
   display: table-cell;
   vertical-align: middle;
   text-align: center;
   text-transform: uppercase;
 }
-/* line 1119, ../sass/bridgewinners.scss */
+/* line 1206, ../sass/bridgewinners.scss */
 #history-page #history-results-page .answer-result-avatar {
   width: 50%;
 }
-/* line 1122, ../sass/bridgewinners.scss */
+/* line 1209, ../sass/bridgewinners.scss */
 #history-page #history-results-page .answer-result-avatar-imgs {
   display: table;
   table-layout: fixed;
   width: 100%;
 }
-/* line 1127, ../sass/bridgewinners.scss */
+/* line 1214, ../sass/bridgewinners.scss */
 #history-page #history-results-page .answer-result-avatar-img {
   display: table-cell;
 }
-/* line 1130, ../sass/bridgewinners.scss */
+/* line 1217, ../sass/bridgewinners.scss */
 #history-page #history-results-page .avatar-result {
   height: 6.18238vh;
   width: 6.18238vh;
@@ -2976,7 +2006,7 @@ html, body {
   border-radius: 50%;
   vertical-align: middle;
 }
-/* line 1139, ../sass/bridgewinners.scss */
+/* line 1226, ../sass/bridgewinners.scss */
 #history-page #history-results-page .button {
   font-family: SFUIDisplay;
   font-size: 2.62751vh;
@@ -2992,13 +2022,13 @@ html, body {
   color: #4a4a4a;
   background-color: #dddddd;
 }
-/* line 1145, ../sass/bridgewinners.scss */
+/* line 1232, ../sass/bridgewinners.scss */
 #history-page #history-results-page .button.enabled {
   color: #ffffff;
   background-color: #9a032e;
   cursor: pointer;
 }
-/* line 1150, ../sass/bridgewinners.scss */
+/* line 1237, ../sass/bridgewinners.scss */
 #history-page #history-results-page #history-revote-button {
   display: block;
   position: fixed;
@@ -3007,7 +2037,7 @@ html, body {
   left: 4vw;
   width: 45.06667vw;
 }
-/* line 1154, ../sass/bridgewinners.scss */
+/* line 1241, ../sass/bridgewinners.scss */
 #history-page #history-results-page #history-voters-button {
   display: block;
   position: fixed;
@@ -3016,7 +2046,7 @@ html, body {
   left: 50.93333vw;
   width: 45.06667vw;
 }
-/* line 1159, ../sass/bridgewinners.scss */
+/* line 1246, ../sass/bridgewinners.scss */
 #history-page #history-menu {
   display: block;
   position: fixed;
@@ -3039,7 +2069,7 @@ html, body {
   table-layout: fixed;
   width: 100%;
 }
-/* line 1170, ../sass/bridgewinners.scss */
+/* line 1257, ../sass/bridgewinners.scss */
 #history-page #history-responses-menu {
   display: block;
   position: fixed;
@@ -3064,16 +2094,16 @@ html, body {
   border-bottom: solid 0.5px #c7c7cc;
   text-transform: uppercase;
 }
-/* line 1183, ../sass/bridgewinners.scss */
+/* line 1270, ../sass/bridgewinners.scss */
 #history-page .history-no-responses {
   text-transform: capitalize;
 }
-/* line 1186, ../sass/bridgewinners.scss */
+/* line 1273, ../sass/bridgewinners.scss */
 #history-page .answers-no-responses {
   padding: 5px;
   text-transform: capitalize;
 }
-/* line 1190, ../sass/bridgewinners.scss */
+/* line 1277, ../sass/bridgewinners.scss */
 #history-page #history-responses-sections {
   display: block;
   position: fixed;
@@ -3094,7 +2124,7 @@ html, body {
   color: #4a4a4a;
   text-align: left;
 }
-/* line 1198, ../sass/bridgewinners.scss */
+/* line 1285, ../sass/bridgewinners.scss */
 #history-page .history-response-voters {
   display: block;
   position: fixed;
@@ -3113,15 +2143,15 @@ html, body {
   font-weight: 600;
   color: #9a032e;
 }
-/* line 1203, ../sass/bridgewinners.scss */
+/* line 1290, ../sass/bridgewinners.scss */
 #history-page .history-response-voters a {
   padding: 5px;
 }
-/* line 1206, ../sass/bridgewinners.scss */
+/* line 1293, ../sass/bridgewinners.scss */
 #history-page .history-response-voters p {
   margin: 0;
 }
-/* line 1209, ../sass/bridgewinners.scss */
+/* line 1296, ../sass/bridgewinners.scss */
 #history-page .history-response-voters .avatar-response {
   height: 3.86399vh;
   width: 3.86399vh;
@@ -3131,33 +2161,33 @@ html, body {
   border-radius: 50%;
   vertical-align: middle;
 }
-/* line 1218, ../sass/bridgewinners.scss */
+/* line 1305, ../sass/bridgewinners.scss */
 #history-page .history-response-voters .name-response {
   margin-left: 5px;
   font-weight: 600;
   color: #9a032e;
 }
-/* line 1224, ../sass/bridgewinners.scss */
+/* line 1311, ../sass/bridgewinners.scss */
 #history-page .history-menu-item, #history-page .history-response-item {
   display: table-cell;
   vertical-align: middle;
   cursor: pointer;
 }
-/* line 1229, ../sass/bridgewinners.scss */
+/* line 1316, ../sass/bridgewinners.scss */
 #history-page .history-menu-item.selected {
   background-color: #698f64;
   color: #ffffff;
 }
-/* line 1233, ../sass/bridgewinners.scss */
+/* line 1320, ../sass/bridgewinners.scss */
 #history-page .history-response-item.my_answer {
   font-weight: bold;
   color: #9a032e;
 }
-/* line 1237, ../sass/bridgewinners.scss */
+/* line 1324, ../sass/bridgewinners.scss */
 #history-page .history-response-item.selected {
   border-bottom: solid 3px #9a032e;
 }
-/* line 1240, ../sass/bridgewinners.scss */
+/* line 1327, ../sass/bridgewinners.scss */
 #history-page .history-header {
   display: block;
   position: fixed;
@@ -3179,7 +2209,7 @@ html, body {
   color: #4a4a4a;
   padding: 10px;
 }
-/* line 1250, ../sass/bridgewinners.scss */
+/* line 1337, ../sass/bridgewinners.scss */
 #history-page button.bridgewinners {
   position: relative;
   font-family: SFUIDisplay;
@@ -3200,13 +2230,13 @@ html, body {
   left: 5.33333vw;
   cursor: pointer;
 }
-/* line 1262, ../sass/bridgewinners.scss */
+/* line 1349, ../sass/bridgewinners.scss */
 #history-page button.bridgewinners.disabled {
   color: #4a4a4a;
   background-color: #dddddd;
   cursor: not-allowed;
 }
-/* line 1267, ../sass/bridgewinners.scss */
+/* line 1354, ../sass/bridgewinners.scss */
 #history-page #history-voted-wrapper, #history-page #history-published-wrapper {
   position: absolute;
   display: block;
@@ -3218,23 +2248,23 @@ html, body {
   background-color: transparent;
   color: transparent;
 }
-/* line 1279, ../sass/bridgewinners.scss */
+/* line 1366, ../sass/bridgewinners.scss */
 #history-page .history-list section {
   display: inline-block;
 }
-/* line 1282, ../sass/bridgewinners.scss */
+/* line 1369, ../sass/bridgewinners.scss */
 #history-page .history-list a {
   padding-bottom: 5px;
 }
-/* line 1285, ../sass/bridgewinners.scss */
+/* line 1372, ../sass/bridgewinners.scss */
 #history-page .history-list p {
   margin: 0;
 }
-/* line 1288, ../sass/bridgewinners.scss */
+/* line 1375, ../sass/bridgewinners.scss */
 #history-page .history-list rank[data-suit="d"], #history-page .history-list rank[data-suit="h"] {
   color: #000000;
 }
-/* line 1291, ../sass/bridgewinners.scss */
+/* line 1378, ../sass/bridgewinners.scss */
 #history-page .history-list rank, #history-page .history-list suit {
   font-family: SFUIDisplay;
   font-size: 1.85471vh;
@@ -3246,16 +2276,16 @@ html, body {
   text-shadow: none;
   font-weight: 600;
 }
-/* line 1295, ../sass/bridgewinners.scss */
+/* line 1382, ../sass/bridgewinners.scss */
 #history-page .history-list rank {
   color: #4a4a4a;
   text-transform: uppercase;
 }
-/* line 1299, ../sass/bridgewinners.scss */
+/* line 1386, ../sass/bridgewinners.scss */
 #history-page .history-list row {
   margin-right: 2vw;
 }
-/* line 1302, ../sass/bridgewinners.scss */
+/* line 1389, ../sass/bridgewinners.scss */
 #history-page .history-list .avatar {
   height: 3.09119vh;
   width: 3.09119vh;
@@ -3265,7 +2295,7 @@ html, body {
   border-radius: 50%;
   vertical-align: middle;
 }
-/* line 1311, ../sass/bridgewinners.scss */
+/* line 1398, ../sass/bridgewinners.scss */
 #history-page .history-list .name {
   font-family: SFUIDisplay;
   font-size: 2.31839vh;
@@ -3279,7 +2309,7 @@ html, body {
   color: #9a032e;
   margin-left: 10px;
 }
-/* line 1317, ../sass/bridgewinners.scss */
+/* line 1404, ../sass/bridgewinners.scss */
 #history-page .history-list .answer, #history-page .history-list .percentage {
   float: right;
   font-family: SFUIDisplay;
@@ -3293,19 +2323,19 @@ html, body {
   font-weight: 600;
   color: #4a4a4a;
 }
-/* line 1323, ../sass/bridgewinners.scss */
+/* line 1410, ../sass/bridgewinners.scss */
 #history-page .history-list .answer {
   margin-right: 1vw;
 }
-/* line 1326, ../sass/bridgewinners.scss */
+/* line 1413, ../sass/bridgewinners.scss */
 #history-page .history-list suit[data-suit='n'] {
   text-transform: capitalize;
 }
-/* line 1329, ../sass/bridgewinners.scss */
+/* line 1416, ../sass/bridgewinners.scss */
 #history-page .history-list .percentage {
   width: 8vw;
 }
-/* line 1332, ../sass/bridgewinners.scss */
+/* line 1419, ../sass/bridgewinners.scss */
 #history-page .history-list .stats {
   font-family: SFUIDisplay;
   font-size: 2.16383vh;
@@ -3319,19 +2349,19 @@ html, body {
   color: #4a4a4a;
   margin-right: 10px;
 }
-/* line 1338, ../sass/bridgewinners.scss */
+/* line 1425, ../sass/bridgewinners.scss */
 #history-page .history-list .icon {
   height: 1.85471vh;
   width: 1.85471vh;
   vertical-align: middle;
   margin-right: 2px;
 }
-/* line 1346, ../sass/bridgewinners.scss */
+/* line 1433, ../sass/bridgewinners.scss */
 #history-page .history-list .ui-btn {
   background-color: #ffffff;
 }
 
-/* line 1353, ../sass/bridgewinners.scss */
+/* line 1440, ../sass/bridgewinners.scss */
 deal name {
   font-family: SFUIDisplay;
   font-size: 2.62751vh;
@@ -3344,13 +2374,39 @@ deal name {
   text-align: left;
   color: #4a4a4a;
 }
-/* line 1359, ../sass/bridgewinners.scss */
+/* line 1446, ../sass/bridgewinners.scss */
 deal user {
   color: #9a032e;
   font-weight: 600;
   margin-right: 1vw;
 }
-/* line 1364, ../sass/bridgewinners.scss */
+/* line 1451, ../sass/bridgewinners.scss */
+deal votes {
+  font-family: SFUIDisplay;
+  font-size: 2.62751vh;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  letter-spacing: 0.7px;
+  text-align: center;
+  text-shadow: none;
+  color: #9a032e;
+  font-weight: 600;
+}
+/* line 1457, ../sass/bridgewinners.scss */
+deal votes:before {
+  content: "";
+  display: block;
+  background: url("img/answers_black.png") no-repeat;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  width: 20px;
+  height: 20px;
+  float: left;
+  margin-right: 1vw;
+}
+/* line 1467, ../sass/bridgewinners.scss */
 deal comments {
   font-family: SFUIDisplay;
   font-size: 2.62751vh;
@@ -3363,7 +2419,7 @@ deal comments {
   color: #9a032e;
   font-weight: 600;
 }
-/* line 1370, ../sass/bridgewinners.scss */
+/* line 1473, ../sass/bridgewinners.scss */
 deal comments:before {
   content: "";
   display: block;
@@ -3376,7 +2432,7 @@ deal comments:before {
   float: left;
   margin-right: 5px;
 }
-/* line 1380, ../sass/bridgewinners.scss */
+/* line 1483, ../sass/bridgewinners.scss */
 deal likes {
   font-family: SFUIDisplay;
   font-size: 2.62751vh;
@@ -3389,7 +2445,7 @@ deal likes {
   color: #9a032e;
   font-weight: 600;
 }
-/* line 1386, ../sass/bridgewinners.scss */
+/* line 1489, ../sass/bridgewinners.scss */
 deal likes:before {
   content: "";
   display: block;
@@ -3402,7 +2458,7 @@ deal likes:before {
   float: left;
   margin-right: 5px;
 }
-/* line 1396, ../sass/bridgewinners.scss */
+/* line 1499, ../sass/bridgewinners.scss */
 deal auctioncontainer {
   font-family: SFUIDisplay;
   font-size: 3.09119vh;
@@ -3415,22 +2471,22 @@ deal auctioncontainer {
   background-color: #ffffff;
   border: solid 2px #416757;
 }
-/* line 1400, ../sass/bridgewinners.scss */
+/* line 1503, ../sass/bridgewinners.scss */
 deal auctioncontainer section {
   height: 100%;
 }
-/* line 1403, ../sass/bridgewinners.scss */
+/* line 1506, ../sass/bridgewinners.scss */
 deal auctioncontainer auction {
   display: block;
   height: 100%;
 }
-/* line 1407, ../sass/bridgewinners.scss */
+/* line 1510, ../sass/bridgewinners.scss */
 deal auctioncontainer directions, deal auctioncontainer calls {
   display: table;
   table-layout: fixed;
   width: 100%;
 }
-/* line 1412, ../sass/bridgewinners.scss */
+/* line 1515, ../sass/bridgewinners.scss */
 deal auctioncontainer directions {
   font-family: SFUIDisplay;
   font-size: 3.09119vh;
@@ -3443,35 +2499,34 @@ deal auctioncontainer directions {
   height: 17.77%;
   border-bottom: solid 2px #416757;
 }
-/* line 1417, ../sass/bridgewinners.scss */
+/* line 1520, ../sass/bridgewinners.scss */
 deal auctioncontainer content {
   display: block;
   overflow-x: hidden;
   overflow-y: auto;
   height: 82.23%;
 }
-/* line 1423, ../sass/bridgewinners.scss */
+/* line 1526, ../sass/bridgewinners.scss */
 deal auctioncontainer calls {
   font-family: SFUIDisplay;
-  font-size: 3.40031vh;
+  font-size: 3.86399vh;
   font-weight: normal;
   font-style: normal;
   font-stretch: normal;
   letter-spacing: 0.7px;
   text-align: center;
   text-shadow: none;
-  height: 82.23%;
 }
-/* line 1427, ../sass/bridgewinners.scss */
+/* line 1530, ../sass/bridgewinners.scss */
 deal auctioncontainer row {
   display: table-row;
   width: 100%;
 }
-/* line 1431, ../sass/bridgewinners.scss */
+/* line 1534, ../sass/bridgewinners.scss */
 deal auctioncontainer direction, deal auctioncontainer call {
   display: table-cell;
 }
-/* line 1434, ../sass/bridgewinners.scss */
+/* line 1537, ../sass/bridgewinners.scss */
 deal auctioncontainer direction {
   font-weight: 600;
   letter-spacing: -0.8px;
@@ -3479,48 +2534,48 @@ deal auctioncontainer direction {
   color: #000000;
   background-color: #ffffff;
 }
-/* line 1441, ../sass/bridgewinners.scss */
+/* line 1544, ../sass/bridgewinners.scss */
 deal auctioncontainer direction[data-vulnerable] {
   color: #ffffff;
   background-color: #d0021b;
 }
-/* line 1445, ../sass/bridgewinners.scss */
+/* line 1548, ../sass/bridgewinners.scss */
 deal auctioncontainer call {
   font-weight: 600;
   letter-spacing: -0.5px;
   text-transform: uppercase;
 }
-/* line 1451, ../sass/bridgewinners.scss */
+/* line 1554, ../sass/bridgewinners.scss */
 deal [data-vulnerable="yes"] {
   color: #ffffff;
   background-color: #d0021b;
 }
-/* line 1455, ../sass/bridgewinners.scss */
+/* line 1558, ../sass/bridgewinners.scss */
 deal [data-vulnerable="no"] {
   color: #000000;
   background-color: #ffffff;
 }
-/* line 1459, ../sass/bridgewinners.scss */
+/* line 1562, ../sass/bridgewinners.scss */
 deal infowrapper {
   background-color: #dddddd;
   border: solid 2px #416757;
 }
-/* line 1464, ../sass/bridgewinners.scss */
+/* line 1567, ../sass/bridgewinners.scss */
 deal vulnerabilities vulnerability {
   text-align: center;
   text-shadow: none;
   border: solid 2px #416757;
   z-index: 1;
 }
-/* line 1471, ../sass/bridgewinners.scss */
+/* line 1574, ../sass/bridgewinners.scss */
 deal vulnerabilities vulnerability[data-direction="e"] {
   border-left: 0;
 }
-/* line 1474, ../sass/bridgewinners.scss */
+/* line 1577, ../sass/bridgewinners.scss */
 deal vulnerabilities vulnerability[data-direction="w"] {
   border-right: 0;
 }
-/* line 1478, ../sass/bridgewinners.scss */
+/* line 1581, ../sass/bridgewinners.scss */
 deal scoring {
   background-color: #ade7ed;
   border: solid 2px #416757;
@@ -3529,7 +2584,7 @@ deal scoring {
   z-index: 1;
   word-wrap: break-word;
 }
-/* line 1487, ../sass/bridgewinners.scss */
+/* line 1590, ../sass/bridgewinners.scss */
 deal description {
   font-family: SFUIDisplay;
   font-size: 2.62751vh;
@@ -3545,19 +2600,19 @@ deal description {
   background-color: #ffffff;
   border: solid 1px #c7c7cc;
 }
-/* line 1496, ../sass/bridgewinners.scss */
-deal hand hand, deal hand content, deal lead-box hand, deal lead-box content {
+/* line 1599, ../sass/bridgewinners.scss */
+deal handcontainer hand, deal handcontainer content, deal leadbox hand, deal leadbox content {
   display: block;
   width: 100%;
   height: 100%;
 }
-/* line 1501, ../sass/bridgewinners.scss */
-deal hand cards, deal lead-box cards {
+/* line 1604, ../sass/bridgewinners.scss */
+deal handcontainer cards, deal leadbox cards {
   display: inline-block;
   height: 100%;
 }
-/* line 1505, ../sass/bridgewinners.scss */
-deal hand card, deal lead-box card {
+/* line 1608, ../sass/bridgewinners.scss */
+deal handcontainer card, deal leadbox card {
   position: absolute;
   color: transparent;
   text-indent: -9999px;
@@ -3565,606 +2620,606 @@ deal hand card, deal lead-box card {
   width: 12.8vw;
   cursor: pointer;
 }
-/* line 1515, ../sass/bridgewinners.scss */
-deal hand [data-suit][data-rank], deal lead-box [data-suit][data-rank] {
+/* line 1618, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit][data-rank], deal leadbox [data-suit][data-rank] {
   background-repeat: no-repeat;
   background-size: cover;
 }
-/* line 1519, ../sass/bridgewinners.scss */
-deal hand [data-suit="s"][data-rank="x"], deal lead-box [data-suit="s"][data-rank="x"] {
+/* line 1622, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="s"][data-rank="x"], deal leadbox [data-suit="s"][data-rank="x"] {
   background-image: url("img/s2.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="s"][data-rank="a"], deal lead-box [data-suit="s"][data-rank="a"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="s"][data-rank="a"], deal leadbox [data-suit="s"][data-rank="a"] {
   background-image: url("img/sa.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="s"][data-rank="a"].selected, deal lead-box [data-suit="s"][data-rank="a"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="s"][data-rank="a"].selected, deal leadbox [data-suit="s"][data-rank="a"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/sa.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="s"][data-rank="k"], deal lead-box [data-suit="s"][data-rank="k"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="s"][data-rank="k"], deal leadbox [data-suit="s"][data-rank="k"] {
   background-image: url("img/sk.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="s"][data-rank="k"].selected, deal lead-box [data-suit="s"][data-rank="k"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="s"][data-rank="k"].selected, deal leadbox [data-suit="s"][data-rank="k"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/sk.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="s"][data-rank="q"], deal lead-box [data-suit="s"][data-rank="q"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="s"][data-rank="q"], deal leadbox [data-suit="s"][data-rank="q"] {
   background-image: url("img/sq.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="s"][data-rank="q"].selected, deal lead-box [data-suit="s"][data-rank="q"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="s"][data-rank="q"].selected, deal leadbox [data-suit="s"][data-rank="q"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/sq.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="s"][data-rank="j"], deal lead-box [data-suit="s"][data-rank="j"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="s"][data-rank="j"], deal leadbox [data-suit="s"][data-rank="j"] {
   background-image: url("img/sj.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="s"][data-rank="j"].selected, deal lead-box [data-suit="s"][data-rank="j"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="s"][data-rank="j"].selected, deal leadbox [data-suit="s"][data-rank="j"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/sj.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="s"][data-rank="t"], deal lead-box [data-suit="s"][data-rank="t"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="s"][data-rank="t"], deal leadbox [data-suit="s"][data-rank="t"] {
   background-image: url("img/st.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="s"][data-rank="t"].selected, deal lead-box [data-suit="s"][data-rank="t"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="s"][data-rank="t"].selected, deal leadbox [data-suit="s"][data-rank="t"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/st.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="s"][data-rank="9"], deal lead-box [data-suit="s"][data-rank="9"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="s"][data-rank="9"], deal leadbox [data-suit="s"][data-rank="9"] {
   background-image: url("img/s9.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="s"][data-rank="9"].selected, deal lead-box [data-suit="s"][data-rank="9"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="s"][data-rank="9"].selected, deal leadbox [data-suit="s"][data-rank="9"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/s9.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="s"][data-rank="8"], deal lead-box [data-suit="s"][data-rank="8"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="s"][data-rank="8"], deal leadbox [data-suit="s"][data-rank="8"] {
   background-image: url("img/s8.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="s"][data-rank="8"].selected, deal lead-box [data-suit="s"][data-rank="8"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="s"][data-rank="8"].selected, deal leadbox [data-suit="s"][data-rank="8"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/s8.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="s"][data-rank="7"], deal lead-box [data-suit="s"][data-rank="7"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="s"][data-rank="7"], deal leadbox [data-suit="s"][data-rank="7"] {
   background-image: url("img/s7.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="s"][data-rank="7"].selected, deal lead-box [data-suit="s"][data-rank="7"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="s"][data-rank="7"].selected, deal leadbox [data-suit="s"][data-rank="7"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/s7.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="s"][data-rank="6"], deal lead-box [data-suit="s"][data-rank="6"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="s"][data-rank="6"], deal leadbox [data-suit="s"][data-rank="6"] {
   background-image: url("img/s6.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="s"][data-rank="6"].selected, deal lead-box [data-suit="s"][data-rank="6"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="s"][data-rank="6"].selected, deal leadbox [data-suit="s"][data-rank="6"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/s6.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="s"][data-rank="5"], deal lead-box [data-suit="s"][data-rank="5"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="s"][data-rank="5"], deal leadbox [data-suit="s"][data-rank="5"] {
   background-image: url("img/s5.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="s"][data-rank="5"].selected, deal lead-box [data-suit="s"][data-rank="5"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="s"][data-rank="5"].selected, deal leadbox [data-suit="s"][data-rank="5"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/s5.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="s"][data-rank="4"], deal lead-box [data-suit="s"][data-rank="4"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="s"][data-rank="4"], deal leadbox [data-suit="s"][data-rank="4"] {
   background-image: url("img/s4.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="s"][data-rank="4"].selected, deal lead-box [data-suit="s"][data-rank="4"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="s"][data-rank="4"].selected, deal leadbox [data-suit="s"][data-rank="4"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/s4.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="s"][data-rank="3"], deal lead-box [data-suit="s"][data-rank="3"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="s"][data-rank="3"], deal leadbox [data-suit="s"][data-rank="3"] {
   background-image: url("img/s3.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="s"][data-rank="3"].selected, deal lead-box [data-suit="s"][data-rank="3"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="s"][data-rank="3"].selected, deal leadbox [data-suit="s"][data-rank="3"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/s3.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="s"][data-rank="2"], deal lead-box [data-suit="s"][data-rank="2"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="s"][data-rank="2"], deal leadbox [data-suit="s"][data-rank="2"] {
   background-image: url("img/s2.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="s"][data-rank="2"].selected, deal lead-box [data-suit="s"][data-rank="2"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="s"][data-rank="2"].selected, deal leadbox [data-suit="s"][data-rank="2"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/s2.png");
 }
-/* line 1519, ../sass/bridgewinners.scss */
-deal hand [data-suit="h"][data-rank="x"], deal lead-box [data-suit="h"][data-rank="x"] {
+/* line 1622, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="h"][data-rank="x"], deal leadbox [data-suit="h"][data-rank="x"] {
   background-image: url("img/h2.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="h"][data-rank="a"], deal lead-box [data-suit="h"][data-rank="a"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="h"][data-rank="a"], deal leadbox [data-suit="h"][data-rank="a"] {
   background-image: url("img/ha.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="h"][data-rank="a"].selected, deal lead-box [data-suit="h"][data-rank="a"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="h"][data-rank="a"].selected, deal leadbox [data-suit="h"][data-rank="a"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/ha.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="h"][data-rank="k"], deal lead-box [data-suit="h"][data-rank="k"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="h"][data-rank="k"], deal leadbox [data-suit="h"][data-rank="k"] {
   background-image: url("img/hk.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="h"][data-rank="k"].selected, deal lead-box [data-suit="h"][data-rank="k"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="h"][data-rank="k"].selected, deal leadbox [data-suit="h"][data-rank="k"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/hk.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="h"][data-rank="q"], deal lead-box [data-suit="h"][data-rank="q"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="h"][data-rank="q"], deal leadbox [data-suit="h"][data-rank="q"] {
   background-image: url("img/hq.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="h"][data-rank="q"].selected, deal lead-box [data-suit="h"][data-rank="q"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="h"][data-rank="q"].selected, deal leadbox [data-suit="h"][data-rank="q"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/hq.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="h"][data-rank="j"], deal lead-box [data-suit="h"][data-rank="j"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="h"][data-rank="j"], deal leadbox [data-suit="h"][data-rank="j"] {
   background-image: url("img/hj.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="h"][data-rank="j"].selected, deal lead-box [data-suit="h"][data-rank="j"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="h"][data-rank="j"].selected, deal leadbox [data-suit="h"][data-rank="j"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/hj.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="h"][data-rank="t"], deal lead-box [data-suit="h"][data-rank="t"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="h"][data-rank="t"], deal leadbox [data-suit="h"][data-rank="t"] {
   background-image: url("img/ht.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="h"][data-rank="t"].selected, deal lead-box [data-suit="h"][data-rank="t"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="h"][data-rank="t"].selected, deal leadbox [data-suit="h"][data-rank="t"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/ht.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="h"][data-rank="9"], deal lead-box [data-suit="h"][data-rank="9"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="h"][data-rank="9"], deal leadbox [data-suit="h"][data-rank="9"] {
   background-image: url("img/h9.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="h"][data-rank="9"].selected, deal lead-box [data-suit="h"][data-rank="9"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="h"][data-rank="9"].selected, deal leadbox [data-suit="h"][data-rank="9"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/h9.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="h"][data-rank="8"], deal lead-box [data-suit="h"][data-rank="8"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="h"][data-rank="8"], deal leadbox [data-suit="h"][data-rank="8"] {
   background-image: url("img/h8.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="h"][data-rank="8"].selected, deal lead-box [data-suit="h"][data-rank="8"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="h"][data-rank="8"].selected, deal leadbox [data-suit="h"][data-rank="8"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/h8.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="h"][data-rank="7"], deal lead-box [data-suit="h"][data-rank="7"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="h"][data-rank="7"], deal leadbox [data-suit="h"][data-rank="7"] {
   background-image: url("img/h7.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="h"][data-rank="7"].selected, deal lead-box [data-suit="h"][data-rank="7"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="h"][data-rank="7"].selected, deal leadbox [data-suit="h"][data-rank="7"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/h7.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="h"][data-rank="6"], deal lead-box [data-suit="h"][data-rank="6"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="h"][data-rank="6"], deal leadbox [data-suit="h"][data-rank="6"] {
   background-image: url("img/h6.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="h"][data-rank="6"].selected, deal lead-box [data-suit="h"][data-rank="6"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="h"][data-rank="6"].selected, deal leadbox [data-suit="h"][data-rank="6"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/h6.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="h"][data-rank="5"], deal lead-box [data-suit="h"][data-rank="5"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="h"][data-rank="5"], deal leadbox [data-suit="h"][data-rank="5"] {
   background-image: url("img/h5.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="h"][data-rank="5"].selected, deal lead-box [data-suit="h"][data-rank="5"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="h"][data-rank="5"].selected, deal leadbox [data-suit="h"][data-rank="5"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/h5.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="h"][data-rank="4"], deal lead-box [data-suit="h"][data-rank="4"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="h"][data-rank="4"], deal leadbox [data-suit="h"][data-rank="4"] {
   background-image: url("img/h4.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="h"][data-rank="4"].selected, deal lead-box [data-suit="h"][data-rank="4"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="h"][data-rank="4"].selected, deal leadbox [data-suit="h"][data-rank="4"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/h4.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="h"][data-rank="3"], deal lead-box [data-suit="h"][data-rank="3"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="h"][data-rank="3"], deal leadbox [data-suit="h"][data-rank="3"] {
   background-image: url("img/h3.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="h"][data-rank="3"].selected, deal lead-box [data-suit="h"][data-rank="3"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="h"][data-rank="3"].selected, deal leadbox [data-suit="h"][data-rank="3"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/h3.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="h"][data-rank="2"], deal lead-box [data-suit="h"][data-rank="2"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="h"][data-rank="2"], deal leadbox [data-suit="h"][data-rank="2"] {
   background-image: url("img/h2.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="h"][data-rank="2"].selected, deal lead-box [data-suit="h"][data-rank="2"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="h"][data-rank="2"].selected, deal leadbox [data-suit="h"][data-rank="2"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/h2.png");
 }
-/* line 1519, ../sass/bridgewinners.scss */
-deal hand [data-suit="d"][data-rank="x"], deal lead-box [data-suit="d"][data-rank="x"] {
+/* line 1622, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="d"][data-rank="x"], deal leadbox [data-suit="d"][data-rank="x"] {
   background-image: url("img/d2.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="d"][data-rank="a"], deal lead-box [data-suit="d"][data-rank="a"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="d"][data-rank="a"], deal leadbox [data-suit="d"][data-rank="a"] {
   background-image: url("img/da.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="d"][data-rank="a"].selected, deal lead-box [data-suit="d"][data-rank="a"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="d"][data-rank="a"].selected, deal leadbox [data-suit="d"][data-rank="a"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/da.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="d"][data-rank="k"], deal lead-box [data-suit="d"][data-rank="k"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="d"][data-rank="k"], deal leadbox [data-suit="d"][data-rank="k"] {
   background-image: url("img/dk.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="d"][data-rank="k"].selected, deal lead-box [data-suit="d"][data-rank="k"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="d"][data-rank="k"].selected, deal leadbox [data-suit="d"][data-rank="k"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/dk.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="d"][data-rank="q"], deal lead-box [data-suit="d"][data-rank="q"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="d"][data-rank="q"], deal leadbox [data-suit="d"][data-rank="q"] {
   background-image: url("img/dq.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="d"][data-rank="q"].selected, deal lead-box [data-suit="d"][data-rank="q"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="d"][data-rank="q"].selected, deal leadbox [data-suit="d"][data-rank="q"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/dq.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="d"][data-rank="j"], deal lead-box [data-suit="d"][data-rank="j"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="d"][data-rank="j"], deal leadbox [data-suit="d"][data-rank="j"] {
   background-image: url("img/dj.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="d"][data-rank="j"].selected, deal lead-box [data-suit="d"][data-rank="j"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="d"][data-rank="j"].selected, deal leadbox [data-suit="d"][data-rank="j"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/dj.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="d"][data-rank="t"], deal lead-box [data-suit="d"][data-rank="t"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="d"][data-rank="t"], deal leadbox [data-suit="d"][data-rank="t"] {
   background-image: url("img/dt.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="d"][data-rank="t"].selected, deal lead-box [data-suit="d"][data-rank="t"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="d"][data-rank="t"].selected, deal leadbox [data-suit="d"][data-rank="t"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/dt.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="d"][data-rank="9"], deal lead-box [data-suit="d"][data-rank="9"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="d"][data-rank="9"], deal leadbox [data-suit="d"][data-rank="9"] {
   background-image: url("img/d9.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="d"][data-rank="9"].selected, deal lead-box [data-suit="d"][data-rank="9"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="d"][data-rank="9"].selected, deal leadbox [data-suit="d"][data-rank="9"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/d9.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="d"][data-rank="8"], deal lead-box [data-suit="d"][data-rank="8"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="d"][data-rank="8"], deal leadbox [data-suit="d"][data-rank="8"] {
   background-image: url("img/d8.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="d"][data-rank="8"].selected, deal lead-box [data-suit="d"][data-rank="8"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="d"][data-rank="8"].selected, deal leadbox [data-suit="d"][data-rank="8"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/d8.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="d"][data-rank="7"], deal lead-box [data-suit="d"][data-rank="7"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="d"][data-rank="7"], deal leadbox [data-suit="d"][data-rank="7"] {
   background-image: url("img/d7.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="d"][data-rank="7"].selected, deal lead-box [data-suit="d"][data-rank="7"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="d"][data-rank="7"].selected, deal leadbox [data-suit="d"][data-rank="7"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/d7.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="d"][data-rank="6"], deal lead-box [data-suit="d"][data-rank="6"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="d"][data-rank="6"], deal leadbox [data-suit="d"][data-rank="6"] {
   background-image: url("img/d6.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="d"][data-rank="6"].selected, deal lead-box [data-suit="d"][data-rank="6"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="d"][data-rank="6"].selected, deal leadbox [data-suit="d"][data-rank="6"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/d6.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="d"][data-rank="5"], deal lead-box [data-suit="d"][data-rank="5"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="d"][data-rank="5"], deal leadbox [data-suit="d"][data-rank="5"] {
   background-image: url("img/d5.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="d"][data-rank="5"].selected, deal lead-box [data-suit="d"][data-rank="5"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="d"][data-rank="5"].selected, deal leadbox [data-suit="d"][data-rank="5"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/d5.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="d"][data-rank="4"], deal lead-box [data-suit="d"][data-rank="4"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="d"][data-rank="4"], deal leadbox [data-suit="d"][data-rank="4"] {
   background-image: url("img/d4.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="d"][data-rank="4"].selected, deal lead-box [data-suit="d"][data-rank="4"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="d"][data-rank="4"].selected, deal leadbox [data-suit="d"][data-rank="4"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/d4.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="d"][data-rank="3"], deal lead-box [data-suit="d"][data-rank="3"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="d"][data-rank="3"], deal leadbox [data-suit="d"][data-rank="3"] {
   background-image: url("img/d3.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="d"][data-rank="3"].selected, deal lead-box [data-suit="d"][data-rank="3"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="d"][data-rank="3"].selected, deal leadbox [data-suit="d"][data-rank="3"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/d3.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="d"][data-rank="2"], deal lead-box [data-suit="d"][data-rank="2"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="d"][data-rank="2"], deal leadbox [data-suit="d"][data-rank="2"] {
   background-image: url("img/d2.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="d"][data-rank="2"].selected, deal lead-box [data-suit="d"][data-rank="2"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="d"][data-rank="2"].selected, deal leadbox [data-suit="d"][data-rank="2"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/d2.png");
 }
-/* line 1519, ../sass/bridgewinners.scss */
-deal hand [data-suit="c"][data-rank="x"], deal lead-box [data-suit="c"][data-rank="x"] {
+/* line 1622, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="c"][data-rank="x"], deal leadbox [data-suit="c"][data-rank="x"] {
   background-image: url("img/c2.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="c"][data-rank="a"], deal lead-box [data-suit="c"][data-rank="a"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="c"][data-rank="a"], deal leadbox [data-suit="c"][data-rank="a"] {
   background-image: url("img/ca.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="c"][data-rank="a"].selected, deal lead-box [data-suit="c"][data-rank="a"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="c"][data-rank="a"].selected, deal leadbox [data-suit="c"][data-rank="a"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/ca.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="c"][data-rank="k"], deal lead-box [data-suit="c"][data-rank="k"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="c"][data-rank="k"], deal leadbox [data-suit="c"][data-rank="k"] {
   background-image: url("img/ck.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="c"][data-rank="k"].selected, deal lead-box [data-suit="c"][data-rank="k"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="c"][data-rank="k"].selected, deal leadbox [data-suit="c"][data-rank="k"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/ck.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="c"][data-rank="q"], deal lead-box [data-suit="c"][data-rank="q"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="c"][data-rank="q"], deal leadbox [data-suit="c"][data-rank="q"] {
   background-image: url("img/cq.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="c"][data-rank="q"].selected, deal lead-box [data-suit="c"][data-rank="q"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="c"][data-rank="q"].selected, deal leadbox [data-suit="c"][data-rank="q"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/cq.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="c"][data-rank="j"], deal lead-box [data-suit="c"][data-rank="j"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="c"][data-rank="j"], deal leadbox [data-suit="c"][data-rank="j"] {
   background-image: url("img/cj.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="c"][data-rank="j"].selected, deal lead-box [data-suit="c"][data-rank="j"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="c"][data-rank="j"].selected, deal leadbox [data-suit="c"][data-rank="j"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/cj.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="c"][data-rank="t"], deal lead-box [data-suit="c"][data-rank="t"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="c"][data-rank="t"], deal leadbox [data-suit="c"][data-rank="t"] {
   background-image: url("img/ct.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="c"][data-rank="t"].selected, deal lead-box [data-suit="c"][data-rank="t"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="c"][data-rank="t"].selected, deal leadbox [data-suit="c"][data-rank="t"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/ct.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="c"][data-rank="9"], deal lead-box [data-suit="c"][data-rank="9"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="c"][data-rank="9"], deal leadbox [data-suit="c"][data-rank="9"] {
   background-image: url("img/c9.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="c"][data-rank="9"].selected, deal lead-box [data-suit="c"][data-rank="9"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="c"][data-rank="9"].selected, deal leadbox [data-suit="c"][data-rank="9"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/c9.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="c"][data-rank="8"], deal lead-box [data-suit="c"][data-rank="8"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="c"][data-rank="8"], deal leadbox [data-suit="c"][data-rank="8"] {
   background-image: url("img/c8.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="c"][data-rank="8"].selected, deal lead-box [data-suit="c"][data-rank="8"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="c"][data-rank="8"].selected, deal leadbox [data-suit="c"][data-rank="8"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/c8.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="c"][data-rank="7"], deal lead-box [data-suit="c"][data-rank="7"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="c"][data-rank="7"], deal leadbox [data-suit="c"][data-rank="7"] {
   background-image: url("img/c7.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="c"][data-rank="7"].selected, deal lead-box [data-suit="c"][data-rank="7"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="c"][data-rank="7"].selected, deal leadbox [data-suit="c"][data-rank="7"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/c7.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="c"][data-rank="6"], deal lead-box [data-suit="c"][data-rank="6"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="c"][data-rank="6"], deal leadbox [data-suit="c"][data-rank="6"] {
   background-image: url("img/c6.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="c"][data-rank="6"].selected, deal lead-box [data-suit="c"][data-rank="6"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="c"][data-rank="6"].selected, deal leadbox [data-suit="c"][data-rank="6"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/c6.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="c"][data-rank="5"], deal lead-box [data-suit="c"][data-rank="5"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="c"][data-rank="5"], deal leadbox [data-suit="c"][data-rank="5"] {
   background-image: url("img/c5.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="c"][data-rank="5"].selected, deal lead-box [data-suit="c"][data-rank="5"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="c"][data-rank="5"].selected, deal leadbox [data-suit="c"][data-rank="5"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/c5.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="c"][data-rank="4"], deal lead-box [data-suit="c"][data-rank="4"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="c"][data-rank="4"], deal leadbox [data-suit="c"][data-rank="4"] {
   background-image: url("img/c4.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="c"][data-rank="4"].selected, deal lead-box [data-suit="c"][data-rank="4"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="c"][data-rank="4"].selected, deal leadbox [data-suit="c"][data-rank="4"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/c4.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="c"][data-rank="3"], deal lead-box [data-suit="c"][data-rank="3"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="c"][data-rank="3"], deal leadbox [data-suit="c"][data-rank="3"] {
   background-image: url("img/c3.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="c"][data-rank="3"].selected, deal lead-box [data-suit="c"][data-rank="3"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="c"][data-rank="3"].selected, deal leadbox [data-suit="c"][data-rank="3"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/c3.png");
 }
-/* line 1523, ../sass/bridgewinners.scss */
-deal hand [data-suit="c"][data-rank="2"], deal lead-box [data-suit="c"][data-rank="2"] {
+/* line 1626, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="c"][data-rank="2"], deal leadbox [data-suit="c"][data-rank="2"] {
   background-image: url("img/c2.png");
 }
-/* line 1526, ../sass/bridgewinners.scss */
-deal hand [data-suit="c"][data-rank="2"].selected, deal lead-box [data-suit="c"][data-rank="2"].selected {
+/* line 1629, ../sass/bridgewinners.scss */
+deal handcontainer [data-suit="c"][data-rank="2"].selected, deal leadbox [data-suit="c"][data-rank="2"].selected {
   background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/c2.png");
 }
-/* line 1539, ../sass/bridgewinners.scss */
-deal hand [data-card-number="1"] {
+/* line 1642, ../sass/bridgewinners.scss */
+deal handcontainer [data-card-number="1"] {
   left: 0vw;
 }
-/* line 1539, ../sass/bridgewinners.scss */
-deal hand [data-card-number="2"] {
+/* line 1642, ../sass/bridgewinners.scss */
+deal handcontainer [data-card-number="2"] {
   left: 6.66667vw;
 }
-/* line 1539, ../sass/bridgewinners.scss */
-deal hand [data-card-number="3"] {
+/* line 1642, ../sass/bridgewinners.scss */
+deal handcontainer [data-card-number="3"] {
   left: 13.33333vw;
 }
-/* line 1539, ../sass/bridgewinners.scss */
-deal hand [data-card-number="4"] {
+/* line 1642, ../sass/bridgewinners.scss */
+deal handcontainer [data-card-number="4"] {
   left: 20vw;
 }
-/* line 1539, ../sass/bridgewinners.scss */
-deal hand [data-card-number="5"] {
+/* line 1642, ../sass/bridgewinners.scss */
+deal handcontainer [data-card-number="5"] {
   left: 26.66667vw;
 }
-/* line 1539, ../sass/bridgewinners.scss */
-deal hand [data-card-number="6"] {
+/* line 1642, ../sass/bridgewinners.scss */
+deal handcontainer [data-card-number="6"] {
   left: 33.33333vw;
 }
-/* line 1539, ../sass/bridgewinners.scss */
-deal hand [data-card-number="7"] {
+/* line 1642, ../sass/bridgewinners.scss */
+deal handcontainer [data-card-number="7"] {
   left: 40vw;
 }
-/* line 1539, ../sass/bridgewinners.scss */
-deal hand [data-card-number="8"] {
+/* line 1642, ../sass/bridgewinners.scss */
+deal handcontainer [data-card-number="8"] {
   left: 46.66667vw;
 }
-/* line 1539, ../sass/bridgewinners.scss */
-deal hand [data-card-number="9"] {
+/* line 1642, ../sass/bridgewinners.scss */
+deal handcontainer [data-card-number="9"] {
   left: 53.33333vw;
 }
-/* line 1539, ../sass/bridgewinners.scss */
-deal hand [data-card-number="10"] {
+/* line 1642, ../sass/bridgewinners.scss */
+deal handcontainer [data-card-number="10"] {
   left: 60vw;
 }
-/* line 1539, ../sass/bridgewinners.scss */
-deal hand [data-card-number="11"] {
+/* line 1642, ../sass/bridgewinners.scss */
+deal handcontainer [data-card-number="11"] {
   left: 66.66667vw;
 }
-/* line 1539, ../sass/bridgewinners.scss */
-deal hand [data-card-number="12"] {
+/* line 1642, ../sass/bridgewinners.scss */
+deal handcontainer [data-card-number="12"] {
   left: 73.33333vw;
 }
-/* line 1539, ../sass/bridgewinners.scss */
-deal hand [data-card-number="13"] {
+/* line 1642, ../sass/bridgewinners.scss */
+deal handcontainer [data-card-number="13"] {
   left: 80vw;
 }
-/* line 1546, ../sass/bridgewinners.scss */
-deal lead-box card {
+/* line 1649, ../sass/bridgewinners.scss */
+deal leadbox card {
   left: 40vw;
   transform-origin: center 60vw;
 }
-/* line 1553, ../sass/bridgewinners.scss */
-deal lead-box [data-card-number="1"] {
+/* line 1656, ../sass/bridgewinners.scss */
+deal leadbox [data-card-number="1"] {
   transform: rotate(-45deg);
 }
-/* line 1557, ../sass/bridgewinners.scss */
-deal lead-box [data-card-number="1"].selected {
+/* line 1660, ../sass/bridgewinners.scss */
+deal leadbox [data-card-number="1"].selected {
   transform: rotate(-45deg) translateY(-10px);
 }
-/* line 1553, ../sass/bridgewinners.scss */
-deal lead-box [data-card-number="2"] {
+/* line 1656, ../sass/bridgewinners.scss */
+deal leadbox [data-card-number="2"] {
   transform: rotate(-37.5deg);
 }
-/* line 1557, ../sass/bridgewinners.scss */
-deal lead-box [data-card-number="2"].selected {
+/* line 1660, ../sass/bridgewinners.scss */
+deal leadbox [data-card-number="2"].selected {
   transform: rotate(-37.5deg) translateY(-10px);
 }
-/* line 1553, ../sass/bridgewinners.scss */
-deal lead-box [data-card-number="3"] {
+/* line 1656, ../sass/bridgewinners.scss */
+deal leadbox [data-card-number="3"] {
   transform: rotate(-30deg);
 }
-/* line 1557, ../sass/bridgewinners.scss */
-deal lead-box [data-card-number="3"].selected {
+/* line 1660, ../sass/bridgewinners.scss */
+deal leadbox [data-card-number="3"].selected {
   transform: rotate(-30deg) translateY(-10px);
 }
-/* line 1553, ../sass/bridgewinners.scss */
-deal lead-box [data-card-number="4"] {
+/* line 1656, ../sass/bridgewinners.scss */
+deal leadbox [data-card-number="4"] {
   transform: rotate(-22.5deg);
 }
-/* line 1557, ../sass/bridgewinners.scss */
-deal lead-box [data-card-number="4"].selected {
+/* line 1660, ../sass/bridgewinners.scss */
+deal leadbox [data-card-number="4"].selected {
   transform: rotate(-22.5deg) translateY(-10px);
 }
-/* line 1553, ../sass/bridgewinners.scss */
-deal lead-box [data-card-number="5"] {
+/* line 1656, ../sass/bridgewinners.scss */
+deal leadbox [data-card-number="5"] {
   transform: rotate(-15deg);
 }
-/* line 1557, ../sass/bridgewinners.scss */
-deal lead-box [data-card-number="5"].selected {
+/* line 1660, ../sass/bridgewinners.scss */
+deal leadbox [data-card-number="5"].selected {
   transform: rotate(-15deg) translateY(-10px);
 }
-/* line 1553, ../sass/bridgewinners.scss */
-deal lead-box [data-card-number="6"] {
+/* line 1656, ../sass/bridgewinners.scss */
+deal leadbox [data-card-number="6"] {
   transform: rotate(-7.5deg);
 }
-/* line 1557, ../sass/bridgewinners.scss */
-deal lead-box [data-card-number="6"].selected {
+/* line 1660, ../sass/bridgewinners.scss */
+deal leadbox [data-card-number="6"].selected {
   transform: rotate(-7.5deg) translateY(-10px);
 }
-/* line 1553, ../sass/bridgewinners.scss */
-deal lead-box [data-card-number="7"] {
+/* line 1656, ../sass/bridgewinners.scss */
+deal leadbox [data-card-number="7"] {
   transform: rotate(0deg);
 }
-/* line 1557, ../sass/bridgewinners.scss */
-deal lead-box [data-card-number="7"].selected {
+/* line 1660, ../sass/bridgewinners.scss */
+deal leadbox [data-card-number="7"].selected {
   transform: rotate(0deg) translateY(-10px);
 }
-/* line 1553, ../sass/bridgewinners.scss */
-deal lead-box [data-card-number="8"] {
+/* line 1656, ../sass/bridgewinners.scss */
+deal leadbox [data-card-number="8"] {
   transform: rotate(7.5deg);
 }
-/* line 1557, ../sass/bridgewinners.scss */
-deal lead-box [data-card-number="8"].selected {
+/* line 1660, ../sass/bridgewinners.scss */
+deal leadbox [data-card-number="8"].selected {
   transform: rotate(7.5deg) translateY(-10px);
 }
-/* line 1553, ../sass/bridgewinners.scss */
-deal lead-box [data-card-number="9"] {
+/* line 1656, ../sass/bridgewinners.scss */
+deal leadbox [data-card-number="9"] {
   transform: rotate(15deg);
 }
-/* line 1557, ../sass/bridgewinners.scss */
-deal lead-box [data-card-number="9"].selected {
+/* line 1660, ../sass/bridgewinners.scss */
+deal leadbox [data-card-number="9"].selected {
   transform: rotate(15deg) translateY(-10px);
 }
-/* line 1553, ../sass/bridgewinners.scss */
-deal lead-box [data-card-number="10"] {
+/* line 1656, ../sass/bridgewinners.scss */
+deal leadbox [data-card-number="10"] {
   transform: rotate(22.5deg);
 }
-/* line 1557, ../sass/bridgewinners.scss */
-deal lead-box [data-card-number="10"].selected {
+/* line 1660, ../sass/bridgewinners.scss */
+deal leadbox [data-card-number="10"].selected {
   transform: rotate(22.5deg) translateY(-10px);
 }
-/* line 1553, ../sass/bridgewinners.scss */
-deal lead-box [data-card-number="11"] {
+/* line 1656, ../sass/bridgewinners.scss */
+deal leadbox [data-card-number="11"] {
   transform: rotate(30deg);
 }
-/* line 1557, ../sass/bridgewinners.scss */
-deal lead-box [data-card-number="11"].selected {
+/* line 1660, ../sass/bridgewinners.scss */
+deal leadbox [data-card-number="11"].selected {
   transform: rotate(30deg) translateY(-10px);
 }
-/* line 1553, ../sass/bridgewinners.scss */
-deal lead-box [data-card-number="12"] {
+/* line 1656, ../sass/bridgewinners.scss */
+deal leadbox [data-card-number="12"] {
   transform: rotate(37.5deg);
 }
-/* line 1557, ../sass/bridgewinners.scss */
-deal lead-box [data-card-number="12"].selected {
+/* line 1660, ../sass/bridgewinners.scss */
+deal leadbox [data-card-number="12"].selected {
   transform: rotate(37.5deg) translateY(-10px);
 }
-/* line 1553, ../sass/bridgewinners.scss */
-deal lead-box [data-card-number="13"] {
+/* line 1656, ../sass/bridgewinners.scss */
+deal leadbox [data-card-number="13"] {
   transform: rotate(45deg);
 }
-/* line 1557, ../sass/bridgewinners.scss */
-deal lead-box [data-card-number="13"].selected {
+/* line 1660, ../sass/bridgewinners.scss */
+deal leadbox [data-card-number="13"].selected {
   transform: rotate(45deg) translateY(-10px);
 }
-/* line 1563, ../sass/bridgewinners.scss */
-deal bidding-box {
+/* line 1666, ../sass/bridgewinners.scss */
+deal biddingbox {
   font-family: SFUIDisplay;
   font-size: 4.63679vh;
   font-weight: normal;
@@ -4177,14 +3232,14 @@ deal bidding-box {
   letter-spacing: -0.9px;
   color: #000000;
 }
-/* line 1568, ../sass/bridgewinners.scss */
-deal bidding-box levels, deal bidding-box calls {
+/* line 1671, ../sass/bridgewinners.scss */
+deal biddingbox levels, deal biddingbox calls {
   display: table;
   table-layout: fixed;
   width: 100%;
 }
-/* line 1573, ../sass/bridgewinners.scss */
-deal bidding-box level, deal bidding-box call {
+/* line 1676, ../sass/bridgewinners.scss */
+deal biddingbox level, deal biddingbox call {
   display: table-cell;
   height: 50%;
   border: solid 1px #2a5461;
@@ -4192,38 +3247,38 @@ deal bidding-box level, deal bidding-box call {
   text-transform: uppercase;
   cursor: pointer;
 }
-/* line 1581, ../sass/bridgewinners.scss */
-deal bidding-box level.disabled, deal bidding-box call.disabled {
+/* line 1684, ../sass/bridgewinners.scss */
+deal biddingbox level.disabled, deal biddingbox call.disabled {
   cursor: not-allowed;
   opacity: 0.4;
 }
-/* line 1585, ../sass/bridgewinners.scss */
-deal bidding-box call[data-call="p"] {
+/* line 1688, ../sass/bridgewinners.scss */
+deal biddingbox call[data-call="p"] {
   background-color: #417505;
   color: #ffffff;
 }
-/* line 1589, ../sass/bridgewinners.scss */
-deal bidding-box call[data-call="x"] {
+/* line 1692, ../sass/bridgewinners.scss */
+deal biddingbox call[data-call="x"] {
   background-color: #d0021b;
   color: #ffffff;
 }
-/* line 1593, ../sass/bridgewinners.scss */
-deal bidding-box call[data-call="r"] {
+/* line 1696, ../sass/bridgewinners.scss */
+deal biddingbox call[data-call="r"] {
   background-color: #000099;
   color: #ffffff;
 }
-/* line 1597, ../sass/bridgewinners.scss */
-deal bidding-box level.selected, deal bidding-box call.selected {
+/* line 1700, ../sass/bridgewinners.scss */
+deal biddingbox level.selected, deal biddingbox call.selected {
   background-color: #2a5461;
   color: #ffffff;
 }
-/* line 1598, ../sass/bridgewinners.scss */
-deal bidding-box level.selected [data-suit="d"], deal bidding-box level.selected [data-suit="h"], deal bidding-box call.selected [data-suit="d"], deal bidding-box call.selected [data-suit="h"] {
+/* line 1701, ../sass/bridgewinners.scss */
+deal biddingbox level.selected [data-suit="d"], deal biddingbox level.selected [data-suit="h"], deal biddingbox call.selected [data-suit="d"], deal biddingbox call.selected [data-suit="h"] {
   color: #ffffff;
 }
 
 /* Bidding vote page styles. */
-/* line 1609, ../sass/bridgewinners.scss */
+/* line 1712, ../sass/bridgewinners.scss */
 #vote-page name {
   display: block;
   position: fixed;
@@ -4232,7 +3287,7 @@ deal bidding-box level.selected [data-suit="d"], deal bidding-box level.selected
   left: 14.93333vw;
   width: 53.33333vw;
 }
-/* line 1612, ../sass/bridgewinners.scss */
+/* line 1715, ../sass/bridgewinners.scss */
 #vote-page comments {
   display: block;
   position: fixed;
@@ -4241,7 +3296,7 @@ deal bidding-box level.selected [data-suit="d"], deal bidding-box level.selected
   left: 69.86667vw;
   width: 10.66667vw;
 }
-/* line 1615, ../sass/bridgewinners.scss */
+/* line 1718, ../sass/bridgewinners.scss */
 #vote-page likes {
   display: block;
   position: fixed;
@@ -4250,7 +3305,7 @@ deal bidding-box level.selected [data-suit="d"], deal bidding-box level.selected
   left: 84.26667vw;
   width: 10.66667vw;
 }
-/* line 1618, ../sass/bridgewinners.scss */
+/* line 1721, ../sass/bridgewinners.scss */
 #vote-page auctioncontainer {
   display: block;
   position: fixed;
@@ -4259,7 +3314,7 @@ deal bidding-box level.selected [data-suit="d"], deal bidding-box level.selected
   left: 4vw;
   width: 61.33333vw;
 }
-/* line 1723, ../sass/bridgewinners.scss */
+/* line 1724, ../sass/bridgewinners.scss */
 #vote-page infowrapper {
   display: block;
   position: fixed;
@@ -4268,7 +3323,7 @@ deal bidding-box level.selected [data-suit="d"], deal bidding-box level.selected
   left: 68vw;
   width: 28vw;
 }
-/* line 1726, ../sass/bridgewinners.scss */
+/* line 1727, ../sass/bridgewinners.scss */
 #vote-page vulnerability[data-direction="e"] {
   display: block;
   position: fixed;
@@ -4277,7 +3332,7 @@ deal bidding-box level.selected [data-suit="d"], deal bidding-box level.selected
   left: 88.53333vw;
   width: 5.6vw;
 }
-/* line 1729, ../sass/bridgewinners.scss */
+/* line 1730, ../sass/bridgewinners.scss */
 #vote-page vulnerability[data-direction="w"] {
   display: block;
   position: fixed;
@@ -4286,7 +3341,7 @@ deal bidding-box level.selected [data-suit="d"], deal bidding-box level.selected
   left: 69.86667vw;
   width: 5.6vw;
 }
-/* line 1732, ../sass/bridgewinners.scss */
+/* line 1733, ../sass/bridgewinners.scss */
 #vote-page scoring {
   display: block;
   position: fixed;
@@ -4295,7 +3350,7 @@ deal bidding-box level.selected [data-suit="d"], deal bidding-box level.selected
   left: 74.93333vw;
   width: 14.16vw;
 }
-/* line 1735, ../sass/bridgewinners.scss */
+/* line 1736, ../sass/bridgewinners.scss */
 #vote-page vulnerability[data-direction="n"] {
   display: block;
   position: fixed;
@@ -4304,7 +3359,7 @@ deal bidding-box level.selected [data-suit="d"], deal bidding-box level.selected
   left: 74.93333vw;
   width: 14.16vw;
 }
-/* line 1738, ../sass/bridgewinners.scss */
+/* line 1739, ../sass/bridgewinners.scss */
 #vote-page vulnerability[data-direction="s"] {
   display: block;
   position: fixed;
@@ -4313,8 +3368,8 @@ deal bidding-box level.selected [data-suit="d"], deal bidding-box level.selected
   left: 74.93333vw;
   width: 14.16vw;
 }
-/* line 1799, ../sass/bridgewinners.scss */
-#vote-page #hand {
+/* line 1742, ../sass/bridgewinners.scss */
+#vote-page handcontainer {
   display: block;
   position: fixed;
   top: 39.87635vh;
@@ -4322,8 +3377,8 @@ deal bidding-box level.selected [data-suit="d"], deal bidding-box level.selected
   left: 3.46667vw;
   width: 93.06667vw;
 }
-/* line 1802, ../sass/bridgewinners.scss */
-#vote-page #lead-box {
+/* line 1745, ../sass/bridgewinners.scss */
+#vote-page leadbox {
   display: block;
   position: fixed;
   top: 54.09583vh;
@@ -4331,689 +3386,16 @@ deal bidding-box level.selected [data-suit="d"], deal bidding-box level.selected
   left: 4.26667vw;
   width: 91.46667vw;
 }
-/* line 1806, ../sass/bridgewinners.scss */
-#vote-page #hand hand, #vote-page #hand content, #vote-page #lead-box hand, #vote-page #lead-box content {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-/* line 1811, ../sass/bridgewinners.scss */
-#vote-page #hand cards, #vote-page #lead-box cards {
-  display: inline-block;
-  height: 100%;
-}
-/* line 1815, ../sass/bridgewinners.scss */
-#vote-page #hand card, #vote-page #lead-box card {
-  position: absolute;
-  color: transparent;
-  text-indent: -9999px;
-  height: 10.20093vh;
-  width: 12.8vw;
-  cursor: pointer;
-}
-/* line 1825, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit][data-rank], #vote-page #lead-box [data-suit][data-rank] {
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-/* line 1829, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="s"][data-rank="x"], #vote-page #lead-box [data-suit="s"][data-rank="x"] {
-  background-image: url("img/s2.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="s"][data-rank="a"], #vote-page #lead-box [data-suit="s"][data-rank="a"] {
-  background-image: url("img/sa.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="s"][data-rank="a"].selected, #vote-page #lead-box [data-suit="s"][data-rank="a"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/sa.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="s"][data-rank="k"], #vote-page #lead-box [data-suit="s"][data-rank="k"] {
-  background-image: url("img/sk.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="s"][data-rank="k"].selected, #vote-page #lead-box [data-suit="s"][data-rank="k"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/sk.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="s"][data-rank="q"], #vote-page #lead-box [data-suit="s"][data-rank="q"] {
-  background-image: url("img/sq.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="s"][data-rank="q"].selected, #vote-page #lead-box [data-suit="s"][data-rank="q"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/sq.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="s"][data-rank="j"], #vote-page #lead-box [data-suit="s"][data-rank="j"] {
-  background-image: url("img/sj.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="s"][data-rank="j"].selected, #vote-page #lead-box [data-suit="s"][data-rank="j"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/sj.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="s"][data-rank="t"], #vote-page #lead-box [data-suit="s"][data-rank="t"] {
-  background-image: url("img/st.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="s"][data-rank="t"].selected, #vote-page #lead-box [data-suit="s"][data-rank="t"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/st.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="s"][data-rank="9"], #vote-page #lead-box [data-suit="s"][data-rank="9"] {
-  background-image: url("img/s9.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="s"][data-rank="9"].selected, #vote-page #lead-box [data-suit="s"][data-rank="9"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/s9.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="s"][data-rank="8"], #vote-page #lead-box [data-suit="s"][data-rank="8"] {
-  background-image: url("img/s8.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="s"][data-rank="8"].selected, #vote-page #lead-box [data-suit="s"][data-rank="8"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/s8.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="s"][data-rank="7"], #vote-page #lead-box [data-suit="s"][data-rank="7"] {
-  background-image: url("img/s7.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="s"][data-rank="7"].selected, #vote-page #lead-box [data-suit="s"][data-rank="7"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/s7.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="s"][data-rank="6"], #vote-page #lead-box [data-suit="s"][data-rank="6"] {
-  background-image: url("img/s6.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="s"][data-rank="6"].selected, #vote-page #lead-box [data-suit="s"][data-rank="6"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/s6.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="s"][data-rank="5"], #vote-page #lead-box [data-suit="s"][data-rank="5"] {
-  background-image: url("img/s5.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="s"][data-rank="5"].selected, #vote-page #lead-box [data-suit="s"][data-rank="5"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/s5.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="s"][data-rank="4"], #vote-page #lead-box [data-suit="s"][data-rank="4"] {
-  background-image: url("img/s4.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="s"][data-rank="4"].selected, #vote-page #lead-box [data-suit="s"][data-rank="4"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/s4.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="s"][data-rank="3"], #vote-page #lead-box [data-suit="s"][data-rank="3"] {
-  background-image: url("img/s3.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="s"][data-rank="3"].selected, #vote-page #lead-box [data-suit="s"][data-rank="3"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/s3.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="s"][data-rank="2"], #vote-page #lead-box [data-suit="s"][data-rank="2"] {
-  background-image: url("img/s2.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="s"][data-rank="2"].selected, #vote-page #lead-box [data-suit="s"][data-rank="2"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/s2.png");
-}
-/* line 1829, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="h"][data-rank="x"], #vote-page #lead-box [data-suit="h"][data-rank="x"] {
-  background-image: url("img/h2.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="h"][data-rank="a"], #vote-page #lead-box [data-suit="h"][data-rank="a"] {
-  background-image: url("img/ha.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="h"][data-rank="a"].selected, #vote-page #lead-box [data-suit="h"][data-rank="a"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/ha.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="h"][data-rank="k"], #vote-page #lead-box [data-suit="h"][data-rank="k"] {
-  background-image: url("img/hk.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="h"][data-rank="k"].selected, #vote-page #lead-box [data-suit="h"][data-rank="k"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/hk.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="h"][data-rank="q"], #vote-page #lead-box [data-suit="h"][data-rank="q"] {
-  background-image: url("img/hq.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="h"][data-rank="q"].selected, #vote-page #lead-box [data-suit="h"][data-rank="q"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/hq.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="h"][data-rank="j"], #vote-page #lead-box [data-suit="h"][data-rank="j"] {
-  background-image: url("img/hj.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="h"][data-rank="j"].selected, #vote-page #lead-box [data-suit="h"][data-rank="j"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/hj.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="h"][data-rank="t"], #vote-page #lead-box [data-suit="h"][data-rank="t"] {
-  background-image: url("img/ht.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="h"][data-rank="t"].selected, #vote-page #lead-box [data-suit="h"][data-rank="t"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/ht.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="h"][data-rank="9"], #vote-page #lead-box [data-suit="h"][data-rank="9"] {
-  background-image: url("img/h9.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="h"][data-rank="9"].selected, #vote-page #lead-box [data-suit="h"][data-rank="9"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/h9.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="h"][data-rank="8"], #vote-page #lead-box [data-suit="h"][data-rank="8"] {
-  background-image: url("img/h8.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="h"][data-rank="8"].selected, #vote-page #lead-box [data-suit="h"][data-rank="8"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/h8.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="h"][data-rank="7"], #vote-page #lead-box [data-suit="h"][data-rank="7"] {
-  background-image: url("img/h7.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="h"][data-rank="7"].selected, #vote-page #lead-box [data-suit="h"][data-rank="7"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/h7.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="h"][data-rank="6"], #vote-page #lead-box [data-suit="h"][data-rank="6"] {
-  background-image: url("img/h6.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="h"][data-rank="6"].selected, #vote-page #lead-box [data-suit="h"][data-rank="6"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/h6.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="h"][data-rank="5"], #vote-page #lead-box [data-suit="h"][data-rank="5"] {
-  background-image: url("img/h5.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="h"][data-rank="5"].selected, #vote-page #lead-box [data-suit="h"][data-rank="5"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/h5.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="h"][data-rank="4"], #vote-page #lead-box [data-suit="h"][data-rank="4"] {
-  background-image: url("img/h4.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="h"][data-rank="4"].selected, #vote-page #lead-box [data-suit="h"][data-rank="4"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/h4.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="h"][data-rank="3"], #vote-page #lead-box [data-suit="h"][data-rank="3"] {
-  background-image: url("img/h3.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="h"][data-rank="3"].selected, #vote-page #lead-box [data-suit="h"][data-rank="3"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/h3.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="h"][data-rank="2"], #vote-page #lead-box [data-suit="h"][data-rank="2"] {
-  background-image: url("img/h2.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="h"][data-rank="2"].selected, #vote-page #lead-box [data-suit="h"][data-rank="2"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/h2.png");
-}
-/* line 1829, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="d"][data-rank="x"], #vote-page #lead-box [data-suit="d"][data-rank="x"] {
-  background-image: url("img/d2.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="d"][data-rank="a"], #vote-page #lead-box [data-suit="d"][data-rank="a"] {
-  background-image: url("img/da.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="d"][data-rank="a"].selected, #vote-page #lead-box [data-suit="d"][data-rank="a"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/da.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="d"][data-rank="k"], #vote-page #lead-box [data-suit="d"][data-rank="k"] {
-  background-image: url("img/dk.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="d"][data-rank="k"].selected, #vote-page #lead-box [data-suit="d"][data-rank="k"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/dk.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="d"][data-rank="q"], #vote-page #lead-box [data-suit="d"][data-rank="q"] {
-  background-image: url("img/dq.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="d"][data-rank="q"].selected, #vote-page #lead-box [data-suit="d"][data-rank="q"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/dq.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="d"][data-rank="j"], #vote-page #lead-box [data-suit="d"][data-rank="j"] {
-  background-image: url("img/dj.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="d"][data-rank="j"].selected, #vote-page #lead-box [data-suit="d"][data-rank="j"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/dj.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="d"][data-rank="t"], #vote-page #lead-box [data-suit="d"][data-rank="t"] {
-  background-image: url("img/dt.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="d"][data-rank="t"].selected, #vote-page #lead-box [data-suit="d"][data-rank="t"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/dt.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="d"][data-rank="9"], #vote-page #lead-box [data-suit="d"][data-rank="9"] {
-  background-image: url("img/d9.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="d"][data-rank="9"].selected, #vote-page #lead-box [data-suit="d"][data-rank="9"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/d9.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="d"][data-rank="8"], #vote-page #lead-box [data-suit="d"][data-rank="8"] {
-  background-image: url("img/d8.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="d"][data-rank="8"].selected, #vote-page #lead-box [data-suit="d"][data-rank="8"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/d8.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="d"][data-rank="7"], #vote-page #lead-box [data-suit="d"][data-rank="7"] {
-  background-image: url("img/d7.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="d"][data-rank="7"].selected, #vote-page #lead-box [data-suit="d"][data-rank="7"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/d7.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="d"][data-rank="6"], #vote-page #lead-box [data-suit="d"][data-rank="6"] {
-  background-image: url("img/d6.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="d"][data-rank="6"].selected, #vote-page #lead-box [data-suit="d"][data-rank="6"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/d6.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="d"][data-rank="5"], #vote-page #lead-box [data-suit="d"][data-rank="5"] {
-  background-image: url("img/d5.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="d"][data-rank="5"].selected, #vote-page #lead-box [data-suit="d"][data-rank="5"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/d5.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="d"][data-rank="4"], #vote-page #lead-box [data-suit="d"][data-rank="4"] {
-  background-image: url("img/d4.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="d"][data-rank="4"].selected, #vote-page #lead-box [data-suit="d"][data-rank="4"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/d4.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="d"][data-rank="3"], #vote-page #lead-box [data-suit="d"][data-rank="3"] {
-  background-image: url("img/d3.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="d"][data-rank="3"].selected, #vote-page #lead-box [data-suit="d"][data-rank="3"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/d3.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="d"][data-rank="2"], #vote-page #lead-box [data-suit="d"][data-rank="2"] {
-  background-image: url("img/d2.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="d"][data-rank="2"].selected, #vote-page #lead-box [data-suit="d"][data-rank="2"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/d2.png");
-}
-/* line 1829, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="c"][data-rank="x"], #vote-page #lead-box [data-suit="c"][data-rank="x"] {
-  background-image: url("img/c2.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="c"][data-rank="a"], #vote-page #lead-box [data-suit="c"][data-rank="a"] {
-  background-image: url("img/ca.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="c"][data-rank="a"].selected, #vote-page #lead-box [data-suit="c"][data-rank="a"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/ca.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="c"][data-rank="k"], #vote-page #lead-box [data-suit="c"][data-rank="k"] {
-  background-image: url("img/ck.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="c"][data-rank="k"].selected, #vote-page #lead-box [data-suit="c"][data-rank="k"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/ck.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="c"][data-rank="q"], #vote-page #lead-box [data-suit="c"][data-rank="q"] {
-  background-image: url("img/cq.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="c"][data-rank="q"].selected, #vote-page #lead-box [data-suit="c"][data-rank="q"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/cq.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="c"][data-rank="j"], #vote-page #lead-box [data-suit="c"][data-rank="j"] {
-  background-image: url("img/cj.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="c"][data-rank="j"].selected, #vote-page #lead-box [data-suit="c"][data-rank="j"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/cj.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="c"][data-rank="t"], #vote-page #lead-box [data-suit="c"][data-rank="t"] {
-  background-image: url("img/ct.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="c"][data-rank="t"].selected, #vote-page #lead-box [data-suit="c"][data-rank="t"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/ct.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="c"][data-rank="9"], #vote-page #lead-box [data-suit="c"][data-rank="9"] {
-  background-image: url("img/c9.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="c"][data-rank="9"].selected, #vote-page #lead-box [data-suit="c"][data-rank="9"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/c9.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="c"][data-rank="8"], #vote-page #lead-box [data-suit="c"][data-rank="8"] {
-  background-image: url("img/c8.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="c"][data-rank="8"].selected, #vote-page #lead-box [data-suit="c"][data-rank="8"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/c8.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="c"][data-rank="7"], #vote-page #lead-box [data-suit="c"][data-rank="7"] {
-  background-image: url("img/c7.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="c"][data-rank="7"].selected, #vote-page #lead-box [data-suit="c"][data-rank="7"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/c7.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="c"][data-rank="6"], #vote-page #lead-box [data-suit="c"][data-rank="6"] {
-  background-image: url("img/c6.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="c"][data-rank="6"].selected, #vote-page #lead-box [data-suit="c"][data-rank="6"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/c6.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="c"][data-rank="5"], #vote-page #lead-box [data-suit="c"][data-rank="5"] {
-  background-image: url("img/c5.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="c"][data-rank="5"].selected, #vote-page #lead-box [data-suit="c"][data-rank="5"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/c5.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="c"][data-rank="4"], #vote-page #lead-box [data-suit="c"][data-rank="4"] {
-  background-image: url("img/c4.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="c"][data-rank="4"].selected, #vote-page #lead-box [data-suit="c"][data-rank="4"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/c4.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="c"][data-rank="3"], #vote-page #lead-box [data-suit="c"][data-rank="3"] {
-  background-image: url("img/c3.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="c"][data-rank="3"].selected, #vote-page #lead-box [data-suit="c"][data-rank="3"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/c3.png");
-}
-/* line 1833, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="c"][data-rank="2"], #vote-page #lead-box [data-suit="c"][data-rank="2"] {
-  background-image: url("img/c2.png");
-}
-/* line 1836, ../sass/bridgewinners.scss */
-#vote-page #hand [data-suit="c"][data-rank="2"].selected, #vote-page #lead-box [data-suit="c"][data-rank="2"].selected {
-  background-image: linear-gradient(rgba(255, 255, 0, 0.45), rgba(255, 255, 0, 0.45)), url("img/c2.png");
-}
-/* line 1849, ../sass/bridgewinners.scss */
-#vote-page #hand [data-card-number="1"] {
-  left: 0vw;
-}
-/* line 1849, ../sass/bridgewinners.scss */
-#vote-page #hand [data-card-number="2"] {
-  left: 6.66667vw;
-}
-/* line 1849, ../sass/bridgewinners.scss */
-#vote-page #hand [data-card-number="3"] {
-  left: 13.33333vw;
-}
-/* line 1849, ../sass/bridgewinners.scss */
-#vote-page #hand [data-card-number="4"] {
-  left: 20vw;
-}
-/* line 1849, ../sass/bridgewinners.scss */
-#vote-page #hand [data-card-number="5"] {
-  left: 26.66667vw;
-}
-/* line 1849, ../sass/bridgewinners.scss */
-#vote-page #hand [data-card-number="6"] {
-  left: 33.33333vw;
-}
-/* line 1849, ../sass/bridgewinners.scss */
-#vote-page #hand [data-card-number="7"] {
-  left: 40vw;
-}
-/* line 1849, ../sass/bridgewinners.scss */
-#vote-page #hand [data-card-number="8"] {
-  left: 46.66667vw;
-}
-/* line 1849, ../sass/bridgewinners.scss */
-#vote-page #hand [data-card-number="9"] {
-  left: 53.33333vw;
-}
-/* line 1849, ../sass/bridgewinners.scss */
-#vote-page #hand [data-card-number="10"] {
-  left: 60vw;
-}
-/* line 1849, ../sass/bridgewinners.scss */
-#vote-page #hand [data-card-number="11"] {
-  left: 66.66667vw;
-}
-/* line 1849, ../sass/bridgewinners.scss */
-#vote-page #hand [data-card-number="12"] {
-  left: 73.33333vw;
-}
-/* line 1849, ../sass/bridgewinners.scss */
-#vote-page #hand [data-card-number="13"] {
-  left: 80vw;
-}
-/* line 1856, ../sass/bridgewinners.scss */
-#vote-page #lead-box card {
-  left: 40vw;
-  transform-origin: center 60vw;
-}
-/* line 1863, ../sass/bridgewinners.scss */
-#vote-page #lead-box [data-card-number="1"] {
-  transform: rotate(-45deg);
-}
-/* line 1867, ../sass/bridgewinners.scss */
-#vote-page #lead-box [data-card-number="1"].selected {
-  transform: rotate(-45deg) translateY(-10px);
-}
-/* line 1863, ../sass/bridgewinners.scss */
-#vote-page #lead-box [data-card-number="2"] {
-  transform: rotate(-37.5deg);
-}
-/* line 1867, ../sass/bridgewinners.scss */
-#vote-page #lead-box [data-card-number="2"].selected {
-  transform: rotate(-37.5deg) translateY(-10px);
-}
-/* line 1863, ../sass/bridgewinners.scss */
-#vote-page #lead-box [data-card-number="3"] {
-  transform: rotate(-30deg);
-}
-/* line 1867, ../sass/bridgewinners.scss */
-#vote-page #lead-box [data-card-number="3"].selected {
-  transform: rotate(-30deg) translateY(-10px);
-}
-/* line 1863, ../sass/bridgewinners.scss */
-#vote-page #lead-box [data-card-number="4"] {
-  transform: rotate(-22.5deg);
-}
-/* line 1867, ../sass/bridgewinners.scss */
-#vote-page #lead-box [data-card-number="4"].selected {
-  transform: rotate(-22.5deg) translateY(-10px);
-}
-/* line 1863, ../sass/bridgewinners.scss */
-#vote-page #lead-box [data-card-number="5"] {
-  transform: rotate(-15deg);
-}
-/* line 1867, ../sass/bridgewinners.scss */
-#vote-page #lead-box [data-card-number="5"].selected {
-  transform: rotate(-15deg) translateY(-10px);
-}
-/* line 1863, ../sass/bridgewinners.scss */
-#vote-page #lead-box [data-card-number="6"] {
-  transform: rotate(-7.5deg);
-}
-/* line 1867, ../sass/bridgewinners.scss */
-#vote-page #lead-box [data-card-number="6"].selected {
-  transform: rotate(-7.5deg) translateY(-10px);
-}
-/* line 1863, ../sass/bridgewinners.scss */
-#vote-page #lead-box [data-card-number="7"] {
-  transform: rotate(0deg);
-}
-/* line 1867, ../sass/bridgewinners.scss */
-#vote-page #lead-box [data-card-number="7"].selected {
-  transform: rotate(0deg) translateY(-10px);
-}
-/* line 1863, ../sass/bridgewinners.scss */
-#vote-page #lead-box [data-card-number="8"] {
-  transform: rotate(7.5deg);
-}
-/* line 1867, ../sass/bridgewinners.scss */
-#vote-page #lead-box [data-card-number="8"].selected {
-  transform: rotate(7.5deg) translateY(-10px);
-}
-/* line 1863, ../sass/bridgewinners.scss */
-#vote-page #lead-box [data-card-number="9"] {
-  transform: rotate(15deg);
-}
-/* line 1867, ../sass/bridgewinners.scss */
-#vote-page #lead-box [data-card-number="9"].selected {
-  transform: rotate(15deg) translateY(-10px);
-}
-/* line 1863, ../sass/bridgewinners.scss */
-#vote-page #lead-box [data-card-number="10"] {
-  transform: rotate(22.5deg);
-}
-/* line 1867, ../sass/bridgewinners.scss */
-#vote-page #lead-box [data-card-number="10"].selected {
-  transform: rotate(22.5deg) translateY(-10px);
-}
-/* line 1863, ../sass/bridgewinners.scss */
-#vote-page #lead-box [data-card-number="11"] {
-  transform: rotate(30deg);
-}
-/* line 1867, ../sass/bridgewinners.scss */
-#vote-page #lead-box [data-card-number="11"].selected {
-  transform: rotate(30deg) translateY(-10px);
-}
-/* line 1863, ../sass/bridgewinners.scss */
-#vote-page #lead-box [data-card-number="12"] {
-  transform: rotate(37.5deg);
-}
-/* line 1867, ../sass/bridgewinners.scss */
-#vote-page #lead-box [data-card-number="12"].selected {
-  transform: rotate(37.5deg) translateY(-10px);
-}
-/* line 1863, ../sass/bridgewinners.scss */
-#vote-page #lead-box [data-card-number="13"] {
-  transform: rotate(45deg);
-}
-/* line 1867, ../sass/bridgewinners.scss */
-#vote-page #lead-box [data-card-number="13"].selected {
-  transform: rotate(45deg) translateY(-10px);
-}
-/* line 1873, ../sass/bridgewinners.scss */
-#vote-page #bidding-box {
+/* line 1748, ../sass/bridgewinners.scss */
+#vote-page biddingbox {
   display: block;
   position: fixed;
   top: 63.52396vh;
   height: 14.83771vh;
   left: 4.26667vw;
   width: 91.46667vw;
-  font-family: SFUIDisplay;
-  font-size: 4.63679vh;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  letter-spacing: 0.7px;
-  text-align: center;
-  text-shadow: none;
-  font-weight: 600;
-  letter-spacing: -0.9px;
-  color: #000000;
 }
-/* line 1879, ../sass/bridgewinners.scss */
-#vote-page #bidding-box levels, #vote-page #bidding-box calls {
-  display: table;
-  table-layout: fixed;
-  width: 100%;
-}
-/* line 1884, ../sass/bridgewinners.scss */
-#vote-page #bidding-box level, #vote-page #bidding-box call {
-  display: table-cell;
-  height: 50%;
-  border: solid 1px #2a5461;
-  background-color: #a4b7bb;
-  text-transform: uppercase;
-  cursor: pointer;
-}
-/* line 1892, ../sass/bridgewinners.scss */
-#vote-page #bidding-box level.disabled, #vote-page #bidding-box call.disabled {
-  cursor: not-allowed;
-  opacity: 0.4;
-}
-/* line 1896, ../sass/bridgewinners.scss */
-#vote-page #bidding-box call[data-call="p"] {
-  background-color: #417505;
-  color: #ffffff;
-}
-/* line 1900, ../sass/bridgewinners.scss */
-#vote-page #bidding-box call[data-call="x"] {
-  background-color: #d0021b;
-  color: #ffffff;
-}
-/* line 1904, ../sass/bridgewinners.scss */
-#vote-page #bidding-box call[data-call="r"] {
-  background-color: #000099;
-  color: #ffffff;
-}
-/* line 1908, ../sass/bridgewinners.scss */
-#vote-page #bidding-box level.selected, #vote-page #bidding-box call.selected {
-  background-color: #2a5461;
-  color: #ffffff;
-}
-/* line 1909, ../sass/bridgewinners.scss */
-#vote-page #bidding-box level.selected [data-suit="d"], #vote-page #bidding-box level.selected [data-suit="h"], #vote-page #bidding-box call.selected [data-suit="d"], #vote-page #bidding-box call.selected [data-suit="h"] {
-  color: #ffffff;
-}
-/* line 1916, ../sass/bridgewinners.scss */
+/* line 1751, ../sass/bridgewinners.scss */
 #vote-page .button {
   font-family: SFUIDisplay;
   font-size: 2.62751vh;
@@ -5029,13 +3411,13 @@ deal bidding-box level.selected [data-suit="d"], deal bidding-box level.selected
   color: #4a4a4a;
   background-color: #dddddd;
 }
-/* line 1922, ../sass/bridgewinners.scss */
+/* line 1757, ../sass/bridgewinners.scss */
 #vote-page .button.enabled {
   color: #ffffff;
   background-color: #9a032e;
   cursor: pointer;
 }
-/* line 1927, ../sass/bridgewinners.scss */
+/* line 1762, ../sass/bridgewinners.scss */
 #vote-page #skip-submit-button {
   display: block;
   position: fixed;
@@ -5044,7 +3426,7 @@ deal bidding-box level.selected [data-suit="d"], deal bidding-box level.selected
   left: 4vw;
   width: 28vw;
 }
-/* line 1931, ../sass/bridgewinners.scss */
+/* line 1766, ../sass/bridgewinners.scss */
 #vote-page #abstain-submit-button {
   display: block;
   position: fixed;
@@ -5053,7 +3435,7 @@ deal bidding-box level.selected [data-suit="d"], deal bidding-box level.selected
   left: 36vw;
   width: 28vw;
 }
-/* line 1935, ../sass/bridgewinners.scss */
+/* line 1770, ../sass/bridgewinners.scss */
 #vote-page #vote-submit-button {
   display: block;
   position: fixed;
@@ -5063,7 +3445,7 @@ deal bidding-box level.selected [data-suit="d"], deal bidding-box level.selected
   width: 28vw;
 }
 
-/* line 1944, ../sass/bridgewinners.scss */
+/* line 1776, ../sass/bridgewinners.scss */
 #vote-page.show-hand-first auctioncontainer {
   display: block;
   position: fixed;
@@ -5072,7 +3454,7 @@ deal bidding-box level.selected [data-suit="d"], deal bidding-box level.selected
   left: 4vw;
   width: 61.33333vw;
 }
-/* line 1947, ../sass/bridgewinners.scss */
+/* line 1779, ../sass/bridgewinners.scss */
 #vote-page.show-hand-first infowrapper {
   display: block;
   position: fixed;
@@ -5081,7 +3463,7 @@ deal bidding-box level.selected [data-suit="d"], deal bidding-box level.selected
   left: 68vw;
   width: 28vw;
 }
-/* line 1950, ../sass/bridgewinners.scss */
+/* line 1782, ../sass/bridgewinners.scss */
 #vote-page.show-hand-first vulnerability[data-direction="e"] {
   display: block;
   position: fixed;
@@ -5090,7 +3472,7 @@ deal bidding-box level.selected [data-suit="d"], deal bidding-box level.selected
   left: 88.53333vw;
   width: 5.6vw;
 }
-/* line 1953, ../sass/bridgewinners.scss */
+/* line 1785, ../sass/bridgewinners.scss */
 #vote-page.show-hand-first vulnerability[data-direction="w"] {
   display: block;
   position: fixed;
@@ -5099,7 +3481,7 @@ deal bidding-box level.selected [data-suit="d"], deal bidding-box level.selected
   left: 69.86667vw;
   width: 5.6vw;
 }
-/* line 1956, ../sass/bridgewinners.scss */
+/* line 1788, ../sass/bridgewinners.scss */
 #vote-page.show-hand-first scoring {
   display: block;
   position: fixed;
@@ -5108,7 +3490,7 @@ deal bidding-box level.selected [data-suit="d"], deal bidding-box level.selected
   left: 74.93333vw;
   width: 14.16vw;
 }
-/* line 1959, ../sass/bridgewinners.scss */
+/* line 1791, ../sass/bridgewinners.scss */
 #vote-page.show-hand-first vulnerability[data-direction="n"] {
   display: block;
   position: fixed;
@@ -5117,7 +3499,7 @@ deal bidding-box level.selected [data-suit="d"], deal bidding-box level.selected
   left: 74.93333vw;
   width: 14.16vw;
 }
-/* line 1962, ../sass/bridgewinners.scss */
+/* line 1794, ../sass/bridgewinners.scss */
 #vote-page.show-hand-first vulnerability[data-direction="s"] {
   display: block;
   position: fixed;
@@ -5126,8 +3508,8 @@ deal bidding-box level.selected [data-suit="d"], deal bidding-box level.selected
   left: 74.93333vw;
   width: 14.16vw;
 }
-/* line 1985, ../sass/bridgewinners.scss */
-#vote-page.show-hand-first #hand {
+/* line 1797, ../sass/bridgewinners.scss */
+#vote-page.show-hand-first handcontainer {
   display: block;
   position: fixed;
   top: 16.84699vh;
@@ -5137,20 +3519,20 @@ deal bidding-box level.selected [data-suit="d"], deal bidding-box level.selected
 }
 
 /* Login page styles. */
-/* line 1991, ../sass/bridgewinners.scss */
+/* line 1803, ../sass/bridgewinners.scss */
 .login-page-content {
   height: 100vh;
   width: 100vw;
   background: url(img/bridgewinners_background.png) no-repeat center center fixed;
   background-size: cover;
 }
-/* line 1996, ../sass/bridgewinners.scss */
+/* line 1808, ../sass/bridgewinners.scss */
 .login-page-content .bridgewinners-logo {
   display: block;
   position: fixed;
   top: 9.11901vh;
 }
-/* line 2000, ../sass/bridgewinners.scss */
+/* line 1812, ../sass/bridgewinners.scss */
 .login-page-content input {
   font-family: SFUIDisplay;
   font-size: 3.09119vh;
@@ -5165,7 +3547,7 @@ deal bidding-box level.selected [data-suit="d"], deal bidding-box level.selected
   border-radius: 5px;
   box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.5);
 }
-/* line 2006, ../sass/bridgewinners.scss */
+/* line 1818, ../sass/bridgewinners.scss */
 .login-page-content input.username {
   display: block;
   position: fixed;
@@ -5173,7 +3555,7 @@ deal bidding-box level.selected [data-suit="d"], deal bidding-box level.selected
   height: 8.80989vh;
   width: 89.33333vw;
 }
-/* line 2009, ../sass/bridgewinners.scss */
+/* line 1821, ../sass/bridgewinners.scss */
 .login-page-content input.password {
   display: block;
   position: fixed;
@@ -5181,7 +3563,7 @@ deal bidding-box level.selected [data-suit="d"], deal bidding-box level.selected
   height: 8.80989vh;
   width: 89.33333vw;
 }
-/* line 2012, ../sass/bridgewinners.scss */
+/* line 1824, ../sass/bridgewinners.scss */
 .login-page-content button {
   font-family: SFUIDisplay;
   font-size: 3.09119vh;
@@ -5196,7 +3578,7 @@ deal bidding-box level.selected [data-suit="d"], deal bidding-box level.selected
   -webkit-border-radius: 5px;
   border-radius: 5px;
 }
-/* line 2018, ../sass/bridgewinners.scss */
+/* line 1830, ../sass/bridgewinners.scss */
 .login-page-content button.bridgewinners {
   background-color: #9a032e;
   display: block;
@@ -5205,7 +3587,7 @@ deal bidding-box level.selected [data-suit="d"], deal bidding-box level.selected
   height: 6.80062vh;
   width: 89.33333vw;
 }
-/* line 2022, ../sass/bridgewinners.scss */
+/* line 1834, ../sass/bridgewinners.scss */
 .login-page-content button.facebook {
   background-color: #3b5998;
   display: block;
@@ -5214,7 +3596,7 @@ deal bidding-box level.selected [data-suit="d"], deal bidding-box level.selected
   height: 6.80062vh;
   width: 89.33333vw;
 }
-/* line 2026, ../sass/bridgewinners.scss */
+/* line 1838, ../sass/bridgewinners.scss */
 .login-page-content button.google {
   background-color: #dd4b39;
   display: block;
@@ -5224,23 +3606,23 @@ deal bidding-box level.selected [data-suit="d"], deal bidding-box level.selected
   width: 89.33333vw;
 }
 
-/* line 2032, ../sass/bridgewinners.scss */
+/* line 1844, ../sass/bridgewinners.scss */
 body.ui-mobile-viewport {
   overflow-y: hidden;
 }
 
-/* line 2036, ../sass/bridgewinners.scss */
+/* line 1848, ../sass/bridgewinners.scss */
 .ui-page-active {
   overflow-x: visible !important;
 }
 
-/* line 2040, ../sass/bridgewinners.scss */
+/* line 1852, ../sass/bridgewinners.scss */
 .hide {
   display: none;
   visibility: hidden;
 }
 
-/* line 2045, ../sass/bridgewinners.scss */
+/* line 1857, ../sass/bridgewinners.scss */
 .carat-right {
   padding-right: 7vw;
   background-image: url("images/icons-png/carat-r-black.png");
@@ -5248,7 +3630,7 @@ body.ui-mobile-viewport {
   background-position: right 0.25vw center;
 }
 
-/* line 2052, ../sass/bridgewinners.scss */
+/* line 1864, ../sass/bridgewinners.scss */
 .carat-left {
   padding-left: 4vw;
   background-image: url("images/icons-png/carat-l-white.png");
@@ -5256,7 +3638,7 @@ body.ui-mobile-viewport {
   background-position: left 0.25vw center;
 }
 
-/* line 2059, ../sass/bridgewinners.scss */
+/* line 1871, ../sass/bridgewinners.scss */
 .header-container {
   font-family: SFUIDisplay;
   font-size: 2.62751vh;
@@ -5277,7 +3659,7 @@ body.ui-mobile-viewport {
   text-transform: capitalize;
 }
 
-/* line 2069, ../sass/bridgewinners.scss */
+/* line 1881, ../sass/bridgewinners.scss */
 .back-button-container {
   font-family: SFUIDisplay;
   font-size: 2.62751vh;
@@ -5298,13 +3680,13 @@ body.ui-mobile-viewport {
   text-transform: capitalize;
 }
 
-/* line 2079, ../sass/bridgewinners.scss */
+/* line 1891, ../sass/bridgewinners.scss */
 .header-text {
   color: #ffffff;
   text-transform: capitalize;
 }
 
-/* line 2084, ../sass/bridgewinners.scss */
+/* line 1896, ../sass/bridgewinners.scss */
 #back-button {
   color: #ffffff;
   float: left;
@@ -5312,20 +3694,20 @@ body.ui-mobile-viewport {
 }
 
 /* Footer styles. */
-/* line 2091, ../sass/bridgewinners.scss */
+/* line 1903, ../sass/bridgewinners.scss */
 .footer-inner-container, .footer-outer-container {
   position: fixed;
   width: 100vw;
   bottom: 0vh;
 }
 
-/* line 2096, ../sass/bridgewinners.scss */
+/* line 1908, ../sass/bridgewinners.scss */
 .footer-inner-container {
   background-color: #2a5461;
   height: 7.57342vh;
   box-shadow: inset 0 0.5px 0 0 #b2b2b2;
 }
-/* line 2101, ../sass/bridgewinners.scss */
+/* line 1913, ../sass/bridgewinners.scss */
 .footer-inner-container .menu-item {
   height: 90%;
   width: 20vw;
@@ -5334,50 +3716,50 @@ body.ui-mobile-viewport {
   background-position: center center;
   background-size: contain;
 }
-/* line 2109, ../sass/bridgewinners.scss */
+/* line 1921, ../sass/bridgewinners.scss */
 .footer-inner-container .vote-icon.not-selected {
   background-image: url("img/vote.png");
 }
-/* line 2109, ../sass/bridgewinners.scss */
+/* line 1921, ../sass/bridgewinners.scss */
 .footer-inner-container .create-icon.not-selected {
   background-image: url("img/create.png");
 }
-/* line 2109, ../sass/bridgewinners.scss */
+/* line 1921, ../sass/bridgewinners.scss */
 .footer-inner-container .history-icon.not-selected {
   background-image: url("img/history.png");
 }
-/* line 2109, ../sass/bridgewinners.scss */
+/* line 1921, ../sass/bridgewinners.scss */
 .footer-inner-container .alerts-icon.not-selected {
   background-image: url("img/alerts.png");
 }
-/* line 2109, ../sass/bridgewinners.scss */
+/* line 1921, ../sass/bridgewinners.scss */
 .footer-inner-container .account-icon.not-selected {
   background-image: url("img/account.png");
 }
 
-/* line 2114, ../sass/bridgewinners.scss */
+/* line 1926, ../sass/bridgewinners.scss */
 .footer-inner-container.ios {
   bottom: 20px;
 }
 
-/* line 2117, ../sass/bridgewinners.scss */
+/* line 1929, ../sass/bridgewinners.scss */
 .footer-outer-container {
   height: 8.50077vh;
 }
-/* line 2120, ../sass/bridgewinners.scss */
+/* line 1932, ../sass/bridgewinners.scss */
 .footer-outer-container .menu-item {
   height: 100%;
   width: 20vw;
   display: inline-block;
 }
-/* line 2124, ../sass/bridgewinners.scss */
+/* line 1936, ../sass/bridgewinners.scss */
 .footer-outer-container .menu-item .menu-icon {
   height: 80%;
   background-repeat: no-repeat;
   background-position: center center;
   background-size: contain;
 }
-/* line 2130, ../sass/bridgewinners.scss */
+/* line 1942, ../sass/bridgewinners.scss */
 .footer-outer-container .selected {
   background-color: #698f64;
   box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.86);
@@ -5390,33 +3772,33 @@ body.ui-mobile-viewport {
   border-top-right-radius: 10px;
   box-sizing: border-box;
 }
-/* line 2137, ../sass/bridgewinners.scss */
+/* line 1949, ../sass/bridgewinners.scss */
 .footer-outer-container .selected .vote-icon {
   background-image: url("img/vote.png");
 }
-/* line 2137, ../sass/bridgewinners.scss */
+/* line 1949, ../sass/bridgewinners.scss */
 .footer-outer-container .selected .create-icon {
   background-image: url("img/create.png");
 }
-/* line 2137, ../sass/bridgewinners.scss */
+/* line 1949, ../sass/bridgewinners.scss */
 .footer-outer-container .selected .history-icon {
   background-image: url("img/history.png");
 }
-/* line 2137, ../sass/bridgewinners.scss */
+/* line 1949, ../sass/bridgewinners.scss */
 .footer-outer-container .selected .alerts-icon {
   background-image: url("img/alerts.png");
 }
-/* line 2137, ../sass/bridgewinners.scss */
+/* line 1949, ../sass/bridgewinners.scss */
 .footer-outer-container .selected .account-icon {
   background-image: url("img/account.png");
 }
 
-/* line 2143, ../sass/bridgewinners.scss */
+/* line 1955, ../sass/bridgewinners.scss */
 .footer-outer-container.ios {
   bottom: 20px;
 }
 
-/* line 2147, ../sass/bridgewinners.scss */
+/* line 1959, ../sass/bridgewinners.scss */
 avatar {
   background-color: #d8d8d8;
   border: solid 2px #416757;
@@ -5435,14 +3817,14 @@ avatar {
   width: 5.40958vh;
 }
 
-/* line 2158, ../sass/bridgewinners.scss */
+/* line 1970, ../sass/bridgewinners.scss */
 avatar.large {
   height: 11.59196vh;
   width: 11.59196vh;
   left: 4vw;
 }
 
-/* line 2167, ../sass/bridgewinners.scss */
+/* line 1979, ../sass/bridgewinners.scss */
 #account-page #profile {
   display: block;
   position: fixed;
@@ -5452,7 +3834,7 @@ avatar.large {
   background-color: #ffffff;
   border: solid 0.5px #c7c7cc;
 }
-/* line 2173, ../sass/bridgewinners.scss */
+/* line 1985, ../sass/bridgewinners.scss */
 #account-page #name {
   display: block;
   position: fixed;
@@ -5472,7 +3854,7 @@ avatar.large {
   font-weight: 600;
   color: #9a032e;
 }
-/* line 2182, ../sass/bridgewinners.scss */
+/* line 1994, ../sass/bridgewinners.scss */
 #account-page #edit-profile-button {
   display: block;
   position: fixed;
@@ -5496,7 +3878,7 @@ avatar.large {
   text-align: center;
   color: #4a4a4a;
 }
-/* line 2193, ../sass/bridgewinners.scss */
+/* line 2005, ../sass/bridgewinners.scss */
 #account-page #account-options {
   display: block;
   position: fixed;
@@ -5515,7 +3897,7 @@ avatar.large {
   text-align: left;
   color: #4a4a4a;
 }
-/* line 2203, ../sass/bridgewinners.scss */
+/* line 2015, ../sass/bridgewinners.scss */
 #account-page button#logout-submit-button {
   font-family: SFUIDisplay;
   font-size: 3.09119vh;
@@ -5536,14 +3918,14 @@ avatar.large {
   height: 6.80062vh;
   width: 89.33333vw;
 }
-/* line 2212, ../sass/bridgewinners.scss */
+/* line 2024, ../sass/bridgewinners.scss */
 #account-page .list {
   margin-left: 4vw;
   height: 6.80062vh;
   border-bottom: solid 0.5px #c7c7cc;
   cursor: pointer;
 }
-/* line 2223, ../sass/bridgewinners.scss */
+/* line 2035, ../sass/bridgewinners.scss */
 #account-page #about-app {
   display: block;
   position: fixed;
@@ -5563,11 +3945,11 @@ avatar.large {
   text-align: left;
   margin-top: 2vh;
 }
-/* line 2224, ../sass/bridgewinners.scss */
+/* line 2036, ../sass/bridgewinners.scss */
 #account-page #about-app p {
   margin-bottom: 2vh;
 }
-/* line 2233, ../sass/bridgewinners.scss */
+/* line 2045, ../sass/bridgewinners.scss */
 #account-page #account-options-list {
   display: block;
   position: fixed;
@@ -5575,7 +3957,7 @@ avatar.large {
   height: 85.00773vh;
   width: 100vw;
 }
-/* line 2236, ../sass/bridgewinners.scss */
+/* line 2048, ../sass/bridgewinners.scss */
 #account-page .options-header {
   font-family: SFUIDisplay;
   font-size: 2.62751vh;
@@ -5594,7 +3976,7 @@ avatar.large {
   text-align: left;
   margin-top: 2vh;
 }
-/* line 2247, ../sass/bridgewinners.scss */
+/* line 2059, ../sass/bridgewinners.scss */
 #account-page settings {
   position: relative;
   height: 6.80062vh;
@@ -5608,7 +3990,7 @@ avatar.large {
   border: solid 1px #979797;
   background-color: #c7c7cc;
 }
-/* line 2259, ../sass/bridgewinners.scss */
+/* line 2071, ../sass/bridgewinners.scss */
 #account-page setting {
   display: table-cell;
   vertical-align: middle;
@@ -5625,18 +4007,18 @@ avatar.large {
   color: #4a4a4a;
   cursor: pointer;
 }
-/* line 2268, ../sass/bridgewinners.scss */
+/* line 2080, ../sass/bridgewinners.scss */
 #account-page setting:not(:last-child) {
   border-right: solid 1px #979797;
 }
-/* line 2271, ../sass/bridgewinners.scss */
+/* line 2083, ../sass/bridgewinners.scss */
 #account-page setting.current {
   background-color: #2a5461;
   color: #ffffff;
   cursor: default;
 }
 
-/* line 2278, ../sass/bridgewinners.scss */
+/* line 2090, ../sass/bridgewinners.scss */
 .main-page {
   display: block;
   position: fixed;
@@ -5648,7 +4030,7 @@ avatar.large {
  * Pull down styles
  *
  */
-/* line 2288, ../sass/bridgewinners.scss */
+/* line 2100, ../sass/bridgewinners.scss */
 #pullDown, #pullUp {
   background: #fff;
   height: 40px;
@@ -5660,7 +4042,7 @@ avatar.large {
   color: #888;
 }
 
-/* line 2298, ../sass/bridgewinners.scss */
+/* line 2110, ../sass/bridgewinners.scss */
 #pullDown .pullDownIcon, #pullUp .pullUpIcon {
   display: block;
   float: left;
@@ -5673,27 +4055,27 @@ avatar.large {
   -webkit-transition-duration: 250ms;
 }
 
-/* line 2306, ../sass/bridgewinners.scss */
+/* line 2118, ../sass/bridgewinners.scss */
 #pullDown .pullDownIcon {
   -webkit-transform: rotate(0deg) translateZ(0);
 }
 
-/* line 2309, ../sass/bridgewinners.scss */
+/* line 2121, ../sass/bridgewinners.scss */
 #pullUp .pullUpIcon {
   -webkit-transform: rotate(-180deg) translateZ(0);
 }
 
-/* line 2313, ../sass/bridgewinners.scss */
+/* line 2125, ../sass/bridgewinners.scss */
 #pullDown.flip .pullDownIcon {
   -webkit-transform: rotate(-180deg) translateZ(0);
 }
 
-/* line 2317, ../sass/bridgewinners.scss */
+/* line 2129, ../sass/bridgewinners.scss */
 #pullUp.flip .pullUpIcon {
   -webkit-transform: rotate(0deg) translateZ(0);
 }
 
-/* line 2321, ../sass/bridgewinners.scss */
+/* line 2133, ../sass/bridgewinners.scss */
 #pullDown.loading .pullDownIcon, #pullUp.loading .pullUpIcon {
   background-position: 0 100%;
   -webkit-transform: rotate(0deg) translateZ(0);

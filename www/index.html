@@ -80,10 +80,6 @@
           <comments>245</comments>
           <likes>125</likes>
           <auctioncontainer></auctioncontainer>
-          <!-- <div id="name"><span id="user">Bridge Winners </span>Asks</div>
-          <div id="comments">245</div>
-          <div id="likes">125</div>
-          <div id="auction"></div> -->
           <vulnerabilities>
             <vulnerability data-direction='n'></vulnerability>
             <vulnerability data-direction='e'></vulnerability>
@@ -92,18 +88,10 @@
           </vulnerabilities>
           <scoring></scoring>
           <infowrapper></infowrapper>
-          <!-- <div id="vulnerability">
-            <div id="info-wrapper"></div>
-            <div id="scoring"></div>
-            <div id="vul-n" class="vulnerability"></div>
-            <div id="vul-e" class="vulnerability"></div>
-            <div id="vul-s" class="vulnerability"></div>
-            <div id="vul-w" class="vulnerability"></div>
-          </div> -->
-          <div id="hand"></div>
+          <handcontainer></handcontainer>
           <description class="scrollable"></description>
-          <div id="bidding-box"></div>
-          <div id="lead-box"></div>
+          <biddingbox></biddingbox>
+          <leadbox></leadbox>
         <deal>
         <div class="buttons">
           <div id="skip-submit-button" class="button clickable bridgewinners enabled">Skip</div>
@@ -141,7 +129,22 @@
           <textarea id="description" placeholder="Provide any additional information that might be relevant to the problem, like meaning of bids, etc."></textarea>
         </div>
         <div id="create-review-page" data-role="section" data-name="create-review-page">
-          <div id="asks-review">
+          <deal>
+            <avatar id="avatar-review"></avatar>
+            <name><user>Bridge Winners </user>Asks</name>
+            <auctioncontainer></auctioncontainer>
+            <vulnerabilities>
+              <vulnerability data-direction='n'></vulnerability>
+              <vulnerability data-direction='e'></vulnerability>
+              <vulnerability data-direction='s'></vulnerability>
+              <vulnerability data-direction='w'></vulnerability>
+            </vulnerabilities>
+            <scoring></scoring>
+            <infowrapper></infowrapper>
+            <handcontainer></handcontainer>
+            <description class="scrollable"></description>
+          <deal>
+          <!-- <div id="asks-review">
             <avatar id="avatar-review"></avatar>
             <div id="name-review"><span id="user-review">You </span>Ask</div>
           </div>
@@ -155,7 +158,7 @@
             <div id="vul-w-review" class="vulnerability"></div>
           </div>
           <div id="hand-review"></div>
-          <div id="description-review" class="scrollable"></div>
+          <div id="description-review" class="scrollable"></div> -->
           <div id="create-save-button" class="button clickable bridgewinners disabled hide">Save Draft</div>
           <div id="create-publish-button" class="button clickable bridgewinners enabled">Publish</div>
         </div>
@@ -205,7 +208,25 @@
           </div>
         </div>
         <div id="history-results-page" data-role="section" data-name="history-results-page">
-          <div id="asks-results">
+          <deal>
+            <avatar id="avatar-results"></avatar>
+            <name><user>Bridge Winners </user>Asks</name>
+            <votes>0</votes>
+            <comments>245</comments>
+            <likes>125</likes>
+            <auctioncontainer></auctioncontainer>
+            <vulnerabilities>
+              <vulnerability data-direction='n'></vulnerability>
+              <vulnerability data-direction='e'></vulnerability>
+              <vulnerability data-direction='s'></vulnerability>
+              <vulnerability data-direction='w'></vulnerability>
+            </vulnerabilities>
+            <scoring></scoring>
+            <infowrapper></infowrapper>
+            <handcontainer></handcontainer>
+            <description class="scrollable"></description>
+          <deal>
+          <!-- <div id="asks-results">
             <avatar id="avatar-results"></avatar>
             <div id="name-results"><span id="user-results">You </span>Asks</div>
             <div id="votes-results">0</div>
@@ -222,7 +243,7 @@
             <div id="vul-w-results" class="vulnerability"></div>
           </div>
           <div id="hand-results"></div>
-          <div id="description-results" class="scrollable"></div>
+          <div id="description-results" class="scrollable"></div> -->
           <div id="answers-results" class="scrollable"></div>
           <div id="history-revote-button" class="button clickable bridgewinners enabled">Re-vote</div>
           <div id="history-voters-button" data-role="section-change" data-section="history-responses-page" class="button clickable bridgewinners enabled">Voters</div>
