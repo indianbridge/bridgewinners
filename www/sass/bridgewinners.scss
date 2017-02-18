@@ -130,13 +130,25 @@ $menu_items: vote create history alerts account;
 %vertical-center {
   position: relative;
   top: 50%;
+  transform: perspective(1px) translateY(-50%);
   -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
 }
 
 %horizontal-center {
   left: 0;
   right: 0;
   margin: 0 auto;
+}
+
+%icon {
+  content: "";
+  display: block;
+  @include background-contain();
+  width: 20px;
+  height: 20px;
+  float: left;
+  //margin-right: 1vw;
 }
 
 .scrollable {
@@ -565,77 +577,9 @@ $menu_items: vote create history alerts account;
     name {
       @include location(59px, 35px, 200px, 56px);
     }
-    // #name-review {
-    //   @extend %flex-vertical-center2;
-    //   @include location(59px, 35px, 200px, 56px);
-    //   @include font(17px);
-    //   text-align: left;
-    //   color: $darkGrey;
-    // }
-    // #user-review {
-    //   color: $BWRed;
-    //   font-weight: 600;
-    //   margin-right: 5px;
-    // }
     auctioncontainer {
       @include location(109px, 135px, 230px, 15px);
     }
-    // #auction-review {
-    //   @include location(109px, 135px, 230px, 15px);
-    //   @include font(20px);
-    //   background-color: $white;
-    //   border: solid 2px $BWSlate;
-    //   section {
-    //     height: 100%;
-    //   }
-    //   auction {
-    //     display: block;
-    //     height: 100%;
-    //   }
-    //   directions, calls {
-    //     display: table;
-    //     table-layout: fixed;
-    //     width: 100%;
-    //   }
-    //   directions {
-    //     @include font(20px);
-    //     height: 17.77%;
-    //     border-bottom: solid 2px $BWSlate;
-    //   }
-    //   content {
-    //     display: block;
-    //     overflow-x: hidden;
-    //     overflow-y: auto;
-    //     height: 82.23%;
-    //   }
-    //   calls {
-    //     @include font(22px);
-    //     height: 82.23%;
-    //   }
-    //   row {
-    //     display: table-row;
-    //     width: 100%;
-    //   }
-    //   direction, call {
-    //     display: table-cell;
-    //   }
-    //   direction {
-    //     font-weight: 600;
-    //     letter-spacing: -0.8px;
-    //     text-align: center;
-    //     color: $black;
-    //     background-color: $white;
-    //   }
-    //   direction[data-vulnerable] {
-    //     color: $white;
-    //     background-color: $brightRed;
-    //   }
-    //   call {
-    //     font-weight: 600;
-    //     letter-spacing: -0.5px;
-    //     text-transform: uppercase;
-    //   }
-    // }
     infowrapper {
         @include location(109px, 135px, 105px, 255px);
     }
@@ -654,120 +598,12 @@ $menu_items: vote create history alerts account;
     vulnerability[data-direction="s"] {
       @include location(213px, 25px, 53.1px, 281px);
     }
-    // #vulnerability-review {
-    //   [data-vulnerable="yes"] {
-    //     color: $white;
-    //     background-color: $brightRed;
-    //   }
-    //   [data-vulnerable="no"] {
-    //     color: $black;
-    //     background-color: $white;
-    //   }
-    //   #info-wrapper-review {
-    //     @include location(109px, 135px, 105px, 255px);
-    //     background-color: $lightGrey;
-    //     border: solid 2px $BWSlate;
-    //   }
-    //   #vul-e-review {
-    //     @include location(139px, 76px, 21px, 332px);
-    //     border: solid 2px $BWSlate;
-    //     border-left: 0;
-    //   }
-    //   #vul-w-review {
-    //     @include location(139px, 76px, 21px, 262px);
-    //     border: solid 2px $BWSlate;
-    //     border-right: 0;
-    //   }
-    //   .vulnerability {
-    //     @extend %flex-vertical-center;
-    //     text-align: center;
-    //     text-shadow: none;
-    //   }
-    //   #scoring-review {
-    //     @include location(139px, 76px, 53.1px, 281px);
-    //     @extend %flex-vertical-center;
-    //     background-color: $BWLightBlue;
-    //     border: solid 2px $BWSlate;
-    //     text-align: center;
-    //     color: $black;
-    //     z-index: 1;
-    //     word-wrap: break-word;
-    //   }
-    //   #vul-n-review {
-    //     @include location(116px, 25px, 53.1px, 281px);
-    //     border: solid 2px $BWSlate;
-    //     border-bottom: 0;
-    //   }
-    //   #vul-s-review {
-    //     @include location(213px, 25px, 53.1px, 281px);
-    //     border: solid 2px $BWSlate;
-    //     border-top: 0;
-    //   }
-    // }
     description {
       @include location(339px, 175px, 375px);
     }
     handcontainer {
       @include location(258px, 66px, 349px, 13px);
     }
-    // #description-review {
-    //   @include location(339px, 175px, 375px);
-    //   @include font(17px);
-    //   color: $darkGrey;
-    //   text-align: justify;
-    //   padding: 5px;
-    //   background-color: $white;
-    //   border: solid 1px $deactiveGrey;
-    //   padding-right: 7vw;
-    // }
-    // #hand-review {
-    //   @include location(258px, 66px, 349px, 13px);
-    // }
-    // #hand-review {
-    //   hand, content {
-    //     display: block;
-    //     width: 100%;
-    //     height: 100%;
-    //   }
-    //   cards {
-    //     display: inline-block;
-    //     height: 100%;
-    //   }
-    //   card {
-    //       position: absolute;
-    //       color: transparent;
-    //       text-indent: -9999px;
-    //       @include height(66px);
-    //       @include width(48px);
-    //       cursor: pointer;
-    //   }
-    //   card.selected {
-    //     @extend %highlight;
-    //   }
-    //   $suits: s h d c;
-    //   $ranks: a k q j t 9 8 7 6 5 4 3 2;
-    //   [data-suit][data-rank] {
-    //     @include background-cover();
-    //   }
-    //   @each $suit in $suits {
-    //     [data-suit="#{$suit}"][data-rank="x"] {
-    //       background-image: url("img/#{$suit}2.png");
-    //     }
-    //     @each $rank in $ranks {
-    //       [data-suit="#{$suit}"][data-rank="#{$rank}"] {
-    //         background-image: url("img/#{$suit}#{$rank}.png");
-    //       }
-    //     }
-    //   }
-    // }
-    // #hand-review {
-    //   @for $i from 1 through 13 {
-    //     [data-card-number="#{$i}"] {
-    //       $left: ($i - 1) * 25px;
-    //       @include left($left);
-    //     }
-    //   }
-    // }
     #create-save-button {
       @extend %flex-vertical-center;
       @include location(535px, 44px, 169px, 15px);
@@ -799,26 +635,6 @@ $menu_items: vote create history alerts account;
       vulnerability[data-direction="s"] {
         @include location(293px, 25px, 53.1px, 281px);
       }
-      // #vulnerability-review {
-      //   #info-wrapper-review {
-      //     @include location(189px, 135px, 105px, 255px);
-      //   }
-      //   #vul-e-review {
-      //     @include location(219px, 76px, 21px, 332px);
-      //   }
-      //   #vul-w-review {
-      //     @include location(219px, 76px, 21px, 262px);
-      //   }
-      //   #scoring-review {
-      //     @include location(219px, 76px, 53.1px, 281px);
-      //   }
-      //   #vul-n-review {
-      //     @include location(196px, 25px, 53.1px, 281px);
-      //   }
-      //   #vul-s-review {
-      //     @include location(293px, 25px, 53.1px, 281px);
-      //   }
-      // }
       handcontainer {
         @include location(109px, 66px, 349px, 13px);
       }
@@ -921,18 +737,6 @@ $menu_items: vote create history alerts account;
     name {
       @include location(59px, 35px, 200px, 56px);
     }
-    // #name-results {
-    //   @extend %flex-vertical-center2;
-    //   @include location(59px, 35px, 200px, 56px);
-    //   @include font(17px);
-    //   text-align: left;
-    //   color: $darkGrey;
-    // }
-    // #user-results {
-    //   color: $BWRed;
-    //   font-weight: 600;
-    //   margin-right: 5px;
-    // }
     votes {
       @include location(59px, 35px, 40px, 332px);
     }
@@ -942,116 +746,9 @@ $menu_items: vote create history alerts account;
     likes {
       @include location(59px, 35px, 40px, 292px);
     }
-    // #votes-results {
-    //   @extend %flex-vertical-center2;
-    //   @include location(59px, 35px, 40px, 332px);
-    //   @include font(17px);
-    //   color: $BWRed;
-    //   font-weight: 600;
-    // }
-    // #votes-results:before {
-    //     content: "";
-    //     display: block;
-    //     background: url("img/answers_black.png") no-repeat;
-    //     @include background-contain();
-    //     width: 20px;
-    //     height: 20px;
-    //     float: left;
-    //     margin-right: 1vw;
-    // }
-    // #comments-results {
-    //   @extend %flex-vertical-center2;
-    //   @include location(59px, 35px, 40px, 252px);
-    //   @include font(17px);
-    //   color: $BWRed;
-    //   font-weight: 600;
-    // }
-    // #comments-results:before {
-    //     content: "";
-    //     display: block;
-    //     background: url("img/comments.png") no-repeat;
-    //     @include background-contain();
-    //     width: 20px;
-    //     height: 20px;
-    //     float: left;
-    //     margin-right: 1vw;
-    // }
-    // #likes-results {
-    //   @extend %flex-vertical-center2;
-    //   @include location(59px, 35px, 40px, 292px);
-    //   @include font(17px);
-    //   color: $BWRed;
-    //   font-weight: 600;
-    // }
-    // #likes-results:before {
-    //     content: "";
-    //     display: block;
-    //     background: url("img/likes.png") no-repeat;
-    //     @include background-contain();
-    //     width: 20px;
-    //     height: 20px;
-    //     float: left;
-    //     margin-right: 1vw;
-    // }
     auctioncontainer {
       @include location(109px, 135px, 230px, 15px);
     }
-    // #auction-results {
-    //   @include location(109px, 135px, 230px, 15px);
-    //   @include font(20px);
-    //   background-color: $white;
-    //   border: solid 2px $BWSlate;
-    //   section {
-    //     height: 100%;
-    //   }
-    //   auction {
-    //     display: block;
-    //     height: 100%;
-    //   }
-    //   directions, calls {
-    //     display: table;
-    //     table-layout: fixed;
-    //     width: 100%;
-    //   }
-    //   directions {
-    //     @include font(20px);
-    //     height: 17.77%;
-    //     border-bottom: solid 2px $BWSlate;
-    //   }
-    //   content {
-    //     display: block;
-    //     overflow-x: hidden;
-    //     overflow-y: auto;
-    //     height: 82.23%;
-    //   }
-    //   calls {
-    //     @include font(22px);
-    //     height: 82.23%;
-    //   }
-    //   row {
-    //     display: table-row;
-    //     width: 100%;
-    //   }
-    //   direction, call {
-    //     display: table-cell;
-    //   }
-    //   direction {
-    //     font-weight: 600;
-    //     letter-spacing: -0.8px;
-    //     text-align: center;
-    //     color: $black;
-    //     background-color: $white;
-    //   }
-    //   direction[data-vulnerable] {
-    //     color: $white;
-    //     background-color: $brightRed;
-    //   }
-    //   call {
-    //     font-weight: 600;
-    //     letter-spacing: -0.5px;
-    //     text-transform: uppercase;
-    //   }
-    // }
     infowrapper {
         @include location(109px, 135px, 105px, 255px);
     }
@@ -1070,120 +767,12 @@ $menu_items: vote create history alerts account;
     vulnerability[data-direction="s"] {
       @include location(213px, 25px, 53.1px, 281px);
     }
-    // #vulnerability-results {
-    //   [data-vulnerable="yes"] {
-    //     color: $white;
-    //     background-color: $brightRed;
-    //   }
-    //   [data-vulnerable="no"] {
-    //     color: $black;
-    //     background-color: $white;
-    //   }
-    //   #info-wrapper-results {
-    //     @include location(109px, 135px, 105px, 255px);
-    //     background-color: $lightGrey;
-    //     border: solid 2px $BWSlate;
-    //   }
-    //   #vul-e-results {
-    //     @include location(139px, 76px, 21px, 332px);
-    //     border: solid 2px $BWSlate;
-    //     border-left: 0;
-    //   }
-    //   #vul-w-results {
-    //     @include location(139px, 76px, 21px, 262px);
-    //     border: solid 2px $BWSlate;
-    //     border-right: 0;
-    //   }
-    //   .vulnerability {
-    //     @extend %flex-vertical-center;
-    //     text-align: center;
-    //     text-shadow: none;
-    //   }
-    //   #scoring-results {
-    //     @include location(139px, 76px, 53.1px, 281px);
-    //     @extend %flex-vertical-center;
-    //     background-color: $BWLightBlue;
-    //     border: solid 2px $BWSlate;
-    //     text-align: center;
-    //     color: $black;
-    //     z-index: 1;
-    //     word-wrap: break-word;
-    //   }
-    //   #vul-n-results {
-    //     @include location(116px, 25px, 53.1px, 281px);
-    //     border: solid 2px $BWSlate;
-    //     border-bottom: 0;
-    //   }
-    //   #vul-s-results {
-    //     @include location(213px, 25px, 53.1px, 281px);
-    //     border: solid 2px $BWSlate;
-    //     border-top: 0;
-    //   }
-    // }
     description {
       @include location(339px, 57px, 375px);
     }
     handcontainer {
       @include location(258px, 66px, 349px, 13px);
     }
-    // #description-results {
-    //   @include location(339px, 57px, 375px);
-    //   @include font(17px);
-    //   color: $darkGrey;
-    //   text-align: justify;
-    //   padding: 5px;
-    //   background-color: $white;
-    //   border: solid 1px $deactiveGrey;
-    //   padding-right: 7vw;
-    // }
-    // #hand-results {
-    //   @include location(258px, 66px, 349px, 13px);
-    // }
-    // #hand-results {
-    //   hand, content {
-    //     display: block;
-    //     width: 100%;
-    //     height: 100%;
-    //   }
-    //   cards {
-    //     display: inline-block;
-    //     height: 100%;
-    //   }
-    //   card {
-    //       position: absolute;
-    //       color: transparent;
-    //       text-indent: -9999px;
-    //       @include height(66px);
-    //       @include width(48px);
-    //       cursor: pointer;
-    //   }
-    //   card.selected {
-    //     @extend %highlight;
-    //   }
-    //   $suits: s h d c;
-    //   $ranks: a k q j t 9 8 7 6 5 4 3 2;
-    //   [data-suit][data-rank] {
-    //     @include background-cover();
-    //   }
-    //   @each $suit in $suits {
-    //     [data-suit="#{$suit}"][data-rank="x"] {
-    //       background-image: url("img/#{$suit}2.png");
-    //     }
-    //     @each $rank in $ranks {
-    //       [data-suit="#{$suit}"][data-rank="#{$rank}"] {
-    //         background-image: url("img/#{$suit}#{$rank}.png");
-    //       }
-    //     }
-    //   }
-    // }
-    // #hand-results {
-    //   @for $i from 1 through 13 {
-    //     [data-card-number="#{$i}"] {
-    //       $left: ($i - 1) * 25px;
-    //       @include left($left);
-    //     }
-    //   }
-    // }
     #answers-results {
       @include location(400px, 130px, 375px);
       .my_answer {
@@ -1372,11 +961,25 @@ $menu_items: vote create history alerts account;
     p {
       margin: 0;
     }
+    .history-list-row {
+      display: table;
+      table-layout: fixed;
+      width: 100%;
+    }
+    .history-list-cell {
+      display: table-cell;
+      vertical-align: middle;
+    }
+    .avatar-container {
+      width: 12%;
+      text-align: center;
+    }
+    .history-list-cell
     rank[data-suit="d"], rank[data-suit="h"] {
       color: $black;
     }
     rank, suit {
-      @include font(12px);
+      @include font(15px);
       font-weight: 600;
     }
     rank {
@@ -1387,7 +990,7 @@ $menu_items: vote create history alerts account;
       margin-right: 2vw;
     }
     .avatar {
-      $height: 20px;
+      $height: 35px;
       height: $height/$ref_height * 100vh;
       // Width should be same as height. So this hack.
       width: $height/$ref_height * 100vh;
@@ -1396,19 +999,16 @@ $menu_items: vote create history alerts account;
       vertical-align: middle;
     }
     .name {
-      @include font(15px);
+      @include font(16px);
       font-weight: 600;
       color: $BWRed;
       margin-left: 10px;
     }
     .answer, .percentage {
-      float:right;
       @include font(14px);
       font-weight: 600;
       color: $darkGrey;
-    }
-    .answer {
-      margin-right: 1vw;
+      width: 10%;
     }
     suit[data-suit='n'] {
       text-transform: capitalize;
@@ -1455,14 +1055,14 @@ deal {
     font-weight: 600;
   }
   votes:before {
-      content: "";
-      display: block;
-      background: url("img/answers_black.png") no-repeat;
-      @include background-contain();
-      width: 20px;
-      height: 20px;
-      float: left;
-      margin-right: 1vw;
+    background: url("img/answers_black.png") no-repeat;
+    content: "";
+    display: block;
+    @include background-contain();
+    width: 20px;
+    height: 20px;
+    float: left;
+    //margin-right: 1vw;
   }
   comments {
     @extend %flex-vertical-center2;
@@ -1471,14 +1071,14 @@ deal {
     font-weight: 600;
   }
   comments:before {
+    background: url("img/comments.png") no-repeat;
     content: "";
     display: block;
-    background: url("img/comments.png") no-repeat;
     @include background-contain();
     width: 20px;
     height: 20px;
     float: left;
-    margin-right: 5px;
+    //margin-right: 1vw;
   }
   likes {
     @extend %flex-vertical-center2;
@@ -1487,14 +1087,14 @@ deal {
     font-weight: 600;
   }
   likes:before {
+      background: url("img/likes.png") no-repeat;
       content: "";
       display: block;
-      background: url("img/likes.png") no-repeat;
       @include background-contain();
       width: 20px;
       height: 20px;
       float: left;
-      margin-right: 5px;
+      //margin-right: 1vw;
   }
   auctioncontainer {
     @include font(20px);
@@ -1806,7 +1406,11 @@ deal {
   background: url(img/bridgewinners_background.png) no-repeat center center fixed;
   background-size: cover;
   .bridgewinners-logo {
-    @include location(59px);
+    display: block;
+    position: fixed;
+    $bottom: 425px;
+    bottom: $bottom/$ref_height * 100vh;
+    @include height(183px);
     @extend %horizontal-center;
   }
   input {
@@ -2028,10 +1632,6 @@ avatar.large {
     border-bottom: solid 0.5px $deactiveGrey;
     cursor: pointer;
   }
-
-  // #account-about-page {
-  //   @include location(44px);
-  // }
   #about-app {
     p {
       margin-bottom: 2vh;

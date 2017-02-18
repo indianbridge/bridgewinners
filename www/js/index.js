@@ -541,10 +541,6 @@ BW.history = new function() {
     $("votes").empty().append(data.num_answers);
     $("comments").empty().append(data.num_comments);
     $("likes").empty().append(data.num_likes);
-    // $("#user-results").empty().append(data.author.name);
-    // $("#votes-results").empty().append(data.num_answers);
-    // $("#comments-results").empty().append(data.num_comments);
-    // $("#likes-results").empty().append(data.num_likes);
     var auction = deal.getAuction();
     auction.showAuction("auctioncontainer");
     var d = $('auctioncontainer content');
@@ -556,7 +552,7 @@ BW.history = new function() {
       element.empty();
     }
     $("vulnerability[data-direction='"+ deal.getDealer() + "']").empty().append("D");
-    $("scoring").empty().append(data.scoring);
+    $("scoring").empty().append(BW.options.getScoringMapping(data.scoring));
     hand.showHand("handcontainer", {
       registerClickHandlers: false,
       registerChangeHandlers: false,
@@ -618,45 +614,60 @@ BW.history = new function() {
         registerClickHandlers: false,
         registerChangeHandlers: false
       });
-      html += "<li class='enabled' data-role='section-change' data-section='history-results-page' ";
+      html += "<li class='enabled' data-icon='false' data-role='section-change' data-section='history-results-page' ";
       html += "data-poll-type='" + pollType + "' data-back='" + sectionName + "' data-slug='" + item.slug + "'><a href='#'>";
-      html += "<img class='ui-li-icon problem-type' src='";
-      if (item.type === "Bidding") {
-        html += "css/img/bidding.png";
-      } else {
-        html += "css/img/lead.png";
-      }
-      html += "'/>";
+      // html += "<img class='ui-li-icon problem-type' src='";
+      // if (item.type === "Bidding") {
+      //   html += "css/img/bidding.png";
+      // } else {
+      //   html += "css/img/lead.png";
+      // }
+      // html += "'/>";
+      html += "<div class='history-list-row'>";
       if (showAuthor) {
-        html += "<p>";
+        html += "<div class='history-list-cell avatar-container'>";
         html += "<img class='avatar' src='" + BW.utils.getAvatarLink(item.author.avatar) + "'/>";
+        html += "</div>";
+        html += "<div class='history-list-cell'>";
+        html += "<p>";
+        //html += "<img class='avatar' src='" + BW.utils.getAvatarLink(item.author.avatar) + "'/>";
         html += "<span class='name'>" + item.author.name + "</span>";
         html += "</p>";
+      } else {
+        html += "<div class='history-list-cell'>";
       }
+      html += "<p>";
+      html += "<div class='history-list-row'>";
+      html += "<div class='history-list-cell'>";
       html += handHtml;
+      html += "</div>";
       if (showAnswer) {
+        var answer = "-";
+        var percentage = "-";
         if (item.my_answer) {
           if (item.my_answer.answer !== "Abstain") {
-            html += "<span class='percentage'>" + item.my_answer.percent + "%</span>";
+            percentage = "" + item.my_answer.percent + "%";
             if (item.type === "Bidding") {
-              html += "<span class='answer'>" + Bridge.getBidHTML(item.my_answer.answer) + "</span>";
+              answer = Bridge.getBidHTML(item.my_answer.answer);
             } else {
-              html += "<span class='answer'>" + Bridge.getCardHTML(item.my_answer.answer) + "</span>";
+              answer = Bridge.getCardHTML(item.my_answer.answer);
             }
           } else {
-            html += "<span class='percentage'>-</span>";
-            html += "<span class='answer'>Ab</span>";
+            answer = "Ab";
           }
-        } else {
-          html += "<span class='percentage'>-</span>";
-          html += "<span class='answer'>-</span>";
         }
+        html += "<div class='answer history-list-cell'>" + answer + "</div>";
+        html += "<div class='percentage history-list-cell'>" + percentage + "</div>";
       }
+      html += "</div>";
+      html += "</p>";
       html += "<p>";
       html += "<img class='icon' src='css/img/comments_black.png'><span class='stats num_comments'>" + item.num_comments + "</span>"
       html += "<img class='icon' src='css/img/likes_black.png'><span class='stats num_likes'>" + item.num_likes + "</span>"
       html += "<img class='icon' src='css/img/answers_black.png'><span class='stats num_answers'>" + item.num_answers + "</span>"
       html += "</p>";
+      html += "</div>";
+      html += "</div>";
       html += "</a></li>";
     });
     return html;
@@ -1342,16 +1353,11 @@ BW.vote = new function() {
       $("handcontainer").empty().hide();
     }
     var auction = deal.getAuction();
-    // auction.showAuction("#auction", {
-    //   registerClickHandlers: false,
-    //   registerChangeHandlers: false,
-    // });
     auction.showAuction("auctioncontainer", {
       registerClickHandlers: false,
       registerChangeHandlers: false,
     });
     var d = $('auctioncontainer content');
-    //var d = $('#auction content');
     d.scrollTop(d.prop("scrollHeight"));
   	this.slug = data.slug;
     if (this.type == "bidding") {
@@ -1385,17 +1391,12 @@ BW.vote = new function() {
       element.empty();
     }
     $("vulnerability[data-direction='" + deal.getDealer() + "']").empty().append("D");
-    //$("#vul-" + deal.getDealer()).empty().append("D");
     $("scoring").empty().append(BW.options.getScoringMapping(data.scoring));
     $("#avatar-vote").css("background-image", "url(" + BW.utils.getAvatarLink(data.author.avatar) + ")");
     $("comments").empty().append(data.num_comments);
     $("likes").empty().append(data.num_likes);
     $("user").empty().append(data.author.name);
     $("description").empty().append(Bridge.replaceSuitSymbolsHTML(data.description));
-    // $("#comments").empty().append(data.num_comments);
-    // $("#likes").empty().append(data.num_likes);
-    // $("#user").empty().append(data.author.name);
-    //$("#description").empty().append(Bridge.replaceSuitSymbolsHTML(data.description));
     BW.loadingDialog.hide();
   };
 };
@@ -1554,9 +1555,16 @@ BW.options = new function() {
 
   this.getScoringMapping = function(scoring) {
     mapping = {
+      "KO": "IMPs (KO)",
       "Matchpoints": "MPs",
+      "20VP": "IMPs (20 VP)",
+      "30VP": "IMPs (30 VP)",
+      "WL": "IMPs (Swiss)",
       "CrossImps": "IMPs",
+      "BAM": "BAM",
       "TP": "Total Points",
+      "Money": "Money",
+      "Any": "Any",
     };
     if(mapping[scoring]) return mapping[scoring];
     return scoring;
