@@ -74,25 +74,25 @@
     </script>
     <script id="vote-template" type="text/template">
       <div id="vote-page" class="main-page">
-        <div id="asks">
+        <deal>
           <avatar id="avatar-vote"></avatar>
-          <div id="name"><span id="user">Bridge Winners </span>Asks</div>
-          <div id="comments">245</div>
-          <div id="likes">125</div>
-        </div>
-        <div id="auction"></div>
-        <div id="vulnerability">
-          <div id="info-wrapper"></div>
-          <div id="scoring"></div>
-          <div id="vul-n" class="vulnerability"></div>
-          <div id="vul-e" class="vulnerability"></div>
-          <div id="vul-s" class="vulnerability"></div>
-          <div id="vul-w" class="vulnerability"></div>
-        </div>
-        <div id="hand"></div>
-        <div id="description" class="scrollable"></div>
-        <div id="bidding-box"></div>
-        <div id="lead-box"></div>
+          <name><user>Bridge Winners </user>Asks</name>
+          <comments>245</comments>
+          <likes>125</likes>
+          <auctioncontainer></auctioncontainer>
+          <vulnerabilities>
+            <vulnerability data-direction='n'></vulnerability>
+            <vulnerability data-direction='e'></vulnerability>
+            <vulnerability data-direction='s'></vulnerability>
+            <vulnerability data-direction='w'></vulnerability>
+          </vulnerabilities>
+          <scoring></scoring>
+          <infowrapper></infowrapper>
+          <handcontainer></handcontainer>
+          <description class="scrollable"></description>
+          <biddingbox></biddingbox>
+          <leadbox></leadbox>
+        <deal>
         <div class="buttons">
           <div id="skip-submit-button" class="button clickable bridgewinners enabled">Skip</div>
           <div id="abstain-submit-button" class="button clickable bridgewinners enabled">Abstain</div>
@@ -129,21 +129,21 @@
           <textarea id="description" placeholder="Provide any additional information that might be relevant to the problem, like meaning of bids, etc."></textarea>
         </div>
         <div id="create-review-page" data-role="section" data-name="create-review-page">
-          <div id="asks-review">
+          <deal>
             <avatar id="avatar-review"></avatar>
-            <div id="name-review"><span id="user-review">You </span>Ask</div>
-          </div>
-          <div id="auction-review"></div>
-          <div id="vulnerability-review">
-            <div id="info-wrapper-review"></div>
-            <div id="scoring-review"></div>
-            <div id="vul-n-review" class="vulnerability"></div>
-            <div id="vul-e-review" class="vulnerability"></div>
-            <div id="vul-s-review" class="vulnerability"></div>
-            <div id="vul-w-review" class="vulnerability"></div>
-          </div>
-          <div id="hand-review"></div>
-          <div id="description-review" class="scrollable"></div>
+            <name><user>Bridge Winners </user>Asks</name>
+            <auctioncontainer></auctioncontainer>
+            <vulnerabilities>
+              <vulnerability data-direction='n'></vulnerability>
+              <vulnerability data-direction='e'></vulnerability>
+              <vulnerability data-direction='s'></vulnerability>
+              <vulnerability data-direction='w'></vulnerability>
+            </vulnerabilities>
+            <scoring></scoring>
+            <infowrapper></infowrapper>
+            <handcontainer></handcontainer>
+            <description class="scrollable"></description>
+          <deal>
           <div id="create-save-button" class="button clickable bridgewinners disabled hide">Save Draft</div>
           <div id="create-publish-button" class="button clickable bridgewinners enabled">Publish</div>
         </div>
@@ -161,9 +161,7 @@
           <!-- <div class="history-menu-item enabled" data-role="section-change" data-section="history-drafts-page">Drafts</div> -->
         </div>
         <div id="history-voted-page" data-role="section" data-name="history-voted-page">
-          <!-- <div class="history-header">Problems you recently voted on.</div> -->
           <div id="history-voted-wrapper">
-            <!-- <button id="history-voted-refresh-button" class="enabled bridgewinners">Reload Voted History</button> -->
             <div class="iscroll-pulldown">
               <span class="iscroll-pull-icon"></span>
               <span class="iscroll-pull-label" data-iscroll-pulled-text="Release to reload voted problems!" data-iscroll-loading-text="Reloading voted problems...">Pull up to reload voted problems</span>
@@ -173,44 +171,40 @@
               <span class="iscroll-pull-icon"></span>
               <span class="iscroll-pull-label" data-iscroll-pulled-text="Release to get more voted problems!" data-iscroll-loading-text="Getting more voted problems...">Pull up to get more voted problems</span>
             </div>
-            <!-- <button id="history-voted-more-button" class="enabled bridgewinners">Get More Voted History</button> -->
           </div>
         </div>
         <div id="history-published-page" data-role="section" data-name="history-published-page">
-          <!-- <div class="history-header">Problems you recently published.</div> -->
           <div id="history-published-wrapper">
             <div class="iscroll-pulldown">
               <span class="iscroll-pull-icon"></span>
               <span class="iscroll-pull-label" data-iscroll-pulled-text="Release to reload published problems!" data-iscroll-loading-text="Reloading published problems...">Pull up to reload published problems</span>
             </div>
-            <!-- <button id="history-published-refresh-button" class="enabled bridgewinners">Reload Published History</button> -->
             <ul id="history-published-list" class="history-list scrollable" data-role="listview"></ul>
             <div class="iscroll-pullup">
               <span class="iscroll-pull-icon"></span>
               <span class="iscroll-pull-label" data-iscroll-pulled-text="Release to get more published problems!" data-iscroll-loading-text="Getting more published problems...">Pull up to get more published problems</span>
             </div>
-            <!-- <button id="history-published-more-button" class="enabled bridgewinners">Get More Published History</button> -->
           </div>
         </div>
         <div id="history-results-page" data-role="section" data-name="history-results-page">
-          <div id="asks-results">
+          <deal>
             <avatar id="avatar-results"></avatar>
-            <div id="name-results"><span id="user-results">You </span>Asks</div>
-            <div id="votes-results">0</div>
-            <div id="comments-results">0</div>
-            <div id="likes-results">0</div>
-          </div>
-          <div id="auction-results"></div>
-          <div id="vulnerability-results">
-            <div id="info-wrapper-results"></div>
-            <div id="scoring-results"></div>
-            <div id="vul-n-results" class="vulnerability"></div>
-            <div id="vul-e-results" class="vulnerability"></div>
-            <div id="vul-s-results" class="vulnerability"></div>
-            <div id="vul-w-results" class="vulnerability"></div>
-          </div>
-          <div id="hand-results"></div>
-          <div id="description-results" class="scrollable"></div>
+            <name><user>Bridge Winners </user>Asks</name>
+            <votes>0</votes>
+            <comments>245</comments>
+            <likes>125</likes>
+            <auctioncontainer></auctioncontainer>
+            <vulnerabilities>
+              <vulnerability data-direction='n'></vulnerability>
+              <vulnerability data-direction='e'></vulnerability>
+              <vulnerability data-direction='s'></vulnerability>
+              <vulnerability data-direction='w'></vulnerability>
+            </vulnerabilities>
+            <scoring></scoring>
+            <infowrapper></infowrapper>
+            <handcontainer></handcontainer>
+            <description class="scrollable"></description>
+          <deal>
           <div id="answers-results" class="scrollable"></div>
           <div id="history-revote-button" class="button clickable bridgewinners enabled">Re-vote</div>
           <div id="history-voters-button" data-role="section-change" data-section="history-responses-page" class="button clickable bridgewinners enabled">Voters</div>
@@ -235,19 +229,11 @@
             <span class="iscroll-pull-icon"></span>
             <span class="iscroll-pull-label" data-iscroll-pulled-text="Release to reload alerts!" data-iscroll-loading-text="Reloading alerts...">Pull down to reload alerts</span>
           </div>
-          <!-- <button id="alerts-refresh-button" class="enabled bridgewinners">Reload Alerts</button> -->
-          <!-- <div id="pullDown">
-      			<span class="pullDownIcon"></span><span class="pullDownLabel">Pull down to refresh...</span>
-      		</div> -->
           <ul id="alerts-list" class="scrollable" data-role="listview"></ul>
-          <!-- <div id="pullUp">
-      			<span class="pullUpIcon"></span><span class="pullUpLabel">Pull up to refresh...</span>
-      		</div> -->
           <div class="iscroll-pullup">
             <span class="iscroll-pull-icon"></span>
             <span class="iscroll-pull-label" data-iscroll-pulled-text="Release to get more alerts!" data-iscroll-loading-text="Getting more alerts...">Pull up to get more alerts</span>
           </div>
-          <!-- <button id="alerts-more-button" class="enabled bridgewinners">Get More Alerts</button> -->
         </div>
       </div>
     </script>
@@ -267,7 +253,6 @@
             </ul>
           </div>
           <button id="logout-submit-button" class="logout clickable bridgewinners">Log Out</button>
-          <!-- <div id="logout-submit-button" class="logout clickable">Log Out</div> -->
         </div>
         <!-- <div id="account-friends-page" data-role="section" data-name="account-friends-page" data-section-back="account-main-page">
           <div id="options-list">Friends</div>

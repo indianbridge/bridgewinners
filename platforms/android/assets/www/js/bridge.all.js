@@ -839,6 +839,18 @@ Bridge.Deal.prototype.init = function init() {
 // Register a callback.
 Bridge.Deal.prototype.registerCallback = function(callback, operation) {
 	operation = operation || "";
+	if ($.isArray(operation)) {
+		var self = this;
+		_.each(operation, function(op) {
+			self.addCallback(callback, op);
+		});
+		return;
+	}
+	this.addCallback(callback, operation);
+};
+
+// Add a callback.
+Bridge.Deal.prototype.addCallback = function addCallback(callback, operation) {
 	if (!(operation in this.callbacks)) {
 		this.callbacks[operation] = [];
 	}
@@ -4278,8 +4290,8 @@ Bridge.toHTML = function toHTML(self, config, parameters, operation) {
 	var html = _.renderTemplate(config.template, parameters);
   var wrapperID = Bridge.IDManager.generateID();
   html = "<section id='" + wrapperID + "'>" + html + "</section>";
-  if (config.containerID) {
-    var container = $('#' + config.containerID);
+  if (config.container) {
+    var container = $(config.container);
     if (container.length) {
       container.empty().append(html);
       if (config.registerChangeHandlers) {
@@ -4311,16 +4323,32 @@ Bridge.Deal.prototype.toHTML = function toHTML(config, operation) {
 };
 
 /**
- * Generate html to show card deck based on configuration options.
+ * Generate html to show dealer and vulnerability based on configuration options.
  * If nothing is specified defaults are used.
- * @param {string} containerID the id of the container to embed html in
+ * @param {string} container the container css selector to embed html in
  * @param {object} config the configuration options to use
  * @return {string} html display of this deal's card deck using the passed template.
  */
- Bridge.Deal.prototype.showCardDeck = function showCardDeck(containerID, config) {
+ Bridge.Deal.prototype.showDealerAndVulnerability = function showDealerAndVulnerability(container, config) {
    config = config || {};
    _.defaults(config, {
-     containerID: containerID,
+     container: container,
+     template: "deal.dealer_and_vulnerability",
+   });
+   return this.toHTML(config, ["setVulnerability", "setDealer"]);
+ };
+
+/**
+ * Generate html to show card deck based on configuration options.
+ * If nothing is specified defaults are used.
+ * @param {string} container the container css selector to embed html in
+ * @param {object} config the configuration options to use
+ * @return {string} html display of this deal's card deck using the passed template.
+ */
+ Bridge.Deal.prototype.showCardDeck = function showCardDeck(container, config) {
+   config = config || {};
+   _.defaults(config, {
+     container: container,
      template: "deal.card-deck.rows",
    });
    return this.toHTML(config);
@@ -4329,14 +4357,14 @@ Bridge.Deal.prototype.toHTML = function toHTML(config, operation) {
 /**
  * Generate html to show vulnerability info based on configuration options.
  * If nothing is specified defaults are used.
- * @param {string} containerID the id of the container to embed html in
+ * @param {string} container the container css selector to embed html in
  * @param {object} config the configuration options to use
  * @return {string} html display of this deal's vulnerability using the passed template.
  */
-Bridge.Deal.prototype.showVulnerability = function showVulnerability(containerID, config) {
+Bridge.Deal.prototype.showVulnerability = function showVulnerability(container, config) {
   config = config || {};
   _.defaults(config, {
-    containerID: containerID,
+    container: container,
     template: "deal.vulnerability",
   });
   return this.toHTML(config, "setVulnerability");
@@ -4345,14 +4373,14 @@ Bridge.Deal.prototype.showVulnerability = function showVulnerability(containerID
 /*
  * Generate html to show dealer info based on configuration options.
  * If nothing is specified defaults are used.
- * @param {string} containerID the id of the container to embed html in
+ * @param {string} container the container css selector to embed html in
  * @param {object} config the configuration options to use
  * @return {string} html display of this deal's dealer using the passed template.
  */
-Bridge.Deal.prototype.showDealer = function showDealer(containerID, config) {
+Bridge.Deal.prototype.showDealer = function showDealer(container, config) {
   config = config || {};
   _.defaults(config, {
-    containerID: containerID,
+    container: container,
     template: "deal.dealer",
   });
   return this.toHTML(config, "setDealer");
@@ -4361,14 +4389,14 @@ Bridge.Deal.prototype.showDealer = function showDealer(containerID, config) {
 /*
  * Generate html to show scoring info based on configuration options.
  * If nothing is specified defaults are used.
- * @param {string} containerID the id of the container to embed html in
+ * @param {string} container the container css selector to embed html in
  * @param {object} config the configuration options to use
  * @return {string} html display of this deal's scoring type using the passed template.
  */
-Bridge.Deal.prototype.showScoring = function showScoring(containerID, config) {
+Bridge.Deal.prototype.showScoring = function showScoring(container, config) {
   config = config || {};
   _.defaults(config, {
-    containerID: containerID,
+    container: container,
     template: "deal.scoring",
     scoringTypes: [
       "MPs",
@@ -4383,14 +4411,14 @@ Bridge.Deal.prototype.showScoring = function showScoring(containerID, config) {
 /*
  * Generate html to show problem type info based on configuration options.
  * If nothing is specified defaults are used.
- * @param {string} containerID the id of the container to embed html in
+ * @param {string} container the container css selector to embed html in
  * @param {object} config the configuration options to use
  * @return {string} html display of this deal's problem type using the passed template.
  */
-Bridge.Deal.prototype.showProblemType = function showProblemType(containerID, config) {
+Bridge.Deal.prototype.showProblemType = function showProblemType(container, config) {
   config = config || {};
   _.defaults(config, {
-    containerID: containerID,
+    container: container,
     template: "deal.problemType",
     problemTypes: [
       "Bidding",
@@ -4411,14 +4439,14 @@ Bridge.Hand.prototype.toHTML = function toHTML(config, operation) {
 /**
  * Generate html to show hand based on passed template name (which should be registered) and config.
  * If nothing is specified defaults are used.
- * @param {string} containerID the id of the container to embed html in
+ * @param {string} container the container css selector to embed html in
  * @param {object} config the configuration options to use
  * @return {string} html display of this hand using the passed template.
  */
-Bridge.Hand.prototype.showHand = function showHand(containerID, config) {
+Bridge.Hand.prototype.showHand = function showHand(container, config) {
   config = config || {};
   _.defaults(config, {
-    containerID: containerID,
+    container: container,
     template: "hand.cards",
   });
   return this.toHTML(config);
@@ -4427,14 +4455,14 @@ Bridge.Hand.prototype.showHand = function showHand(containerID, config) {
 /**
  * Generate html to show hand that is on leadbased on passed template name (which should be registered) and config.
  * If nothing is specified defaults are used.
- * @param {string} containerID the id of the container to embed html in
+ * @param {string} container the container css selector to embed html in
  * @param {object} config the configuration options to use
  * @return {string} html display of this hand using the passed template.
  */
-Bridge.Hand.prototype.showLead = function showHand(containerID, config) {
+Bridge.Hand.prototype.showLead = function showHand(container, config) {
   config = config || {};
   _.defaults(config, {
-    containerID: containerID,
+    container: container,
     template: "hand.lead",
   });
   return this.toHTML(config);
@@ -4450,14 +4478,14 @@ Bridge.Auction.prototype.toHTML = function toHTML(config, operation) {
 /**
  * Generate html to show auction based on passed template name (which should be registered) and config.
  * If nothing is specified defaults are used.
- * @param {string} containerID the id of the container to embed html in
+ * @param {string} container the container css selector to embed html in
  * @param {object} config the configuration options to use
  * @return {string} html display of this auction using the passed template.
  */
-Bridge.Auction.prototype.showAuction = function showAuction(containerID, config) {
+Bridge.Auction.prototype.showAuction = function showAuction(container, config) {
   config = config || {};
   _.defaults(config, {
-    containerID: containerID,
+    container: container,
     template: "auction.full",
     "addQuestionMark": true,
   });
@@ -4467,14 +4495,14 @@ Bridge.Auction.prototype.showAuction = function showAuction(containerID, config)
 /**
  * Generate html to show bidding box based on configuration options.
  * If nothing is specified defaults are used.
- * @param {string} containerID the id of the container to embed html in
+ * @param {string} container the container css selector to embed html in
  * @param {object} config the configuration options to use
  * @return {string} html display of this auction's bidding box using the passed template.
  */
- Bridge.Auction.prototype.showBiddingBox = function showBiddingBox(containerID, config) {
+ Bridge.Auction.prototype.showBiddingBox = function showBiddingBox(container, config) {
    config = config || {};
    _.defaults(config, {
-     containerID: containerID,
+     container: container,
      template: "auction.bidding-box.concise",
    });
    return this.toHTML(config);
@@ -4491,6 +4519,29 @@ Bridge._cloneConfig = function _cloneConfig(config) {
 };
 
 /** HAND TEMPLATES */
+
+_.declareTemplate("deal.dealer_and_vulnerability", `<vulnerabilities><%
+  var currentVulnerability = deal.getVulnerability();
+  var names = {
+    '-': "None",
+    'n': "Us",
+    'e': "Them",
+    'b': "Both",
+  };
+  if (Bridge.isEastWest(deal.getActiveHand())) {
+    names['n'] = "Them";
+    names['e'] = "Us";
+  }
+  _.each(Bridge.vulnerabilities, function(item, vulnerability) {
+    %><vulnerability data-operation="setVulnerability" data-vulnerability=<%=vulnerability%> <%
+    if (vulnerability != currentVulnerability) {
+      %>class="enabled" <%
+    } else {
+      %>class="disabled current" <%
+    }
+    %>><%=names[vulnerability]%></vulnerability><%
+  });
+  %></vulnerabilities>`);
 
 _.declareTemplate("deal.vulnerability", `<vulnerabilities><%
   var currentVulnerability = deal.getVulnerability();
