@@ -8,9 +8,7 @@
     <meta charset="utf-8" />
     <meta name="format-detection" content="telephone=no" />
     <meta name="msapplication-tap-highlight" content="no" />
-    <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, usr-scalable=no">
-    <!--<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, target-densitydpi=device-dpi" />-->
     <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.min.css">
     <link rel="stylesheet" href="css/jquery.mobile.iscrollview.css"/>
     <link rel="stylesheet" href="css/jquery.mobile.iscrollview-pull.css"/>
@@ -206,8 +204,11 @@
             <description class="scrollable"></description>
           <deal>
           <div id="answers-results" class="scrollable"></div>
-          <div id="history-revote-button" class="button clickable bridgewinners enabled">Re-vote</div>
-          <div id="history-voters-button" data-role="section-change" data-section="history-responses-page" class="button clickable bridgewinners enabled">Voters</div>
+          <div class="show-next-problem">
+            <div id="history-next-button" class="button clickable bridgewinners enabled">Next Hand</div>
+            <div id="history-revote-button" class="button clickable bridgewinners enabled">Re-vote</div>
+            <div id="history-voters-button" data-role="section-change" data-section="history-responses-page" class="button clickable bridgewinners enabled">Voters</div>
+          </div>
         </div>
         <div id="history-responses-page" data-role="section" data-name="history-responses-page">
           <div id="history-responses-voters">

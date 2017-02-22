@@ -351,6 +351,10 @@ BW.history = new function() {
     "published": [],
     "voted": [],
   };
+  this.locallyAddedProblems = {
+    "published": [],
+    "voted": [],
+  };
   this.problemsReady = {
     "published": null,
     "voted": null,
@@ -363,12 +367,18 @@ BW.history = new function() {
     var self = this;
     this.setupClickHandlers();
   };
+  this.addProblem = function(pollType, problem) {
+    this.locallyAddedProblems[pollType].unshift(problem);
+  };
   this.setupClickHandlers = function() {
     var self = this;
-    $(document).on("tap", "#history-revote-button.enabled", function() {
-      var slug = $(this).data("slug");
+    $(document).on("tap", "#history-next-button.enabled", function(e) {
+      e.preventDefault();
+      BW.page.show("vote");
+    });
+    $(document).on("tap", "#history-revote-button.enabled", function(e) {
+      e.preventDefault();
       BW.page.show("vote", {"problem": self.problemShown});
-      return false;
     });
     $(document).on("swipeleft", "#history-responses-voters", function() {
       if (self.currentResponseSection < self.numResponseSections-1) {
@@ -507,6 +517,11 @@ BW.history = new function() {
   this.loadProblem = function(slug, backPage, data, pollType) {
     $("#back-button").removeClass("hide");
     BW.utils.setAttribute($("#back-button"), "section", backPage);
+    if (backPage === "vote-page") {
+      $("#history-next-button").removeClass("hide");
+    } else {
+      $("#history-next-button").addClass("hide");
+    }
     $("#history-menu").addClass("hide");
     this.slug = slug;
     if (data) {
@@ -717,11 +732,13 @@ BW.history = new function() {
     }
     var deferredObject = self.problemsReady[pollType];
     if (!deferredObject) {
-      if (self.has_more[pollType]) {
-        $("#history-"+ pollType +"-more-button").removeClass("disabled").addClass("enabled");
-      } else {
-        $("#history-"+ pollType +"-more-button").removeClass("enabled").addClass("disabled");
-      }
+      // if (self.has_more[pollType]) {
+      //   $("#history-"+ pollType +"-more-button").removeClass("disabled").addClass("enabled");
+      // } else {
+      //   $("#history-"+ pollType +"-more-button").removeClass("enabled").addClass("disabled");
+      // }
+      self.problems[pollType] = self.locallyAddedProblems[pollType].concat(self.problems[pollType]);
+      self.locallyAddedProblems[pollType] = [];
       self.show(pollType);
       return false;
     }
@@ -730,11 +747,13 @@ BW.history = new function() {
     }
     deferredObject.done(function(data) {
       self.has_more[pollType] = data.has_more;
-      if (self.has_more[pollType]) {
-        $("#history-"+ pollType +"-more-button").removeClass("disabled").addClass("enabled");
-      } else {
-        $("#history-"+ pollType +"-more-button").removeClass("enabled").addClass("disabled");
-      }
+      // if (self.has_more[pollType]) {
+      //   $("#history-"+ pollType +"-more-button").removeClass("disabled").addClass("enabled");
+      // } else {
+      //   $("#history-"+ pollType +"-more-button").removeClass("enabled").addClass("disabled");
+      // }
+      self.problems[pollType] = self.locallyAddedProblems[pollType].concat(self.problems[pollType]);
+      self.locallyAddedProblems[pollType] = [];
       $.merge(self.problems[pollType], data.polls);
       self.show(pollType);
       self.problemsReady[pollType] = null;
@@ -986,7 +1005,8 @@ BW.create = new function() {
       loadingMessage: "Submitting New Problem...",
       successCallback: function(data) {
         self.reset();
-        BW.page.show("vote", {"slug": data.slug});
+        BW.history.addProblem("published", data);
+        BW.page.show("vote", {"problem": data});
       },
     });
   	return false;
@@ -1235,6 +1255,7 @@ BW.vote = new function() {
       successCallback: function(data) {
         var option = BW.options.get("after-voting");
         self.problem = null;
+        BW.history.addProblem("voted", data);
         self.loadInBackground();
         if (option === "next") {
           self.load();

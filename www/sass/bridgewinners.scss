@@ -1,7 +1,3 @@
-/* Welcome to Compass.
- * In this file you should write your main styles. (or centralize your imports)
- * Import this file using the following HTML or equivalent:
- * <link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
 
 @import "compass/reset";
 @import "compass/css3";
@@ -39,7 +35,8 @@ $deactiveGrey: #c7c7cc;
 $lightGrey: #dddddd;
 $darkGrey: #4a4a4a;
 $blueGrey: #a4b7bb;
-$passGreen: #417505;
+//$passGreen: #417505;
+$passGreen: #5b9c0f;
 $doubleRed: #d0021b;
 $redoubleBlue: #000099;
 $suitRed: #cb1517;
@@ -148,7 +145,6 @@ $menu_items: vote create history alerts account;
   width: 20px;
   height: 20px;
   float: left;
-  //margin-right: 1vw;
 }
 
 .scrollable {
@@ -222,7 +218,7 @@ $menu_items: vote create history alerts account;
     }
     @each $suit in $suits {
       [data-suit="#{$suit}"][data-rank="x"] {
-        background-image: url("img/#{$suit}2.png");
+        background-image: url("img/#{$suit}x.png");
       }
       @each $rank in $ranks {
         [data-suit="#{$suit}"][data-rank="#{$rank}"] {
@@ -265,7 +261,7 @@ $menu_items: vote create history alerts account;
     }
     @each $suit in $suits {
       [data-suit="#{$suit}"][data-rank="x"].unassigned {
-        background-image: url("img/#{$suit}2.png");
+        background-image: url("img/#{$suit}x.png");
       }
       @each $rank in $ranks {
         [data-suit="#{$suit}"][data-rank="#{$rank}"].unassigned {
@@ -278,17 +274,17 @@ $menu_items: vote create history alerts account;
       background-color: $lightGrey;
       border: solid 1px #979797;
     }
-    @for $i from 1 through 52 {
+    @for $i from 1 through 56 {
       [data-card-number="#{$i}"] {
-        $left: (($i - 1) % 13) * 25px + 15px;
+        $left: (($i - 1) % 14) * 23px + 16px;
         $row_num: 0;
-        @if $i > 39 {
+        @if $i > 42 {
           $row_num: 3;
         }
-        @else if $i > 26 {
+        @else if $i > 28 {
           $row_num: 2;
         }
-        @else if $i > 13 {
+        @else if $i > 14 {
           $row_num: 1;
         }
         @else {
@@ -460,7 +456,6 @@ $menu_items: vote create history alerts account;
     }
     calls {
       @include font(25px);
-      //height: 81.5%;
     }
     row {
       display: table-row;
@@ -823,13 +818,33 @@ $menu_items: vote create history alerts account;
       background-color: $BWRed;
       cursor: pointer;
     }
-    #history-revote-button {
-      @extend %flex-vertical-center;
-      @include location(535px, 44px, 169px, 15px);
+    .show-next-problem {
+      #history-next-button {
+        @extend %flex-vertical-center;
+        @include location(535px, 44px, 110px, 249px);
+      }
+      #history-revote-button {
+        @extend %flex-vertical-center;
+        @include location(535px, 44px, 110px, 15px);
+      }
+      #history-voters-button {
+        @extend %flex-vertical-center;
+        @include location(535px, 44px, 110px, 132px);
+      }
     }
-    #history-voters-button {
-      @extend %flex-vertical-center;
-      @include location(535px, 44px, 169px, 191px);
+    .dont-show-next-problem {
+      #history-next-button {
+        display: none;
+        visibility: hidden;
+      }
+      #history-revote-button {
+        @extend %flex-vertical-center;
+        @include location(535px, 44px, 169px, 15px);
+      }
+      #history-voters-button {
+        @extend %flex-vertical-center;
+        @include location(535px, 44px, 169px, 191px);
+      }
     }
   }
   #history-menu {
@@ -951,7 +966,6 @@ $menu_items: vote create history alerts account;
     color:transparent;
   }
   .history-list {
-    //@include location(88px, 485px, 375px);
     section {
       display: inline-block;
     }
@@ -1055,14 +1069,13 @@ deal {
     font-weight: 600;
   }
   votes:before {
-    background: url("img/answers_black.png") no-repeat;
+    background: url("img/answers.png") no-repeat;
     content: "";
     display: block;
     @include background-contain();
     width: 20px;
     height: 20px;
     float: left;
-    //margin-right: 1vw;
   }
   comments {
     @extend %flex-vertical-center2;
@@ -1078,7 +1091,6 @@ deal {
     width: 20px;
     height: 20px;
     float: left;
-    //margin-right: 1vw;
   }
   likes {
     @extend %flex-vertical-center2;
@@ -1125,7 +1137,6 @@ deal {
     }
     calls {
       @include font(25px);
-      //height: 82.23%;
     }
     row {
       display: table-row;
@@ -1220,7 +1231,7 @@ deal {
     }
     @each $suit in $suits {
       [data-suit="#{$suit}"][data-rank="x"] {
-        background-image: url("img/#{$suit}2.png");
+        background-image: url("img/#{$suit}x.png");
       }
       @each $rank in $ranks {
         [data-suit="#{$suit}"][data-rank="#{$rank}"] {
@@ -1661,7 +1672,6 @@ avatar.large {
     @include height(44px);
     @include left(15px);
     @include width(345px);
-    //@include location(75px, 44px, 345px, 15px);
     display: table;
     table-layout: fixed;
     @include border-radius(5px);
@@ -1689,59 +1699,4 @@ avatar.large {
 
 .main-page {
   @include location(44px);
-}
-
-
-/**
- *
- * Pull down styles
- *
- */
-#pullDown, #pullUp {
-	background:#fff;
-	height:40px;
-	line-height:40px;
-	padding:5px 10px;
-	border-bottom:1px solid #ccc;
-	font-weight:bold;
-	font-size:14px;
-	color:#888;
-}
-#pullDown .pullDownIcon, #pullUp .pullUpIcon  {
-	display:block; float:left;
-	width:40px; height:40px;
-	background:url(pull-icon@2x.png) 0 0 no-repeat;
-	-webkit-background-size:40px 80px; background-size:40px 80px;
-	-webkit-transition-property:-webkit-transform;
-	-webkit-transition-duration:250ms;
-}
-#pullDown .pullDownIcon {
-	-webkit-transform:rotate(0deg) translateZ(0);
-}
-#pullUp .pullUpIcon  {
-	-webkit-transform:rotate(-180deg) translateZ(0);
-}
-
-#pullDown.flip .pullDownIcon {
-	-webkit-transform:rotate(-180deg) translateZ(0);
-}
-
-#pullUp.flip .pullUpIcon {
-	-webkit-transform:rotate(0deg) translateZ(0);
-}
-
-#pullDown.loading .pullDownIcon, #pullUp.loading .pullUpIcon {
-	background-position:0 100%;
-	-webkit-transform:rotate(0deg) translateZ(0);
-	-webkit-transition-duration:0ms;
-
-	-webkit-animation-name:loading;
-	-webkit-animation-duration:2s;
-	-webkit-animation-iteration-count:infinite;
-	-webkit-animation-timing-function:linear;
-}
-
-@-webkit-keyframes loading {
-	from { -webkit-transform:rotate(0deg) translateZ(0); }
-	to { -webkit-transform:rotate(360deg) translateZ(0); }
 }

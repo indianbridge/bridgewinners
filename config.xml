@@ -10,7 +10,6 @@
   <content src="index.html" />
   <access origin="*"/>
   <access origin="mailto:*" launch-external="yes"/>
-	<icon src="res/icon.png" />
 	<preference name="LoadingDialog" value="Please wait for Bridge Winners Awesomeness to begin..."/>
 	<preference name="AutoHideSplashScreen" value="false" />
 	<preference name="SplashScreen" value="screen" />
@@ -21,12 +20,7 @@
   <preference name="Orientation" value="portrait" />
   <preference name="DisallowOverscroll" value="true"/>
 	<platform name="android">
-		<icon src="res/android/drawable-hdpi/Icon.png" density="hdpi" />
-		<icon src="res/android/drawable-ldpi/Icon.png" density="ldpi" />
-		<icon src="res/android/drawable-mdpi/Icon.png" density="mdpi" />
-		<icon src="res/android/drawable-xhdpi/Icon.png" density="xhdpi" />
-		<icon src="res/android/drawable-xxhdpi/Icon.png" density="xxhdpi" />
-		<icon src="res/android/drawable-xxxhdpi/Icon.png" density="xxxhdpi" />
+    <icon src="res/icon.png" />
 		<!-- you can use any density that exists in the Android project -->
 		<splash src="res/android/drawable-hdpi/splash.png" density="land-hdpi"/>
 		<splash src="res/android/drawable-ldpi/splash.png" density="land-ldpi"/>

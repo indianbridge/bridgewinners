@@ -206,16 +206,52 @@ BW.dialog = function(container) {
 BW.alerts = new function() {
   this.alertsReady = $.Deferred();
   this.alerts = [];
+  this.problems = {};
   this.has_more = true;
   this.init = function() {
     this.setupClickHandlers();
   };
   this.setupClickHandlers = function() {
     var self = this;
-    $(document).on("tap", "li.alert[data-slug]", function() {
+    $(document).on("tap", "li.alert[data-slug]", function(e) {
+      e.preventDefault();
       var slug = $(this).data("slug");
-      BW.page.show("vote", {"slug": slug});
-      return false;
+      if (slug in self.problems) {
+        var data = self.problems[slug];
+        BW.page.show("history", {}, /*disableCallbacks=*/true);
+        BW.page.showSection("history-results-page", {
+          "slug": this.slug,
+          "back": "alerts-page",
+          "data": data,
+        });
+        return;
+      }
+      var data = {
+        "num_responses": 3,
+        "slug": slug,
+      };
+      BW.ajax({
+        urlSuffix: "get-voting-problem/",
+        data: data,
+        loadingMessage: "Getting Problem Details...",
+        successCallback: function(data) {
+          self.problems[data.slug] = data;
+          BW.page.show("history", {}, /*disableCallbacks=*/true);
+          BW.page.showSection("history-results-page", {
+            "slug": this.slug,
+            "back": "alerts-page",
+            "data": data,
+          });
+        },
+        errorCallback: function(message) {
+          BW.messageDialog.show("Request Failed: " + message);
+        },
+        failedCallback: function(message) {
+          BW.messageDialog.show("Request Failed: " + message);
+        },
+      });
+
+      //BW.page.show("vote", {"slug": slug});
     });
     $(document).on("iscroll_onpulldown", "#alerts-wrapper", function() {
       self.loadInBackground();
@@ -351,6 +387,10 @@ BW.history = new function() {
     "published": [],
     "voted": [],
   };
+  this.locallyAddedProblems = {
+    "published": [],
+    "voted": [],
+  };
   this.problemsReady = {
     "published": null,
     "voted": null,
@@ -363,12 +403,18 @@ BW.history = new function() {
     var self = this;
     this.setupClickHandlers();
   };
+  this.addProblem = function(pollType, problem) {
+    this.locallyAddedProblems[pollType].unshift(problem);
+  };
   this.setupClickHandlers = function() {
     var self = this;
-    $(document).on("tap", "#history-revote-button.enabled", function() {
-      var slug = $(this).data("slug");
+    $(document).on("tap", "#history-next-button.enabled", function(e) {
+      e.preventDefault();
+      BW.page.show("vote");
+    });
+    $(document).on("tap", "#history-revote-button.enabled", function(e) {
+      e.preventDefault();
       BW.page.show("vote", {"problem": self.problemShown});
-      return false;
     });
     $(document).on("swipeleft", "#history-responses-voters", function() {
       if (self.currentResponseSection < self.numResponseSections-1) {
@@ -421,7 +467,7 @@ BW.history = new function() {
     BW.page.registerSectionChangeCallback("history-results-page", function(section, parameters) {
       $("#header-text").empty().append("Results");
       self.loadProblem(parameters.slug, parameters.back, parameters.data, parameters.pollType);
-      if (parameters.back !== "vote-page") {
+      if (parameters.back !== "vote-page" && parameters.back !== "alerts-page") {
         self.disableScrollers();
       }
     });
@@ -507,6 +553,11 @@ BW.history = new function() {
   this.loadProblem = function(slug, backPage, data, pollType) {
     $("#back-button").removeClass("hide");
     BW.utils.setAttribute($("#back-button"), "section", backPage);
+    if (backPage === "vote-page") {
+      $("#history-next-button").removeClass("hide");
+    } else {
+      $("#history-next-button").addClass("hide");
+    }
     $("#history-menu").addClass("hide");
     this.slug = slug;
     if (data) {
@@ -717,11 +768,13 @@ BW.history = new function() {
     }
     var deferredObject = self.problemsReady[pollType];
     if (!deferredObject) {
-      if (self.has_more[pollType]) {
-        $("#history-"+ pollType +"-more-button").removeClass("disabled").addClass("enabled");
-      } else {
-        $("#history-"+ pollType +"-more-button").removeClass("enabled").addClass("disabled");
-      }
+      // if (self.has_more[pollType]) {
+      //   $("#history-"+ pollType +"-more-button").removeClass("disabled").addClass("enabled");
+      // } else {
+      //   $("#history-"+ pollType +"-more-button").removeClass("enabled").addClass("disabled");
+      // }
+      self.problems[pollType] = self.locallyAddedProblems[pollType].concat(self.problems[pollType]);
+      self.locallyAddedProblems[pollType] = [];
       self.show(pollType);
       return false;
     }
@@ -730,11 +783,13 @@ BW.history = new function() {
     }
     deferredObject.done(function(data) {
       self.has_more[pollType] = data.has_more;
-      if (self.has_more[pollType]) {
-        $("#history-"+ pollType +"-more-button").removeClass("disabled").addClass("enabled");
-      } else {
-        $("#history-"+ pollType +"-more-button").removeClass("enabled").addClass("disabled");
-      }
+      // if (self.has_more[pollType]) {
+      //   $("#history-"+ pollType +"-more-button").removeClass("disabled").addClass("enabled");
+      // } else {
+      //   $("#history-"+ pollType +"-more-button").removeClass("enabled").addClass("disabled");
+      // }
+      self.problems[pollType] = self.locallyAddedProblems[pollType].concat(self.problems[pollType]);
+      self.locallyAddedProblems[pollType] = [];
       $.merge(self.problems[pollType], data.polls);
       self.show(pollType);
       self.problemsReady[pollType] = null;
@@ -986,7 +1041,8 @@ BW.create = new function() {
       loadingMessage: "Submitting New Problem...",
       successCallback: function(data) {
         self.reset();
-        BW.page.show("vote", {"slug": data.slug});
+        BW.history.addProblem("published", data);
+        BW.page.show("vote", {"problem": data});
       },
     });
   	return false;
@@ -1121,6 +1177,7 @@ BW.create = new function() {
     $("vulnerability[data-direction='" + deal.getDealer() + "']").empty().append("D");
     $("scoring").empty().append(BW.options.getScoringMapping(deal.getScoring()));
     $("#avatar-review").css("background-image", "url(" + BW.utils.getAvatarLink(BW.user.userInfo.avatar) + ")");
+    $("user").empty().append(BW.user.getName());
     $("description").empty().append(Bridge.replaceSuitSymbolsHTML(deal.getNotes()));
     this.deal = deal;
     this.updateStatus();
@@ -1235,6 +1292,7 @@ BW.vote = new function() {
       successCallback: function(data) {
         var option = BW.options.get("after-voting");
         self.problem = null;
+        BW.history.addProblem("voted", data);
         self.loadInBackground();
         if (option === "next") {
           self.load();
@@ -1459,6 +1517,8 @@ BW.page = new function() {
       if (section && section != "") {
         if (section === "vote-page") {
           BW.page.show("vote");
+        } else if (section === "alerts-page") {
+          BW.page.show("alerts");
         } else {
           self.showSection(section, $(this).data());
         }
@@ -1637,6 +1697,9 @@ BW.user = new function() {
       back: "account-main-page",
     },
   };
+  this.getName = function() {
+    return this.userInfo.name;
+  };
   this.getUserName = function() {
     return this.userInfo.username;
   };
@@ -1701,7 +1764,7 @@ BW.user = new function() {
     $("[data-role='section']").hide();
     $("#header-text").empty().append("Account");
     $("#account-list").listview();
-    $("#name").empty().append(this.userInfo.name);
+    $("#name").empty().append(this.getName());
     $("#avatar-profile").css("background-image", "url(" + BW.utils.getAvatarLink(this.userInfo.avatar) + ")");
     BW.page.showSection("account-main-page");
   };
