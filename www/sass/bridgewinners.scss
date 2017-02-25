@@ -1225,14 +1225,11 @@ deal {
         cursor: pointer;
     }
     $suits: s h d c;
-    $ranks: a k q j t 9 8 7 6 5 4 3 2;
+    $ranks: a k q j t 9 8 7 6 5 4 3 2 x;
     [data-suit][data-rank] {
       @include background-cover();
     }
     @each $suit in $suits {
-      [data-suit="#{$suit}"][data-rank="x"] {
-        background-image: url("img/#{$suit}x.png");
-      }
       @each $rank in $ranks {
         [data-suit="#{$suit}"][data-rank="#{$rank}"] {
           background-image: url("img/#{$suit}#{$rank}.png");

@@ -1957,6 +1957,9 @@ Bridge.Hand.prototype.addCard = function( suit, rank ) {
 Bridge.Hand.prototype.removeCard = function(suit, rank) {
 	if (_.isObject(suit)) {
 		rank = suit.rank;
+		if (rank == 'x' || rank == 'X') {
+			rank = suit.concreteRank;
+		}
 		suit = suit.suit;
 	}
 	var prefix = "In removeCard";
@@ -2196,7 +2199,7 @@ Bridge.Hand.prototype.getCards = function() {
 			if ( this.cards[ suit ][ actualRank ] ) {
 				var rank = this.showAsX[ suit ][ actualRank ] ? 'x' : actualRank;
 				var rankHTML = this.showAsX[ suit ][ actualRank ] ? 'x' : Bridge.ranks[ rank ].html;
-				out.push( { "suit": suit, "rank": rank, "html": rankHTML } );
+				out.push( { "suit": suit, "rank": rank, "html": rankHTML, "concreteRank": actualRank } );
 			}
 		}, this);
 	}, this);
@@ -4637,7 +4640,8 @@ _.declareTemplate("deal.card-deck.rows", `<card-deck><%
       }
       %>data-suit=<%=suit%> data-rank=<%=rank%>></card><%
     });
-    %></row><%
+    count++;
+    %><card data-card-number="<%=count%>" class="enabled unassigned" data-operation=addCard data-direction=<%=activeHand%> data-suit=<%=suit%> data-rank=x></card></row><%
   });
   %></content></card-deck>`);
 
@@ -4660,7 +4664,7 @@ _.declareTemplate( "hand.cards",`<hand><content><%
       if (hand.isSelectedCard(card.suit, card.rank)) {
         %> selected<%
       }
-      %>" data-operation="removeCard" data-card-number="<%=count%>" data-suit="<%=card.suit%>" data-rank="<%=card.rank%>"></card><%
+      %>" data-operation="removeCard" data-card-number="<%=count%>" data-suit="<%=card.suit%>" data-concrete-rank="<%=card.concreteRank%>" data-rank="<%=card.rank%>"></card><%
     });
     while (count < 13) {
   		count++;

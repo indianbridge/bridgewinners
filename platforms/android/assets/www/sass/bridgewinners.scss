@@ -35,7 +35,8 @@ $deactiveGrey: #c7c7cc;
 $lightGrey: #dddddd;
 $darkGrey: #4a4a4a;
 $blueGrey: #a4b7bb;
-$passGreen: #417505;
+//$passGreen: #417505;
+$passGreen: #5b9c0f;
 $doubleRed: #d0021b;
 $redoubleBlue: #000099;
 $suitRed: #cb1517;
@@ -217,7 +218,7 @@ $menu_items: vote create history alerts account;
     }
     @each $suit in $suits {
       [data-suit="#{$suit}"][data-rank="x"] {
-        background-image: url("img/#{$suit}2.png");
+        background-image: url("img/#{$suit}x.png");
       }
       @each $rank in $ranks {
         [data-suit="#{$suit}"][data-rank="#{$rank}"] {
@@ -260,7 +261,7 @@ $menu_items: vote create history alerts account;
     }
     @each $suit in $suits {
       [data-suit="#{$suit}"][data-rank="x"].unassigned {
-        background-image: url("img/#{$suit}2.png");
+        background-image: url("img/#{$suit}x.png");
       }
       @each $rank in $ranks {
         [data-suit="#{$suit}"][data-rank="#{$rank}"].unassigned {
@@ -273,17 +274,17 @@ $menu_items: vote create history alerts account;
       background-color: $lightGrey;
       border: solid 1px #979797;
     }
-    @for $i from 1 through 52 {
+    @for $i from 1 through 56 {
       [data-card-number="#{$i}"] {
-        $left: (($i - 1) % 13) * 25px + 15px;
+        $left: (($i - 1) % 14) * 23px + 16px;
         $row_num: 0;
-        @if $i > 39 {
+        @if $i > 42 {
           $row_num: 3;
         }
-        @else if $i > 26 {
+        @else if $i > 28 {
           $row_num: 2;
         }
-        @else if $i > 13 {
+        @else if $i > 14 {
           $row_num: 1;
         }
         @else {
@@ -1068,7 +1069,7 @@ deal {
     font-weight: 600;
   }
   votes:before {
-    background: url("img/answers_black.png") no-repeat;
+    background: url("img/answers.png") no-repeat;
     content: "";
     display: block;
     @include background-contain();
@@ -1230,7 +1231,7 @@ deal {
     }
     @each $suit in $suits {
       [data-suit="#{$suit}"][data-rank="x"] {
-        background-image: url("img/#{$suit}2.png");
+        background-image: url("img/#{$suit}x.png");
       }
       @each $rank in $ranks {
         [data-suit="#{$suit}"][data-rank="#{$rank}"] {

@@ -38,6 +38,22 @@
                         }
                     ]
                 }
+            },
+            "*-Info.plist": {
+                "parents": {
+                    "UIBackgroundModes": [
+                        {
+                            "xml": "<array><string>remote-notification</string></array>",
+                            "count": 1
+                        }
+                    ],
+                    "ITSAppUsesNonExemptEncryption": [
+                        {
+                            "xml": "<false />",
+                            "count": 1
+                        }
+                    ]
+                }
             }
         }
     },
@@ -58,6 +74,9 @@
             "PACKAGE_NAME": "com.bridgewinners.mobile"
         },
         "cordova-plugin-inappbrowser": {
+            "PACKAGE_NAME": "com.bridgewinners.mobile"
+        },
+        "cordova-plugin-ios-no-export-compliance": {
             "PACKAGE_NAME": "com.bridgewinners.mobile"
         }
     },
@@ -128,6 +147,7 @@
         "cordova-plugin-statusbar": "2.2.0",
         "cordova-plugin-whitelist": "1.3.0",
         "cordova-plugin-console": "1.0.5",
-        "cordova-plugin-inappbrowser": "1.6.1"
+        "cordova-plugin-inappbrowser": "1.6.1",
+        "cordova-plugin-ios-no-export-compliance": "0.0.1"
     }
 }

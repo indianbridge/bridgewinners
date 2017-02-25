@@ -21,6 +21,9 @@
         },
         "cordova-plugin-inappbrowser": {
             "PACKAGE_NAME": "com.bridgewinners.mobile"
+        },
+        "cordova-plugin-ios-no-export-compliance": {
+            "PACKAGE_NAME": "com.bridgewinners.mobile"
         }
     },
     "dependent_plugins": {

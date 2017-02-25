@@ -77,6 +77,7 @@ BW.app.start();
  * Some utility functions.
  */
 BW.utils = new function() {
+  //this.sitePrefix = "https://www.bridgewinners.com";
   this.sitePrefix = "https://52.4.5.8";
   //this.sitePrefix = "https://127.0.0.1:8000";
   this.init = function() {
@@ -218,12 +219,16 @@ BW.alerts = new function() {
       var slug = $(this).data("slug");
       if (slug in self.problems) {
         var data = self.problems[slug];
-        BW.page.show("history", {}, /*disableCallbacks=*/true);
-        BW.page.showSection("history-results-page", {
-          "slug": this.slug,
-          "back": "alerts-page",
-          "data": data,
-        });
+        if (data.my_answer) {
+          BW.page.show("history", {}, /*disableCallbacks=*/true);
+          BW.page.showSection("history-results-page", {
+            "slug": this.slug,
+            "back": "alerts-page",
+            "data": data,
+          });
+        } else {
+          BW.page.show("vote", {"problem": data});
+        }
         return;
       }
       var data = {
@@ -236,12 +241,16 @@ BW.alerts = new function() {
         loadingMessage: "Getting Problem Details...",
         successCallback: function(data) {
           self.problems[data.slug] = data;
-          BW.page.show("history", {}, /*disableCallbacks=*/true);
-          BW.page.showSection("history-results-page", {
-            "slug": this.slug,
-            "back": "alerts-page",
-            "data": data,
-          });
+          if (data.my_answer) {
+            BW.page.show("history", {}, /*disableCallbacks=*/true);
+            BW.page.showSection("history-results-page", {
+              "slug": this.slug,
+              "back": "alerts-page",
+              "data": data,
+            });
+          } else {
+            BW.page.show("vote", {"problem": data});
+          }
         },
         errorCallback: function(message) {
           BW.messageDialog.show("Request Failed: " + message);
@@ -1313,6 +1322,7 @@ BW.vote = new function() {
     data = data || {};
     _.defaults(data, {
       "num_responses": 0,
+      "slug": "lead-problem-2-64gkumhu26",
       //"slug": "lead-problem-798",
     });
     if (!deferredObject) {
