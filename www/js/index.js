@@ -233,6 +233,7 @@ BW.alerts = new function() {
       }
       var data = {
         "num_responses": 3,
+        "exclude_default_avatars": true,
         "slug": slug,
       };
       BW.ajax({
@@ -259,8 +260,6 @@ BW.alerts = new function() {
           BW.messageDialog.show("Request Failed: " + message);
         },
       });
-
-      //BW.page.show("vote", {"slug": slug});
     });
     $(document).on("iscroll_onpulldown", "#alerts-wrapper", function() {
       self.loadInBackground();
@@ -414,6 +413,7 @@ BW.history = new function() {
   };
   this.addProblem = function(pollType, problem) {
     this.locallyAddedProblems[pollType].unshift(problem);
+    self.polls[pollType][problem.slug] = problem;
   };
   this.setupClickHandlers = function() {
     var self = this;
@@ -483,7 +483,6 @@ BW.history = new function() {
     BW.page.registerSectionChangeCallback("history-responses-page", function(section, parameters) {
       $("#header-text").empty().append("Voters");
       self.loadResponses(parameters.slug, parameters.back, parameters.pollType);
-      //self.disableScrollers();
     });
   };
   this.showResponses = function(slug, backPage, pollType) {
@@ -544,6 +543,11 @@ BW.history = new function() {
   };
   this.loadResponses = function(slug, backPage, pollType) {
     var self = this;
+    var problem = self.polls[pollType][slug];
+    if (problem.hasOwnProperty('has_responses') && problem['has_responses']) {
+      self.showResponses(slug, backPage, pollType);
+      return false;
+    }
     var ajaxRequest = BW.ajax({
       urlSuffix: "get-voting-problem/",
       data: {
@@ -553,6 +557,7 @@ BW.history = new function() {
       successCallback: function(data) {
         pollType = pollType || "voted";
         self.polls[pollType][data.slug] = data;
+        self.polls[pollType][data.slug]['has_responses'] = true;
         self.showResponses(slug, backPage, pollType);
       },
     });
@@ -599,8 +604,8 @@ BW.history = new function() {
     $("#avatar-results").css("background-image", "url(" + BW.utils.getAvatarLink(data.author.avatar) + ")");
     $("user").empty().append(data.author.name);
     $("votes").empty().append(data.num_answers);
-    $("comments").empty().append(data.num_comments);
-    $("likes").empty().append(data.num_likes);
+    //$("comments").empty().append(data.num_comments);
+    //$("likes").empty().append(data.num_likes);
     var auction = deal.getAuction();
     auction.showAuction("auctioncontainer");
     var d = $('auctioncontainer content');
@@ -642,10 +647,18 @@ BW.history = new function() {
         html += "<div class='answer-result-column answer-result-avatar'>";
         html += "<div class='answer-result-avatar-imgs'>";
         var count =  0;
-        _.each(answer.public_responses.slice(0,3), function(response) {
-          count ++;
-          html += "<div class='answer-result-avatar-img'><img class='avatar-result' src='" + BW.utils.getAvatarLink(response.avatar) + "'/></div>";
-        });
+        var index = 0;
+        while(count < 3 && index < answer.public_responses.length) {
+          response = answer.public_responses[index++];
+          if (response.has_avatar) {
+            count ++;
+            html += "<div class='answer-result-avatar-img'><img class='avatar-result' src='" + BW.utils.getAvatarLink(response.avatar) + "'/></div>";
+          }
+        }
+        // _.each(answer.public_responses.slice(0,3), function(response) {
+        //   count ++;
+        //   html += "<div class='answer-result-avatar-img'><img class='avatar-result' src='" + BW.utils.getAvatarLink(response.avatar) + "'/></div>";
+        // });
         while (count < 3) {
           count ++;
           html += "<div class='answer-result-avatar-img'></div>";
@@ -676,13 +689,6 @@ BW.history = new function() {
       });
       html += "<li class='enabled' data-icon='false' data-role='section-change' data-section='history-results-page' ";
       html += "data-poll-type='" + pollType + "' data-back='" + sectionName + "' data-slug='" + item.slug + "'><a href='#'>";
-      // html += "<img class='ui-li-icon problem-type' src='";
-      // if (item.type === "Bidding") {
-      //   html += "css/img/bidding.png";
-      // } else {
-      //   html += "css/img/lead.png";
-      // }
-      // html += "'/>";
       html += "<div class='history-list-row'>";
       if (showAuthor) {
         html += "<div class='history-list-cell avatar-container'>";
@@ -690,7 +696,6 @@ BW.history = new function() {
         html += "</div>";
         html += "<div class='history-list-cell'>";
         html += "<p>";
-        //html += "<img class='avatar' src='" + BW.utils.getAvatarLink(item.author.avatar) + "'/>";
         html += "<span class='name'>" + item.author.name + "</span>";
         html += "</p>";
       } else {
@@ -722,8 +727,8 @@ BW.history = new function() {
       html += "</div>";
       html += "</p>";
       html += "<p>";
-      html += "<img class='icon' src='css/img/comments_black.png'><span class='stats num_comments'>" + item.num_comments + "</span>"
-      html += "<img class='icon' src='css/img/likes_black.png'><span class='stats num_likes'>" + item.num_likes + "</span>"
+      //html += "<img class='icon' src='css/img/comments_black.png'><span class='stats num_comments'>" + item.num_comments + "</span>"
+      //html += "<img class='icon' src='css/img/likes_black.png'><span class='stats num_likes'>" + item.num_likes + "</span>"
       html += "<img class='icon' src='css/img/answers_black.png'><span class='stats num_answers'>" + item.num_answers + "</span>"
       html += "</p>";
       html += "</div>";
@@ -753,6 +758,7 @@ BW.history = new function() {
     		start:start,
     		end: end,
         num_responses: 3,
+        exclude_default_avatars: true,
       },
       loadingMessage: null,
       successCallback: function(data) {
@@ -777,11 +783,6 @@ BW.history = new function() {
     }
     var deferredObject = self.problemsReady[pollType];
     if (!deferredObject) {
-      // if (self.has_more[pollType]) {
-      //   $("#history-"+ pollType +"-more-button").removeClass("disabled").addClass("enabled");
-      // } else {
-      //   $("#history-"+ pollType +"-more-button").removeClass("enabled").addClass("disabled");
-      // }
       self.problems[pollType] = self.locallyAddedProblems[pollType].concat(self.problems[pollType]);
       self.locallyAddedProblems[pollType] = [];
       self.show(pollType);
@@ -791,12 +792,10 @@ BW.history = new function() {
       BW.loadingDialog.show(message);
     }
     deferredObject.done(function(data) {
+      _.each(data.polls, function(poll) {
+        self.polls[pollType][poll.slug] = poll;
+      });
       self.has_more[pollType] = data.has_more;
-      // if (self.has_more[pollType]) {
-      //   $("#history-"+ pollType +"-more-button").removeClass("disabled").addClass("enabled");
-      // } else {
-      //   $("#history-"+ pollType +"-more-button").removeClass("enabled").addClass("disabled");
-      // }
       self.problems[pollType] = self.locallyAddedProblems[pollType].concat(self.problems[pollType]);
       self.locallyAddedProblems[pollType] = [];
       $.merge(self.problems[pollType], data.polls);
@@ -830,9 +829,6 @@ BW.history = new function() {
     var container = $("#history-" + pollType + "-list");
     var polls = this.problems[pollType];
     if (polls.length > 0) {
-      _.each(polls, function(poll) {
-        self.polls[pollType][poll.slug] = poll;
-      });
       var html = self.getHTML(polls, sectionName, showAuthor, showAnswer, pollType);
     } else {
       var html = "<li>" + emptyText + "</li>";
@@ -874,7 +870,11 @@ BW.history = new function() {
     $("#header-text").empty().append("History");
     $(".history-list").listview();
     this.createScrollers();
-    BW.page.showSection("history-voted-page");
+    if (parameters && parameters.section) {
+      BW.page.showSection(parameters.section);
+    } else {
+      BW.page.showSection("history-voted-page");
+    }
   };
 };
 
@@ -1051,7 +1051,8 @@ BW.create = new function() {
       successCallback: function(data) {
         self.reset();
         BW.history.addProblem("published", data);
-        BW.page.show("vote", {"problem": data});
+        BW.page.show("history", {"section": "history-published-page"});
+        //BW.page.show("vote", {"problem": data});
       },
     });
   	return false;
@@ -1279,6 +1280,7 @@ BW.vote = new function() {
       "public": true,
       "slug": this.slug,
       "num_responses": 3,
+      "exclude_default_avatars": true,
     };
     if (abstain) {
       data["Abstain"] = true;
@@ -1322,7 +1324,7 @@ BW.vote = new function() {
     data = data || {};
     _.defaults(data, {
       "num_responses": 0,
-      "slug": "lead-problem-2-64gkumhu26",
+      //"slug": "lead-problem-2-64gkumhu26",
       //"slug": "lead-problem-798",
     });
     if (!deferredObject) {
@@ -1375,6 +1377,14 @@ BW.vote = new function() {
   	return false;
   };
   this.show = function(problem) {
+    if (problem.alldone) {
+      $("#header-text").empty().append("Wow");
+      $(".no-more-voting-problems").removeClass("hide");
+      $(".has-voting-problems").addClass("hide");
+      return;
+    }
+    $(".no-more-voting-problems").addClass("hide");
+    $(".has-voting-problems").removeClass("hide");
     BW.loadingDialog.show("Loading Problem...");
     var data = problem;
     BW.utils.setAttribute($("#skip-submit-button"), "slug", data.slug);
@@ -1461,8 +1471,8 @@ BW.vote = new function() {
     $("vulnerability[data-direction='" + deal.getDealer() + "']").empty().append("D");
     $("scoring").empty().append(BW.options.getScoringMapping(data.scoring));
     $("#avatar-vote").css("background-image", "url(" + BW.utils.getAvatarLink(data.author.avatar) + ")");
-    $("comments").empty().append(data.num_comments);
-    $("likes").empty().append(data.num_likes);
+    //$("comments").empty().append(data.num_comments);
+    //$("likes").empty().append(data.num_likes);
     $("user").empty().append(data.author.name);
     $("description").empty().append(Bridge.replaceSuitSymbolsHTML(data.description));
     BW.loadingDialog.hide();
