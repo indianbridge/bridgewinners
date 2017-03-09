@@ -735,12 +735,12 @@ $menu_items: vote create history alerts account;
     votes {
       @include location(59px, 35px, 40px, 332px);
     }
-    comments {
-      @include location(59px, 35px, 40px, 252px);
-    }
-    likes {
-      @include location(59px, 35px, 40px, 292px);
-    }
+    // comments {
+    //   @include location(59px, 35px, 40px, 252px);
+    // }
+    // likes {
+    //   @include location(59px, 35px, 40px, 292px);
+    // }
     auctioncontainer {
       @include location(109px, 135px, 230px, 15px);
     }
@@ -797,6 +797,10 @@ $menu_items: vote create history alerts account;
     }
     .answer-result-avatar-img {
       display: table-cell;
+      $height: 40px;
+      height: $height/$ref_height * 100vh;
+      // Width should be same as height. So this hack.
+      width: $height/$ref_height * 100vh;
     }
     .avatar-result {
       $height: 40px;
@@ -1077,37 +1081,37 @@ deal {
     height: 20px;
     float: left;
   }
-  comments {
-    @extend %flex-vertical-center2;
-    @include font(17px);
-    color: $BWRed;
-    font-weight: 600;
-  }
-  comments:before {
-    background: url("img/comments.png") no-repeat;
-    content: "";
-    display: block;
-    @include background-contain();
-    width: 20px;
-    height: 20px;
-    float: left;
-  }
-  likes {
-    @extend %flex-vertical-center2;
-    @include font(17px);
-    color: $BWRed;
-    font-weight: 600;
-  }
-  likes:before {
-      background: url("img/likes.png") no-repeat;
-      content: "";
-      display: block;
-      @include background-contain();
-      width: 20px;
-      height: 20px;
-      float: left;
-      //margin-right: 1vw;
-  }
+  // comments {
+  //   @extend %flex-vertical-center2;
+  //   @include font(17px);
+  //   color: $BWRed;
+  //   font-weight: 600;
+  // }
+  // comments:before {
+  //   background: url("img/comments.png") no-repeat;
+  //   content: "";
+  //   display: block;
+  //   @include background-contain();
+  //   width: 20px;
+  //   height: 20px;
+  //   float: left;
+  // }
+  // likes {
+  //   @extend %flex-vertical-center2;
+  //   @include font(17px);
+  //   color: $BWRed;
+  //   font-weight: 600;
+  // }
+  // likes:before {
+  //     background: url("img/likes.png") no-repeat;
+  //     content: "";
+  //     display: block;
+  //     @include background-contain();
+  //     width: 20px;
+  //     height: 20px;
+  //     float: left;
+  //     //margin-right: 1vw;
+  // }
   auctioncontainer {
     @include font(20px);
     background-color: $white;
@@ -1225,14 +1229,11 @@ deal {
         cursor: pointer;
     }
     $suits: s h d c;
-    $ranks: a k q j t 9 8 7 6 5 4 3 2;
+    $ranks: a k q j t 9 8 7 6 5 4 3 2 x;
     [data-suit][data-rank] {
       @include background-cover();
     }
     @each $suit in $suits {
-      [data-suit="#{$suit}"][data-rank="x"] {
-        background-image: url("img/#{$suit}x.png");
-      }
       @each $rank in $ranks {
         [data-suit="#{$suit}"][data-rank="#{$rank}"] {
           background-image: url("img/#{$suit}#{$rank}.png");
@@ -1320,15 +1321,20 @@ deal {
 
 /* Bidding vote page styles. */
 #vote-page {
+  .no-more-voting-problems {
+    padding: 1vw;
+    @include font(17px);
+    color: $darkGrey;
+  }
   name {
     @include location(59px, 35px, 200px, 56px);
   }
-  comments {
-    @include location(59px, 35px, 40px, 262px);
-  }
-  likes {
-    @include location(59px, 35px, 40px, 316px);
-  }
+  // comments {
+  //   @include location(59px, 35px, 40px, 262px);
+  // }
+  // likes {
+  //   @include location(59px, 35px, 40px, 316px);
+  // }
   auctioncontainer {
     @include location(109px, 135px, 230px, 15px);
   }

@@ -1742,7 +1742,7 @@ Bridge.Hand.prototype.setSelectedCard = function selectCard(suit, rank) {
 	}
 	Bridge._checkSuit(suit);
 	var prefix = "In Hand.selectCard";
-	if (rank.toLowerCase !== 'x') {
+	if (rank !== 'x' && rank !== 'X') {
 		Bridge._checkRank(rank);
 		if ( !this.cards[ suit ][ rank ] ) {
 			Bridge._reportError( suit + rank + " is not assigned to " + this.direction + ". Cannot select", prefix );

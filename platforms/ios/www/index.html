@@ -72,29 +72,36 @@
     </script>
     <script id="vote-template" type="text/template">
       <div id="vote-page" class="main-page">
-        <deal>
-          <avatar id="avatar-vote"></avatar>
-          <name><user>Bridge Winners </user>Asks</name>
-          <comments>245</comments>
-          <likes>125</likes>
-          <auctioncontainer></auctioncontainer>
-          <vulnerabilities>
-            <vulnerability data-direction='n'></vulnerability>
-            <vulnerability data-direction='e'></vulnerability>
-            <vulnerability data-direction='s'></vulnerability>
-            <vulnerability data-direction='w'></vulnerability>
-          </vulnerabilities>
-          <scoring></scoring>
-          <infowrapper></infowrapper>
-          <handcontainer></handcontainer>
-          <description class="scrollable"></description>
-          <biddingbox></biddingbox>
-          <leadbox></leadbox>
-        <deal>
-        <div class="buttons">
-          <div id="skip-submit-button" class="button clickable bridgewinners enabled">Skip</div>
-          <div id="abstain-submit-button" class="button clickable bridgewinners enabled">Abstain</div>
-          <div id="vote-submit-button" class="button clickable bridgewinners disabled">Vote</div>
+        <div class="has-voting-problems">
+          <deal>
+            <avatar id="avatar-vote"></avatar>
+            <name><user>Bridge Winners </user>Asks</name>
+            <!-- <comments>245</comments>
+            <likes>125</likes> -->
+            <auctioncontainer></auctioncontainer>
+            <vulnerabilities>
+              <vulnerability data-direction='n'></vulnerability>
+              <vulnerability data-direction='e'></vulnerability>
+              <vulnerability data-direction='s'></vulnerability>
+              <vulnerability data-direction='w'></vulnerability>
+            </vulnerabilities>
+            <scoring></scoring>
+            <infowrapper></infowrapper>
+            <handcontainer></handcontainer>
+            <description class="scrollable"></description>
+            <biddingbox></biddingbox>
+            <leadbox></leadbox>
+          <deal>
+          <div class="buttons">
+            <div id="skip-submit-button" class="button clickable bridgewinners enabled">Skip</div>
+            <div id="abstain-submit-button" class="button clickable bridgewinners enabled">Abstain</div>
+            <div id="vote-submit-button" class="button clickable bridgewinners disabled">Vote</div>
+          </div>
+        </div>
+        <div class="no-more-voting-problems hide">
+          <p>
+            Wow, you've answered every single bridge problem on the site!  Thanks for being such an active participant!
+          </p>
         </div>
       </div>
     </script>
@@ -189,8 +196,8 @@
             <avatar id="avatar-results"></avatar>
             <name><user>Bridge Winners </user>Asks</name>
             <votes>0</votes>
-            <comments>245</comments>
-            <likes>125</likes>
+            <!-- <comments>245</comments>
+            <likes>125</likes> -->
             <auctioncontainer></auctioncontainer>
             <vulnerabilities>
               <vulnerability data-direction='n'></vulnerability>
@@ -267,8 +274,9 @@
         <div id="account-about-page" data-role="section" data-name="account-about-page" data-section-back="account-main-page">
           <div id="about-app" class="scrollable">
             <p><a target="_blank" href="http://www.bridgewinners.com">Bridge Winners</a> connects bridge players from around the world through our social network and provides a venue to learn, share, and talk about the game we love.</p>
-            <p>This mobile app from Bridgewinners allows users to create and vote on bridge problems (bidding and lead) and look up how other bridge players voted on these problems.</p>
-            <p>If you have a problem or question you can contact us at: <a href="mailto:support@bridgewinners.com">support@bridgewinners.com</a>.</p>
+            <p>This mobile app from Bridge Winners allows users to create and vote on bridge problems (bidding and lead) and see how other bridge players voted on these problems.</p>
+            <p><a id="app-feedback" target="_blank" href="https://goo.gl/forms/oxoj02qV2LSsxFmX2">Send feedback about App</a></p>
+            <p>If you have a problem or question you can contact us at: <a href="mailto:support@bridgewinners.com" data-rel="external">support@bridgewinners.com</a>.</p>
           </div>
         </div>
       </div>

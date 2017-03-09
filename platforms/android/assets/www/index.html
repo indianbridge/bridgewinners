@@ -44,8 +44,8 @@
         </div>
       </div>
     </div>
-    <div data-role="popup" id="loading-popup" class="ui-content" data-theme="b" data-dismissible="false" data-history="false">
-      <img class="center" src="css/img/ajax-loader.gif"/>
+    <div data-role="popup" id="loading-popup" class="ui-content" data-theme="a" data-dismissible="false" data-history="false">
+      <img class="center" src="css/img/7d.gif"/>
       <div class="center" id="loading-popup-content">Loading...</div>
     </div>
     <div data-role="popup" id="message-popup" class="ui-content" data-theme="b" data-dismissible="false" data-history="false">
@@ -72,29 +72,36 @@
     </script>
     <script id="vote-template" type="text/template">
       <div id="vote-page" class="main-page">
-        <deal>
-          <avatar id="avatar-vote"></avatar>
-          <name><user>Bridge Winners </user>Asks</name>
-          <comments>245</comments>
-          <likes>125</likes>
-          <auctioncontainer></auctioncontainer>
-          <vulnerabilities>
-            <vulnerability data-direction='n'></vulnerability>
-            <vulnerability data-direction='e'></vulnerability>
-            <vulnerability data-direction='s'></vulnerability>
-            <vulnerability data-direction='w'></vulnerability>
-          </vulnerabilities>
-          <scoring></scoring>
-          <infowrapper></infowrapper>
-          <handcontainer></handcontainer>
-          <description class="scrollable"></description>
-          <biddingbox></biddingbox>
-          <leadbox></leadbox>
-        <deal>
-        <div class="buttons">
-          <div id="skip-submit-button" class="button clickable bridgewinners enabled">Skip</div>
-          <div id="abstain-submit-button" class="button clickable bridgewinners enabled">Abstain</div>
-          <div id="vote-submit-button" class="button clickable bridgewinners disabled">Vote</div>
+        <div class="has-voting-problems">
+          <deal>
+            <avatar id="avatar-vote"></avatar>
+            <name><user>Bridge Winners </user>Asks</name>
+            <!-- <comments>245</comments>
+            <likes>125</likes> -->
+            <auctioncontainer></auctioncontainer>
+            <vulnerabilities>
+              <vulnerability data-direction='n'></vulnerability>
+              <vulnerability data-direction='e'></vulnerability>
+              <vulnerability data-direction='s'></vulnerability>
+              <vulnerability data-direction='w'></vulnerability>
+            </vulnerabilities>
+            <scoring></scoring>
+            <infowrapper></infowrapper>
+            <handcontainer></handcontainer>
+            <description class="scrollable"></description>
+            <biddingbox></biddingbox>
+            <leadbox></leadbox>
+          <deal>
+          <div class="buttons">
+            <div id="skip-submit-button" class="button clickable bridgewinners enabled">Skip</div>
+            <div id="abstain-submit-button" class="button clickable bridgewinners enabled">Abstain</div>
+            <div id="vote-submit-button" class="button clickable bridgewinners disabled">Vote</div>
+          </div>
+        </div>
+        <div class="no-more-voting-problems hide">
+          <p>
+            Wow, you've answered every single bridge problem on the site!  Thanks for being such an active participant!
+          </p>
         </div>
       </div>
     </script>
@@ -189,8 +196,8 @@
             <avatar id="avatar-results"></avatar>
             <name><user>Bridge Winners </user>Asks</name>
             <votes>0</votes>
-            <comments>245</comments>
-            <likes>125</likes>
+            <!-- <comments>245</comments>
+            <likes>125</likes> -->
             <auctioncontainer></auctioncontainer>
             <vulnerabilities>
               <vulnerability data-direction='n'></vulnerability>

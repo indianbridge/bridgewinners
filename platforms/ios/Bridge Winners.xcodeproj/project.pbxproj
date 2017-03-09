@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		0207DA581B56EA530066E2B4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0207DA571B56EA530066E2B4 /* Images.xcassets */; };
 		0278E7BF92244CFFBAFAF222 /* CDVLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 12FF101CA39C45B78776F53A /* CDVLogger.m */; };
@@ -23,6 +22,8 @@
 		D8C514BE8FE94938B74071CD /* CDVReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = AEBE78781672475D8B5A2F3E /* CDVReachability.m */; };
 		EB4CFE76186E421E8F71BEC2 /* CDVStatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 38B28A2B2423402E97FB4F7F /* CDVStatusBar.m */; };
 		F0C0BD30976E4E94BFE53E79 /* CDVViewController+SplashScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = 98CFC290E6474CB19C4645D1 /* CDVViewController+SplashScreen.m */; };
+		DF708F5DFF134DBC9A584C4A /* CDVDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = B74550B63C5B49C4B46F519C /* CDVDevice.m */; };
+		587C1C7D696844F9AAAAB0DA /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B8ABAC480445F588955BD7 /* libz.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +80,9 @@
 		EB87FDF41871DAF40020F90C /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = ../../config.xml; sourceTree = "<group>"; };
 		ED33DF2A687741AEAF9F8254 /* Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
 		F840E1F0165FE0F500CFE078 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = "Bridge Winners/config.xml"; sourceTree = "<group>"; };
+		B74550B63C5B49C4B46F519C /* CDVDevice.m */ = {isa = PBXFileReference; name = "CDVDevice.m"; path = "cordova-plugin-device/CDVDevice.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
+		0B1C8097F83641A5A4CC81A4 /* CDVDevice.h */ = {isa = PBXFileReference; name = "CDVDevice.h"; path = "cordova-plugin-device/CDVDevice.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
+		83B8ABAC480445F588955BD7 /* libz.tbd */ = {isa = PBXFileReference; name = "libz.tbd"; path = "usr/lib/libz.tbd"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = sourcecode.text-based-dylib-definition; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +93,7 @@
 				301BF552109A68D80062928A /* libCordova.a in Frameworks */,
 				3ACAB2DF81554B8480AF11E2 /* SystemConfiguration.framework in Frameworks */,
 				711A13B2017D46B7A8F05FBF /* CoreTelephony.framework in Frameworks */,
+				587C1C7D696844F9AAAAB0DA /* libz.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -161,6 +166,7 @@
 			children = (
 				3946CD4222054C56AD599F9E /* SystemConfiguration.framework */,
 				CD9866B3347F4B40B3E6C434 /* CoreTelephony.framework */,
+				83B8ABAC480445F588955BD7 /* libz.tbd */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -200,6 +206,8 @@
 				64BA949E653C44B9B6D5C0D4 /* CDVLogger.h */,
 				15503C66E6854823BA00DA7F /* CDVInAppBrowser.m */,
 				02CB9F63E3814C5DAAFC6866 /* CDVInAppBrowser.h */,
+				B74550B63C5B49C4B46F519C /* CDVDevice.m */,
+				0B1C8097F83641A5A4CC81A4 /* CDVDevice.h */,
 			);
 			name = Plugins;
 			path = "Bridge Winners/Plugins";
@@ -327,6 +335,7 @@
 				EB4CFE76186E421E8F71BEC2 /* CDVStatusBar.m in Sources */,
 				0278E7BF92244CFFBAFAF222 /* CDVLogger.m in Sources */,
 				463DF9EAB30145799578A3FD /* CDVInAppBrowser.m in Sources */,
+				DF708F5DFF134DBC9A584C4A /* CDVDevice.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
