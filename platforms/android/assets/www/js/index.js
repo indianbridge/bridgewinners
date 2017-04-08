@@ -204,6 +204,7 @@ BW.dialog = function(container) {
 /** Problems loaded so far. */
 BW.problems = new function() {
   this.problems = {};
+  this.deferredObjects = {};
   this.votingProblem1 = $.Deferred();
   this.votingProblem2 = $.Deferred();
   this.init = function() {
@@ -221,6 +222,39 @@ BW.problems = new function() {
   this.hasAllResponses = function(slug) {
     var problem = this.problems[slug];
     return (problem.hasOwnProperty('has_all_responses') && problem['has_all_responses']);
+  };
+  this.clearResponses = function(slug) {
+    if (slug in this.deferredObjects) {
+      this.deferredObjects[slug] = null;
+    }
+  };
+  this.getResponses = function(slug) {
+    var self = this;
+    if (slug in this.deferredObjects && this.deferredObjects[slug]) {
+      return this.deferredObjects[slug];
+    }
+    this.deferredObjects[slug] = $.Deferred();
+    var ajaxRequest = BW.ajax({
+      urlSuffix: "get-voting-problem/",
+      data: {
+        slug: slug,
+      },
+      loadingMessage: null,
+      // Need longer timeout when getting problems with lots of votes.
+      timeout: 20000,
+      successCallback: function(data) {
+        data["has_all_responses"] = true;
+        BW.problems.update(data);
+        self.deferredObjects[slug].resolve(data);
+      },
+      errorCallback: function(message) {
+        self.deferredObjects[slug].reject(message);
+      },
+      failedCallback: function(message) {
+        self.deferredObjects[slug].reject(message);
+      },
+    });
+    return this.deferredObjects[slug];
   };
   this.getNewVotingProblem = function() {
     var self = this;
@@ -254,11 +288,6 @@ BW.problems = new function() {
   };
   this.loadVotingProblems = function() {
     var data1 = {"num_responses": 0,};
-    // _.defaults(data, {
-    //   "num_responses": 0,
-    //   "slug": "lead-problem-2-64gkumhu26",
-    //   "slug": "lead-problem-798",
-    // });
     var self = this;
     var problem2 = this.votingProblem2;
     BW.ajax({
@@ -320,7 +349,7 @@ BW.alerts = new function() {
         if (data.my_answer) {
           BW.page.show("history", {}, /*disableCallbacks=*/true);
           BW.page.showSection("history-results-page", {
-            "slug": this.slug,
+            "slug": slug,
             "back": "alerts-page",
             "data": data,
           });
@@ -343,7 +372,7 @@ BW.alerts = new function() {
           if (data.my_answer) {
             BW.page.show("history", {}, /*disableCallbacks=*/true);
             BW.page.showSection("history-results-page", {
-              "slug": this.slug,
+              "slug": slug,
               "back": "alerts-page",
               "data": data,
             });
@@ -481,10 +510,6 @@ BW.alerts = new function() {
  */
 BW.history = new function() {
   this.currentSection = null;
-  // this.polls = {
-  //   "published": {},
-  //   "voted": {},
-  // };
   this.has_more = {
     "published": true,
     "voted": true,
@@ -512,7 +537,6 @@ BW.history = new function() {
   this.addProblem = function(pollType, problem) {
     this.locallyAddedProblems[pollType].unshift(problem);
     BW.problems.update(problem);
-    //this.polls[pollType][problem.slug] = problem;
   };
   this.setupClickHandlers = function() {
     var self = this;
@@ -574,6 +598,7 @@ BW.history = new function() {
     });
     BW.page.registerSectionChangeCallback("history-results-page", function(section, parameters) {
       $("#header-text").empty().append("Results");
+      BW.problems.getResponses(parameters.slug);
       self.loadProblem(parameters.slug, parameters.back, parameters.data, parameters.pollType);
       if (parameters.back !== "vote-page" && parameters.back !== "alerts-page") {
         self.disableScrollers();
@@ -643,29 +668,16 @@ BW.history = new function() {
   };
   this.loadResponses = function(slug, backPage, pollType) {
     var self = this;
-    //var problem = self.polls[pollType][slug];
-    // if (problem.hasOwnProperty('has_responses') && problem['has_responses']) {
-    //   self.showResponses(slug, backPage, pollType);
-    //   return false;
-    // }
-    if (BW.problems.hasAllResponses(slug)) {
+    BW.loadingDialog.show("Getting Responses...");
+    var deferredObject = BW.problems.getResponses(slug);
+    deferredObject.done(function(data) {
+      pollType = pollType || "voted";
       self.showResponses(slug, backPage, pollType);
-      return false;
-    }
-    var ajaxRequest = BW.ajax({
-      urlSuffix: "get-voting-problem/",
-      data: {
-        slug: slug,
-      },
-      loadingMessage: "Getting Responses...",
-      successCallback: function(data) {
-        pollType = pollType || "voted";
-        data["has_all_responses"] = true;
-        BW.problems.update(data);
-        // self.polls[pollType][data.slug] = data;
-        // self.polls[pollType][data.slug]['has_responses'] = true;
-        self.showResponses(slug, backPage, pollType);
-      },
+      BW.loadingDialog.hide();
+    });
+    deferredObject.fail(function(message) {
+      BW.loadingDialog.hide();
+      BW.messageDialog.show("Error: " + message);
     });
     return false;
 
@@ -684,7 +696,6 @@ BW.history = new function() {
       this.showProblem(data, pollType);
     } else {
       var problem = BW.problems.get(slug);
-      //var problem = this.polls[pollType][slug];
       this.showProblem(problem, pollType);
     }
   	return false;
@@ -763,10 +774,6 @@ BW.history = new function() {
             html += "<div class='answer-result-avatar-img'><img class='avatar-result' src='" + BW.utils.getAvatarLink(response.avatar) + "'/></div>";
           }
         }
-        // _.each(answer.public_responses.slice(0,3), function(response) {
-        //   count ++;
-        //   html += "<div class='answer-result-avatar-img'><img class='avatar-result' src='" + BW.utils.getAvatarLink(response.avatar) + "'/></div>";
-        // });
         while (count < 3) {
           count ++;
           html += "<div class='answer-result-avatar-img'></div>";
@@ -830,14 +837,20 @@ BW.history = new function() {
           }
         }
         html += "<div class='answer history-list-cell'>" + answer + "</div>";
-        html += "<div class='percentage history-list-cell'>" + percentage + "</div>";
       }
       html += "</div>";
       html += "</p>";
       html += "<p>";
+      html += "<div class='history-list-row'>";
+      html += "<div class='history-list-cell'>";
       //html += "<img class='icon' src='css/img/comments_black.png'><span class='stats num_comments'>" + item.num_comments + "</span>"
       //html += "<img class='icon' src='css/img/likes_black.png'><span class='stats num_likes'>" + item.num_likes + "</span>"
       html += "<img class='icon' src='css/img/answers_black.png'><span class='stats num_answers'>" + item.num_answers + "</span>"
+      html += "</div>";
+      if (showAnswer) {
+        html += "<div class='percentage history-list-cell'>" + percentage + "</div>";
+      }
+      html += "</div>";
       html += "</p>";
       html += "</div>";
       html += "</div>";
@@ -881,6 +894,26 @@ BW.history = new function() {
     });
   	return false;
   };
+  this.updateProblems = function(pollType) {
+    var self = this;
+    var newSlugs = {};
+    var existingProblems = [];
+    if (pollType === "voted") {
+      // When revoting remove the problem if it already exists in problem list.
+      _.each(self.locallyAddedProblems[pollType], function(problem) {
+        newSlugs[problem.slug] = true;
+      });
+      _.each(self.problems[pollType], function(problem) {
+        if (!(problem.slug in newSlugs)) {
+          existingProblems.push(problem);
+        }
+      });
+    } else {
+      existingProblems = self.problems[pollType];
+    }
+    self.problems[pollType] = self.locallyAddedProblems[pollType].concat(existingProblems);
+    self.locallyAddedProblems[pollType] = [];
+  };
   this.getRecent = function(pollType, disableLoadingMessage) {
     disableLoadingMessage = disableLoadingMessage || false;
     var self = this;
@@ -891,8 +924,7 @@ BW.history = new function() {
     }
     var deferredObject = self.problemsReady[pollType];
     if (!deferredObject) {
-      self.problems[pollType] = self.locallyAddedProblems[pollType].concat(self.problems[pollType]);
-      self.locallyAddedProblems[pollType] = [];
+      self.updateProblems(pollType);
       self.show(pollType);
       return false;
     }
@@ -902,11 +934,9 @@ BW.history = new function() {
     deferredObject.done(function(data) {
       _.each(data.polls, function(poll) {
         BW.problems.update(poll);
-        //self.polls[pollType][poll.slug] = poll;
       });
       self.has_more[pollType] = data.has_more;
-      self.problems[pollType] = self.locallyAddedProblems[pollType].concat(self.problems[pollType]);
-      self.locallyAddedProblems[pollType] = [];
+      self.updateProblems(pollType);
       $.merge(self.problems[pollType], data.polls);
       self.show(pollType);
       self.problemsReady[pollType] = null;
@@ -1161,7 +1191,6 @@ BW.create = new function() {
         self.reset();
         BW.history.addProblem("published", data);
         BW.page.show("history", {"section": "history-published-page"});
-        //BW.page.show("vote", {"problem": data});
       },
     });
   	return false;
@@ -1357,7 +1386,6 @@ BW.vote = new function() {
     $(document).on("tap", "#skip-submit-button.enabled", function() {
       var slug = $(this).data("slug");
       if (self.problem && self.problem.slug === slug) {
-        //self.loadInBackground({"exclude": slug});
         BW.problems.getNewVotingProblem();
       }
       self.load();
@@ -1414,7 +1442,7 @@ BW.vote = new function() {
         var option = BW.options.get("after-voting");
         self.problem = null;
         BW.history.addProblem("voted", data);
-        //self.loadInBackground();
+        BW.problems.clearResponses(data.slug);
         BW.problems.getNewVotingProblem();
         if (option === "next") {
           self.load();
@@ -1477,25 +1505,6 @@ BW.vote = new function() {
       BW.loadingDialog.hide();
       BW.messageDialog.show("Error: " + message);
     });
-    // var deferredObject = this.problemReady;
-    // if (data.slug) {
-    //   console.log("data slug is " + data.slug);
-    //   var problemReady = $.Deferred();
-    //   deferredObject = problemReady;
-    //   self.loadInBackground(data, problemReady);
-    // }
-    // deferredObject.done(function(problem) {
-    //   BW.loadingDialog.hide();
-    //   if (!data.slug) {
-    //     self.problem = problem;
-    //   }
-    //   self.show(problem);
-    // });
-    // deferredObject.fail(function(message) {
-    //   BW.loadingDialog.hide();
-    //   BW.messageDialog.show("Error: " + message);
-    // });
-  	// return false;
   };
   this.show = function(problem) {
     if (problem.alldone) {
@@ -1867,7 +1876,12 @@ BW.user = new function() {
           $("#back-button").addClass("hide");
         }
         if (section === "account-options-page") {
+          $("#header-text").empty().append("Settings");
           BW.options.load();
+        } else if (section === "account-about-page") {
+          $("#header-text").empty().append("About the App");
+        } else if (section === "account-main-page") {
+          $("#header-text").empty().append("Account");
         }
       });
     }
@@ -1907,6 +1921,15 @@ BW.user = new function() {
     $("#account-list").listview();
     $("#name").empty().append(this.getName());
     $("#avatar-profile").css("background-image", "url(" + BW.utils.getAvatarLink(this.userInfo.avatar) + ")");
+    var url = "https://docs.google.com/forms/d/e/1FAIpQLSd72nAy1FOLYA6WDjgqP639yL3Xr5pbbeRAKPmYzdT2KMYGlA/viewform?entry.1450677738=";
+    url += this.getUserName();
+    if ( BW.app.isCordovaApp() ) {
+      url += "&entry.1485524054=";
+      url += device.platform;
+      url += "&entry.1317617110=";
+      url += device.model;
+    }
+    $("#app-feedback").attr("href",  url);
     BW.page.showSection("account-main-page");
   };
 
@@ -1974,7 +1997,6 @@ BW.user = new function() {
     $("#account-avatar-inner").css("background-image", "url(" + BW.utils.getAvatarLink(this.userInfo.avatar) + ")");
     $("#account-avatar-outer").css("background-image", "url(" + BW.utils.getAvatarLink(this.userInfo.avatar) + ")");
     BW.page.showHeaderFooter();
-    //BW.vote.loadInBackground();
     BW.problems.init();
     BW.alerts.loadInBackground();
     BW.history.getRecentInBackground("voted");

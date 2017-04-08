@@ -991,6 +991,7 @@ $menu_items: vote create history alerts account;
     .avatar-container {
       width: 12%;
       text-align: center;
+      padding-right: 2vw;
     }
     .history-list-cell
     rank[data-suit="d"], rank[data-suit="h"] {
@@ -1003,6 +1004,9 @@ $menu_items: vote create history alerts account;
     rank {
       color: $darkGrey;
       text-transform: uppercase;
+    }
+    rank[data-rank="x"] {
+      text-transform: lowercase;
     }
     row {
       margin-right: 2vw;
@@ -1542,6 +1546,9 @@ body.ui-mobile-viewport {
     .#{$item}-icon.not-selected {
       background-image: url("img/#{$item}.png");
     }
+  }
+  .history-icon.not-selected {
+    background-position: center 2px;
   }
 }
 .footer-inner-container.ios {

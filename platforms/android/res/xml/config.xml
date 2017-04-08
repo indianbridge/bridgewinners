@@ -18,6 +18,9 @@
     <feature name="InAppBrowser">
         <param name="android-package" value="org.apache.cordova.inappbrowser.InAppBrowser" />
     </feature>
+    <feature name="Device">
+        <param name="android-package" value="org.apache.cordova.device.Device" />
+    </feature>
     <name>Bridge Winners</name>
     <description>
      The Bridge Winners Mobile App
@@ -47,7 +50,4 @@
     <preference name="StatusBarStyle" value="lightcontent" />
     <preference name="Orientation" value="portrait" />
     <preference name="DisallowOverscroll" value="true" />
-    <feature name="Device">
-        <param name="android-package" value="org.apache.cordova.device.Device" />
-    </feature>
 </widget>

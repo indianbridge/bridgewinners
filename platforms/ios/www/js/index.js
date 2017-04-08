@@ -288,11 +288,6 @@ BW.problems = new function() {
   };
   this.loadVotingProblems = function() {
     var data1 = {"num_responses": 0,};
-    // _.defaults(data, {
-    //   "num_responses": 0,
-    //   "slug": "lead-problem-2-64gkumhu26",
-    //   "slug": "lead-problem-798",
-    // });
     var self = this;
     var problem2 = this.votingProblem2;
     BW.ajax({
@@ -495,12 +490,8 @@ BW.alerts = new function() {
         html += "<img class='avatar-alert' src='" + BW.utils.getAvatarLink(alert.instigator_avatar) + "'/>";
         var text = alert.blurb.replace("a href", "a1 href");
         text = text.replace("</a>", "</a1>");
-        // text = text.replace("<strong>", "<span class='name-alert'>");
-        // text = text.replace("</strong>", "</span>");
-        text = text.replace("<strong>", "");
-        text = text.replace("</strong>", "");
-        text = text.replace(" on ", " on <span class='name-alert'>");
-        text = text.replace("'s", "</span>'s");
+        text = text.replace("<strong>", "<span class='name-alert'>");
+        text = text.replace("</strong>", "</span>");
         html += "<span class='text-alert'>" + text + "</span>";
         html += "</p>";
         html += "</a></li>";
@@ -519,10 +510,6 @@ BW.alerts = new function() {
  */
 BW.history = new function() {
   this.currentSection = null;
-  // this.polls = {
-  //   "published": {},
-  //   "voted": {},
-  // };
   this.has_more = {
     "published": true,
     "voted": true,
@@ -550,7 +537,6 @@ BW.history = new function() {
   this.addProblem = function(pollType, problem) {
     this.locallyAddedProblems[pollType].unshift(problem);
     BW.problems.update(problem);
-    //this.polls[pollType][problem.slug] = problem;
   };
   this.setupClickHandlers = function() {
     var self = this;
@@ -682,10 +668,6 @@ BW.history = new function() {
   };
   this.loadResponses = function(slug, backPage, pollType) {
     var self = this;
-    // if (BW.problems.hasAllResponses(slug)) {
-    //   self.showResponses(slug, backPage, pollType);
-    //   return false;
-    // }
     BW.loadingDialog.show("Getting Responses...");
     var deferredObject = BW.problems.getResponses(slug);
     deferredObject.done(function(data) {
@@ -697,19 +679,6 @@ BW.history = new function() {
       BW.loadingDialog.hide();
       BW.messageDialog.show("Error: " + message);
     });
-    // var ajaxRequest = BW.ajax({
-    //   urlSuffix: "get-voting-problem/",
-    //   data: {
-    //     slug: slug,
-    //   },
-    //   loadingMessage: "Getting Responses...",
-    //   successCallback: function(data) {
-    //     pollType = pollType || "voted";
-    //     data["has_all_responses"] = true;
-    //     BW.problems.update(data);
-    //     self.showResponses(slug, backPage, pollType);
-    //   },
-    // });
     return false;
 
   };
@@ -868,7 +837,6 @@ BW.history = new function() {
           }
         }
         html += "<div class='answer history-list-cell'>" + answer + "</div>";
-        //html += "<div class='percentage history-list-cell'>" + percentage + "</div>";
       }
       html += "</div>";
       html += "</p>";
@@ -966,7 +934,6 @@ BW.history = new function() {
     deferredObject.done(function(data) {
       _.each(data.polls, function(poll) {
         BW.problems.update(poll);
-        //self.polls[pollType][poll.slug] = poll;
       });
       self.has_more[pollType] = data.has_more;
       self.updateProblems(pollType);
@@ -1224,7 +1191,6 @@ BW.create = new function() {
         self.reset();
         BW.history.addProblem("published", data);
         BW.page.show("history", {"section": "history-published-page"});
-        //BW.page.show("vote", {"problem": data});
       },
     });
   	return false;
@@ -1420,7 +1386,6 @@ BW.vote = new function() {
     $(document).on("tap", "#skip-submit-button.enabled", function() {
       var slug = $(this).data("slug");
       if (self.problem && self.problem.slug === slug) {
-        //self.loadInBackground({"exclude": slug});
         BW.problems.getNewVotingProblem();
       }
       self.load();
@@ -1477,7 +1442,6 @@ BW.vote = new function() {
         var option = BW.options.get("after-voting");
         self.problem = null;
         BW.history.addProblem("voted", data);
-        //self.loadInBackground();
         BW.problems.clearResponses(data.slug);
         BW.problems.getNewVotingProblem();
         if (option === "next") {
@@ -1541,25 +1505,6 @@ BW.vote = new function() {
       BW.loadingDialog.hide();
       BW.messageDialog.show("Error: " + message);
     });
-    // var deferredObject = this.problemReady;
-    // if (data.slug) {
-    //   console.log("data slug is " + data.slug);
-    //   var problemReady = $.Deferred();
-    //   deferredObject = problemReady;
-    //   self.loadInBackground(data, problemReady);
-    // }
-    // deferredObject.done(function(problem) {
-    //   BW.loadingDialog.hide();
-    //   if (!data.slug) {
-    //     self.problem = problem;
-    //   }
-    //   self.show(problem);
-    // });
-    // deferredObject.fail(function(message) {
-    //   BW.loadingDialog.hide();
-    //   BW.messageDialog.show("Error: " + message);
-    // });
-  	// return false;
   };
   this.show = function(problem) {
     if (problem.alldone) {
@@ -1931,7 +1876,12 @@ BW.user = new function() {
           $("#back-button").addClass("hide");
         }
         if (section === "account-options-page") {
+          $("#header-text").empty().append("Settings");
           BW.options.load();
+        } else if (section === "account-about-page") {
+          $("#header-text").empty().append("About the App");
+        } else if (section === "account-main-page") {
+          $("#header-text").empty().append("Account");
         }
       });
     }
@@ -1971,6 +1921,15 @@ BW.user = new function() {
     $("#account-list").listview();
     $("#name").empty().append(this.getName());
     $("#avatar-profile").css("background-image", "url(" + BW.utils.getAvatarLink(this.userInfo.avatar) + ")");
+    var url = "https://docs.google.com/forms/d/e/1FAIpQLSd72nAy1FOLYA6WDjgqP639yL3Xr5pbbeRAKPmYzdT2KMYGlA/viewform?entry.1450677738=";
+    url += this.getUserName();
+    if ( BW.app.isCordovaApp() ) {
+      url += "&entry.1485524054=";
+      url += device.platform;
+      url += "&entry.1317617110=";
+      url += device.model;
+    }
+    $("#app-feedback").attr("href",  url);
     BW.page.showSection("account-main-page");
   };
 
@@ -2037,15 +1996,6 @@ BW.user = new function() {
     BW.options.init();
     $("#account-avatar-inner").css("background-image", "url(" + BW.utils.getAvatarLink(this.userInfo.avatar) + ")");
     $("#account-avatar-outer").css("background-image", "url(" + BW.utils.getAvatarLink(this.userInfo.avatar) + ")");
-    if (window.device) {
-      var url = "https://docs.google.com/forms/d/e/1FAIpQLSd72nAy1FOLYA6WDjgqP639yL3Xr5pbbeRAKPmYzdT2KMYGlA/viewform?entry.1450677738=";
-      url += this.getUserName();
-      url += "&entry.1485524054=";
-      url += device.platform;
-      url += "entry.1317617110=";
-      url += device.model;
-      $("#app-feedback").attr("href",  url);
-    }
     BW.page.showHeaderFooter();
     BW.problems.init();
     BW.alerts.loadInBackground();
