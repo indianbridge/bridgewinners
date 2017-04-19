@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="7" id="com.bridgewinners.mobile" ios-CFBundleVersion="0.0.1" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-versionCode="2" id="com.bridgewinners.youhold" ios-CFBundleVersion="0.0.1" version="0.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <feature name="NetworkStatus">
         <param name="android-package" value="org.apache.cordova.networkinformation.NetworkManager" />
     </feature>
@@ -21,7 +21,7 @@
     <feature name="Device">
         <param name="android-package" value="org.apache.cordova.device.Device" />
     </feature>
-    <name>Bridge Winners</name>
+    <name>You Hold</name>
     <description>
      The Bridge Winners Mobile App
   </description>
@@ -31,15 +31,11 @@
     <content src="index.html" />
     <access origin="*" />
     <access launch-external="yes" origin="mailto:*" />
-    <icon src="res/icon.png" />
-    <splash density="land-hdpi" src="res/android/drawable-hdpi/splash.png" />
-    <splash density="land-ldpi" src="res/android/drawable-ldpi/splash.png" />
-    <splash density="land-mdpi" src="res/android/drawable-mdpi/splash.png" />
-    <splash density="land-xhdpi" src="res/android/drawable-xhdpi/splash.png" />
-    <splash density="port-hdpi" src="res/android/drawable-hdpi/splash.png" />
-    <splash density="port-ldpi" src="res/android/drawable-ldpi/splash.png" />
-    <splash density="port-mdpi" src="res/android/drawable-mdpi/splash.png" />
-    <splash density="port-xhdpi" src="res/android/drawable-xhdpi/splash.png" />
+    <icon src="googleplay.png" />
+    <splash qualifier="ldpi" src="res/screens/android/screen-ldpi-portrait.png" />
+    <splash qualifier="mdpi" src="res/screens/android/screen-mdpi-portrait.png" />
+    <splash qualifier="hdpi" src="res/screens/android/screen-hdpi-portrait.png" />
+    <splash qualifier="xhdpi" src="res/screens/android/screen-xhdpi-portrait.png" />
     <preference name="loglevel" value="DEBUG" />
     <preference name="LoadingDialog" value="Please wait for Bridge Winners Awesomeness to begin..." />
     <preference name="AutoHideSplashScreen" value="false" />

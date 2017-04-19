@@ -1392,6 +1392,10 @@ deal {
     @extend %flex-vertical-center;
     @include location(539px, 44px, 105px, 255px);
   }
+  #refresh-problem-button {
+    @extend %flex-vertical-center;
+    @include location(150px, 44px, 345px, 15px);
+  }
 }
 #vote-page.show-hand-first {
   auctioncontainer {

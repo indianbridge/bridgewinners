@@ -77,8 +77,8 @@ BW.app.start();
  * Some utility functions.
  */
 BW.utils = new function() {
-  //this.sitePrefix = "https://www.bridgewinners.com";
-  this.sitePrefix = "https://52.4.5.8";
+  this.sitePrefix = "https://www.bridgewinners.com";
+  //this.sitePrefix = "https://52.4.5.8";
   //this.sitePrefix = "https://127.0.0.1:8000";
   this.init = function() {
     // Nothing to do yet.
@@ -296,7 +296,8 @@ BW.problems = new function() {
       loadingMessage: null,
       successCallback: function(problem) {
         self.votingProblem1.resolve(problem);
-        if (problem.alldone) {
+        //if (problem.alldone) {
+        if (true) {
           problem2.resolve({"alldone": true,});
           return;
         }
@@ -1508,6 +1509,7 @@ BW.vote = new function() {
   };
   this.show = function(problem) {
     if (problem.alldone) {
+    //if (true) {
       $("#header-text").empty().append("Wow");
       $(".no-more-voting-problems").removeClass("hide");
       $(".has-voting-problems").addClass("hide");

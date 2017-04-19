@@ -7,16 +7,10 @@
         "files": {}
     },
     "installed_plugins": {
-        "cordova-plugin-splashscreen": {
-            "PACKAGE_NAME": "com.bridgewinners.mobile"
-        },
-        "cordova-plugin-statusbar": {
-            "PACKAGE_NAME": "com.bridgewinners.mobile"
-        },
-        "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "com.bridgewinners.mobile"
-        },
         "cordova-plugin-console": {
+            "PACKAGE_NAME": "com.bridgewinners.mobile"
+        },
+        "cordova-plugin-device": {
             "PACKAGE_NAME": "com.bridgewinners.mobile"
         },
         "cordova-plugin-inappbrowser": {
@@ -25,7 +19,13 @@
         "cordova-plugin-ios-no-export-compliance": {
             "PACKAGE_NAME": "com.bridgewinners.mobile"
         },
-        "cordova-plugin-device": {
+        "cordova-plugin-splashscreen": {
+            "PACKAGE_NAME": "com.bridgewinners.mobile"
+        },
+        "cordova-plugin-statusbar": {
+            "PACKAGE_NAME": "com.bridgewinners.mobile"
+        },
+        "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.bridgewinners.mobile"
         }
     },

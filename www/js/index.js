@@ -77,8 +77,8 @@ BW.app.start();
  * Some utility functions.
  */
 BW.utils = new function() {
-  //this.sitePrefix = "https://www.bridgewinners.com";
-  this.sitePrefix = "https://52.4.5.8";
+  this.sitePrefix = "https://www.bridgewinners.com";
+  //this.sitePrefix = "https://52.4.5.8";
   //this.sitePrefix = "https://127.0.0.1:8000";
   this.init = function() {
     // Nothing to do yet.
@@ -286,6 +286,11 @@ BW.problems = new function() {
       });
     });
   };
+  this.refreshVotingProblems = function() {
+    this.votingProblem1 = $.Deferred();
+    this.votingProblem2 = $.Deferred();
+    this.loadVotingProblems();
+  };
   this.loadVotingProblems = function() {
     var data1 = {"num_responses": 0,};
     var self = this;
@@ -296,6 +301,7 @@ BW.problems = new function() {
       loadingMessage: null,
       successCallback: function(problem) {
         self.votingProblem1.resolve(problem);
+        //if (true) {
         if (problem.alldone) {
           problem2.resolve({"alldone": true,});
           return;
@@ -1401,6 +1407,12 @@ BW.vote = new function() {
       self.vote(/*abstain=*/false);
       return false;
     });
+    // Check for new problems clicked
+    $(document).on("tap", "#refresh-problem-button.enabled", function() {
+      BW.problems.refreshVotingProblems();
+      self.load();
+      return false;
+    });
   };
   this.getLeadAnswer = function() {
     var next = this.deal.getAuction().getNextToCall();
@@ -1507,6 +1519,7 @@ BW.vote = new function() {
     });
   };
   this.show = function(problem) {
+    //if (true) {
     if (problem.alldone) {
       $("#header-text").empty().append("Wow");
       $(".no-more-voting-problems").removeClass("hide");
