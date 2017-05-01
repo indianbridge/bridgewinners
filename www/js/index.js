@@ -44,6 +44,7 @@ BW.app = new function() {
   	var attachFastClick = Origami.fastclick;
   	attachFastClick(document.body);
     this.initDialogs();
+    OAuth.initialize('Vi6x8Syh39JuYgui349ZU-YvwaI')
     BW.utils.init();
     BW.page.init();
     BW.vote.init();
@@ -77,9 +78,10 @@ BW.app.start();
  * Some utility functions.
  */
 BW.utils = new function() {
-  this.sitePrefix = "https://www.bridgewinners.com";
-  //this.sitePrefix = "https://52.4.5.8";
+  //this.sitePrefix = "https://www.bridgewinners.com";
+  this.sitePrefix = "https://52.4.5.8";
   //this.sitePrefix = "https://127.0.0.1:8000";
+  //this.sitePrefix = "http://localhost";
   this.init = function() {
     // Nothing to do yet.
   };
@@ -292,7 +294,10 @@ BW.problems = new function() {
     this.loadVotingProblems();
   };
   this.loadVotingProblems = function() {
-    var data1 = {"num_responses": 0,};
+    var data1 = {
+      "num_responses": 0,
+      //"slug": "lead-problem-1010",
+    };
     var self = this;
     var problem2 = this.votingProblem2;
     BW.ajax({
@@ -309,6 +314,7 @@ BW.problems = new function() {
         var data2 = {
           "num_responses": 0,
           "exclude": problem.slug,
+          //"slug": "bidding-problem-1992",
         };
         BW.ajax({
           urlSuffix: "get-voting-problem/",
@@ -1476,7 +1482,7 @@ BW.vote = new function() {
     _.defaults(data, {
       "num_responses": 0,
       //"slug": "lead-problem-2-64gkumhu26",
-      //"slug": "lead-problem-798",
+      //"slug": "lead-problem-1010",
     });
     if (!deferredObject) {
       this.problemReady = $.Deferred();
@@ -1911,6 +1917,27 @@ BW.user = new function() {
   	});
     $(document).on( "tap", "#logout-submit-button", function() {
   		return self.logout();
+  	});
+    $( document ).on( "tap", "#google-login-button", { user: this }, function( e ) {
+      OAuth.popup('google')
+      .done(function(result) {
+        result.get('/oauth2/v1/userinfo').done(function (response) {
+          BW.ajax({
+            urlSuffix: "social-login/",
+            method: "POST",
+        		data: { uid: response.email, provider: 'google-oauth2' },
+        		headers: {},
+            loadingMessage: "Logging In...",
+            successCallback: self.loginSuccessCallback.bind(self),
+          });
+        })
+        .fail(function (err) {
+          BW.messageDialog.show("Unable to get userinfo for Google user. " + err);
+        });
+      })
+      .fail(function (err) {
+        BW.messageDialog.show("Unable to connect to Google account. " + err);
+      });
   	});
     $(document).on("keypress", "#username", function(e) {
       if (e.which === 13) {

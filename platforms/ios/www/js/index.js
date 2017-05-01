@@ -44,6 +44,7 @@ BW.app = new function() {
   	var attachFastClick = Origami.fastclick;
   	attachFastClick(document.body);
     this.initDialogs();
+    OAuth.initialize('Vi6x8Syh39JuYgui349ZU-YvwaI')
     BW.utils.init();
     BW.page.init();
     BW.vote.init();
@@ -77,9 +78,10 @@ BW.app.start();
  * Some utility functions.
  */
 BW.utils = new function() {
-  this.sitePrefix = "https://www.bridgewinners.com";
-  //this.sitePrefix = "https://52.4.5.8";
+  //this.sitePrefix = "https://www.bridgewinners.com";
+  this.sitePrefix = "https://52.4.5.8";
   //this.sitePrefix = "https://127.0.0.1:8000";
+  //this.sitePrefix = "http://localhost";
   this.init = function() {
     // Nothing to do yet.
   };
@@ -286,8 +288,16 @@ BW.problems = new function() {
       });
     });
   };
+  this.refreshVotingProblems = function() {
+    this.votingProblem1 = $.Deferred();
+    this.votingProblem2 = $.Deferred();
+    this.loadVotingProblems();
+  };
   this.loadVotingProblems = function() {
-    var data1 = {"num_responses": 0,};
+    var data1 = {
+      "num_responses": 0,
+      //"slug": "lead-problem-1010",
+    };
     var self = this;
     var problem2 = this.votingProblem2;
     BW.ajax({
@@ -296,14 +306,15 @@ BW.problems = new function() {
       loadingMessage: null,
       successCallback: function(problem) {
         self.votingProblem1.resolve(problem);
-        //if (problem.alldone) {
-        if (true) {
+        //if (true) {
+        if (problem.alldone) {
           problem2.resolve({"alldone": true,});
           return;
         }
         var data2 = {
           "num_responses": 0,
           "exclude": problem.slug,
+          //"slug": "bidding-problem-1992",
         };
         BW.ajax({
           urlSuffix: "get-voting-problem/",
@@ -1402,6 +1413,12 @@ BW.vote = new function() {
       self.vote(/*abstain=*/false);
       return false;
     });
+    // Check for new problems clicked
+    $(document).on("tap", "#refresh-problem-button.enabled", function() {
+      BW.problems.refreshVotingProblems();
+      self.load();
+      return false;
+    });
   };
   this.getLeadAnswer = function() {
     var next = this.deal.getAuction().getNextToCall();
@@ -1465,7 +1482,7 @@ BW.vote = new function() {
     _.defaults(data, {
       "num_responses": 0,
       //"slug": "lead-problem-2-64gkumhu26",
-      //"slug": "lead-problem-798",
+      //"slug": "lead-problem-1010",
     });
     if (!deferredObject) {
       this.problemReady = $.Deferred();
@@ -1508,8 +1525,8 @@ BW.vote = new function() {
     });
   };
   this.show = function(problem) {
-    if (problem.alldone) {
     //if (true) {
+    if (problem.alldone) {
       $("#header-text").empty().append("Wow");
       $(".no-more-voting-problems").removeClass("hide");
       $(".has-voting-problems").addClass("hide");
@@ -1532,7 +1549,13 @@ BW.vote = new function() {
   	this.selectedLevel = null;
     this.selectedCall = null;
   	this.selectedCard = null;
-  	var deal = new Bridge.Deal();
+    try {
+  	   var deal = new Bridge.Deal();
+    }
+    catch(err) {
+        alert(err.message);
+        return;
+    }
   	deal.setDealer(data.dealer);
   	deal.setVulnerability(data.vulnerability);
   	deal.getAuction().fromString(data.auction);
@@ -1900,6 +1923,67 @@ BW.user = new function() {
   	});
     $(document).on( "tap", "#logout-submit-button", function() {
   		return self.logout();
+  	});
+    $( document ).on( "tap", "#google-login-button", { user: this }, function( e ) {
+      OAuth.popup('google')
+      .done(function(result) {
+        alert("success" + result)
+        console.log(result);
+        result.get('/oauth2/v1/userinfo')    .done(function (response) {
+          console.log('Firstname: ', response.firstname);
+          console.log('Lastname: ', response.lastname);
+          console.log(JSON.stringify(response));
+        })
+        .fail(function (err) {
+          console.log("me returned error");
+          //handle error with err
+        });
+        //use result.access_token in your API request
+        //or use result.get|post|put|del|patch|me methods (see below)
+        // BW.ajax({
+        //   urlSuffix: "get-auth-token/",
+        //   method: "POST",
+      	// 	data: { access_token: result.access_token, email: result.email, provider: result.provider },
+      	// 	headers: {},
+        //   loadingMessage: "Logging In...",
+        //   successCallback: this.loginSuccessCallback.bind(this),
+        // });
+      })
+      .fail(function (err) {
+        alert("error "+ err)
+        //handle error with err
+      });
+  	});
+    $( document ).on( "tap", "#facebook-login-button", { user: this }, function( e ) {
+      // facebookConnectPlugin.login(["public_profile"],
+      //   function loginSuccess(userData) {
+      //     console.log("UserInfo: ", userData);
+      //   },
+      //   function loginError (error) {
+      //     console.error(error)
+      //   }
+      // );
+      OAuth.popup('facebook')
+      .done(function(result) {
+        alert("success" + result)
+        console.log(result);
+        result.me()    .done(function (response) {
+          console.log("uid: " + response.id);
+          console.log('Firstname: ', response.firstname);
+          console.log('Lastname: ', response.lastname);
+          console.log(JSON.stringify(response));
+        })
+        .fail(function (err) {
+          console.log("me returned error");
+          //handle error with err
+        });
+        //use result.access_token in your API request
+        //or use result.get|post|put|del|patch|me methods (see below)
+      })
+      .fail(function (err) {
+        alert("error "+ err)
+        //handle error with err
+      });
   	});
     $(document).on("keypress", "#username", function(e) {
       if (e.which === 13) {

@@ -21,6 +21,7 @@
     <script src="js/fastclick.min.js"></script>
     <script src="js/iscroll.js"></script>
     <script src="js/jquery.mobile.iscrollview.js"></script>
+    <script src="js/oauth.min.js"></script>
     <script src="js/index.js"></script>
     <title>BridgeWinners Mobile App</title>
   </head>
@@ -67,7 +68,12 @@
         <input class="password" type="password" name="password" id="password" value="" placeholder="Password" />
         <button id="login-submit-button" class="clickable bridgewinners">Log In</button>
         <button id="facebook-login-button" class="facebook hide">Log in with Facebook</button>
-        <button id="google-login-button" class="google hide">Log in with Google+</button>
+        <button id="google-login-button" class="google">Log in with Google+</button>
+        <div class="signup">
+          <div class="signup-text">
+            Don’t have an account? <a target="_blank" class="signup-link" href="http://bridgewinners.com/accounts/register/">Sign Up</a>
+          </div>
+        </div>
       </div>
     </script>
     <script id="vote-template" type="text/template">
@@ -102,6 +108,9 @@
           <p>
             Wow, you've answered every single bridge problem on the site!  Thanks for being such an active participant!
           </p>
+          <div class="buttons">
+            <div id="refresh-problem-button" class="button clickable bridgewinners enabled">Check for new problems</div>
+          </div>
         </div>
       </div>
     </script>

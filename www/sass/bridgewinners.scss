@@ -1468,6 +1468,14 @@ deal {
     background-color: $GoogleRed;
     @include location(506px, 44px, 335px);
   }
+  div.signup {
+    @extend %horizontal-center;
+    @extend %flex-vertical-center;
+    @include location(603px, 44px, 375px);
+    @include font(16px);
+    color: $darkGrey;
+    font-weight: bold;
+  }
 }
 
 body.ui-mobile-viewport {

@@ -92,7 +92,7 @@ html, body {
 }
 
 /* line 117, ../sass/bridgewinners.scss */
-#create-page #special_calls call, #create-page #create-reset-button, #create-page #create-continue-button, #create-page #create-review-page #create-save-button, #create-page #create-review-page #create-publish-button, #history-page #history-results-page .show-next-problem #history-next-button, #history-page #history-results-page .show-next-problem #history-revote-button, #history-page #history-results-page .show-next-problem #history-voters-button, #history-page #history-results-page .dont-show-next-problem #history-revote-button, #history-page #history-results-page .dont-show-next-problem #history-voters-button, deal vulnerabilities vulnerability, deal scoring, #vote-page #skip-submit-button, #vote-page #abstain-submit-button, #vote-page #vote-submit-button, #vote-page #refresh-problem-button, .header-container, .back-button-container, #account-page #name, #account-page #edit-profile-button, #account-page .list {
+#create-page #special_calls call, #create-page #create-reset-button, #create-page #create-continue-button, #create-page #create-review-page #create-save-button, #create-page #create-review-page #create-publish-button, #history-page #history-results-page .show-next-problem #history-next-button, #history-page #history-results-page .show-next-problem #history-revote-button, #history-page #history-results-page .show-next-problem #history-voters-button, #history-page #history-results-page .dont-show-next-problem #history-revote-button, #history-page #history-results-page .dont-show-next-problem #history-voters-button, deal vulnerabilities vulnerability, deal scoring, #vote-page #skip-submit-button, #vote-page #abstain-submit-button, #vote-page #vote-submit-button, #vote-page #refresh-problem-button, .login-page-content div.signup, .header-container, .back-button-container, #account-page #name, #account-page #edit-profile-button, #account-page .list {
   display: flex !important;
   justify-content: center;
   flex-direction: column;
@@ -114,7 +114,7 @@ deal name, deal votes {
 }
 
 /* line 135, ../sass/bridgewinners.scss */
-.center, #footer #account-avatar-inner, #footer #account-avatar-outer, #alerts-page button.bridgewinners, #history-page button.bridgewinners, .login-page-content .bridgewinners-logo, .login-page-content input, .login-page-content button, #account-page button#logout-submit-button {
+.center, #footer #account-avatar-inner, #footer #account-avatar-outer, #alerts-page button.bridgewinners, #history-page button.bridgewinners, .login-page-content .bridgewinners-logo, .login-page-content input, .login-page-content button, .login-page-content div.signup, #account-page button#logout-submit-button {
   left: 0;
   right: 0;
   margin: 0 auto;
@@ -3625,24 +3625,42 @@ deal biddingbox level.selected [data-suit="d"], deal biddingbox level.selected [
   height: 6.80062vh;
   width: 89.33333vw;
 }
+/* line 1471, ../sass/bridgewinners.scss */
+.login-page-content div.signup {
+  display: block;
+  position: fixed;
+  top: 93.19938vh;
+  height: 6.80062vh;
+  width: 100vw;
+  font-family: SFUIDisplay;
+  font-size: 2.47295vh;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  letter-spacing: 0.7px;
+  text-align: center;
+  text-shadow: none;
+  color: #4a4a4a;
+  font-weight: bold;
+}
 
-/* line 1473, ../sass/bridgewinners.scss */
+/* line 1481, ../sass/bridgewinners.scss */
 body.ui-mobile-viewport {
   overflow-y: hidden;
 }
 
-/* line 1477, ../sass/bridgewinners.scss */
+/* line 1485, ../sass/bridgewinners.scss */
 .ui-page-active {
   overflow-x: visible !important;
 }
 
-/* line 1481, ../sass/bridgewinners.scss */
+/* line 1489, ../sass/bridgewinners.scss */
 .hide {
   display: none;
   visibility: hidden;
 }
 
-/* line 1486, ../sass/bridgewinners.scss */
+/* line 1494, ../sass/bridgewinners.scss */
 .carat-right {
   padding-right: 7vw;
   background-image: url("images/icons-png/carat-r-black.png");
@@ -3650,7 +3668,7 @@ body.ui-mobile-viewport {
   background-position: right 0.25vw center;
 }
 
-/* line 1493, ../sass/bridgewinners.scss */
+/* line 1501, ../sass/bridgewinners.scss */
 .carat-left {
   padding-left: 4vw;
   background-image: url("images/icons-png/carat-l-white.png");
@@ -3658,7 +3676,7 @@ body.ui-mobile-viewport {
   background-position: left 0.25vw center;
 }
 
-/* line 1500, ../sass/bridgewinners.scss */
+/* line 1508, ../sass/bridgewinners.scss */
 .header-container {
   font-family: SFUIDisplay;
   font-size: 2.62751vh;
@@ -3679,7 +3697,7 @@ body.ui-mobile-viewport {
   text-transform: capitalize;
 }
 
-/* line 1510, ../sass/bridgewinners.scss */
+/* line 1518, ../sass/bridgewinners.scss */
 .back-button-container {
   font-family: SFUIDisplay;
   font-size: 2.62751vh;
@@ -3700,13 +3718,13 @@ body.ui-mobile-viewport {
   text-transform: capitalize;
 }
 
-/* line 1520, ../sass/bridgewinners.scss */
+/* line 1528, ../sass/bridgewinners.scss */
 .header-text {
   color: #ffffff;
   text-transform: capitalize;
 }
 
-/* line 1525, ../sass/bridgewinners.scss */
+/* line 1533, ../sass/bridgewinners.scss */
 #back-button {
   color: #ffffff;
   float: left;
@@ -3714,20 +3732,20 @@ body.ui-mobile-viewport {
 }
 
 /* Footer styles. */
-/* line 1532, ../sass/bridgewinners.scss */
+/* line 1540, ../sass/bridgewinners.scss */
 .footer-inner-container, .footer-outer-container {
   position: fixed;
   width: 100vw;
   bottom: 0vh;
 }
 
-/* line 1537, ../sass/bridgewinners.scss */
+/* line 1545, ../sass/bridgewinners.scss */
 .footer-inner-container {
   background-color: #2a5461;
   height: 7.57342vh;
   box-shadow: inset 0 0.5px 0 0 #b2b2b2;
 }
-/* line 1542, ../sass/bridgewinners.scss */
+/* line 1550, ../sass/bridgewinners.scss */
 .footer-inner-container .menu-item {
   height: 90%;
   width: 20vw;
@@ -3736,54 +3754,54 @@ body.ui-mobile-viewport {
   background-position: center center;
   background-size: contain;
 }
-/* line 1550, ../sass/bridgewinners.scss */
+/* line 1558, ../sass/bridgewinners.scss */
 .footer-inner-container .vote-icon.not-selected {
   background-image: url("img/vote.png");
 }
-/* line 1550, ../sass/bridgewinners.scss */
+/* line 1558, ../sass/bridgewinners.scss */
 .footer-inner-container .create-icon.not-selected {
   background-image: url("img/create.png");
 }
-/* line 1550, ../sass/bridgewinners.scss */
+/* line 1558, ../sass/bridgewinners.scss */
 .footer-inner-container .history-icon.not-selected {
   background-image: url("img/history.png");
 }
-/* line 1550, ../sass/bridgewinners.scss */
+/* line 1558, ../sass/bridgewinners.scss */
 .footer-inner-container .alerts-icon.not-selected {
   background-image: url("img/alerts.png");
 }
-/* line 1550, ../sass/bridgewinners.scss */
+/* line 1558, ../sass/bridgewinners.scss */
 .footer-inner-container .account-icon.not-selected {
   background-image: url("img/account.png");
 }
-/* line 1554, ../sass/bridgewinners.scss */
+/* line 1562, ../sass/bridgewinners.scss */
 .footer-inner-container .history-icon.not-selected {
   background-position: center 2px;
 }
 
-/* line 1558, ../sass/bridgewinners.scss */
+/* line 1566, ../sass/bridgewinners.scss */
 .footer-inner-container.ios {
   bottom: 20px;
 }
 
-/* line 1561, ../sass/bridgewinners.scss */
+/* line 1569, ../sass/bridgewinners.scss */
 .footer-outer-container {
   height: 8.50077vh;
 }
-/* line 1564, ../sass/bridgewinners.scss */
+/* line 1572, ../sass/bridgewinners.scss */
 .footer-outer-container .menu-item {
   height: 100%;
   width: 20vw;
   display: inline-block;
 }
-/* line 1568, ../sass/bridgewinners.scss */
+/* line 1576, ../sass/bridgewinners.scss */
 .footer-outer-container .menu-item .menu-icon {
   height: 80%;
   background-repeat: no-repeat;
   background-position: center center;
   background-size: contain;
 }
-/* line 1574, ../sass/bridgewinners.scss */
+/* line 1582, ../sass/bridgewinners.scss */
 .footer-outer-container .selected {
   background-color: #698f64;
   box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.86);
@@ -3796,33 +3814,33 @@ body.ui-mobile-viewport {
   border-top-right-radius: 10px;
   box-sizing: border-box;
 }
-/* line 1581, ../sass/bridgewinners.scss */
+/* line 1589, ../sass/bridgewinners.scss */
 .footer-outer-container .selected .vote-icon {
   background-image: url("img/vote.png");
 }
-/* line 1581, ../sass/bridgewinners.scss */
+/* line 1589, ../sass/bridgewinners.scss */
 .footer-outer-container .selected .create-icon {
   background-image: url("img/create.png");
 }
-/* line 1581, ../sass/bridgewinners.scss */
+/* line 1589, ../sass/bridgewinners.scss */
 .footer-outer-container .selected .history-icon {
   background-image: url("img/history.png");
 }
-/* line 1581, ../sass/bridgewinners.scss */
+/* line 1589, ../sass/bridgewinners.scss */
 .footer-outer-container .selected .alerts-icon {
   background-image: url("img/alerts.png");
 }
-/* line 1581, ../sass/bridgewinners.scss */
+/* line 1589, ../sass/bridgewinners.scss */
 .footer-outer-container .selected .account-icon {
   background-image: url("img/account.png");
 }
 
-/* line 1587, ../sass/bridgewinners.scss */
+/* line 1595, ../sass/bridgewinners.scss */
 .footer-outer-container.ios {
   bottom: 20px;
 }
 
-/* line 1591, ../sass/bridgewinners.scss */
+/* line 1599, ../sass/bridgewinners.scss */
 avatar {
   background-color: #d8d8d8;
   border: solid 2px #416757;
@@ -3841,14 +3859,14 @@ avatar {
   width: 5.40958vh;
 }
 
-/* line 1602, ../sass/bridgewinners.scss */
+/* line 1610, ../sass/bridgewinners.scss */
 avatar.large {
   height: 11.59196vh;
   width: 11.59196vh;
   left: 4vw;
 }
 
-/* line 1611, ../sass/bridgewinners.scss */
+/* line 1619, ../sass/bridgewinners.scss */
 #account-page #profile {
   display: block;
   position: fixed;
@@ -3858,7 +3876,7 @@ avatar.large {
   background-color: #ffffff;
   border: solid 0.5px #c7c7cc;
 }
-/* line 1617, ../sass/bridgewinners.scss */
+/* line 1625, ../sass/bridgewinners.scss */
 #account-page #name {
   display: block;
   position: fixed;
@@ -3878,7 +3896,7 @@ avatar.large {
   font-weight: 600;
   color: #9a032e;
 }
-/* line 1626, ../sass/bridgewinners.scss */
+/* line 1634, ../sass/bridgewinners.scss */
 #account-page #edit-profile-button {
   display: block;
   position: fixed;
@@ -3902,7 +3920,7 @@ avatar.large {
   text-align: center;
   color: #4a4a4a;
 }
-/* line 1637, ../sass/bridgewinners.scss */
+/* line 1645, ../sass/bridgewinners.scss */
 #account-page #account-options {
   display: block;
   position: fixed;
@@ -3921,7 +3939,7 @@ avatar.large {
   text-align: left;
   color: #4a4a4a;
 }
-/* line 1647, ../sass/bridgewinners.scss */
+/* line 1655, ../sass/bridgewinners.scss */
 #account-page button#logout-submit-button {
   font-family: SFUIDisplay;
   font-size: 3.09119vh;
@@ -3942,14 +3960,14 @@ avatar.large {
   height: 6.80062vh;
   width: 89.33333vw;
 }
-/* line 1656, ../sass/bridgewinners.scss */
+/* line 1664, ../sass/bridgewinners.scss */
 #account-page .list {
   margin-left: 4vw;
   height: 6.80062vh;
   border-bottom: solid 0.5px #c7c7cc;
   cursor: pointer;
 }
-/* line 1663, ../sass/bridgewinners.scss */
+/* line 1671, ../sass/bridgewinners.scss */
 #account-page #about-app {
   display: block;
   position: fixed;
@@ -3969,11 +3987,11 @@ avatar.large {
   text-align: left;
   margin-top: 2vh;
 }
-/* line 1664, ../sass/bridgewinners.scss */
+/* line 1672, ../sass/bridgewinners.scss */
 #account-page #about-app p {
   margin-bottom: 2vh;
 }
-/* line 1673, ../sass/bridgewinners.scss */
+/* line 1681, ../sass/bridgewinners.scss */
 #account-page #account-options-list {
   display: block;
   position: fixed;
@@ -3981,7 +3999,7 @@ avatar.large {
   height: 85.00773vh;
   width: 100vw;
 }
-/* line 1676, ../sass/bridgewinners.scss */
+/* line 1684, ../sass/bridgewinners.scss */
 #account-page .options-header {
   font-family: SFUIDisplay;
   font-size: 2.62751vh;
@@ -4000,7 +4018,7 @@ avatar.large {
   text-align: left;
   margin-top: 2vh;
 }
-/* line 1687, ../sass/bridgewinners.scss */
+/* line 1695, ../sass/bridgewinners.scss */
 #account-page settings {
   position: relative;
   height: 6.80062vh;
@@ -4014,7 +4032,7 @@ avatar.large {
   border: solid 1px #979797;
   background-color: #c7c7cc;
 }
-/* line 1698, ../sass/bridgewinners.scss */
+/* line 1706, ../sass/bridgewinners.scss */
 #account-page setting {
   display: table-cell;
   vertical-align: middle;
@@ -4031,18 +4049,18 @@ avatar.large {
   color: #4a4a4a;
   cursor: pointer;
 }
-/* line 1707, ../sass/bridgewinners.scss */
+/* line 1715, ../sass/bridgewinners.scss */
 #account-page setting:not(:last-child) {
   border-right: solid 1px #979797;
 }
-/* line 1710, ../sass/bridgewinners.scss */
+/* line 1718, ../sass/bridgewinners.scss */
 #account-page setting.current {
   background-color: #2a5461;
   color: #ffffff;
   cursor: default;
 }
 
-/* line 1717, ../sass/bridgewinners.scss */
+/* line 1725, ../sass/bridgewinners.scss */
 .main-page {
   display: block;
   position: fixed;

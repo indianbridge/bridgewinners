@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="2" id="com.bridgewinners.youhold" ios-CFBundleVersion="0.0.1" version="0.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-versionCode="100" id="com.bridgewinners.youhold" ios-CFBundleVersion="0.0.1" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>You Hold</name>
     <description>
      The Bridge Winners Mobile App
@@ -57,4 +57,8 @@
     <plugin name="cordova-plugin-inappbrowser" spec="~1.6.1" />
     <plugin name="cordova-plugin-ios-no-export-compliance" spec="https://github.com/mikaoelitiana/cordova-plugin-ios-no-export-compliance.git" />
     <plugin name="cordova-plugin-device" spec="~1.1.5" />
+    <plugin name="cordova-plugin-facebook4" spec="~1.7.4">
+        <variable name="APP_ID" value="159739840897277" />
+        <variable name="APP_NAME" value="You Hold" />
+    </plugin>
 </widget>

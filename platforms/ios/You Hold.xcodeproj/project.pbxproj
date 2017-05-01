@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		0207DA581B56EA530066E2B4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0207DA571B56EA530066E2B4 /* Images.xcassets */; };
 		040420A3839446B9971BF083 /* CDVInAppBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F42A074CA74840B933A447 /* CDVInAppBrowser.m */; };
@@ -378,6 +377,13 @@
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"You Hold/Plugins/cordova-plugin-facebook4\"",
+					"\"You Hold/Plugins/cordova-plugin-facebook4\"",
+					"\"You Hold/Plugins/cordova-plugin-facebook4\"",
+					"\"You Hold/Plugins/cordova-plugin-facebook4\"",
+				);
 			};
 			name = Debug;
 		};
@@ -405,6 +411,13 @@
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"You Hold/Plugins/cordova-plugin-facebook4\"",
+					"\"You Hold/Plugins/cordova-plugin-facebook4\"",
+					"\"You Hold/Plugins/cordova-plugin-facebook4\"",
+					"\"You Hold/Plugins/cordova-plugin-facebook4\"",
+				);
 			};
 			name = Release;
 		};

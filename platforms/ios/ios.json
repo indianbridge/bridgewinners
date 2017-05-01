@@ -56,7 +56,12 @@
                             "xml": "<false />",
                             "count": 1
                         }
-                    ]
+                    ],
+                    "FacebookAppID": [],
+                    "FacebookDisplayName": [],
+                    "CFBundleURLTypes": [],
+                    "NSAppTransportSecurity": [],
+                    "LSApplicationQueriesSchemes": []
                 }
             }
         }
