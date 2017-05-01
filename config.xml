@@ -57,8 +57,4 @@
     <plugin name="cordova-plugin-inappbrowser" spec="~1.6.1" />
     <plugin name="cordova-plugin-ios-no-export-compliance" spec="https://github.com/mikaoelitiana/cordova-plugin-ios-no-export-compliance.git" />
     <plugin name="cordova-plugin-device" spec="~1.1.5" />
-    <plugin name="cordova-plugin-facebook4" spec="~1.7.4">
-        <variable name="APP_ID" value="159739840897277" />
-        <variable name="APP_NAME" value="You Hold" />
-    </plugin>
 </widget>

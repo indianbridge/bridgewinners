@@ -383,6 +383,10 @@
 					"\"You Hold/Plugins/cordova-plugin-facebook4\"",
 					"\"You Hold/Plugins/cordova-plugin-facebook4\"",
 					"\"You Hold/Plugins/cordova-plugin-facebook4\"",
+					"\"You Hold/Plugins/cordova-plugin-facebook4\"",
+					"\"You Hold/Plugins/cordova-plugin-facebook4\"",
+					"\"You Hold/Plugins/cordova-plugin-facebook4\"",
+					"\"You Hold/Plugins/cordova-plugin-facebook4\"",
 				);
 			};
 			name = Debug;
@@ -413,6 +417,10 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"You Hold/Plugins/cordova-plugin-facebook4\"",
+					"\"You Hold/Plugins/cordova-plugin-facebook4\"",
+					"\"You Hold/Plugins/cordova-plugin-facebook4\"",
+					"\"You Hold/Plugins/cordova-plugin-facebook4\"",
 					"\"You Hold/Plugins/cordova-plugin-facebook4\"",
 					"\"You Hold/Plugins/cordova-plugin-facebook4\"",
 					"\"You Hold/Plugins/cordova-plugin-facebook4\"",

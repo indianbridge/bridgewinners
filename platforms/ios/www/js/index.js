@@ -1549,13 +1549,7 @@ BW.vote = new function() {
   	this.selectedLevel = null;
     this.selectedCall = null;
   	this.selectedCard = null;
-    try {
-  	   var deal = new Bridge.Deal();
-    }
-    catch(err) {
-        alert(err.message);
-        return;
-    }
+  	var deal = new Bridge.Deal();
   	deal.setDealer(data.dealer);
   	deal.setVulnerability(data.vulnerability);
   	deal.getAuction().fromString(data.auction);
@@ -1927,62 +1921,22 @@ BW.user = new function() {
     $( document ).on( "tap", "#google-login-button", { user: this }, function( e ) {
       OAuth.popup('google')
       .done(function(result) {
-        alert("success" + result)
-        console.log(result);
-        result.get('/oauth2/v1/userinfo')    .done(function (response) {
-          console.log('Firstname: ', response.firstname);
-          console.log('Lastname: ', response.lastname);
-          console.log(JSON.stringify(response));
+        result.get('/oauth2/v1/userinfo').done(function (response) {
+          BW.ajax({
+            urlSuffix: "social-login/",
+            method: "POST",
+        		data: { uid: response.email, provider: 'google-oauth2' },
+        		headers: {},
+            loadingMessage: "Logging In...",
+            successCallback: self.loginSuccessCallback.bind(self),
+          });
         })
         .fail(function (err) {
-          console.log("me returned error");
-          //handle error with err
+          BW.messageDialog.show("Unable to get userinfo for Google user. " + err);
         });
-        //use result.access_token in your API request
-        //or use result.get|post|put|del|patch|me methods (see below)
-        // BW.ajax({
-        //   urlSuffix: "get-auth-token/",
-        //   method: "POST",
-      	// 	data: { access_token: result.access_token, email: result.email, provider: result.provider },
-      	// 	headers: {},
-        //   loadingMessage: "Logging In...",
-        //   successCallback: this.loginSuccessCallback.bind(this),
-        // });
       })
       .fail(function (err) {
-        alert("error "+ err)
-        //handle error with err
-      });
-  	});
-    $( document ).on( "tap", "#facebook-login-button", { user: this }, function( e ) {
-      // facebookConnectPlugin.login(["public_profile"],
-      //   function loginSuccess(userData) {
-      //     console.log("UserInfo: ", userData);
-      //   },
-      //   function loginError (error) {
-      //     console.error(error)
-      //   }
-      // );
-      OAuth.popup('facebook')
-      .done(function(result) {
-        alert("success" + result)
-        console.log(result);
-        result.me()    .done(function (response) {
-          console.log("uid: " + response.id);
-          console.log('Firstname: ', response.firstname);
-          console.log('Lastname: ', response.lastname);
-          console.log(JSON.stringify(response));
-        })
-        .fail(function (err) {
-          console.log("me returned error");
-          //handle error with err
-        });
-        //use result.access_token in your API request
-        //or use result.get|post|put|del|patch|me methods (see below)
-      })
-      .fail(function (err) {
-        alert("error "+ err)
-        //handle error with err
+        BW.messageDialog.show("Unable to connect to Google account. " + err);
       });
   	});
     $(document).on("keypress", "#username", function(e) {
