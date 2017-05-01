@@ -78,8 +78,8 @@ BW.app.start();
  * Some utility functions.
  */
 BW.utils = new function() {
-  //this.sitePrefix = "https://www.bridgewinners.com";
-  this.sitePrefix = "https://52.4.5.8";
+  this.sitePrefix = "https://www.bridgewinners.com";
+  //this.sitePrefix = "https://52.4.5.8";
   //this.sitePrefix = "https://127.0.0.1:8000";
   //this.sitePrefix = "http://localhost";
   this.init = function() {
