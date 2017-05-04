@@ -44,7 +44,7 @@ BW.app = new function() {
   	var attachFastClick = Origami.fastclick;
   	attachFastClick(document.body);
     this.initDialogs();
-    OAuth.initialize('Vi6x8Syh39JuYgui349ZU-YvwaI')
+    // OAuth.initialize('Vi6x8Syh39JuYgui349ZU-YvwaI')
     BW.utils.init();
     BW.page.init();
     BW.vote.init();
@@ -1919,25 +1919,26 @@ BW.user = new function() {
   		return self.logout();
   	});
     $( document ).on( "tap", "#google-login-button", { user: this }, function( e ) {
-      OAuth.popup('google')
-      .done(function(result) {
-        result.get('/oauth2/v1/userinfo').done(function (response) {
-          BW.ajax({
-            urlSuffix: "social-login/",
-            method: "POST",
-        		data: { uid: response.email, provider: 'google-oauth2' },
-        		headers: {},
-            loadingMessage: "Logging In...",
-            successCallback: self.loginSuccessCallback.bind(self),
-          });
-        })
-        .fail(function (err) {
-          BW.messageDialog.show("Unable to get userinfo for Google user. " + err);
-        });
-      })
-      .fail(function (err) {
-        BW.messageDialog.show("Unable to connect to Google account. " + err);
-      });
+      alert("Google login is not supported yet.")
+      // OAuth.popup('google')
+      // .done(function(result) {
+      //   result.get('/oauth2/v1/userinfo').done(function (response) {
+      //     BW.ajax({
+      //       urlSuffix: "social-login/",
+      //       method: "POST",
+      //   		data: { uid: response.email, provider: 'google-oauth2' },
+      //   		headers: {},
+      //       loadingMessage: "Logging In...",
+      //       successCallback: self.loginSuccessCallback.bind(self),
+      //     });
+      //   })
+      //   .fail(function (err) {
+      //     BW.messageDialog.show("Unable to get userinfo for Google user. " + err);
+      //   });
+      // })
+      // .fail(function (err) {
+      //   BW.messageDialog.show("Unable to connect to Google account. " + err);
+      // });
   	});
     $(document).on("keypress", "#username", function(e) {
       if (e.which === 13) {
