@@ -24,6 +24,20 @@
 		89B176B41583497A8ECA6833 /* CDVLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 7179CE180E8542349C2ED793 /* CDVLogger.m */; };
 		B35DD33AC84845A1BCFFAFB3 /* CDVConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C88725B3C6941FD917CB6AC /* CDVConnection.m */; };
 		F52770149F51428E9408C65E /* CDVStatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FF5060615474CE6A5743479 /* CDVStatusBar.m */; };
+		F13F14DEA35B447A824031DF /* You Hold.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 917C9335DC4D4A3CAC5063F3 /* You Hold.entitlements */; };
+		8D8985A0666D4727B58020BE /* GooglePlus.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A1FFE3A92A941B4B7C25533 /* GooglePlus.m */; };
+		0F3AC68A218E41CA8E0A73B7 /* GoogleAppUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44090D13BC9B4B44BA84A5AA /* GoogleAppUtilities.framework */; };
+		569C660E347C4275A2C402A4 /* GoogleAuthUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9A4FB0283BC4AD88C325CE1 /* GoogleAuthUtilities.framework */; };
+		CEB3E269C9DA48D6A2082726 /* GoogleNetworkingUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 830BB6DCB62349CE8F16CF59 /* GoogleNetworkingUtilities.framework */; };
+		6CAED2F2FC3641AB9EF505CF /* GoogleSignIn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8221667D745C4B2EBC0E25CF /* GoogleSignIn.framework */; };
+		DD6E34231CB741309D216748 /* GoogleSymbolUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36DA36EBD82D4F85A16559D3 /* GoogleSymbolUtilities.framework */; };
+		B6418FF6ED304B0FABD49F8E /* GoogleUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B18016598104ED6AE53D91F /* GoogleUtilities.framework */; };
+		2A8311F4D0E74177B7F4A20D /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85A650D185B84CF4AEDA8B67 /* AddressBook.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		2660BE6A3CDD449FA4B1867E /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1952F1CC153C46878D9A8A37 /* CoreText.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		892B34EAFADA41ABB0F7A2DE /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35EEFACD045E4BDD896DD5C0 /* SafariServices.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		1B4EE9185FA349458DEA297D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A0AE0821DF643888B9D12EA /* Security.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		9663E1FC567F4C4699DFA0D3 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F59A65831494AADB0BB35A1 /* libz.dylib */; settings = {ATTRIBUTES = (Weak, ); }; };
+		150565C7C4DE4D73B8375108 /* SafariViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 39C2355EAC9145B1A39BD0A1 /* SafariViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +97,22 @@
 		F840E1F0165FE0F500CFE078 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = "You Hold/config.xml"; sourceTree = "<group>"; };
 		F8B74B90A3CA49DEBA00CD26 /* CDVConnection.h */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = CDVConnection.h; path = "cordova-plugin-network-information/CDVConnection.h"; sourceTree = "<group>"; };
 		FE054D45764B4F76A287D409 /* CDVStatusBar.h */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = CDVStatusBar.h; path = "cordova-plugin-statusbar/CDVStatusBar.h"; sourceTree = "<group>"; };
+		917C9335DC4D4A3CAC5063F3 /* You Hold.entitlements */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "You Hold.entitlements"; path = "You Hold.entitlements"; sourceTree = "<group>"; fileEncoding = 4; };
+		3A1FFE3A92A941B4B7C25533 /* GooglePlus.m */ = {isa = PBXFileReference; name = "GooglePlus.m"; path = "cordova-plugin-googleplus/GooglePlus.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
+		039B5E00C65242E486571936 /* GooglePlus.h */ = {isa = PBXFileReference; name = "GooglePlus.h"; path = "cordova-plugin-googleplus/GooglePlus.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
+		44090D13BC9B4B44BA84A5AA /* GoogleAppUtilities.framework */ = {isa = PBXFileReference; name = "GoogleAppUtilities.framework"; path = "You Hold/Plugins/cordova-plugin-googleplus/GoogleAppUtilities.framework"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
+		F9A4FB0283BC4AD88C325CE1 /* GoogleAuthUtilities.framework */ = {isa = PBXFileReference; name = "GoogleAuthUtilities.framework"; path = "You Hold/Plugins/cordova-plugin-googleplus/GoogleAuthUtilities.framework"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
+		830BB6DCB62349CE8F16CF59 /* GoogleNetworkingUtilities.framework */ = {isa = PBXFileReference; name = "GoogleNetworkingUtilities.framework"; path = "You Hold/Plugins/cordova-plugin-googleplus/GoogleNetworkingUtilities.framework"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
+		8221667D745C4B2EBC0E25CF /* GoogleSignIn.framework */ = {isa = PBXFileReference; name = "GoogleSignIn.framework"; path = "You Hold/Plugins/cordova-plugin-googleplus/GoogleSignIn.framework"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
+		36DA36EBD82D4F85A16559D3 /* GoogleSymbolUtilities.framework */ = {isa = PBXFileReference; name = "GoogleSymbolUtilities.framework"; path = "You Hold/Plugins/cordova-plugin-googleplus/GoogleSymbolUtilities.framework"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
+		9B18016598104ED6AE53D91F /* GoogleUtilities.framework */ = {isa = PBXFileReference; name = "GoogleUtilities.framework"; path = "You Hold/Plugins/cordova-plugin-googleplus/GoogleUtilities.framework"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
+		85A650D185B84CF4AEDA8B67 /* AddressBook.framework */ = {isa = PBXFileReference; name = "AddressBook.framework"; path = "System/Library/Frameworks/AddressBook.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
+		1952F1CC153C46878D9A8A37 /* CoreText.framework */ = {isa = PBXFileReference; name = "CoreText.framework"; path = "System/Library/Frameworks/CoreText.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
+		35EEFACD045E4BDD896DD5C0 /* SafariServices.framework */ = {isa = PBXFileReference; name = "SafariServices.framework"; path = "System/Library/Frameworks/SafariServices.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
+		3A0AE0821DF643888B9D12EA /* Security.framework */ = {isa = PBXFileReference; name = "Security.framework"; path = "System/Library/Frameworks/Security.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
+		6F59A65831494AADB0BB35A1 /* libz.dylib */ = {isa = PBXFileReference; name = "libz.dylib"; path = "usr/lib/libz.dylib"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = compiled.mach-o.dylib; explicitFileType = undefined; includeInIndex = 0; };
+		39C2355EAC9145B1A39BD0A1 /* SafariViewController.m */ = {isa = PBXFileReference; name = "SafariViewController.m"; path = "cordova-plugin-safariviewcontroller/SafariViewController.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
+		78A73EA79CFE4C93A560CF9B /* SafariViewController.h */ = {isa = PBXFileReference; name = "SafariViewController.h"; path = "cordova-plugin-safariviewcontroller/SafariViewController.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +124,17 @@
 				636AB0ADEE8B43C0979E57F1 /* libz.tbd in Frameworks */,
 				0BAE70DF5C4E415EB5595E65 /* SystemConfiguration.framework in Frameworks */,
 				4B753ED3C5574B39B0437AE8 /* CoreTelephony.framework in Frameworks */,
+				0F3AC68A218E41CA8E0A73B7 /* GoogleAppUtilities.framework in Frameworks */,
+				569C660E347C4275A2C402A4 /* GoogleAuthUtilities.framework in Frameworks */,
+				CEB3E269C9DA48D6A2082726 /* GoogleNetworkingUtilities.framework in Frameworks */,
+				6CAED2F2FC3641AB9EF505CF /* GoogleSignIn.framework in Frameworks */,
+				DD6E34231CB741309D216748 /* GoogleSymbolUtilities.framework in Frameworks */,
+				B6418FF6ED304B0FABD49F8E /* GoogleUtilities.framework in Frameworks */,
+				2A8311F4D0E74177B7F4A20D /* AddressBook.framework in Frameworks */,
+				2660BE6A3CDD449FA4B1867E /* CoreText.framework in Frameworks */,
+				892B34EAFADA41ABB0F7A2DE /* SafariServices.framework in Frameworks */,
+				1B4EE9185FA349458DEA297D /* Security.framework in Frameworks */,
+				9663E1FC567F4C4699DFA0D3 /* libz.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -156,6 +197,7 @@
 				3047A50E1AB8057F00498E2A /* config */,
 				8D1107310486CEB800E47090 /* You Hold-Info.plist */,
 				6AFF5BF81D6E424B00AB3073 /* CDVLaunchScreen.storyboard */,
+				917C9335DC4D4A3CAC5063F3 /* You Hold.entitlements */,
 			);
 			name = Resources;
 			path = "You Hold/Resources";
@@ -167,6 +209,17 @@
 				B4D783DDB0514DFCA7C38947 /* libz.tbd */,
 				56159F00F7AF4354AD70AEEB /* SystemConfiguration.framework */,
 				54BFE0DB5A8A4D8CBF47861D /* CoreTelephony.framework */,
+				44090D13BC9B4B44BA84A5AA /* GoogleAppUtilities.framework */,
+				F9A4FB0283BC4AD88C325CE1 /* GoogleAuthUtilities.framework */,
+				830BB6DCB62349CE8F16CF59 /* GoogleNetworkingUtilities.framework */,
+				8221667D745C4B2EBC0E25CF /* GoogleSignIn.framework */,
+				36DA36EBD82D4F85A16559D3 /* GoogleSymbolUtilities.framework */,
+				9B18016598104ED6AE53D91F /* GoogleUtilities.framework */,
+				85A650D185B84CF4AEDA8B67 /* AddressBook.framework */,
+				1952F1CC153C46878D9A8A37 /* CoreText.framework */,
+				35EEFACD045E4BDD896DD5C0 /* SafariServices.framework */,
+				3A0AE0821DF643888B9D12EA /* Security.framework */,
+				6F59A65831494AADB0BB35A1 /* libz.dylib */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -208,6 +261,10 @@
 				067DE5AF569F416E8DABC744 /* CDVViewController+SplashScreen.h */,
 				2FF5060615474CE6A5743479 /* CDVStatusBar.m */,
 				FE054D45764B4F76A287D409 /* CDVStatusBar.h */,
+				3A1FFE3A92A941B4B7C25533 /* GooglePlus.m */,
+				039B5E00C65242E486571936 /* GooglePlus.h */,
+				39C2355EAC9145B1A39BD0A1 /* SafariViewController.m */,
+				78A73EA79CFE4C93A560CF9B /* SafariViewController.h */,
 			);
 			name = Plugins;
 			path = "You Hold/Plugins";
@@ -298,6 +355,7 @@
 				302D95F214D2391D003F00A1 /* MainViewController.xib in Resources */,
 				0207DA581B56EA530066E2B4 /* Images.xcassets in Resources */,
 				6AFF5BF91D6E424B00AB3073 /* CDVLaunchScreen.storyboard in Resources */,
+				F13F14DEA35B447A824031DF /* You Hold.entitlements in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -337,6 +395,8 @@
 				69BE2F12D37E492187B85198 /* CDVSplashScreen.m in Sources */,
 				45CDF731365A46E5AD6C9D5A /* CDVViewController+SplashScreen.m in Sources */,
 				F52770149F51428E9408C65E /* CDVStatusBar.m in Sources */,
+				8D8985A0666D4727B58020BE /* GooglePlus.m in Sources */,
+				150565C7C4DE4D73B8375108 /* SafariViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -387,7 +447,26 @@
 					"\"You Hold/Plugins/cordova-plugin-facebook4\"",
 					"\"You Hold/Plugins/cordova-plugin-facebook4\"",
 					"\"You Hold/Plugins/cordova-plugin-facebook4\"",
+					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
+					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
+					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
+					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
+					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
+					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
+					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
+					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
+					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
+					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
+					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
+					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
+					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
+					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
+					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
+					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
+					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
+					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
 				);
+				CODE_SIGN_ENTITLEMENTS = "You Hold/Resources/You Hold.entitlements";
 			};
 			name = Debug;
 		};
@@ -425,7 +504,26 @@
 					"\"You Hold/Plugins/cordova-plugin-facebook4\"",
 					"\"You Hold/Plugins/cordova-plugin-facebook4\"",
 					"\"You Hold/Plugins/cordova-plugin-facebook4\"",
+					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
+					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
+					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
+					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
+					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
+					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
+					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
+					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
+					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
+					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
+					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
+					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
+					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
+					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
+					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
+					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
+					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
+					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
 				);
+				CODE_SIGN_ENTITLEMENTS = "You Hold/Resources/You Hold.entitlements";
 			};
 			name = Release;
 		};
@@ -453,6 +551,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
+				CODE_SIGN_ENTITLEMENTS = "You Hold/Resources/You Hold.entitlements";
 			};
 			name = Debug;
 		};
@@ -479,6 +578,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
+				CODE_SIGN_ENTITLEMENTS = "You Hold/Resources/You Hold.entitlements";
 			};
 			name = Release;
 		};

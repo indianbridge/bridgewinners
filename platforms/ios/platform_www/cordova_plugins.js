@@ -65,6 +65,22 @@ module.exports = [
         "clobbers": [
             "window.StatusBar"
         ]
+    },
+    {
+        "id": "cordova-plugin-googleplus.GooglePlus",
+        "file": "plugins/cordova-plugin-googleplus/www/GooglePlus.js",
+        "pluginId": "cordova-plugin-googleplus",
+        "clobbers": [
+            "window.plugins.googleplus"
+        ]
+    },
+    {
+        "id": "cordova-plugin-safariviewcontroller.SafariViewController",
+        "file": "plugins/cordova-plugin-safariviewcontroller/www/SafariViewController.js",
+        "pluginId": "cordova-plugin-safariviewcontroller",
+        "clobbers": [
+            "SafariViewController"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -77,7 +93,9 @@ module.exports.metadata =
     "cordova-plugin-network-information": "1.2.1",
     "cordova-plugin-splashscreen": "4.0.0",
     "cordova-plugin-statusbar": "2.2.0",
-    "cordova-plugin-whitelist": "1.3.0"
+    "cordova-plugin-whitelist": "1.3.0",
+    "cordova-plugin-googleplus": "5.1.1",
+    "cordova-plugin-safariviewcontroller": "1.4.7"
 };
 // BOTTOM OF METADATA
 });

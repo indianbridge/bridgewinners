@@ -1,5 +1,10 @@
 {
-    "libz.tbd": 1,
-    "SystemConfiguration.framework": 1,
-    "CoreTelephony.framework": 1
+    "libz.tbd": 2,
+    "SystemConfiguration.framework": 2,
+    "CoreTelephony.framework": 1,
+    "AddressBook.framework": 1,
+    "CoreText.framework": 1,
+    "SafariServices.framework": 2,
+    "Security.framework": 1,
+    "libz.dylib": 1
 }

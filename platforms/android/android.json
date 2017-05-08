@@ -31,6 +31,14 @@
                         {
                             "xml": "<feature name=\"Device\"><param name=\"android-package\" value=\"org.apache.cordova.device.Device\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"GooglePlus\"><param name=\"android-package\" value=\"nl.xservices.plugins.GooglePlus\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<access origin=\"https://accounts.google.com/*\" />",
+                            "count": 1
                         }
                     ]
                 }
@@ -43,12 +51,32 @@
                             "count": 1
                         }
                     ],
-                    "application": []
+                    "application": [],
+                    "/manifest": [
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.GET_ACCOUNTS\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.USE_CREDENTIALS\" />",
+                            "count": 1
+                        }
+                    ]
                 }
             },
             "res/values/facebookconnect.xml": {
                 "parents": {
                     "/*": []
+                }
+            },
+            "config.xml": {
+                "parents": {
+                    "/*": [
+                        {
+                            "xml": "<feature name=\"SafariViewController\"><param name=\"android-package\" value=\"com.customtabplugin.ChromeCustomTabPlugin\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
+                        }
+                    ]
                 }
             }
         }
@@ -77,6 +105,12 @@
         },
         "cordova-plugin-device": {
             "PACKAGE_NAME": "com.bridgewinners.mobile"
+        },
+        "cordova-plugin-googleplus": {
+            "PACKAGE_NAME": "com.bridgewinners.youhold"
+        },
+        "cordova-plugin-safariviewcontroller": {
+            "PACKAGE_NAME": "com.bridgewinners.youhold"
         }
     },
     "dependent_plugins": {},
@@ -130,6 +164,22 @@
             "clobbers": [
                 "device"
             ]
+        },
+        {
+            "id": "cordova-plugin-googleplus.GooglePlus",
+            "file": "plugins/cordova-plugin-googleplus/www/GooglePlus.js",
+            "pluginId": "cordova-plugin-googleplus",
+            "clobbers": [
+                "window.plugins.googleplus"
+            ]
+        },
+        {
+            "id": "cordova-plugin-safariviewcontroller.SafariViewController",
+            "file": "plugins/cordova-plugin-safariviewcontroller/www/SafariViewController.js",
+            "pluginId": "cordova-plugin-safariviewcontroller",
+            "clobbers": [
+                "SafariViewController"
+            ]
         }
     ],
     "plugin_metadata": {
@@ -140,6 +190,8 @@
         "cordova-plugin-console": "1.0.5",
         "cordova-plugin-inappbrowser": "1.6.1",
         "cordova-plugin-ios-no-export-compliance": "0.0.1",
-        "cordova-plugin-device": "1.1.5"
+        "cordova-plugin-device": "1.1.5",
+        "cordova-plugin-googleplus": "5.1.1",
+        "cordova-plugin-safariviewcontroller": "1.4.7"
     }
 }

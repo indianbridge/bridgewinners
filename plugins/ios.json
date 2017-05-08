@@ -27,6 +27,13 @@
         },
         "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.bridgewinners.mobile"
+        },
+        "cordova-plugin-googleplus": {
+            "REVERSED_CLIENT_ID": "com.googleusercontent.apps.527397812706-q680kpka1u13l97tkqsfp4mb7jl3pdbd",
+            "PACKAGE_NAME": "com.bridgewinners.youhold"
+        },
+        "cordova-plugin-safariviewcontroller": {
+            "PACKAGE_NAME": "com.bridgewinners.youhold"
         }
     },
     "dependent_plugins": {

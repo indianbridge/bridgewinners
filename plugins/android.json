@@ -27,6 +27,12 @@
         },
         "cordova-plugin-device": {
             "PACKAGE_NAME": "com.bridgewinners.mobile"
+        },
+        "cordova-plugin-googleplus": {
+            "PACKAGE_NAME": "com.bridgewinners.youhold"
+        },
+        "cordova-plugin-safariviewcontroller": {
+            "PACKAGE_NAME": "com.bridgewinners.youhold"
         }
     },
     "dependent_plugins": {
