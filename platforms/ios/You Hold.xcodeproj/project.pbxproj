@@ -38,6 +38,11 @@
 		1B4EE9185FA349458DEA297D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A0AE0821DF643888B9D12EA /* Security.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		9663E1FC567F4C4699DFA0D3 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F59A65831494AADB0BB35A1 /* libz.dylib */; settings = {ATTRIBUTES = (Weak, ); }; };
 		150565C7C4DE4D73B8375108 /* SafariViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 39C2355EAC9145B1A39BD0A1 /* SafariViewController.m */; };
+		627CBB6643314328AED9BCE9 /* FacebookConnectPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = CEFF5A003BE440D5AF7F35D8 /* FacebookConnectPlugin.m */; };
+		BA5A2456B67F44C6ACA2BD73 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FC07D0B2BFE4DF0A9FCF497 /* Bolts.framework */; };
+		C1A18E344A7E4705BBDA1CA3 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04D3A66FD5DC40C284B211B5 /* FBSDKCoreKit.framework */; };
+		5CD31FB29863463C8FE1CFB3 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88569A4B6A7949DEB044F60C /* FBSDKLoginKit.framework */; };
+		E4D69532751E4D7DA9194FAB /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E17B59D4598430382AB2A76 /* FBSDKShareKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -113,6 +118,12 @@
 		6F59A65831494AADB0BB35A1 /* libz.dylib */ = {isa = PBXFileReference; name = "libz.dylib"; path = "usr/lib/libz.dylib"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = compiled.mach-o.dylib; explicitFileType = undefined; includeInIndex = 0; };
 		39C2355EAC9145B1A39BD0A1 /* SafariViewController.m */ = {isa = PBXFileReference; name = "SafariViewController.m"; path = "cordova-plugin-safariviewcontroller/SafariViewController.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
 		78A73EA79CFE4C93A560CF9B /* SafariViewController.h */ = {isa = PBXFileReference; name = "SafariViewController.h"; path = "cordova-plugin-safariviewcontroller/SafariViewController.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
+		CEFF5A003BE440D5AF7F35D8 /* FacebookConnectPlugin.m */ = {isa = PBXFileReference; name = "FacebookConnectPlugin.m"; path = "cordova-plugin-facebook4/FacebookConnectPlugin.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
+		47DE2463D4BA4253BEFFAE6E /* FacebookConnectPlugin.h */ = {isa = PBXFileReference; name = "FacebookConnectPlugin.h"; path = "cordova-plugin-facebook4/FacebookConnectPlugin.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
+		0FC07D0B2BFE4DF0A9FCF497 /* Bolts.framework */ = {isa = PBXFileReference; name = "Bolts.framework"; path = "You Hold/Plugins/cordova-plugin-facebook4/Bolts.framework"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
+		04D3A66FD5DC40C284B211B5 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; name = "FBSDKCoreKit.framework"; path = "You Hold/Plugins/cordova-plugin-facebook4/FBSDKCoreKit.framework"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
+		88569A4B6A7949DEB044F60C /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; name = "FBSDKLoginKit.framework"; path = "You Hold/Plugins/cordova-plugin-facebook4/FBSDKLoginKit.framework"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
+		6E17B59D4598430382AB2A76 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; name = "FBSDKShareKit.framework"; path = "You Hold/Plugins/cordova-plugin-facebook4/FBSDKShareKit.framework"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +146,10 @@
 				892B34EAFADA41ABB0F7A2DE /* SafariServices.framework in Frameworks */,
 				1B4EE9185FA349458DEA297D /* Security.framework in Frameworks */,
 				9663E1FC567F4C4699DFA0D3 /* libz.dylib in Frameworks */,
+				BA5A2456B67F44C6ACA2BD73 /* Bolts.framework in Frameworks */,
+				C1A18E344A7E4705BBDA1CA3 /* FBSDKCoreKit.framework in Frameworks */,
+				5CD31FB29863463C8FE1CFB3 /* FBSDKLoginKit.framework in Frameworks */,
+				E4D69532751E4D7DA9194FAB /* FBSDKShareKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -220,6 +235,10 @@
 				35EEFACD045E4BDD896DD5C0 /* SafariServices.framework */,
 				3A0AE0821DF643888B9D12EA /* Security.framework */,
 				6F59A65831494AADB0BB35A1 /* libz.dylib */,
+				0FC07D0B2BFE4DF0A9FCF497 /* Bolts.framework */,
+				04D3A66FD5DC40C284B211B5 /* FBSDKCoreKit.framework */,
+				88569A4B6A7949DEB044F60C /* FBSDKLoginKit.framework */,
+				6E17B59D4598430382AB2A76 /* FBSDKShareKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -265,6 +284,8 @@
 				039B5E00C65242E486571936 /* GooglePlus.h */,
 				39C2355EAC9145B1A39BD0A1 /* SafariViewController.m */,
 				78A73EA79CFE4C93A560CF9B /* SafariViewController.h */,
+				CEFF5A003BE440D5AF7F35D8 /* FacebookConnectPlugin.m */,
+				47DE2463D4BA4253BEFFAE6E /* FacebookConnectPlugin.h */,
 			);
 			name = Plugins;
 			path = "You Hold/Plugins";
@@ -397,6 +418,7 @@
 				F52770149F51428E9408C65E /* CDVStatusBar.m in Sources */,
 				8D8985A0666D4727B58020BE /* GooglePlus.m in Sources */,
 				150565C7C4DE4D73B8375108 /* SafariViewController.m in Sources */,
+				627CBB6643314328AED9BCE9 /* FacebookConnectPlugin.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -465,6 +487,12 @@
 					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
 					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
 					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
+					"\"You Hold/Plugins/phonegap-facebook-plugin\"",
+					"\"You Hold/Plugins/phonegap-facebook-plugin\"",
+					"\"You Hold/Plugins/cordova-plugin-facebook4\"",
+					"\"You Hold/Plugins/cordova-plugin-facebook4\"",
+					"\"You Hold/Plugins/cordova-plugin-facebook4\"",
+					"\"You Hold/Plugins/cordova-plugin-facebook4\"",
 				);
 				CODE_SIGN_ENTITLEMENTS = "You Hold/Resources/You Hold.entitlements";
 			};
@@ -522,6 +550,12 @@
 					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
 					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
 					"\"You Hold/Plugins/cordova-plugin-googleplus\"",
+					"\"You Hold/Plugins/phonegap-facebook-plugin\"",
+					"\"You Hold/Plugins/phonegap-facebook-plugin\"",
+					"\"You Hold/Plugins/cordova-plugin-facebook4\"",
+					"\"You Hold/Plugins/cordova-plugin-facebook4\"",
+					"\"You Hold/Plugins/cordova-plugin-facebook4\"",
+					"\"You Hold/Plugins/cordova-plugin-facebook4\"",
 				);
 				CODE_SIGN_ENTITLEMENTS = "You Hold/Resources/You Hold.entitlements";
 			};

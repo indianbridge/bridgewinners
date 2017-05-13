@@ -65,6 +65,14 @@ module.exports = [
         "clobbers": [
             "SafariViewController"
         ]
+    },
+    {
+        "id": "cordova-plugin-facebook4.FacebookConnectPlugin",
+        "file": "plugins/cordova-plugin-facebook4/www/facebook-native.js",
+        "pluginId": "cordova-plugin-facebook4",
+        "clobbers": [
+            "facebookConnectPlugin"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -79,7 +87,8 @@ module.exports.metadata =
     "cordova-plugin-ios-no-export-compliance": "0.0.1",
     "cordova-plugin-device": "1.1.5",
     "cordova-plugin-googleplus": "5.1.1",
-    "cordova-plugin-safariviewcontroller": "1.4.7"
+    "cordova-plugin-safariviewcontroller": "1.4.7",
+    "cordova-plugin-facebook4": "1.7.4"
 };
 // BOTTOM OF METADATA
 });

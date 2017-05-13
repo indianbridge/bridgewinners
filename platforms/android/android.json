@@ -39,6 +39,34 @@
                         {
                             "xml": "<access origin=\"https://accounts.google.com/*\" />",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"FacebookConnectPlugin\"><param name=\"android-package\" value=\"org.apache.cordova.facebook.ConnectPlugin\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<access origin=\"https://m.facebook.com\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<access origin=\"https://graph.facebook.com\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<access origin=\"https://api.facebook.com\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<access origin=\"https://*.fbcdn.net\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<access origin=\"https://*.akamaihd.net\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<preference name=\"android-minSdkVersion\" value=\"15\" />",
+                            "count": 1
                         }
                     ]
                 }
@@ -51,7 +79,20 @@
                             "count": 1
                         }
                     ],
-                    "application": [],
+                    "application": [
+                        {
+                            "xml": "<meta-data android:name=\"com.facebook.sdk.ApplicationId\" android:value=\"@string/fb_app_id\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<meta-data android:name=\"com.facebook.sdk.ApplicationName\" android:value=\"@string/fb_app_name\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<activity android:configChanges=\"keyboard|keyboardHidden|screenLayout|screenSize|orientation\" android:label=\"@string/fb_app_name\" android:name=\"com.facebook.FacebookActivity\" android:theme=\"@android:style/Theme.Translucent.NoTitleBar\" />",
+                            "count": 1
+                        }
+                    ],
                     "/manifest": [
                         {
                             "xml": "<uses-permission android:name=\"android.permission.GET_ACCOUNTS\" />",
@@ -66,7 +107,16 @@
             },
             "res/values/facebookconnect.xml": {
                 "parents": {
-                    "/*": []
+                    "/*": [
+                        {
+                            "xml": "<string name=\"fb_app_id\">159739840897277</string>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<string name=\"fb_app_name\">Bridge Winners</string>",
+                            "count": 1
+                        }
+                    ]
                 }
             },
             "config.xml": {
@@ -110,6 +160,11 @@
             "PACKAGE_NAME": "com.bridgewinners.youhold"
         },
         "cordova-plugin-safariviewcontroller": {
+            "PACKAGE_NAME": "com.bridgewinners.youhold"
+        },
+        "cordova-plugin-facebook4": {
+            "APP_ID": "159739840897277",
+            "APP_NAME": "Bridge Winners",
             "PACKAGE_NAME": "com.bridgewinners.youhold"
         }
     },
@@ -180,6 +235,14 @@
             "clobbers": [
                 "SafariViewController"
             ]
+        },
+        {
+            "id": "cordova-plugin-facebook4.FacebookConnectPlugin",
+            "file": "plugins/cordova-plugin-facebook4/www/facebook-native.js",
+            "pluginId": "cordova-plugin-facebook4",
+            "clobbers": [
+                "facebookConnectPlugin"
+            ]
         }
     ],
     "plugin_metadata": {
@@ -192,6 +255,7 @@
         "cordova-plugin-ios-no-export-compliance": "0.0.1",
         "cordova-plugin-device": "1.1.5",
         "cordova-plugin-googleplus": "5.1.1",
-        "cordova-plugin-safariviewcontroller": "1.4.7"
+        "cordova-plugin-safariviewcontroller": "1.4.7",
+        "cordova-plugin-facebook4": "1.7.4"
     }
 }

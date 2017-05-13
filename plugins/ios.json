@@ -34,6 +34,11 @@
         },
         "cordova-plugin-safariviewcontroller": {
             "PACKAGE_NAME": "com.bridgewinners.youhold"
+        },
+        "cordova-plugin-facebook4": {
+            "APP_ID": "159739840897277",
+            "APP_NAME": "Bridge Winners",
+            "PACKAGE_NAME": "com.bridgewinners.youhold"
         }
     },
     "dependent_plugins": {

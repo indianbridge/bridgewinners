@@ -44,7 +44,7 @@ BW.app = new function() {
   	var attachFastClick = Origami.fastclick;
   	attachFastClick(document.body);
     this.initDialogs();
-    // OAuth.initialize('Vi6x8Syh39JuYgui349ZU-YvwaI')
+    OAuth.initialize('11egxbFibqQcZpXFFCd7qO0_4Rk')
     BW.utils.init();
     BW.page.init();
     BW.vote.init();
@@ -1951,7 +1951,35 @@ BW.user = new function() {
     $(document).on( "tap", "#logout-submit-button", function() {
   		return self.logout();
   	});
+    $( document ).on( "tap", "#facebook-login-button", function() {
+      var associateLink = " <a href='http://bridgewinners.com/login/facebook/?next=/'>Click here to associate your facebook account with bridgewinners</a>";
+      facebookConnectPlugin.login(["public_profile"],
+        function (userData) {
+          BW.ajax({
+            urlSuffix: "social-login/",
+            method: "POST",
+            data: { uid: userData["authResponse"]["userID"], provider: 'facebook' },
+            headers: {},
+            loadingMessage: "Logging In...",
+            successCallback: self.loginSuccessCallback.bind(self),
+            errorCallback: function(message) {
+              facebookConnectPlugin.logout(function() {}, function() {});
+              BW.messageDialog.show("Request Failed: " + message + associateLink);
+            },
+            failedCallback: function(message) {
+              facebookConnectPlugin.logout(function() {}, function() {});
+              BW.messageDialog.show("Request Failed: " + message + associateLink);
+            },
+          });
+        },
+        function (err) {
+          facebookConnectPlugin.logout(function() {}, function() {});
+          BW.messageDialog.show("Unable to connect to facebook account. " + err);
+        }
+      );
+    });
     $( document ).on( "tap", "#google-login-button", function() {
+      var associateLink = " <a href='http://bridgewinners.com/login/google-oauth2/?next=/'>Click here to associate your google account with bridgewinners</a>";
       window.plugins.googleplus.login(
           {
             'webClientId': '527397812706-2j14fdjbvsveftvongh6eo96kq6i65gb.apps.googleusercontent.com',
@@ -1965,12 +1993,12 @@ BW.user = new function() {
               loadingMessage: "Logging In...",
               successCallback: self.loginSuccessCallback.bind(self),
               errorCallback: function(message) {
-                BW.messageDialog.show("Request Failed: " + message);
                 window.plugins.googleplus.logout(function() {});
+                BW.messageDialog.show("Request Failed: " + message + associateLink);
               },
               failedCallback: function(message) {
-                BW.messageDialog.show("Request Failed: " + message);
                 window.plugins.googleplus.logout(function() {});
+                BW.messageDialog.show("Request Failed: " + message + associateLink);
               },
             });
           },
@@ -1979,26 +2007,6 @@ BW.user = new function() {
             BW.messageDialog.show("Failed to connect to Google account. " + err);
           }
       );
-      // alert("Google login is not supported yet.")
-      // OAuth.popup('google')
-      // .done(function(result) {
-      //   result.get('/oauth2/v1/userinfo').done(function (response) {
-      //     BW.ajax({
-      //       urlSuffix: "social-login/",
-      //       method: "POST",
-      //   		data: { uid: response.email, provider: 'google-oauth2' },
-      //   		headers: {},
-      //       loadingMessage: "Logging In...",
-      //       successCallback: self.loginSuccessCallback.bind(self),
-      //     });
-      //   })
-      //   .fail(function (err) {
-      //     BW.messageDialog.show("Unable to get userinfo for Google user. " + err);
-      //   });
-      // })
-      // .fail(function (err) {
-      //   BW.messageDialog.show("Unable to connect to Google account. " + err);
-      // });
   	});
     $(document).on("keypress", "#username", function(e) {
       if (e.which === 13) {
@@ -2117,7 +2125,12 @@ BW.user = new function() {
   this.logout = function() {
     this.accessToken = null;
     localStorage.removeItem(this.accessTokenName);
-    window.plugins.googleplus.logout(function() {});
+    if ('plugins' in window && 'googleplus' in window.plugins) {
+      window.plugins.googleplus.logout(function() {});
+    }
+    if ('facebookConnectPlugin' in window) {
+      facebookConnectPlugin.logout(function() {}, function() {});
+    }
     BW.page.hideHeaderFooter();
     BW.page.show("login");
     return false;

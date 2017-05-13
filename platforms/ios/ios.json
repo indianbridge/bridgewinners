@@ -51,6 +51,34 @@
                         {
                             "xml": "<feature name=\"SafariViewController\"><param name=\"ios-package\" value=\"SafariViewController\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"FacebookConnectPlugin\"><param name=\"ios-package\" value=\"FacebookConnectPlugin\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<plugin name=\"FacebookConnectPlugin\" value=\"FacebookConnectPlugin\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<access origin=\"https://m.facebook.com\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<access origin=\"https://graph.facebook.com\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<access origin=\"https://api.facebook.com\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<access origin=\"https://*.fbcdn.net\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<access origin=\"https://*.akamaihd.net\" />",
+                            "count": 1
                         }
                     ]
                 }
@@ -69,16 +97,40 @@
                             "count": 1
                         }
                     ],
-                    "FacebookAppID": [],
-                    "FacebookDisplayName": [],
+                    "FacebookAppID": [
+                        {
+                            "xml": "<string>159739840897277</string>",
+                            "count": 1
+                        }
+                    ],
+                    "FacebookDisplayName": [
+                        {
+                            "xml": "<string>Bridge Winners</string>",
+                            "count": 1
+                        }
+                    ],
                     "CFBundleURLTypes": [
                         {
                             "xml": "<array><dict><key>CFBundleTypeRole</key><string>Editor</string><key>CFBundleURLName</key><string>REVERSED_CLIENT_ID</string><key>CFBundleURLSchemes</key><array><string>com.googleusercontent.apps.527397812706-q680kpka1u13l97tkqsfp4mb7jl3pdbd</string></array></dict></array>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<array><dict><key>CFBundleURLSchemes</key><array><string>fb159739840897277</string></array></dict></array>",
+                            "count": 1
                         }
                     ],
-                    "NSAppTransportSecurity": [],
-                    "LSApplicationQueriesSchemes": []
+                    "NSAppTransportSecurity": [
+                        {
+                            "xml": "<dict><key>NSExceptionDomains</key><dict><key>facebook.com</key><dict><key>NSIncludesSubdomains</key><true /><key>NSThirdPartyExceptionRequiresForwardSecrecy</key><false /></dict><key>fbcdn.net</key><dict><key>NSIncludesSubdomains</key><true /><key>NSThirdPartyExceptionRequiresForwardSecrecy</key><false /></dict><key>akamaihd.net</key><dict><key>NSIncludesSubdomains</key><true /><key>NSThirdPartyExceptionRequiresForwardSecrecy</key><false /></dict></dict></dict>",
+                            "count": 1
+                        }
+                    ],
+                    "LSApplicationQueriesSchemes": [
+                        {
+                            "xml": "<array><string>fbapi</string><string>fb-messenger-api</string><string>fbauth2</string><string>fbshareextension</string></array>",
+                            "count": 1
+                        }
+                    ]
                 }
             }
         }
@@ -113,6 +165,11 @@
             "PACKAGE_NAME": "com.bridgewinners.youhold"
         },
         "cordova-plugin-safariviewcontroller": {
+            "PACKAGE_NAME": "com.bridgewinners.youhold"
+        },
+        "cordova-plugin-facebook4": {
+            "APP_ID": "159739840897277",
+            "APP_NAME": "Bridge Winners",
             "PACKAGE_NAME": "com.bridgewinners.youhold"
         }
     },
@@ -199,6 +256,14 @@
             "clobbers": [
                 "SafariViewController"
             ]
+        },
+        {
+            "id": "cordova-plugin-facebook4.FacebookConnectPlugin",
+            "file": "plugins/cordova-plugin-facebook4/www/facebook-native.js",
+            "pluginId": "cordova-plugin-facebook4",
+            "clobbers": [
+                "facebookConnectPlugin"
+            ]
         }
     ],
     "plugin_metadata": {
@@ -211,6 +276,7 @@
         "cordova-plugin-statusbar": "2.2.0",
         "cordova-plugin-whitelist": "1.3.0",
         "cordova-plugin-googleplus": "5.1.1",
-        "cordova-plugin-safariviewcontroller": "1.4.7"
+        "cordova-plugin-safariviewcontroller": "1.4.7",
+        "cordova-plugin-facebook4": "1.7.4"
     }
 }

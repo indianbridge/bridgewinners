@@ -253,6 +253,7 @@ dependencies {
     compile "com.google.android.gms:play-services-auth:+"
     compile "com.google.android.gms:play-services-identity:+"
     compile "com.android.support:customtabs:23.2.0"
+    compile "com.facebook.android:facebook-android-sdk:4.14.+"
     // SUB-PROJECT DEPENDENCIES END
 }
 
