@@ -80,7 +80,7 @@ BW.utils = new function() {
   this.sitePrefix = "https://www.bridgewinners.com";
   //this.sitePrefix = "https://52.4.5.8";
   //this.sitePrefix = "https://127.0.0.1:8000";
-  //this.sitePrefix = "http://localhost";
+  //this.sitePrefix = "https://localhost";
   this.init = function() {
     // Nothing to do yet.
   };
@@ -88,6 +88,9 @@ BW.utils = new function() {
     return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
   };
   this.getAvatarLink = function(avatar) {
+    if (avatar.toLowerCase().startsWith("//") || avatar.toLowerCase().startsWith("http")) {
+      return avatar;
+    }
     return this.sitePrefix + avatar;
   };
   this.getRestUrl = function(suffix) {
@@ -239,6 +242,7 @@ BW.problems = new function() {
       urlSuffix: "get-voting-problem/",
       data: {
         slug: slug,
+        get_comments: true,
       },
       loadingMessage: null,
       // Need longer timeout when getting problems with lots of votes.
@@ -295,6 +299,7 @@ BW.problems = new function() {
   this.loadVotingProblems = function() {
     var data1 = {
       "num_responses": 0,
+      //"slug": "bidding-problem-11787",
       //"slug": "lead-problem-1010",
     };
     var self = this;
@@ -305,21 +310,6 @@ BW.problems = new function() {
       loadingMessage: null,
       successCallback: function(problem) {
         self.votingProblem1.resolve(problem);
-        // BW.ajax({
-        //   urlSuffix: "get-comments/",
-        //   data: {"slug": problem["slug"]},
-        //   loadingMessage: null,
-        //   successCallback: function(data) {
-        //     alert(JSON.stringify(data));
-        //   },
-        //   errorCallback: function(message) {
-        //     alert(JSON.stringify(data));
-        //   },
-        //   failedCallback: function(message) {
-        //     alert(JSON.stringify(message));
-        //   },
-        // });
-        //if (true) {
         if (problem.alldone) {
           problem2.resolve({"alldone": true,});
           return;
@@ -725,48 +715,7 @@ BW.history = new function() {
     }
   	return false;
   };
-  this.showProblem = function(data, pollType) {
-    BW.loadingDialog.show("Displaying Problem...");
-    this.problemShown = data;
-    var type = data.type.toLowerCase();
-  	var deal = new Bridge.Deal();
-  	deal.setDealer(data.dealer);
-  	deal.setVulnerability(data.vulnerability);
-  	deal.getAuction().fromString(data.auction);
-    if (type === "bidding") {
-    	while(deal.getAuction().getNextToCall() != 's') {
-        deal.rotateClockwise();
-      }
-    }
-    var hand = deal.getHand(deal.getAuction().getNextToCall());
-  	hand.setHand( data.lin_str );
-  	deal.setScoring(data.scoring);
-    deal.getHand('n').setName("Pard");
-    deal.getHand('e').setName("RHO");
-    deal.getHand('s').setName("You");
-    deal.getHand('w').setName("LHO");
-    $("#avatar-results").css("background-image", "url(" + BW.utils.getAvatarLink(data.author.avatar) + ")");
-    $("user").empty().append(data.author.name);
-    $("votes").empty().append(data.num_answers);
-    //$("comments").empty().append(data.num_comments);
-    //$("likes").empty().append(data.num_likes);
-    var auction = deal.getAuction();
-    auction.showAuction("auctioncontainer");
-    var d = $('auctioncontainer content');
-    d.scrollTop(d.prop("scrollHeight"));
-    for(var direction in Bridge.directions) {
-      var value = deal.isVulnerable(direction) ? "yes" : "no";
-      var element = $("vulnerability[data-direction='"+ direction + "']");
-      BW.utils.setAttribute(element, "vulnerable", value);
-      element.empty();
-    }
-    $("vulnerability[data-direction='"+ deal.getDealer() + "']").empty().append("D");
-    $("scoring").empty().append(BW.options.getScoringMapping(data.scoring));
-    hand.showHand("handcontainer", {
-      registerClickHandlers: false,
-      registerChangeHandlers: false,
-    });
-    $("description").empty().append(Bridge.replaceSuitSymbolsHTML(data.description));
+  this.getVotesHTML = function(data) {
     var html = "";
     if (data.all_answers.length > 0) {
       _.each(data.all_answers, function(answer){
@@ -808,9 +757,116 @@ BW.history = new function() {
         html += "</div>";
       });
     } else {
-      var html = "<div class='answers-no-responses'>No votes have been submitted yet.</div>";
+      html = "<div class='answers-no-responses'>No votes have been submitted yet.</div>";
     }
-    $("#answers-results").empty().append(html);
+    return html
+  };
+  this.getCommentsHTML = function(comments) {
+    var html = "";
+    _.each(comments.nested_comments, function(comment) {
+      html += "<comments><comment>";
+      html += "<img class='avatar-comment' src='" + BW.utils.getAvatarLink(comment.user.avatar) + "'/>";
+      html += "<comment-text><comment-name>" + comment.user.name + "</comment-name>";
+      html +=  Bridge.replaceSuitSymbolsHTML(comment.text) + "</comment-text>";
+      html += "</comment>";
+      _.each(comment.replies, function(reply) {
+        html += "<reply>";
+        html += "<img class='avatar-reply' src='" + BW.utils.getAvatarLink(reply.user.avatar) + "'/>";
+        html += "<reply-text><reply-name>" + reply.user.name + "</reply-name>";
+        html +=  Bridge.replaceSuitSymbolsHTML(reply.text) + "</reply-text>";
+        html += "</reply>";
+      });
+      html += "</comments>";
+    });
+    return html;
+  };
+  this.showProblem = function(data, pollType) {
+    BW.loadingDialog.show("Displaying Problem...");
+    this.problemShown = data;
+    var type = data.type.toLowerCase();
+  	var deal = new Bridge.Deal();
+  	deal.setDealer(data.dealer);
+  	deal.setVulnerability(data.vulnerability);
+  	deal.getAuction().fromString(data.auction);
+    if (type === "bidding") {
+    	while(deal.getAuction().getNextToCall() != 's') {
+        deal.rotateClockwise();
+      }
+    }
+    var hand = deal.getHand(deal.getAuction().getNextToCall());
+  	hand.setHand( data.lin_str );
+  	deal.setScoring(data.scoring);
+    deal.getHand('n').setName("Pard");
+    deal.getHand('e').setName("RHO");
+    deal.getHand('s').setName("You");
+    deal.getHand('w').setName("LHO");
+    $("#avatar-results").css("background-image", "url(" + BW.utils.getAvatarLink(data.author.avatar) + ")");
+    $("user").empty().append(data.author.name);
+    $("votes").empty().append(data.num_answers);
+    $("numcomments").empty().append(data.num_comments);
+    //$("likes").empty().append(data.num_likes);
+    var auction = deal.getAuction();
+    auction.showAuction("auctioncontainer");
+    var d = $('auctioncontainer content');
+    d.scrollTop(d.prop("scrollHeight"));
+    for(var direction in Bridge.directions) {
+      var value = deal.isVulnerable(direction) ? "yes" : "no";
+      var element = $("vulnerability[data-direction='"+ direction + "']");
+      BW.utils.setAttribute(element, "vulnerable", value);
+      element.empty();
+    }
+    $("vulnerability[data-direction='"+ deal.getDealer() + "']").empty().append("D");
+    $("scoring").empty().append(BW.options.getScoringMapping(data.scoring));
+    hand.showHand("handcontainer", {
+      registerClickHandlers: false,
+      registerChangeHandlers: false,
+    });
+    $("description").empty().append(Bridge.replaceSuitSymbolsHTML(data.description));
+    // var html = "";
+    // if (data.all_answers.length > 0) {
+    //   _.each(data.all_answers, function(answer){
+    //     var answerClass = "";
+    //     if (data.my_answer && data.my_answer.answer === answer.text) {
+    //       answerClass = "my_answer";
+    //     }
+    //     html += "<div class='answer-result'>";
+    //     html += "<div class='answer-result-column " + answerClass + "'>";
+    //     if (data.type.toLowerCase() === "bidding") {
+    //       html += Bridge.getBidHTML(answer.text);
+    //     } else {
+    //       html += Bridge.getCardHTML(answer.text);
+    //     }
+    //     html += "</div>";
+    //     html += "<div class='answer-result-column " + answerClass + "'>";
+    //     html += answer.count;
+    //     html += "</div>";
+    //     html += "<div class='answer-result-column'>";
+    //     html += answer.percent + "%";
+    //     html += "</div>";
+    //     html += "<div class='answer-result-column answer-result-avatar'>";
+    //     html += "<div class='answer-result-avatar-imgs'>";
+    //     var count =  0;
+    //     var index = 0;
+    //     while(count < 3 && index < answer.public_responses.length) {
+    //       response = answer.public_responses[index++];
+    //       if (response.has_avatar) {
+    //         count ++;
+    //         html += "<div class='answer-result-avatar-img'><img class='avatar-result' src='" + BW.utils.getAvatarLink(response.avatar) + "'/></div>";
+    //       }
+    //     }
+    //     while (count < 3) {
+    //       count ++;
+    //       html += "<div class='answer-result-avatar-img'></div>";
+    //     }
+    //     html += "</div>";
+    //     html += "</div>";
+    //     html += "</div>";
+    //   });
+    // } else {
+    //   var html = "<div class='answers-no-responses'>No votes have been submitted yet.</div>";
+    // }
+    $("#answers-results-votes").empty().append(this.getVotesHTML(data));
+    $("#answers-results-comments").empty().append(this.getCommentsHTML(data.comments));
     BW.utils.setAttribute($("#history-revote-button"), "slug", data.slug);
     BW.utils.setAttribute($("#history-voters-button"), "slug", data.slug);
     BW.utils.setAttribute($("#history-voters-button"), "poll-type", pollType);
@@ -868,7 +924,7 @@ BW.history = new function() {
       html += "<p>";
       html += "<div class='history-list-row'>";
       html += "<div class='history-list-cell'>";
-      //html += "<img class='icon' src='css/img/comments_black.png'><span class='stats num_comments'>" + item.num_comments + "</span>"
+      html += "<img class='icon' src='css/img/comments_black.png'><span class='stats num_comments'>" + item.num_comments + "</span>"
       //html += "<img class='icon' src='css/img/likes_black.png'><span class='stats num_likes'>" + item.num_likes + "</span>"
       html += "<img class='icon' src='css/img/answers_black.png'><span class='stats num_answers'>" + item.num_answers + "</span>"
       html += "</div>";
@@ -1634,7 +1690,7 @@ BW.vote = new function() {
     $("vulnerability[data-direction='" + deal.getDealer() + "']").empty().append("D");
     $("scoring").empty().append(BW.options.getScoringMapping(data.scoring));
     $("#avatar-vote").css("background-image", "url(" + BW.utils.getAvatarLink(data.author.avatar) + ")");
-    //$("comments").empty().append(data.num_comments);
+    $("numcomments").empty().append(data.num_comments);
     //$("likes").empty().append(data.num_likes);
     $("user").empty().append(data.author.name);
     $("description").empty().append(Bridge.replaceSuitSymbolsHTML(data.description));

@@ -32,6 +32,7 @@ $BWLightBlue: #ade7ed;
 $FBBlue: #3b5998;
 $GoogleRed: #dd4b39;
 $deactiveGrey: #c7c7cc;
+$BWGrey: #b7b6ad;
 $lightGrey: #dddddd;
 $darkGrey: #4a4a4a;
 $blueGrey: #a4b7bb;
@@ -735,11 +736,11 @@ $menu_items: vote create history alerts account;
     votes {
       @include location(59px, 35px, 40px, 332px);
     }
-    // comments {
-    //   @include location(59px, 35px, 40px, 252px);
-    // }
+    numcomments {
+      @include location(59px, 35px, 40px, 292px);
+    }
     // likes {
-    //   @include location(59px, 35px, 40px, 292px);
+    //   @include location(59px, 35px, 40px, 252px);
     // }
     auctioncontainer {
       @include location(109px, 135px, 230px, 15px);
@@ -767,6 +768,80 @@ $menu_items: vote create history alerts account;
     }
     handcontainer {
       @include location(258px, 66px, 349px, 13px);
+    }
+
+    #answers-results-comments {
+      border-top: solid 0.5px $deactiveGrey;
+    }
+    comments {
+      padding: 5px;
+      display: block;
+      border-bottom: solid 1px $deactiveGrey;
+      background-color: $white;
+    }
+    comment {
+      display: table;
+      width: 100%;
+      @include font(17px);
+      color: $darkGrey;
+      text-align: left;
+      .avatar-comment {
+        display: table-cell;
+        $height: 35px;
+        height: $height/$ref_height * 100vh;
+        // Width should be same as height. So this hack.
+        width: $height/$ref_height * 100vh;
+        border: solid 2px $BWSlate;
+        @include border-radius(50%);
+        vertical-align: middle;
+        white-space: nowrap;
+      }
+      comment-text {
+        display:table-cell;
+        padding-left: 5px;
+        white-space: normal;
+        vertical-align: middle;
+        width: 99%;
+      }
+      comment-name {
+        font-weight: 600;
+        color: $BWRed;
+        display: block;
+      }
+    }
+    reply {
+      margin: 10px;
+      padding: 5px;
+      display: table;
+      width: 100%;
+      @include font(17px);
+      background-color: $BWGrey;
+      margin-top: 5px;
+      color: $darkGrey;
+      text-align: left;
+      .avatar-reply {
+        display: table-cell;
+        $height: 35px;
+        height: $height/$ref_height * 100vh;
+        // Width should be same as height. So this hack.
+        width: $height/$ref_height * 100vh;
+        border: solid 2px $BWSlate;
+        @include border-radius(50%);
+        vertical-align: middle;
+        white-space: nowrap;
+      }
+      reply-text {
+        display:table-cell;
+        padding-left: 5px;
+        white-space: normal;
+        vertical-align: middle;
+        width: 99%;
+      }
+      reply-name {
+        font-weight: 600;
+        color: $BWRed;
+        display: block;
+      }
     }
     #answers-results {
       @include location(400px, 130px, 375px);
@@ -1085,21 +1160,21 @@ deal {
     height: 20px;
     float: left;
   }
-  // comments {
-  //   @extend %flex-vertical-center2;
-  //   @include font(17px);
-  //   color: $BWRed;
-  //   font-weight: 600;
-  // }
-  // comments:before {
-  //   background: url("img/comments.png") no-repeat;
-  //   content: "";
-  //   display: block;
-  //   @include background-contain();
-  //   width: 20px;
-  //   height: 20px;
-  //   float: left;
-  // }
+  numcomments {
+    @extend %flex-vertical-center2;
+    @include font(17px);
+    color: $BWRed;
+    font-weight: 600;
+  }
+  numcomments:before {
+    background: url("img/comments.png") no-repeat;
+    content: "";
+    display: block;
+    @include background-contain();
+    width: 20px;
+    height: 20px;
+    float: left;
+  }
   // likes {
   //   @extend %flex-vertical-center2;
   //   @include font(17px);
@@ -1333,11 +1408,11 @@ deal {
   name {
     @include location(59px, 35px, 200px, 56px);
   }
-  // comments {
-  //   @include location(59px, 35px, 40px, 262px);
-  // }
+  numcomments {
+    @include location(59px, 35px, 40px, 316px);
+  }
   // likes {
-  //   @include location(59px, 35px, 40px, 316px);
+  //   @include location(59px, 35px, 40px, 262px);
   // }
   auctioncontainer {
     @include location(109px, 135px, 230px, 15px);
