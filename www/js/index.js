@@ -84,9 +84,9 @@ BW.utils = new function() {
    * Dev Server : https://52.4.5.8
    * Localhost  : https://localhost
    */
-  //this.sitePrefix = "https://www.bridgewinners.com";
+  this.sitePrefix = "https://www.bridgewinners.com";
   //this.sitePrefix = "https://52.4.5.8";
-  this.sitePrefix = "https://localhost";
+  //this.sitePrefix = "https://localhost";
   // Override site prefix with one specified in query parameter.
   // Obviously this is only relevant when testing on a browser.
   // For the actual app on the phone there is no way to set the query parameter.
