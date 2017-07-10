@@ -32,7 +32,7 @@ $BWLightBlue: #ade7ed;
 $FBBlue: #3b5998;
 $GoogleRed: #dd4b39;
 $deactiveGrey: #c7c7cc;
-$BWGrey: #b7b6ad;
+$BWGrey: #eee;
 $lightGrey: #dddddd;
 $darkGrey: #4a4a4a;
 $blueGrey: #a4b7bb;
@@ -729,7 +729,244 @@ $menu_items: vote create history alerts account;
 }
 
 #history-page {
+  #history-results-page-full {
+    #results-container {
+      @include location(44px, 490px, 375px);
+    }
+    deal {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    avatar#avatar-results {
+      background-color: #d8d8d8;
+      border: solid 2px $BWSlate;
+      @include border-radius(50%);
+      @include background-contain();
+      $height: 35px;
+      @include location(15px, $height, $height, 15px);
+      position: relative;
+      // Width should be same as height. So this hack.
+      width: $height/$ref_height * 100vh;
+    }
+    name {
+      @include location(15px, 35px, 200px, 56px);
+      position: absolute;
+    }
+    votes {
+      @include location(15px, 35px, 40px, 332px);
+      position: absolute;
+    }
+    numcomments {
+      @include location(15px, 35px, 40px, 292px);
+      position: absolute;
+    }
+    // likes {
+    //   @include location(59px, 35px, 40px, 252px);
+    // }
+    auctioncontainer {
+      @include location(65px, 135px, 230px, 15px);
+      position: absolute;
+    }
+    infowrapper {
+        @include location(65px, 135px, 105px, 255px);
+        position: absolute;
+    }
+    vulnerability[data-direction="e"] {
+      @include location(95px, 76px, 21px, 332px);
+      position: absolute;
+    }
+    vulnerability[data-direction="w"] {
+      @include location(95px, 76px, 21px, 262px);
+      position: absolute;
+    }
+    scoring {
+      @include location(95px, 76px, 53.1px, 281px);
+      position: absolute;
+    }
+    vulnerability[data-direction="n"] {
+      @include location(72px, 25px, 53.1px, 281px);
+      position: absolute;
+    }
+    vulnerability[data-direction="s"] {
+      @include location(169px, 25px, 53.1px, 281px);
+      position: absolute;
+    }
+    description {
+      @include location(295px, 57px, 375px);
+      position: absolute;
+    }
+    handcontainer {
+      @include location(214px, 66px, 349px, 13px);
+      position: absolute;
+    }
+
+    #answers-results-comments {
+      border-top: solid 0.5px $deactiveGrey;
+    }
+    comments {
+      padding: 5px;
+      display: block;
+      border-bottom: solid 1px $deactiveGrey;
+      background-color: $white;
+    }
+    comment {
+      display: table;
+      width: 100%;
+      @include font(17px);
+      color: $darkGrey;
+      text-align: left;
+      .avatar-comment {
+        display: table-cell;
+        $height: 35px;
+        height: $height/$ref_height * 100vh;
+        // Width should be same as height. So this hack.
+        width: $height/$ref_height * 100vh;
+        border: solid 2px $BWSlate;
+        @include border-radius(50%);
+        vertical-align: middle;
+        white-space: nowrap;
+      }
+      comment-text {
+        display:table-cell;
+        padding-left: 5px;
+        white-space: normal;
+        vertical-align: middle;
+        width: 99%;
+      }
+      comment-name {
+        font-weight: 600;
+        color: $BWRed;
+        display: block;
+      }
+    }
+    reply {
+      margin: 10px;
+      padding: 5px;
+      display: table;
+      width: 100%;
+      @include font(17px);
+      background-color: $BWGrey;
+      margin-top: 5px;
+      color: $darkGrey;
+      text-align: left;
+      .avatar-reply {
+        display: table-cell;
+        $height: 35px;
+        height: $height/$ref_height * 100vh;
+        // Width should be same as height. So this hack.
+        width: $height/$ref_height * 100vh;
+        border: solid 2px $BWSlate;
+        @include border-radius(50%);
+        vertical-align: middle;
+        white-space: nowrap;
+      }
+      reply-text {
+        display:table-cell;
+        padding-left: 5px;
+        padding-right: 5px;
+        white-space: normal;
+        vertical-align: middle;
+        width: 99%;
+      }
+      reply-name {
+        font-weight: 600;
+        color: $BWRed;
+        display: block;
+      }
+    }
+    .no-answer {
+      font-weight: bold;
+      padding: 5px;
+    }
+    #answers-results {
+      @include location(356px, 130px, 375px);
+      position: absolute;
+      .my_answer {
+        font-weight: bold;
+        color: $BWRed;
+      }
+    }
+    .answer-result {
+      display: table;
+      table-layout: fixed;
+      width: 100%;
+      @include font(20px);
+    }
+    .answer-result-column {
+      display: table-cell;
+      vertical-align: middle;
+      text-align: center;
+      text-transform: uppercase;
+    }
+    .answer-result-avatar {
+      width: 50%;
+    }
+    .answer-result-avatar-imgs {
+      display:table;
+      table-layout: fixed;
+      width: 100%;
+    }
+    .answer-result-avatar-img {
+      display: table-cell;
+      $height: 40px;
+      height: $height/$ref_height * 100vh;
+      // Width should be same as height. So this hack.
+      width: $height/$ref_height * 100vh;
+    }
+    .avatar-result {
+      $height: 40px;
+      height: $height/$ref_height * 100vh;
+      // Width should be same as height. So this hack.
+      width: $height/$ref_height * 100vh;
+      border: solid 2px $BWSlate;
+      @include border-radius(50%);
+      vertical-align: middle;
+    }
+    .button {
+      @include font(17px);
+      @include border-radius(5px);
+      color: $darkGrey;
+      background-color: $lightGrey;
+    }
+    .button.enabled {
+      color: $white;
+      background-color: $BWRed;
+      cursor: pointer;
+    }
+    .show-next-problem {
+      #history-next-button {
+        @extend %flex-vertical-center;
+        @include location(535px, 44px, 110px, 249px);
+      }
+      #history-revote-button {
+        @extend %flex-vertical-center;
+        @include location(535px, 44px, 110px, 15px);
+      }
+      #history-voters-button {
+        @extend %flex-vertical-center;
+        @include location(535px, 44px, 110px, 132px);
+      }
+    }
+    .dont-show-next-problem {
+      #history-next-button {
+        display: none;
+        visibility: hidden;
+      }
+      #history-revote-button {
+        @extend %flex-vertical-center;
+        @include location(535px, 44px, 169px, 15px);
+      }
+      #history-voters-button {
+        @extend %flex-vertical-center;
+        @include location(535px, 44px, 169px, 191px);
+      }
+    }
+  }
   #history-results-page {
+    // #results-container {
+    //   @include location(44px, 490px, 375px);
+    // }
     name {
       @include location(59px, 35px, 200px, 56px);
     }

@@ -1,0 +1,42 @@
+{
+    "name": "com.bridgewinners.youhold",
+    "version": "1.4.1",
+    "displayName": "You Hold",
+    "cordova": {
+        "platforms": [
+            "android",
+            "ios"
+        ],
+        "plugins": {
+            "cordova-plugin-console": {},
+            "cordova-plugin-device": {},
+            "cordova-plugin-facebook4": {
+                "APP_ID": "159739840897277",
+                "APP_NAME": "Bridge Winners"
+            },
+            "cordova-plugin-googleplus": {
+                "REVERSED_CLIENT_ID": "com.googleusercontent.apps.527397812706-q680kpka1u13l97tkqsfp4mb7jl3pdbd"
+            },
+            "cordova-plugin-inappbrowser": {},
+            "cordova-plugin-ios-no-export-compliance": {},
+            "cordova-plugin-safariviewcontroller": {},
+            "cordova-plugin-splashscreen": {},
+            "cordova-plugin-statusbar": {},
+            "cordova-plugin-whitelist": {}
+        }
+    },
+    "dependencies": {
+        "cordova-android": "~6.2.1",
+        "cordova-ios": "~4.3.1",
+        "cordova-plugin-console": "~1.0.5",
+        "cordova-plugin-device": "~1.1.5",
+        "cordova-plugin-facebook4": "~1.7.4",
+        "cordova-plugin-googleplus": "https://github.com/EddyVerbruggen/cordova-plugin-googleplus",
+        "cordova-plugin-inappbrowser": "~1.6.1",
+        "cordova-plugin-ios-no-export-compliance": "https://github.com/mikaoelitiana/cordova-plugin-ios-no-export-compliance.git",
+        "cordova-plugin-safariviewcontroller": "~1.4.7",
+        "cordova-plugin-splashscreen": "~4.0.2",
+        "cordova-plugin-statusbar": "~2.2.0",
+        "cordova-plugin-whitelist": "~1.3.0"
+    }
+}

@@ -21,7 +21,6 @@
     <script src="js/fastclick.min.js"></script>
     <script src="js/iscroll.js"></script>
     <script src="js/jquery.mobile.iscrollview.js"></script>
-    <script src="js/oauth.min.js"></script>
     <script src="js/index.js"></script>
     <title>BridgeWinners Mobile App</title>
   </head>
@@ -82,8 +81,8 @@
           <deal>
             <avatar id="avatar-vote"></avatar>
             <name><user>Bridge Winners </user>Asks</name>
-            <!-- <comments>245</comments>
-            <likes>125</likes> -->
+            <numcomments>245</numcomments>
+            <!-- <likes>125</likes> -->
             <auctioncontainer></auctioncontainer>
             <vulnerabilities>
               <vulnerability data-direction='n'></vulnerability>
@@ -200,26 +199,31 @@
             </div>
           </div>
         </div>
-        <div id="history-results-page" data-role="section" data-name="history-results-page">
-          <deal>
-            <avatar id="avatar-results"></avatar>
-            <name><user>Bridge Winners </user>Asks</name>
-            <votes>0</votes>
-            <!-- <comments>245</comments>
-            <likes>125</likes> -->
-            <auctioncontainer></auctioncontainer>
-            <vulnerabilities>
-              <vulnerability data-direction='n'></vulnerability>
-              <vulnerability data-direction='e'></vulnerability>
-              <vulnerability data-direction='s'></vulnerability>
-              <vulnerability data-direction='w'></vulnerability>
-            </vulnerabilities>
-            <scoring></scoring>
-            <infowrapper></infowrapper>
-            <handcontainer></handcontainer>
-            <description class="scrollable"></description>
-          <deal>
-          <div id="answers-results" class="scrollable"></div>
+        <div id="history-results-page-full" data-role="section" data-name="history-results-page">
+          <div id="results-container" class="scrollable">
+            <deal>
+              <avatar id="avatar-results"></avatar>
+              <name><user>Bridge Winners </user>Asks</name>
+              <votes>0</votes>
+              <numcomments>245</numcomments>
+              <!-- <likes>125</likes> -->
+              <auctioncontainer></auctioncontainer>
+              <vulnerabilities>
+                <vulnerability data-direction='n'></vulnerability>
+                <vulnerability data-direction='e'></vulnerability>
+                <vulnerability data-direction='s'></vulnerability>
+                <vulnerability data-direction='w'></vulnerability>
+              </vulnerabilities>
+              <scoring></scoring>
+              <infowrapper></infowrapper>
+              <handcontainer></handcontainer>
+              <description class="scrollable"></description>
+            </deal>
+            <div id="answers-results" class="scrollable1">
+              <div id="answers-results-votes"></div>
+              <div id="answers-results-comments"></div>
+            </div>
+          </div>
           <div class="show-next-problem">
             <div id="history-next-button" class="button clickable bridgewinners enabled">Next Hand</div>
             <div id="history-revote-button" class="button clickable bridgewinners enabled">Re-vote</div>

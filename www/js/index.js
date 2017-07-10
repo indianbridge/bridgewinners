@@ -77,10 +77,24 @@ BW.app.start();
  * Some utility functions.
  */
 BW.utils = new function() {
-  this.sitePrefix = "https://www.bridgewinners.com";
+  /**
+   * Set the site prefix. This controls which backend the app is connected to.
+   * Possible values are:
+   * Production : https://www.bridgewinners.com
+   * Dev Server : https://52.4.5.8
+   * Localhost  : https://localhost
+   */
+  //this.sitePrefix = "https://www.bridgewinners.com";
   //this.sitePrefix = "https://52.4.5.8";
-  //this.sitePrefix = "https://127.0.0.1:8000";
-  //this.sitePrefix = "https://localhost";
+  this.sitePrefix = "https://localhost";
+  // Override site prefix with one specified in query parameter.
+  // Obviously this is only relevant when testing on a browser.
+  // For the actual app on the phone there is no way to set the query parameter.
+  var queryParameters = new URLSearchParams(location.search.slice(1));
+  var sitePrefixQueryParameterName = "site_prefix";
+  if (queryParameters.has(sitePrefixQueryParameterName)) {
+    this.sitePrefix = queryParameters.get(sitePrefixQueryParameterName);
+  }
   this.init = function() {
     // Nothing to do yet.
   };
@@ -376,6 +390,7 @@ BW.alerts = new function() {
       var data = {
         "num_responses": 3,
         "exclude_default_avatars": true,
+        "get_comments": true,
         "slug": slug,
       };
       BW.ajax({
@@ -585,6 +600,18 @@ BW.history = new function() {
         self.getRecent(pollType, /*disableLoadingMessage=*/true);
       });
     });
+    // Clicked on num votes.
+    $(document).on("tap", "#history-results-page-full votes", function() {
+      var containerTop = $("#answers-results").position().top;
+      var votesTop = containerTop + $("#answers-results-votes").position().top;
+      $("#results-container").scrollTop(votesTop);
+    });
+    // Clicked on num comments.
+    $(document).on("tap", "#history-results-page-full numcomments", function() {
+      var containerTop = $("#answers-results").position().top;
+      var commentTop = containerTop + $("#answers-results-comments").position().top;
+      $("#results-container").scrollTop(commentTop);
+    });
 
     // section changed
     _.each(["history-voted-page", "history-published-page", "history-drafts-page"], function(sectionName) {
@@ -631,7 +658,6 @@ BW.history = new function() {
     BW.utils.setAttribute($("#back-button"), "poll-type", pollType);
     BW.utils.setAttribute($("#back-button"), "back", backPage);
     $("#history-menu").addClass("hide");
-    //var poll = this.polls[pollType][slug];
     var poll = BW.problems.get(slug);
     var html = "";
     if (poll.all_answers.length > 0) {
@@ -763,17 +789,18 @@ BW.history = new function() {
   };
   this.getCommentsHTML = function(comments) {
     var html = "";
+    var bbcodeParser = new bbcode.Parser();
     _.each(comments.nested_comments, function(comment) {
       html += "<comments><comment>";
       html += "<img class='avatar-comment' src='" + BW.utils.getAvatarLink(comment.user.avatar) + "'/>";
       html += "<comment-text><comment-name>" + comment.user.name + "</comment-name>";
-      html +=  Bridge.replaceSuitSymbolsHTML(comment.text) + "</comment-text>";
+      html +=  Bridge.replaceSuitSymbolsHTML(bbcodeParser.toHTML(comment.text)) + "</comment-text>";
       html += "</comment>";
       _.each(comment.replies, function(reply) {
         html += "<reply>";
         html += "<img class='avatar-reply' src='" + BW.utils.getAvatarLink(reply.user.avatar) + "'/>";
         html += "<reply-text><reply-name>" + reply.user.name + "</reply-name>";
-        html +=  Bridge.replaceSuitSymbolsHTML(reply.text) + "</reply-text>";
+        html +=  Bridge.replaceSuitSymbolsHTML(bbcodeParser.toHTML(reply.text)) + "</reply-text>";
         html += "</reply>";
       });
       html += "</comments>";
@@ -822,55 +849,26 @@ BW.history = new function() {
       registerChangeHandlers: false,
     });
     $("description").empty().append(Bridge.replaceSuitSymbolsHTML(data.description));
-    // var html = "";
-    // if (data.all_answers.length > 0) {
-    //   _.each(data.all_answers, function(answer){
-    //     var answerClass = "";
-    //     if (data.my_answer && data.my_answer.answer === answer.text) {
-    //       answerClass = "my_answer";
-    //     }
-    //     html += "<div class='answer-result'>";
-    //     html += "<div class='answer-result-column " + answerClass + "'>";
-    //     if (data.type.toLowerCase() === "bidding") {
-    //       html += Bridge.getBidHTML(answer.text);
-    //     } else {
-    //       html += Bridge.getCardHTML(answer.text);
-    //     }
-    //     html += "</div>";
-    //     html += "<div class='answer-result-column " + answerClass + "'>";
-    //     html += answer.count;
-    //     html += "</div>";
-    //     html += "<div class='answer-result-column'>";
-    //     html += answer.percent + "%";
-    //     html += "</div>";
-    //     html += "<div class='answer-result-column answer-result-avatar'>";
-    //     html += "<div class='answer-result-avatar-imgs'>";
-    //     var count =  0;
-    //     var index = 0;
-    //     while(count < 3 && index < answer.public_responses.length) {
-    //       response = answer.public_responses[index++];
-    //       if (response.has_avatar) {
-    //         count ++;
-    //         html += "<div class='answer-result-avatar-img'><img class='avatar-result' src='" + BW.utils.getAvatarLink(response.avatar) + "'/></div>";
-    //       }
-    //     }
-    //     while (count < 3) {
-    //       count ++;
-    //       html += "<div class='answer-result-avatar-img'></div>";
-    //     }
-    //     html += "</div>";
-    //     html += "</div>";
-    //     html += "</div>";
-    //   });
-    // } else {
-    //   var html = "<div class='answers-no-responses'>No votes have been submitted yet.</div>";
-    // }
-    $("#answers-results-votes").empty().append(this.getVotesHTML(data));
-    $("#answers-results-comments").empty().append(this.getCommentsHTML(data.comments));
-    BW.utils.setAttribute($("#history-revote-button"), "slug", data.slug);
-    BW.utils.setAttribute($("#history-voters-button"), "slug", data.slug);
-    BW.utils.setAttribute($("#history-voters-button"), "poll-type", pollType);
-    BW.utils.setAttribute($("#history-voters-button"), "back", $("#back-button").data("section"));
+    var votersButton = $("#history-voters-button");
+    var revoteButton = $("#history-revote-button");
+    var votesDiv = $("#answers-results-votes");
+    var commentsDiv = $("#answers-results-comments");
+    if (data.my_answer) {
+      votesDiv.empty().append(this.getVotesHTML(data));
+      commentsDiv.empty().append(this.getCommentsHTML(data.comments));
+      votersButton.removeClass("disabled").addClass("enabled").removeClass("hide");
+      revoteButton.empty().append("Re-vote");
+    } else {
+      votesDiv.empty().append("<h1 class='no-answer'>You have to vote on this problem before you can see the comments and how others voted.")
+      votersButton.removeClass("enabled").addClass("disabled").addClass("hide");
+      revoteButton.empty().append("Vote");
+      commentsDiv.empty();
+    }
+    $("#results-container").scrollTop(0);
+    BW.utils.setAttribute(revoteButton, "slug", data.slug);
+    BW.utils.setAttribute(votersButton, "slug", data.slug);
+    BW.utils.setAttribute(votersButton, "poll-type", pollType);
+    BW.utils.setAttribute(votersButton, "back", $("#back-button").data("section"));
     BW.loadingDialog.hide();
   };
   this.getHTML = function(polls, sectionName, showAuthor, showAnswer, pollType) {
@@ -1546,35 +1544,6 @@ BW.vote = new function() {
     });
   	return false;
   };
-  // this.loadInBackground = function(data, deferredObject) {
-  //   data = data || {};
-  //   _.defaults(data, {
-  //     "num_responses": 0,
-  //     //"slug": "lead-problem-2-64gkumhu26",
-  //     //"slug": "lead-problem-1010",
-  //   });
-  //   if (!deferredObject) {
-  //     this.problemReady = $.Deferred();
-  //     deferredObject = this.problemReady;
-  //   }
-  //   var self = this;
-  //   BW.ajax({
-  //     urlSuffix: "get-voting-problem/",
-  //     data: data,
-  //     loadingMessage: null,
-  //     successCallback: function(data) {
-  //       deferredObject.resolve(data);
-  //     },
-  //     errorCallback: function(message) {
-  //       deferredObject.reject(message);
-  //     },
-  //     failedCallback: function(message) {
-  //       deferredObject.reject(message);
-  //     },
-  //   });
-  //
-  // 	return false;
-  // };
   this.load = function(data) {
     data = data || {};
     $("#back-button").addClass("hide");
