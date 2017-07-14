@@ -83,6 +83,8 @@ BW.utils = new function() {
    * Production : https://www.bridgewinners.com
    * Dev Server : https://52.4.5.8
    * Localhost  : https://localhost
+   * This can be overriden using site_prefix query parameter but obviously
+   * only in a browser not when running as an app.
    */
   this.sitePrefix = "https://www.bridgewinners.com";
   //this.sitePrefix = "https://52.4.5.8";
